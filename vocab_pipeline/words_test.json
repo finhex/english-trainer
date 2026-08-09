@@ -1,0 +1,454 @@
+{
+ "words": [
+  {
+   "word": "not",
+   "level": 1,
+   "levelName": "A1 · Beginner",
+   "pos": "adverb",
+   "ipa": "/nɒt/",
+   "definition": "Negates the meaning of the modified verb.",
+   "example": "Did you take out the trash? No, I did not."
+  },
+  {
+   "word": "are",
+   "level": 1,
+   "levelName": "A1 · Beginner",
+   "pos": "noun",
+   "ipa": "/ɛə/",
+   "definition": "An accepted (but deprecated and rarely used) SI unit of area equal to 100 square metres, or a former unit of approximately the same extent. Symbol: a.",
+   "example": ""
+  },
+  {
+   "word": "have",
+   "level": 1,
+   "levelName": "A1 · Beginner",
+   "pos": "verb",
+   "ipa": "",
+   "definition": "To possess, own.",
+   "example": "I have a house and a car."
+  },
+  {
+   "word": "were",
+   "level": 1,
+   "levelName": "A1 · Beginner",
+   "pos": "noun",
+   "ipa": "",
+   "definition": "A man, a husband",
+   "example": ""
+  },
+  {
+   "word": "had",
+   "level": 1,
+   "levelName": "A1 · Beginner",
+   "pos": "verb",
+   "ipa": "",
+   "definition": "To possess, own.",
+   "example": "I have a house and a car."
+  },
+  {
+   "word": "has",
+   "level": 1,
+   "levelName": "A1 · Beginner",
+   "pos": "verb",
+   "ipa": "",
+   "definition": "To possess, own.",
+   "example": "I have a house and a car."
+  },
+  {
+   "word": "would",
+   "level": 1,
+   "levelName": "A1 · Beginner",
+   "pos": "noun",
+   "ipa": "/wʊd/",
+   "definition": "Something that would happen, or would be the case, under different circumstances; a potentiality.",
+   "example": ""
+  },
+  {
+   "word": "been",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "noun",
+   "ipa": "/biːn/",
+   "definition": "A flying insect, of the clade Anthophila within the hymenopteran superfamily Apoidea, known for its organised societies (though only a minority have them), for collecting pollen and (in some species) producing wax and honey.",
+   "example": ""
+  },
+  {
+   "word": "will",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "verb",
+   "ipa": "/wɪl/",
+   "definition": "(now uncommon or literary) To wish, desire (something).",
+   "example": "Do what you will."
+  },
+  {
+   "word": "can",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "verb",
+   "ipa": "/ˈkæn/",
+   "definition": "(auxiliary verb, defective) To know how to; to be able to.",
+   "example": "She can speak English, French, and German.   I can play football.   Can you remember your fifth birthday?"
+  },
+  {
+   "word": "other",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "adjective",
+   "ipa": "/ˈɐðə/",
+   "definition": "See other (determiner) below",
+   "example": ""
+  },
+  {
+   "word": "such",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "noun",
+   "ipa": "/sʌt͡ʃ/",
+   "definition": "Something being indicated that is similar to something else.",
+   "example": ""
+  },
+  {
+   "word": "so",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "adverb",
+   "ipa": "/səʊ/",
+   "definition": "To the (explicitly stated) extent that.",
+   "example": "It was so hot outside that all the plants died.  He was so good, they hired him on the spot."
+  },
+  {
+   "word": "said",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "verb",
+   "ipa": "/sɛd/",
+   "definition": "To pronounce.",
+   "example": "Please say your name slowly and clearly."
+  },
+  {
+   "word": "as",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "adverb",
+   "ipa": "",
+   "definition": "To such an extent or degree; to the same extent or degree.",
+   "example": "It's not as well made, but it's twice as expensive."
+  },
+  {
+   "word": "state",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "noun",
+   "ipa": "/steɪt/",
+   "definition": "A condition; a set of circumstances applying at any given time.",
+   "example": ""
+  },
+  {
+   "word": "made",
+   "level": 2,
+   "levelName": "A2 · Elementary",
+   "pos": "noun",
+   "ipa": "/meɪd/",
+   "definition": "A grub or maggot.",
+   "example": ""
+  },
+  {
+   "word": "states",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "noun",
+   "ipa": "/steɪts/",
+   "definition": "A condition; a set of circumstances applying at any given time.",
+   "example": ""
+  },
+  {
+   "word": "service",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "noun",
+   "ipa": "/ˈsɜːvɪs/",
+   "definition": "An act of being of assistance to someone.",
+   "example": "I say I did him a service by ending our relationship – now he can freely pursue his career."
+  },
+  {
+   "word": "development",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "noun",
+   "ipa": "/dɪˈvɛləpmənt/",
+   "definition": "The process of developing; growth, directed change.",
+   "example": "The development of this story has been slow."
+  },
+  {
+   "word": "general",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "adjective",
+   "ipa": "/ˈd͡ʒɛnɹəl/",
+   "definition": "Including or involving every part or member of a given or implied entity, whole etc.; as opposed to specific or particular.",
+   "example": ""
+  },
+  {
+   "word": "department",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "noun",
+   "ipa": "/dɪˈpɑːtm(ə)nt/",
+   "definition": "A part, portion, or subdivision.",
+   "example": ""
+  },
+  {
+   "word": "thus",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "adverb",
+   "ipa": "/ˈðʌs/",
+   "definition": "(manner) In this way or manner.",
+   "example": "If you throw the ball thus, as I’m showing you, you’ll have better luck hitting the target."
+  },
+  {
+   "word": "services",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "noun",
+   "ipa": "/ˈsɜːvɪsɪz/",
+   "definition": "An act of being of assistance to someone.",
+   "example": "I say I did him a service by ending our relationship – now he can freely pursue his career."
+  },
+  {
+   "word": "process",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "noun",
+   "ipa": "/ˈpɹoʊsɛs/",
+   "definition": "A series of events which produce a result (the product).",
+   "example": "This product of last month's quality standards committee is quite good, even though the process was flawed."
+  },
+  {
+   "word": "county",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "noun",
+   "ipa": "/ˈkaʊnti/",
+   "definition": "The land ruled by a count or a countess.",
+   "example": ""
+  },
+  {
+   "word": "available",
+   "level": 3,
+   "levelName": "B1 · Intermediate",
+   "pos": "adjective",
+   "ipa": "/əˈveɪləb(ə)l/",
+   "definition": "Such as one may avail oneself of; capable of being used for the accomplishment of a purpose.",
+   "example": "We have an available candidate."
+  },
+  {
+   "word": "united",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "verb",
+   "ipa": "/juːˈnaɪtɪd/",
+   "definition": "To bring together as one.",
+   "example": "I hope this song can unite people from all different cultures."
+  },
+  {
+   "word": "commission",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "noun",
+   "ipa": "/kəˈmɪʃən/",
+   "definition": "A sending or mission (to do or accomplish something).",
+   "example": ""
+  },
+  {
+   "word": "god",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "noun",
+   "ipa": "/ɡɔd/",
+   "definition": "A being such as a monotheistic God: a single divine creator and ruler of the universe.",
+   "example": ""
+  },
+  {
+   "word": "times",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "noun",
+   "ipa": "/tɑemz/",
+   "definition": "The inevitable progression into the future with the passing of present and past events.",
+   "example": "Time stops for nobody.   the ebb and flow of time"
+  },
+  {
+   "word": "known",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "verb",
+   "ipa": "/nəʊn/",
+   "definition": "To perceive the truth or factuality of; to be certain of or that.",
+   "example": "He knew something terrible was going to happen."
+  },
+  {
+   "word": "energy",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "noun",
+   "ipa": "/ˈɛnəd͡ʒi/",
+   "definition": "The impetus behind all motion and all activity.",
+   "example": ""
+  },
+  {
+   "word": "community",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "noun",
+   "ipa": "/k(ə)ˈmjunəti/",
+   "definition": "A group sharing a common understanding, and often the same language, law, manners, and/or tradition.",
+   "example": ""
+  },
+  {
+   "word": "particular",
+   "level": 4,
+   "levelName": "B2 · Upper-Intermediate",
+   "pos": "adjective",
+   "ipa": "/pəˈtɪkjələ/",
+   "definition": "Pertaining only to a part of something; partial.",
+   "example": ""
+  },
+  {
+   "word": "jones",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "noun",
+   "ipa": "/dʒoʊnz/",
+   "definition": "Heroin.",
+   "example": ""
+  },
+  {
+   "word": "cited",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "verb",
+   "ipa": "/ˈsaɪtɪd/",
+   "definition": "To quote; to repeat, as a passage from a book, or the words of another.",
+   "example": ""
+  },
+  {
+   "word": "jews",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "noun",
+   "ipa": "/dʒuːz/",
+   "definition": "The jewfish.",
+   "example": ""
+  },
+  {
+   "word": "premises",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "noun",
+   "ipa": "/ˈpɹɛməsiːz/",
+   "definition": "Land, and all the built structures on it, especially when considered as a single place.",
+   "example": ""
+  },
+  {
+   "word": "isolated",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "verb",
+   "ipa": "/ˈaɪsəleɪtɪd/",
+   "definition": "To set apart or cut off from others.",
+   "example": ""
+  },
+  {
+   "word": "enacted",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "verb",
+   "ipa": "",
+   "definition": "To make (a bill) into law",
+   "example": ""
+  },
+  {
+   "word": "comprising",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "verb",
+   "ipa": "/kəmˈpɹaɪzɪŋ/",
+   "definition": "To be made up of; to consist of (especially a comprehensive list of parts).",
+   "example": "The parts are comprised by the whole."
+  },
+  {
+   "word": "affirmed",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "verb",
+   "ipa": "",
+   "definition": "To agree, verify or concur; to answer positively.",
+   "example": "She affirmed that she would go when I asked her."
+  },
+  {
+   "word": "disposed",
+   "level": 5,
+   "levelName": "C1 · Advanced",
+   "pos": "verb",
+   "ipa": "/dɪˈspəʊzd/",
+   "definition": "(used with \"of\") To eliminate or to get rid of something.",
+   "example": "I dispose of my trash in the garbage can."
+  },
+  {
+   "word": "la",
+   "level": 6,
+   "levelName": "C2 · Proficiency",
+   "pos": "noun",
+   "ipa": "/lɑː/",
+   "definition": "A syllable used in solfège to represent the sixth note of a major scale.",
+   "example": ""
+  },
+  {
+   "word": "alleged",
+   "level": 6,
+   "levelName": "C2 · Proficiency",
+   "pos": "verb",
+   "ipa": "",
+   "definition": "To state under oath, to plead.",
+   "example": ""
+  },
+  {
+   "word": "wales",
+   "level": 6,
+   "levelName": "C2 · Proficiency",
+   "pos": "noun",
+   "ipa": "/weɪlz/",
+   "definition": "A ridge or low barrier.",
+   "example": ""
+  },
+  {
+   "word": "hypothesis",
+   "level": 6,
+   "levelName": "C2 · Proficiency",
+   "pos": "noun",
+   "ipa": "/-əsəs/",
+   "definition": "Used loosely, a tentative conjecture explaining an observation, phenomenon or scientific problem that can be tested by further observation, investigation and/or experimentation. As a scientific term of art, see the attached quotation. Compare to theory, and quotation given there.",
+   "example": ""
+  },
+  {
+   "word": "situated",
+   "level": 6,
+   "levelName": "C2 · Proficiency",
+   "pos": "verb",
+   "ipa": "/ˈsɪt͡ʃueɪtɪd/",
+   "definition": "To place on or into a physical location.",
+   "example": "The statue is situated in a corner hardly visible to the public, except through a window from an outside maintenance area situated behind the building."
+  },
+  {
+   "word": "trans",
+   "level": 6,
+   "levelName": "C2 · Proficiency",
+   "pos": "verb",
+   "ipa": "/tɹænz/",
+   "definition": "To cross from one side to another of (gender, sex or something in that vein).",
+   "example": ""
+  }
+ ]
+}

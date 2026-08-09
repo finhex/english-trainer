@@ -1,0 +1,49 @@
+# ---- SECRETS (never commit) ----
+vocab_pipeline/ru/deepl_key.txt
+**/deepl_key.txt
+*.key
+.env
+
+# ---- Python ----
+**/.venv/
+**/__pycache__/
+*.pyc
+
+# ---- Flutter / Dart build output ----
+app/build/
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/.packages
+app/**/ephemeral/
+app/linux/flutter/ephemeral/
+app/windows/flutter/ephemeral/
+app/android/.gradle/
+app/android/app/debug/
+app/android/app/profile/
+app/android/app/release/
+app/**/GeneratedPluginRegistrant.*
+**/generated_plugin_registrant.*
+.dart_tool/
+
+# ---- large build binaries / redistributables (rebuildable) ----
+dist/*.apk
+dist/*.zip
+
+# ---- large pipeline INPUTS (re-downloadable, not needed to build the app) ----
+vocab_pipeline/.venv/
+vocab_pipeline/data/*.csv
+vocab_pipeline/wordlists/*.tsv
+vocab_pipeline/wordlists/*.csv
+vocab_pipeline/wordlists/*.xlsx
+vocab_pipeline/wordlists/*.pdf
+vocab_pipeline/wordlists/*.txt
+vocab_pipeline/ru/*.jsonl
+vocab_pipeline/ru/*_cache.json
+vocab_pipeline/*.db
+content_pipeline/*.db
+
+# ---- OS / editor junk ----
+.DS_Store
+Thumbs.db
+*.swp

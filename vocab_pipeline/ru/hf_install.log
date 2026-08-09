@@ -1,0 +1,69 @@
+ERROR: Exception:
+Traceback (most recent call last):
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_vendor/urllib3/response.py", line 897, in _error_catcher
+    yield
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_vendor/urllib3/response.py", line 1043, in _raw_read
+    raise IncompleteRead(self._fp_bytes_read, self.length_remaining)
+pip._vendor.urllib3.exceptions.IncompleteRead: IncompleteRead(109387136 bytes read, 82435380 more expected)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/cli/base_command.py", line 109, in _run_wrapper
+    status = _inner_run()
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/cli/base_command.py", line 102, in _inner_run
+    return self.run(options, args)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/cli/req_command.py", line 101, in wrapper
+    return func(self, options, args)
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/commands/install.py", line 506, in run
+    preparer.prepare_linked_requirements_more(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        requirement_set.requirements.values()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/operations/prepare.py", line 569, in prepare_linked_requirements_more
+    self._complete_partial_requirements(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        partially_downloaded_reqs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        parallel_builds=parallel_builds,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/operations/prepare.py", line 478, in _complete_partial_requirements
+    for link, (filepath, _) in batch_download:
+                               ^^^^^^^^^^^^^^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/network/download.py", line 182, in batch
+    filepath, content_type = self(link, location)
+                             ~~~~^^^^^^^^^^^^^^^^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/network/download.py", line 193, in __call__
+    self._process_response(download, resp)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/network/download.py", line 210, in _process_response
+    for chunk in chunks:
+                 ^^^^^^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_internal/network/utils.py", line 65, in response_chunks
+    for chunk in response.raw.stream(
+                 ~~~~~~~~~~~~~~~~~~~^
+        chunk_size,
+        ^^^^^^^^^^^
+    ...<22 lines>...
+        decode_content=False,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_vendor/urllib3/response.py", line 1251, in stream
+    data = self.read(amt=amt, decode_content=decode_content)
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_vendor/urllib3/response.py", line 1106, in read
+    data = self._raw_read(amt)
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_vendor/urllib3/response.py", line 1021, in _raw_read
+    with self._error_catcher():
+         ~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/konako/Documents/Claude/_git-backups/apps/words/vocab_pipeline/.venv/lib/python3.14/site-packages/pip/_vendor/urllib3/response.py", line 921, in _error_catcher
+    raise ProtocolError(arg, e) from e
+pip._vendor.urllib3.exceptions.ProtocolError: ('Connection broken: IncompleteRead(109387136 bytes read, 82435380 more expected)', IncompleteRead(109387136 bytes read, 82435380 more expected))

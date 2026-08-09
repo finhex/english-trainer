@@ -1,0 +1,43 @@
+name: Build Windows
+
+# Builds the Windows desktop app in the cloud (free GitHub-hosted Windows
+# runner). Produces a zip you download from the run's "Artifacts", unzip, and
+# double-click english_trainer.exe — no install, no signing needed.
+#
+# Trigger: push to main, or run manually from the Actions tab.
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Enable Windows desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Get dependencies
+        working-directory: app
+        run: flutter pub get
+
+      - name: Build Windows (release)
+        working-directory: app
+        run: flutter build windows --release
+
+      - name: Package
+        working-directory: app/build/windows/x64/runner/Release
+        run: Compress-Archive -Path * -DestinationPath EnglishTrainer-Windows.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: EnglishTrainer-Windows
+          path: app/build/windows/x64/runner/Release/EnglishTrainer-Windows.zip
