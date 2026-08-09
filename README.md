@@ -1,57 +1,92 @@
 # English Trainer
 
-Offline English grammar & vocabulary trainer for **Android, Windows, and Linux**
-(one Flutter codebase). Grammar lessons + tap-to-assemble practice, modeled on
-the "1st English" app.
+An **offline**, bilingual (English / Русский) app for learning English **grammar**
+and **vocabulary**. No account, no internet, no ads — everything is bundled.
 
-## Layout
+Built with Flutter. Runs on **Android**, **Windows**, and **Linux** (iOS is
+possible but needs an Apple account — see below).
 
-```
-content_pipeline/   Python build tool: grammar book (markdown) -> content.json
-  extract.py
-app/                Flutter app (Android / Windows / Linux)
-  assets/content.json   <- bundled, pre-built lessons (copied from pipeline)
-  lib/
-```
+---
 
-## How content works (no runtime generation)
+## What's inside
 
-`extract.py` reads the grammar reference markdown, splits it into chapters
-(= lessons), mines the **example sentences** that already demonstrate each
-grammar point, and emits **pre-built** practice items (word-order + gap-fill),
-each tied to its grammar point. The `✗` wrong examples are never used.
+### 📚 Grammar — 320 chapters
+The complete grammar/phonetics book, extracted into the app:
+- **263 lessons** with auto-generated practice, ordered A1 → C2
+- **57 reference guides** (phonetics, spelling, punctuation, study skills)
+- **10 appendices**
+- Every chapter available in **English and Russian** (100% translated)
 
-Regenerate the bundle (example: chapters 24 and 25):
+Three practice modes per lesson (reach the goal to unlock the next):
+- **Build the sentence** — tap the words into the right order
+- **Fill the gap** — pick the word that fits (only grammatically-determined answers)
+- **Word types** — "select the noun/verb/…" from mixed options
 
-```bash
-cd content_pipeline
-python3 extract.py \
-  --src "/path/to/english_grammar_phonetics_book_v5.md" \
-  --out content.db --chapters 24,25
-cp content.json ../app/assets/content.json
-```
+### 🔤 Vocabulary — 14,283 words
+CEFR-leveled A1–C2, fully offline. Each word shows:
+- **Russian translation** (99% coverage)
+- **IPA transcription** (e.g. water → /ˈwɔtɚ/) for ~13.4k words
+- **Dictionary meanings** grouped by part of speech, with example sentences
+- **Russian for every definition and example**
+- **Pronunciation** (text-to-speech) and a "mark as known" tracker
 
-Omit `--chapters` to process every chapter that has enough examples.
+Word list built by auditing several learner-graded sources (CEFR-J, EFLLex,
+NGSL) so everyday words (banana, apron, astronaut…) are included, not just
+high-frequency ones.
 
-## Run the app
+---
 
-Requires the Flutter SDK (not yet installed on this machine).
+## Get it / run it
 
+| Platform | How |
+|---|---|
+| **Android** | Install `dist/english_trainer.apk` |
+| **Windows** | Unzip `dist/EnglishTrainer-Windows.zip` → double-click `english_trainer.exe` (portable, no install) |
+| **Linux** | `app/build/linux/x64/release/bundle/english_trainer` |
+
+### Build from source
 ```bash
 cd app
 flutter pub get
-flutter run -d linux      # or: -d windows, or an Android device/emulator
+flutter build apk     --release   # Android  → build/app/outputs/flutter-apk/
+flutter build linux   --release   # Linux    → build/linux/x64/release/bundle/
+flutter build windows --release   # Windows  → build/windows/x64/runner/Release/  (needs Windows + Visual Studio)
+```
+Windows can also be built in the cloud via GitHub Actions (see
+`.github/workflows/windows-build.yml`) — no Windows PC required; download the zip
+from the run's **Artifacts**.
+
+**iOS:** the code is iOS-ready, but Apple requires a Mac/Xcode to build and a paid
+Apple Developer account for easy install (TestFlight). Not included in `dist/`.
+
+---
+
+## Project layout
+
+```
+app/                    Flutter app (lib/, assets/, android/ linux/ windows/ runners)
+  assets/
+    content.json        320 grammar chapters (EN + RU), with practice items
+    words.json          14,283 vocabulary words (senses, level, POS, Russian)
+    ipa.json            IPA transcriptions (CMU dictionary)
+    examples_ru.json    Russian for example sentences
+    definitions_ru.json Russian for definitions
+content_pipeline/       extract.py — mines the grammar book → content.json
+vocab_pipeline/         build_vocab.py + ru/ + helper scripts → words.json
+  wordlists/            reference CEFR word lists (EFLLex, CEFR-J) + README
+dist/                   built APK / Windows zip
 ```
 
-Build installers later with `flutter build apk`, `flutter build windows`,
-`flutter build linux`.
+## Content sources
 
-## Status
+- **Grammar:** a 310-chapter + 10-appendix English grammar/phonetics book and its
+  full Russian edition (authored for this project).
+- **Vocabulary levels/list:** Maximax67 CEFR-J dataset, audited against
+  [EFLLex](https://cental.uclouvain.be/cefrlex/efllex/) (CC BY-NC-SA) and the
+  [CEFR-J Vocabulary Profile](https://github.com/openlanguageprofiles/olp-en-cefrj).
+- **Definitions & examples:** WordNet (NLTK).
+- **IPA:** CMU Pronouncing Dictionary (via NLTK), ARPAbet → IPA.
+- **Russian translations:** English/Russian Wiktionary + DeepL API.
 
-- [x] Content pipeline (proven on 2 chapters, 70 items each)
-- [x] App scaffold: lessons list + locks, grammar viewer, practice engine
-      (word-order + gap-fill, ±1 scoring, reach 70, TTS), progress persistence
-- [ ] Run/verify in Flutter (needs SDK install)
-- [ ] Vocabulary module (offline list + optional live dictionary API)
-- [ ] Extract all chapters
-- [ ] Packaging (APK/AAB, Windows, Linux)
+Definitions are offline dictionary data; translations were produced with the
+DeepL API. The DeepL API key is **not** in this repo (kept in a git-ignored file).
