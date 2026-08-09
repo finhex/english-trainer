@@ -138,15 +138,39 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               ),
             ],
           ),
-          // IPA transcription (CMU dictionary), when available
-          if (context.read<VocabRepository>().ipaFor(w.word).isNotEmpty)
-            Padding(
+          // IPA transcription — British (UK) and American (US), when available
+          Builder(builder: (context) {
+            final repo = context.read<VocabRepository>();
+            final uk = repo.ipaUk(w.word);
+            final us = repo.ipaUs(w.word);
+            if (uk.isEmpty && us.isEmpty) return const SizedBox.shrink();
+            final hint = Theme.of(context).hintColor;
+            final scheme = Theme.of(context).colorScheme;
+            TextSpan part(String label, String ipa) => TextSpan(children: [
+                  TextSpan(
+                      text: '$label ',
+                      style: TextStyle(
+                          color: scheme.primary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12)),
+                  TextSpan(
+                      text: '/$ipa/  ',
+                      style: TextStyle(color: hint, fontSize: 15)),
+                ]);
+            // if both sides are identical, show it once without labels
+            if (uk == us || uk.isEmpty || us.isEmpty) {
+              final one = uk.isNotEmpty ? uk : us;
+              return Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text('/$one/',
+                    style: TextStyle(color: hint, fontSize: 15)),
+              );
+            }
+            return Padding(
               padding: const EdgeInsets.only(top: 2),
-              child: Text('/${context.read<VocabRepository>().ipaFor(w.word)}/',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).hintColor,
-                      fontFeatures: const [])),
-            ),
+              child: Text.rich(TextSpan(children: [part('UK', uk), part('US', us)])),
+            );
+          }),
           // Russian translations grouped by part of speech (once, not repeated)
           if (lang == 'ru' && w.ruByPos.isNotEmpty) ...[
             const SizedBox(height: 6),

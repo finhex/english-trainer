@@ -9,7 +9,7 @@ class VocabRepository {
   final Map<int, String> levelNames; // level -> display name
   final Map<String, String> exampleRu; // english example -> russian
   final Map<String, String> definitionRu; // english definition -> russian
-  final Map<String, String> ipa; // english word -> IPA transcription
+  final Map<String, Map<String, String>> ipa; // word -> {uk, us} IPA
   VocabRepository(this.words, this.levelNames, this.exampleRu,
       this.definitionRu, this.ipa);
 
@@ -26,7 +26,14 @@ class VocabRepository {
     // Russian overlays (separate files; absent/partial is fine).
     final exampleRu = await _loadMap('assets/examples_ru.json');
     final definitionRu = await _loadMap('assets/definitions_ru.json');
-    final ipa = await _loadMap('assets/ipa.json');
+    var ipa = <String, Map<String, String>>{};
+    try {
+      final raw = await rootBundle.loadString('assets/ipa.json');
+      ipa = (json.decode(raw) as Map<String, dynamic>).map((k, v) => MapEntry(
+          k,
+          (v as Map<String, dynamic>)
+              .map((a, b) => MapEntry(a, b as String))));
+    } catch (_) {}
     return VocabRepository(words, names, exampleRu, definitionRu, ipa);
   }
 
@@ -46,8 +53,11 @@ class VocabRepository {
   /// Russian translation of an English definition ('' if none yet).
   String ruDefinition(String english) => definitionRu[english] ?? '';
 
-  /// IPA transcription of a word ('' if not in the CMU dictionary).
-  String ipaFor(String word) => ipa[word] ?? '';
+  /// British (RP) IPA of a word ('' if unavailable).
+  String ipaUk(String word) => ipa[word]?['uk'] ?? '';
+
+  /// American IPA of a word ('' if unavailable).
+  String ipaUs(String word) => ipa[word]?['us'] ?? '';
 
   List<int> get levels => levelNames.keys.toList()..sort();
 
