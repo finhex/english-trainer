@@ -9,8 +9,9 @@ class VocabRepository {
   final Map<int, String> levelNames; // level -> display name
   final Map<String, String> exampleRu; // english example -> russian
   final Map<String, String> definitionRu; // english definition -> russian
-  VocabRepository(
-      this.words, this.levelNames, this.exampleRu, this.definitionRu);
+  final Map<String, String> ipa; // english word -> IPA transcription
+  VocabRepository(this.words, this.levelNames, this.exampleRu,
+      this.definitionRu, this.ipa);
 
   static Future<VocabRepository> load() async {
     final raw = await rootBundle.loadString('assets/words.json');
@@ -25,7 +26,8 @@ class VocabRepository {
     // Russian overlays (separate files; absent/partial is fine).
     final exampleRu = await _loadMap('assets/examples_ru.json');
     final definitionRu = await _loadMap('assets/definitions_ru.json');
-    return VocabRepository(words, names, exampleRu, definitionRu);
+    final ipa = await _loadMap('assets/ipa.json');
+    return VocabRepository(words, names, exampleRu, definitionRu, ipa);
   }
 
   static Future<Map<String, String>> _loadMap(String asset) async {
@@ -43,6 +45,9 @@ class VocabRepository {
 
   /// Russian translation of an English definition ('' if none yet).
   String ruDefinition(String english) => definitionRu[english] ?? '';
+
+  /// IPA transcription of a word ('' if not in the CMU dictionary).
+  String ipaFor(String word) => ipa[word] ?? '';
 
   List<int> get levels => levelNames.keys.toList()..sort();
 

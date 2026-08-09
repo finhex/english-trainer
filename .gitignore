@@ -47,3 +47,6 @@ content_pipeline/*.db
 .DS_Store
 Thumbs.db
 *.swp
+
+# local backups (duplicate data)
+vocab_pipeline/backups/

@@ -138,6 +138,15 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               ),
             ],
           ),
+          // IPA transcription (CMU dictionary), when available
+          if (context.read<VocabRepository>().ipaFor(w.word).isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text('/${context.read<VocabRepository>().ipaFor(w.word)}/',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).hintColor,
+                      fontFeatures: const [])),
+            ),
           // Russian translations grouped by part of speech (once, not repeated)
           if (lang == 'ru' && w.ruByPos.isNotEmpty) ...[
             const SizedBox(height: 6),
