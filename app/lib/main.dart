@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'content_repository.dart';
@@ -55,29 +56,42 @@ class EnglishTrainerApp extends StatelessWidget {
         ChangeNotifierProvider<LocaleStore>.value(value: locale),
         ChangeNotifierProvider<TextScaleStore>.value(value: textScale),
       ],
-      child: MaterialApp(
-        title: 'English Trainer',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorSchemeSeed: const Color(0xFF2F80ED),
-          brightness: Brightness.light,
-          useMaterial3: true,
+      // Consumer so the whole app (incl. built-in Material tooltips like the
+      // "Back" button) re-localizes when the language toggle changes.
+      child: Consumer<LocaleStore>(
+        builder: (context, localeStore, _) => MaterialApp(
+          title: 'English Trainer',
+          debugShowCheckedModeBanner: false,
+          // localize Flutter's built-in strings (Back button, etc.) to the
+          // chosen UI language
+          locale: Locale(localeStore.lang),
+          supportedLocales: const [Locale('en'), Locale('ru')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          theme: ThemeData(
+            colorSchemeSeed: const Color(0xFF2F80ED),
+            brightness: Brightness.light,
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData(
+            colorSchemeSeed: const Color(0xFF2F80ED),
+            brightness: Brightness.dark,
+            useMaterial3: true,
+          ),
+          // apply the chosen text-size mode to the whole app
+          builder: (context, child) {
+            final scale = context.watch<TextScaleStore>().scale;
+            return MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: TextScaler.linear(scale)),
+              child: child!,
+            );
+          },
+          home: const HomeScreen(),
         ),
-        darkTheme: ThemeData(
-          colorSchemeSeed: const Color(0xFF2F80ED),
-          brightness: Brightness.dark,
-          useMaterial3: true,
-        ),
-        // apply the chosen text-size mode to the whole app
-        builder: (context, child) {
-          final scale = context.watch<TextScaleStore>().scale;
-          return MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: TextScaler.linear(scale)),
-            child: child!,
-          );
-        },
-        home: const HomeScreen(),
       ),
     );
   }

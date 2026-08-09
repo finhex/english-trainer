@@ -13,8 +13,10 @@ class WordsStore extends ChangeNotifier {
     return WordsStore(prefs);
   }
 
-  Set<String> get _known =>
-      (_prefs.getStringList(_kKnown) ?? const []).toSet();
+  // stored in the ORDER words were marked known (append on mark), so the last
+  // entry is the most recently learned.
+  List<String> get _knownList => _prefs.getStringList(_kKnown) ?? const [];
+  Set<String> get _known => _knownList.toSet();
 
   bool isKnown(String word) => _known.contains(word);
 
@@ -23,14 +25,15 @@ class WordsStore extends ChangeNotifier {
     return words.where(k.contains).length;
   }
 
+  /// Position a word was marked known (higher = more recent); -1 if not known.
+  /// Used to sort learned words "last-added first".
+  int knownOrder(String word) => _knownList.indexOf(word);
+
   Future<void> setKnown(String word, bool known) async {
-    final set = _known;
-    if (known) {
-      set.add(word);
-    } else {
-      set.remove(word);
-    }
-    await _prefs.setStringList(_kKnown, set.toList());
+    final list = List<String>.from(_knownList);
+    list.remove(word); // avoid duplicates / refresh recency
+    if (known) list.add(word); // newest goes to the end
+    await _prefs.setStringList(_kKnown, list);
     notifyListeners();
   }
 
