@@ -213,7 +213,58 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                 ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
+
+          // irregular verb forms (V1 · V2 · V3), when the word is one
+          Builder(builder: (context) {
+            final forms = context.read<VocabRepository>().irregularForms(w.word);
+            if (forms == null || forms.length < 3) {
+              return const SizedBox.shrink();
+            }
+            final scheme = Theme.of(context).colorScheme;
+            Widget cell(String label, String form) => Expanded(
+                  child: Column(
+                    children: [
+                      Text(label,
+                          style: TextStyle(
+                              color: scheme.primary,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 2),
+                      Text(form,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: scheme.onSurface,
+                              fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                );
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                decoration: BoxDecoration(
+                  color: scheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    Text(tr(lang, 'irregular_verb'),
+                        style: TextStyle(
+                            color: scheme.onSecondaryContainer,
+                            fontSize: 12,
+                            fontStyle: FontStyle.italic)),
+                    const SizedBox(height: 8),
+                    Row(children: [
+                      cell('V1', forms[0]),
+                      cell('V2', forms[1]),
+                      cell('V3', forms[2]),
+                    ]),
+                  ],
+                ),
+              ),
+            );
+          }),
 
           // my own plain-English explanation, when available
           if (w.simple.isNotEmpty) ...[

@@ -88,6 +88,7 @@ const Map<String, Map<String, String>> _s = {
   'filter_known': {'en': 'Known', 'ru': 'Выучено'},
   'filter_all': {'en': 'All', 'ru': 'Все'},
   'words_lc': {'en': 'words', 'ru': 'слов'},
+  'irregular_verb': {'en': 'Irregular verb', 'ru': 'Неправильный глагол'},
   'random_word': {'en': 'Random word', 'ru': 'Случайное слово'},
   'all_words': {'en': 'All words', 'ru': 'Все слова'},
   'text_size': {'en': 'Text size', 'ru': 'Размер текста'},

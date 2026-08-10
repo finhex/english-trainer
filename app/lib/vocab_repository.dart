@@ -10,8 +10,9 @@ class VocabRepository {
   final Map<String, String> exampleRu; // english example -> russian
   final Map<String, String> definitionRu; // english definition -> russian
   final Map<String, Map<String, String>> ipa; // word -> {uk, us} IPA
+  final Map<String, List<String>> irregular; // base verb -> [v1, v2, v3]
   VocabRepository(this.words, this.levelNames, this.exampleRu,
-      this.definitionRu, this.ipa);
+      this.definitionRu, this.ipa, this.irregular);
 
   static Future<VocabRepository> load() async {
     final raw = await rootBundle.loadString('assets/words.json');
@@ -34,7 +35,14 @@ class VocabRepository {
           (v as Map<String, dynamic>)
               .map((a, b) => MapEntry(a, b as String))));
     } catch (_) {}
-    return VocabRepository(words, names, exampleRu, definitionRu, ipa);
+    var irregular = <String, List<String>>{};
+    try {
+      final raw = await rootBundle.loadString('assets/irregular_verbs.json');
+      irregular = (json.decode(raw) as Map<String, dynamic>).map(
+          (k, v) => MapEntry(k, (v as List).cast<String>()));
+    } catch (_) {}
+    return VocabRepository(
+        words, names, exampleRu, definitionRu, ipa, irregular);
   }
 
   static Future<Map<String, String>> _loadMap(String asset) async {
@@ -58,6 +66,9 @@ class VocabRepository {
 
   /// American IPA of a word ('' if unavailable).
   String ipaUs(String word) => ipa[word]?['us'] ?? '';
+
+  /// [base, past, past-participle] if the word is an irregular verb, else null.
+  List<String>? irregularForms(String word) => irregular[word];
 
   List<int> get levels => levelNames.keys.toList()..sort();
 

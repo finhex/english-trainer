@@ -39,3 +39,4 @@ flutter:
     - assets/examples_ru.json
     - assets/definitions_ru.json
     - assets/ipa.json
+    - assets/irregular_verbs.json
