@@ -14,12 +14,18 @@ Map<String, MarkdownElementBuilder> markdownBuilders(BuildContext context) {
 /// TABLE out into our own adaptive table widget (which flutter_markdown can't
 /// do — its table either squishes wide tables or leaves narrow ones short) and
 /// rendering the prose in between with normal (justified) Markdown.
-List<Widget> buildMarkdownBlocks(BuildContext context, String src) {
+List<Widget> buildMarkdownBlocks(BuildContext context, String src,
+    {String? anchor, Key? anchorKey}) {
   final scheme = Theme.of(context).colorScheme;
   final style = appMarkdownStyle(context);
   final builders = markdownBuilders(context);
   final out = <Widget>[];
   final buf = <String>[];
+  // matches the target subsection heading, e.g. "### 15.1 ..." for anchor "15.1"
+  final anchorRe = anchor == null
+      ? null
+      : RegExp('^#{2,6}\\s+${RegExp.escape(anchor)}(\\D|\$)');
+  var anchored = false;
 
   void flush() {
     if (buf.isNotEmpty) {
@@ -36,6 +42,12 @@ List<Widget> buildMarkdownBlocks(BuildContext context, String src) {
   var i = 0;
   while (i < lines.length) {
     final trimmed = lines[i].trimLeft();
+    // target subsection heading → flush and drop a keyed marker to scroll to
+    if (!anchored && anchorRe != null && anchorRe.hasMatch(trimmed)) {
+      flush();
+      out.add(SizedBox(key: anchorKey, height: 0));
+      anchored = true;
+    }
     // fenced code block (``` or ~~~) → our own full-width grey block
     if (trimmed.startsWith('```') || trimmed.startsWith('~~~')) {
       flush();
@@ -434,6 +446,8 @@ class ReadingView extends StatelessWidget {
   final String meta; // already-localized "Lesson 5 · Chapter 33"
   final String markdown;
   final List<Widget> trailing;
+  final String? anchor; // subsection number to scroll to (e.g. "15.1")
+  final Key? anchorKey;
   const ReadingView({
     super.key,
     required this.title,
@@ -441,6 +455,8 @@ class ReadingView extends StatelessWidget {
     required this.meta,
     required this.markdown,
     this.trailing = const [],
+    this.anchor,
+    this.anchorKey,
   });
 
   @override
@@ -493,7 +509,8 @@ class ReadingView extends StatelessWidget {
             const SizedBox(height: 14),
             const Divider(height: 1),
             const SizedBox(height: 14),
-            ...buildMarkdownBlocks(context, markdown),
+            ...buildMarkdownBlocks(context, markdown,
+                anchor: anchor, anchorKey: anchorKey),
             ...trailing,
           ],
         ),

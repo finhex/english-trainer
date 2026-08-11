@@ -9,14 +9,50 @@ import '../strings.dart';
 
 // numbered subsection ("### 15.1 Title", "#### 15.1.1 Title")
 final _subRe = RegExp(r'^#{2,4}\s+(\d+\.\d+(?:\.\d+)*)\s+(.*)$', multiLine: true);
-final _subsCache = <String, List<({String num, String title})>>{};
+// num, display title, and `hay` = lowercased heading + body text (for search)
+final _subsCache = <String, List<({String num, String title, String hay})>>{};
 
-List<({String num, String title})> _subsOf(Lesson ch, String lang) =>
+int _roman(String s) {
+  const m = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000};
+  var total = 0, prev = 0;
+  for (final ch in s.toUpperCase().split('').reversed) {
+    final v = m[ch] ?? 0;
+    if (v < prev) {
+      total -= v;
+    } else {
+      total += v;
+      prev = v;
+    }
+  }
+  return total;
+}
+
+// a Part's Arabic number + suffix, e.g. "PART XI-B" -> (11, "b"), "PART II" -> (2, "")
+final _partNumCache = <String, (int, String)>{};
+(int, String) _partNum(String rawPart) => _partNumCache.putIfAbsent(rawPart, () {
+      final m = RegExp(r'PART\s+([IVXLCDM]+)(-?[A-Za-z]*)', caseSensitive: false)
+          .firstMatch(rawPart);
+      if (m == null) return (0, '');
+      return (_roman(m.group(1)!),
+          (m.group(2) ?? '').replaceAll('-', '').toLowerCase());
+    });
+
+List<({String num, String title, String hay})> _subsOf(Lesson ch, String lang) =>
     _subsCache.putIfAbsent('${ch.id}_$lang', () {
-      return _subRe
-          .allMatches(ch.grammarFor(lang))
-          .map((m) => (num: m.group(1)!, title: m.group(2)!.trim()))
-          .toList();
+      final md = ch.grammarFor(lang);
+      final ms = _subRe.allMatches(md).toList();
+      return [
+        for (var k = 0; k < ms.length; k++)
+          (
+            num: ms[k].group(1)!,
+            title: ms[k].group(2)!.trim(),
+            // this subsection's text (heading → next subsection heading)
+            hay: md
+                .substring(ms[k].start,
+                    k + 1 < ms.length ? ms[k + 1].start : md.length)
+                .toLowerCase(),
+          )
+      ];
     });
 
 /// One flat TOC row: a Part header, a chapter, or a subsection.
@@ -24,7 +60,8 @@ class _Row {
   final int kind; // 0 = part, 1 = chapter, 2 = subsection
   final String text;
   final Lesson? ch;
-  const _Row(this.kind, this.text, [this.ch]);
+  final String? subNum; // subsection anchor (e.g. "15.1")
+  const _Row(this.kind, this.text, [this.ch, this.subNum]);
 }
 
 /// The whole grammar/phonetics book, read-only, in original order:
@@ -38,10 +75,21 @@ class BookScreen extends StatefulWidget {
 class _BookScreenState extends State<BookScreen> {
   String _query = '';
   final TextEditingController _search = TextEditingController();
+  final ScrollController _list = ScrollController();
+
+  // update the query and jump the results back to the top (a fresh search
+  // shouldn't leave you scrolled halfway down the previous results)
+  void _resetQuery(String v) {
+    setState(() => _query = v.trim());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_list.hasClients) _list.jumpTo(0);
+    });
+  }
 
   @override
   void dispose() {
     _search.dispose();
+    _list.dispose();
     super.dispose();
   }
 
@@ -53,37 +101,85 @@ class _BookScreenState extends State<BookScreen> {
     final scheme = Theme.of(context).colorScheme;
     final q = _query.toLowerCase();
 
-    bool chMatches(Lesson ch) =>
-        ch.title.toLowerCase().contains(q) ||
-        ch.titleRu.toLowerCase().contains(q) ||
-        repo.partName(ch.part, lang).toLowerCase().contains(q) ||
-        ch.grammarFor(lang).toLowerCase().contains(q);
+    // "part 2", "part 11-b", "part 11 b", "part2" → exact Part-number query
+    final pq = RegExp(r'^part\s*(\d+)\s*-?\s*([a-z]?)$').firstMatch(q);
+    final pqNum = pq != null ? int.parse(pq.group(1)!) : -1;
+    final pqSuf = pq?.group(2) ?? '';
+
+    bool chMatches(Lesson ch) {
+      if (pq != null) {
+        final (n, s) = _partNum(ch.part);
+        return n == pqNum && (pqSuf.isEmpty || s == pqSuf);
+      }
+      return ch.title.toLowerCase().contains(q) ||
+          ch.titleRu.toLowerCase().contains(q) ||
+          repo.partName(ch.part, lang).toLowerCase().contains(q) ||
+          ch.grammarFor(lang).toLowerCase().contains(q);
+    }
 
     // build the flat row list (Part header, chapters, subsections), filtered
     final rows = <_Row>[];
     String? currentPart;
     for (final ch in order) {
       final subs = _subsOf(ch, lang);
-      final subShow = q.isEmpty
-          ? subs
-          : subs
-              .where((s) => '${s.num} ${s.title}'.toLowerCase().contains(q))
-              .toList();
-      if (q.isNotEmpty && !chMatches(ch) && subShow.isEmpty) continue;
+      bool include;
+      List<({String num, String title, String hay})> subShow;
+      if (q.isEmpty) {
+        include = true;
+        subShow = subs;
+      } else if (pq != null) {
+        // exact Part-number query: keep only chapters of that Part
+        include = chMatches(ch);
+        subShow = subs;
+      } else {
+        // free text: match against each subsection's own text, so we can point
+        // to the exact subsection (not just "somewhere in this chapter")
+        final subM = subs.where((s) => s.hay.contains(q)).toList();
+        final struct = ch.title.toLowerCase().contains(q) ||
+            ch.titleRu.toLowerCase().contains(q) ||
+            repo.partName(ch.part, lang).toLowerCase().contains(q);
+        final body = ch.grammarFor(lang).toLowerCase().contains(q);
+        include = struct || subM.isNotEmpty || body;
+        // show the matching subsections when there are any; otherwise all
+        subShow = subM.isNotEmpty ? subM : subs;
+      }
+      if (!include) continue;
       if (ch.part != currentPart) {
         currentPart = ch.part;
         rows.add(_Row(0, repo.partName(ch.part, lang)));
       }
       rows.add(_Row(1, ch.topicFor(lang), ch));
       for (final s in subShow) {
-        rows.add(_Row(2, '${s.num}  ${s.title}', ch));
+        rows.add(_Row(2, '${s.num}  ${s.title}', ch, s.num));
       }
     }
 
-    void open(Lesson ch) => Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) =>
-              ChapterReaderScreen(chapters: order, index: order.indexOf(ch)),
+    void open(Lesson ch, {String? anchor}) =>
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => ChapterReaderScreen(
+              chapters: order, index: order.indexOf(ch), anchor: anchor),
         ));
+
+    // highlight the free-text query inside a row's text
+    Widget hl(String text, TextStyle base) {
+      if (q.isEmpty || pq != null || !text.toLowerCase().contains(q)) {
+        return Text(text, style: base);
+      }
+      final lc = text.toLowerCase();
+      final spans = <TextSpan>[];
+      var start = 0;
+      for (var idx = lc.indexOf(q); idx >= 0; idx = lc.indexOf(q, start)) {
+        if (idx > start) spans.add(TextSpan(text: text.substring(start, idx)));
+        spans.add(TextSpan(
+            text: text.substring(idx, idx + q.length),
+            style: TextStyle(
+                backgroundColor: scheme.primary.withValues(alpha: 0.25),
+                fontWeight: FontWeight.bold)));
+        start = idx + q.length;
+      }
+      if (start < text.length) spans.add(TextSpan(text: text.substring(start)));
+      return Text.rich(TextSpan(style: base, children: spans));
+    }
 
     Widget buildRow(_Row r) {
       switch (r.kind) {
@@ -109,8 +205,7 @@ class _BookScreenState extends State<BookScreen> {
                   style: TextStyle(
                       color: Theme.of(context).hintColor, fontSize: 13)),
             ),
-            title: Text(r.text,
-                style: const TextStyle(fontWeight: FontWeight.w600)),
+            title: hl(r.text, const TextStyle(fontWeight: FontWeight.w600)),
             onTap: () => open(r.ch!),
           );
         default: // subsection
@@ -118,10 +213,9 @@ class _BookScreenState extends State<BookScreen> {
             dense: true,
             visualDensity: VisualDensity.compact,
             contentPadding: const EdgeInsets.only(left: 62, right: 16),
-            title: Text(r.text,
-                style: TextStyle(
-                    fontSize: 13, color: Theme.of(context).hintColor)),
-            onTap: () => open(r.ch!),
+            title: hl(r.text,
+                TextStyle(fontSize: 13, color: Theme.of(context).hintColor)),
+            onTap: () => open(r.ch!, anchor: r.subNum),
           );
       }
     }
@@ -145,16 +239,17 @@ class _BookScreenState extends State<BookScreen> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _search.clear();
-                          setState(() => _query = '');
+                          _resetQuery('');
                         }),
               ),
-              onChanged: (v) => setState(() => _query = v.trim()),
+              onChanged: _resetQuery,
             ),
           ),
           Expanded(
             child: rows.isEmpty
                 ? Center(child: Text(tr(lang, 'no_words')))
                 : ListView.builder(
+                    controller: _list,
                     padding: const EdgeInsets.only(bottom: 16),
                     itemCount: rows.length,
                     itemBuilder: (_, i) => buildRow(rows[i]),
@@ -170,18 +265,41 @@ class _BookScreenState extends State<BookScreen> {
 class ChapterReaderScreen extends StatefulWidget {
   final List<Lesson> chapters;
   final int index;
+  final String? anchor; // subsection to scroll to on open (e.g. "15.1")
   const ChapterReaderScreen(
-      {super.key, required this.chapters, required this.index});
+      {super.key, required this.chapters, required this.index, this.anchor});
   @override
   State<ChapterReaderScreen> createState() => _ChapterReaderScreenState();
 }
 
 class _ChapterReaderScreenState extends State<ChapterReaderScreen> {
   late int _i = widget.index;
+  String? _anchor; // only for the initial chapter, cleared after use / nav
+  final GlobalKey _anchorKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    _anchor = widget.anchor;
+    if (_anchor != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final ctx = _anchorKey.currentContext;
+        if (ctx != null) {
+          Scrollable.ensureVisible(ctx,
+              duration: const Duration(milliseconds: 350), alignment: 0.02);
+        }
+      });
+    }
+  }
 
   void _go(int delta) {
     final n = _i + delta;
-    if (n >= 0 && n < widget.chapters.length) setState(() => _i = n);
+    if (n >= 0 && n < widget.chapters.length) {
+      setState(() {
+        _i = n;
+        _anchor = null; // navigating to a new chapter: start at the top
+      });
+    }
   }
 
   @override
@@ -203,6 +321,8 @@ class _ChapterReaderScreenState extends State<ChapterReaderScreen> {
         meta: '${repo.partName(ch.part, lang)}  ·  '
             '${tr(lang, 'chapter')} ${ch.id}',
         markdown: ch.grammarFor(lang),
+        anchor: _anchor,
+        anchorKey: _anchor != null ? _anchorKey : null,
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
