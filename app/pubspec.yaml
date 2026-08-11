@@ -35,6 +35,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/content.json
+    - assets/parts_ru.json
     - assets/words.json
     - assets/examples_ru.json
     - assets/definitions_ru.json

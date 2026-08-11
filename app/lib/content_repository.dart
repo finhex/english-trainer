@@ -8,7 +8,8 @@ import 'models.dart';
 class ContentRepository {
   final List<Lesson> lessons;
   final AppConfig config;
-  ContentRepository(this.lessons, this.config);
+  final Map<String, String> partsRu; // english Part name -> russian
+  ContentRepository(this.lessons, this.config, this.partsRu);
 
   static Future<ContentRepository> load() async {
     final raw = await rootBundle.loadString('assets/content.json');
@@ -18,8 +19,18 @@ class ContentRepository {
         .toList()
       ..sort((a, b) => a.ord.compareTo(b.ord));
     final config = AppConfig.fromJson(data['config'] as Map<String, dynamic>?);
-    return ContentRepository(lessons, config);
+    var partsRu = <String, String>{};
+    try {
+      final r = await rootBundle.loadString('assets/parts_ru.json');
+      partsRu = (json.decode(r) as Map<String, dynamic>)
+          .map((k, v) => MapEntry(k, v as String));
+    } catch (_) {}
+    return ContentRepository(lessons, config, partsRu);
   }
+
+  /// Part name in the given UI language (Russian when available).
+  String partName(String part, String lang) =>
+      lang == 'ru' ? (partsRu[part] ?? part) : part;
 
   Lesson byId(int id) => lessons.firstWhere((l) => l.id == id);
 
@@ -32,4 +43,17 @@ class ContentRepository {
   List<Lesson> get guideLessons =>
       lessons.where((l) => l.section == 'other').toList()
         ..sort((a, b) => a.id.compareTo(b.id));
+
+  /// EVERY chapter in original book order (chapter id; appendices last).
+  List<Lesson> get bookOrder =>
+      lessons.toList()..sort((a, b) => a.id.compareTo(b.id));
+
+  /// The whole book grouped by Part, Parts and chapters in book order.
+  Map<String, List<Lesson>> get bookByPart {
+    final m = <String, List<Lesson>>{};
+    for (final l in bookOrder) {
+      m.putIfAbsent(l.part.isEmpty ? 'Reference' : l.part, () => []).add(l);
+    }
+    return m;
+  }
 }

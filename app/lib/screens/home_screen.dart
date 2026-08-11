@@ -4,7 +4,7 @@ import '../locale_store.dart';
 import '../strings.dart';
 import 'lessons_screen.dart';
 import 'words_screen.dart';
-import 'guides_screen.dart';
+import 'book_screen.dart';
 import 'settings_screen.dart';
 
 /// Bottom navigation shell: Lessons / Vocabulary / Settings.
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const _screens = [
     LessonsScreen(),
     WordsScreen(),
-    GuidesScreen(),
+    BookScreen(),
     SettingsScreen(),
   ];
 
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NavigationDestination(
               icon: const Icon(Icons.auto_stories_outlined),
               selectedIcon: const Icon(Icons.auto_stories),
-              label: tr(lang, 'nav_guides')),
+              label: tr(lang, 'nav_book')),
           NavigationDestination(
               icon: const Icon(Icons.settings_outlined),
               selectedIcon: const Icon(Icons.settings),
