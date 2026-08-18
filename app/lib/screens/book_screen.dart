@@ -101,8 +101,9 @@ class _BookScreenState extends State<BookScreen> {
     final scheme = Theme.of(context).colorScheme;
     final q = _query.toLowerCase();
 
-    // "part 2", "part 11-b", "part 11 b", "part2" → exact Part-number query
-    final pq = RegExp(r'^part\s*(\d+)\s*-?\s*([a-z]?)$').firstMatch(q);
+    // "part 2", "part 11-b", "part 11 b", "part2", "часть 2" → exact Part-number query
+    final pq =
+        RegExp(r'^(?:part|часть)\s*(\d+)\s*-?\s*([a-z]?)$').firstMatch(q);
     final pqNum = pq != null ? int.parse(pq.group(1)!) : -1;
     final pqSuf = pq?.group(2) ?? '';
 

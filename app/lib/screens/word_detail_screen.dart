@@ -9,10 +9,10 @@ import '../vocab_repository.dart';
 import '../words_store.dart';
 import '../tts_service.dart';
 
-/// Part-of-speech label: English in EN mode, "noun (существительное)" in RU
-/// mode so both languages are visible.
+/// Part-of-speech label: English in EN mode, "прилагательное (adjective)" in RU
+/// mode so both languages are visible (Russian first, English in parens).
 String _posLabel(String lang, String pos) => lang == 'ru'
-    ? '${posName('en', pos)} (${posName('ru', pos)})'
+    ? '${posName('ru', pos)} (${posName('en', pos)})'
     : posName('en', pos);
 
 /// A distinct color per part of speech (chips / headers).
