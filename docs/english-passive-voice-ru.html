@@ -1,0 +1,1144 @@
+<meta charset="utf-8">
+<title>Пассив на линии времени</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3;
+  --card:#FFFFFF;
+  --card-2:#E4EAEE;
+  --ink:#131C25;
+  --ink-2:#47555F;
+  --ink-3:#75838E;
+  --line:#CFD8DE;
+  --line-2:#E2E8EC;
+  --c-obj:#1A6C9E;
+  --c-act:#A85419;
+  --c-now:#C23E2B;
+  --c-no:#8A5A8C;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D;
+    --card:#15202A;
+    --card-2:#1C2A35;
+    --ink:#E7EDF2;
+    --ink-2:#A8B7C2;
+    --ink-3:#7A8A96;
+    --line:#27353F;
+    --line-2:#1F2C36;
+    --c-obj:#63B6E2;
+    --c-act:#ED9A57;
+    --c-now:#FF7C64;
+    --c-no:#C79AC9;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D;
+  --card:#15202A;
+  --card-2:#1C2A35;
+  --ink:#E7EDF2;
+  --ink-2:#A8B7C2;
+  --ink-3:#7A8A96;
+  --line:#27353F;
+  --line-2:#1F2C36;
+  --c-obj:#63B6E2;
+  --c-act:#ED9A57;
+  --c-now:#FF7C64;
+  --c-no:#C79AC9;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Golos Text","Segoe UI",system-ui,sans-serif;
+  font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){.shell{display:grid;grid-template-columns:196px minmax(0,1fr);gap:56px;align-items:start}}
+.rail{display:none}
+@media (min-width:1080px){.rail{display:block;position:sticky;top:0;padding:40px 0;max-height:100vh;overflow-y:auto}}
+.rail-title{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:baseline;text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);border-left:2px solid transparent}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-obj)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.hero h1{font-size:clamp(38px,6.4vw,68px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:60ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);background:var(--card)}
+.chip.o{border-color:color-mix(in srgb,var(--c-obj) 45%,var(--line));color:var(--c-obj)}
+.chip.a{border-color:color-mix(in srgb,var(--c-act) 45%,var(--line));color:var(--c-act)}
+
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-now)}
+.part-tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.part h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:66ch;color:var(--ink-2)}
+.prose{max-width:66ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+
+/* ---------- swap diagram ---------- */
+.swap{margin:26px 0 0;background:var(--card);--tl-bg:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 0 12px;overflow-x:auto}
+.swap svg{display:block;width:100%;min-width:660px;height:auto}
+.swap figcaption{padding:10px 24px 0;font-size:14px;color:var(--ink-2);max-width:80ch}
+.swap figcaption b{color:var(--ink);font-weight:600}
+.swap.inset{box-shadow:none;background:var(--card-2);--tl-bg:var(--card-2)}
+
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c-obj);border-radius:14px;box-shadow:var(--shadow);margin-top:26px;overflow:hidden}
+.card-top{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:flex-start;justify-content:space-between;padding:22px 24px 18px}
+.card-id{display:flex;flex-direction:column;gap:5px;min-width:min(100%,300px)}
+.card-kicker{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-obj)}
+.card h3{font-size:clamp(21px,2.6vw,27px);letter-spacing:-.01em}
+.card-ru{color:var(--ink-2);font-size:15px}
+.formulas{display:flex;flex-direction:column;gap:5px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.formulas div{display:grid;grid-template-columns:16px 1fr;gap:8px;color:var(--ink-2)}
+.formulas span{color:var(--ink-3)}
+.formulas b{color:var(--ink);font-weight:500}
+
+.tl{--tl-bg:var(--card-2);margin:0;background:var(--tl-bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0 10px;overflow-x:auto}
+.tl svg{display:block;width:100%;min-width:600px;height:auto}
+.tl figcaption{padding:6px 24px 0;font-size:13px;color:var(--ink-2);max-width:78ch}
+.tl figcaption b{color:var(--ink);font-weight:600}
+
+.card-body{display:grid;gap:26px;padding:22px 24px 24px}
+@media (min-width:820px){.card-body{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:34px}}
+.sub{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.why{display:flex;flex-direction:column;gap:11px;color:var(--ink-2);font-size:15.5px}
+.why b{color:var(--ink);font-weight:600}
+.uses{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:15px;color:var(--ink-2)}
+.uses li{display:grid;grid-template-columns:14px 1fr;gap:9px}
+.uses li::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--c-obj);margin-top:9px}
+
+/* ---------- active/passive pairs ---------- */
+.ex{list-style:none;margin:0;padding:0}
+.ex li{padding:12px 0;border-top:1px solid var(--line-2)}
+.ex li:first-child{border-top:0;padding-top:0}
+.pline{display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:baseline}
+.pline+.pline{margin-top:3px}
+.tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding-top:2px}
+.pas .tag{color:var(--c-obj)}
+.s-en{font-family:"JetBrains Mono",monospace;font-size:13.8px;line-height:1.5;color:var(--ink)}
+.act .s-en{color:var(--ink-2)}
+.s-en u{text-decoration:none;border-bottom:2px solid var(--c-obj);padding-bottom:1px}
+.act .s-en u{border-bottom-color:var(--c-act)}
+.s-ru{font-size:14.5px;color:var(--ink-2);margin-top:6px;padding-left:64px}
+.s-note{font-size:13px;color:var(--ink-3);margin-top:3px;padding-left:64px}
+@media (max-width:560px){
+  .pline{grid-template-columns:1fr}
+  .tag{text-align:left}
+  .s-ru,.s-note{padding-left:0}
+}
+
+/* ---------- tables ---------- */
+.tab-wrap{overflow-x:auto;margin-top:26px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow)}
+table.tab{border-collapse:collapse;width:100%;min-width:760px}
+table.tab th,table.tab td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.tab thead th{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--line)}
+table.tab tbody th{font-family:Bitter,serif;font-size:14.5px;font-weight:600;width:210px;color:var(--ink)}
+table.tab td .f{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--c-obj)}
+table.tab td .m{font-size:13.5px;color:var(--ink-2);margin-top:3px}
+table.tab td.k{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);width:40%}
+table.tab td.v{font-size:14.5px;color:var(--ink-2)}
+table.tab tbody tr:last-child th,table.tab tbody tr:last-child td{border-bottom:0}
+tr.no th,tr.no td .f{color:var(--c-no)}
+tr.no td .f{text-decoration:line-through;text-decoration-thickness:1px}
+
+/* ---------- notes ---------- */
+.note{margin-top:26px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--c-act);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.note h4{font-size:16px;margin-bottom:8px}
+.note .body{font-size:15px;color:var(--ink-2);display:flex;flex-direction:column;gap:9px}
+.note .body b{color:var(--ink);font-weight:600}
+
+.grid2{display:grid;gap:14px;margin-top:26px}
+@media (min-width:760px){.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fq{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.fq .q{font-family:Bitter,serif;font-weight:600;font-size:16px;color:var(--ink)}
+.fq .a{margin-top:7px;font-size:14.5px;color:var(--ink-2)}
+.fq .a b{color:var(--ink);font-weight:600}
+.fq .a .s-en{display:block;margin-top:5px;font-size:13.5px}
+
+footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13.5px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Содержание">
+  <div class="rail-title">Части</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">00:00</span><span>Что такое пассив</span></a></li>
+    <li><a href="#p1"><span class="tc">04:10</span><span>Формула · be + V3</span></a></li>
+    <li><a href="#p2"><span class="tc">08:00</span><span>Восемь форм</span></a></li>
+    <li><a href="#p3"><span class="tc">21:30</span><span>Чего не бывает</span></a></li>
+    <li><a href="#p4"><span class="tc">25:00</span><span>Модальные и инфинитив</span></a></li>
+    <li><a href="#p5"><span class="tc">29:40</span><span>Особые случаи</span></a></li>
+    <li><a href="#p6"><span class="tc">36:00</span><span>Русские ловушки</span></a></li>
+    <li><a href="#p7"><span class="tc">43:00</span><span>Когда пассив вредит</span></a></li>
+    <li><a href="#p8"><span class="tc">46:00</span><span>Шпаргалка</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">8 рабочих форм · 4 несуществующих · 1 формула</div>
+  <h1>Пассив на линии времени</h1>
+  <p class="lede">Продолжение разбора времён — теперь <b>страдательный залог</b>. Времён здесь не прибавляется: те же самые шестнадцать, только глагол разворачивается и подлежащим становится тот, <b>над кем</b> совершают действие. Объяснение по-русски, английского — формула и примеры парами «актив → пассив».</p>
+  <div class="chips">
+    <span class="chip a">деятель — кто делает</span>
+    <span class="chip o">объект — над кем делают</span>
+    <span class="chip">be + V3 — вся формула целиком</span>
+  </div>
+</header>
+
+<!-- ===================== ЧАСТЬ 0 ===================== -->
+<section class="part" id="p0">
+  <div class="part-head"><span class="part-num">Часть 0</span><span class="part-tc">00:00</span></div>
+  <h2>Что такое пассив</h2>
+  <p class="part-lede">Пассив — это не новое время и не новый смысл. Это <b>другой порядок ролей</b> в том же самом предложении. Действие остаётся тем же, меняется только то, кого поставили в начало и сделали главным.</p>
+
+  <figure class="swap" data-swap="hero">
+    <figcaption><b>Что происходит:</b> дополнение переезжает в начало и становится подлежащим, а деятель уходит в конец с предлогом <span class="en">by</span> — или исчезает совсем. Глагол при этом обязан превратиться в <span class="en">be + V3</span>: без этого предложение будет значить, что тесты сами кого-то проверяют.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p><b>Зачем это нужно.</b> Английский порядок слов жёсткий: кто в начале — тот и главный герой предложения. Если герой вашего рассказа — не деятель, а объект, единственный способ поставить его вперёд — пассив.</p>
+    <p><b>Четыре причины выбрать пассив.</b> Деятель неизвестен (<span class="en">My bike was stolen</span> — кем, я не знаю). Деятель неважен или очевиден (<span class="en">He was arrested</span> — понятно, что полицией). Деятеля намеренно скрывают (<span class="en">Mistakes were made</span> — кем именно, говорить не хотят). Или объект просто важнее деятеля и о нём идёт речь дальше.</p>
+    <p><b>Главное ограничение.</b> Пассив возможен только у <b>переходных</b> глаголов — тех, у которых есть дополнение. Нельзя сделать пассив из <span class="en">sleep</span>, <span class="en">come</span>, <span class="en">happen</span>, <span class="en">arrive</span>: там некому становиться подлежащим, объекта просто нет.</p>
+  </div>
+
+  <div class="note">
+    <h4>Проверка одной фразой</h4>
+    <div class="body">
+      <p>Если к глаголу можно задать вопрос «кого? что?» — пассив возможен. <span class="en">read what? — a book</span> → <span class="en">The book was read.</span></p>
+      <p>Если нельзя — пассива нет. К <span class="en">happen</span> нельзя задать «случить что?», поэтому <span class="en">The accident was happened</span> — грубая ошибка. Правильно просто <span class="en">The accident happened.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 1 ===================== -->
+<section class="part" id="p1">
+  <div class="part-head"><span class="part-num">Часть 1</span><span class="part-tc">04:10</span></div>
+  <h2>Одна формула на все времена</h2>
+  <p class="part-lede">Выучить надо ровно одно: <b>be + V3</b>. Всё остальное — это то, что вы уже знаете про времена, применённое к глаголу <span class="en">be</span>.</p>
+
+  <div class="prose">
+    <p><b>Механика в два шага.</b> Шаг первый: возьмите то время, в котором стоял активный глагол. Шаг второй: поставьте в это время глагол <span class="en">be</span>, а смысловой глагол превратите в <b>третью форму</b> (V3) и больше не трогайте — он застывает навсегда.</p>
+    <p>Смотрите, как это работает на одном глаголе: <span class="en">does → is done</span>, <span class="en">is doing → is being done</span>, <span class="en">has done → has been done</span>, <span class="en">did → was done</span>, <span class="en">will do → will be done</span>. Меняется только <span class="en">be</span>. Слово <span class="en">done</span> стоит на месте во всех восьми формах.</p>
+    <p><b>Отрицание и вопрос</b> строятся как обычно, по первому вспомогательному глаголу: <span class="en">is not done</span>, <span class="en">has not been done</span>, <span class="en">Was it done?</span>, <span class="en">Will it be done?</span> Никаких <span class="en">do / does / did</span> в пассиве не бывает — там уже есть свой вспомогательный.</p>
+  </div>
+
+  <div class="tab-wrap">
+    <table class="tab">
+      <thead><tr><th scope="col">Время</th><th scope="col">Актив</th><th scope="col">Пассив</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Present Simple</th><td><div class="f" style="color:var(--ink-2)">they build</div></td><td><div class="f">is / are built</div><div class="m">строят</div></td></tr>
+        <tr><th scope="row">Present Continuous</th><td><div class="f" style="color:var(--ink-2)">they are building</div></td><td><div class="f">is / are being built</div><div class="m">строится сейчас</div></td></tr>
+        <tr><th scope="row">Present Perfect</th><td><div class="f" style="color:var(--ink-2)">they have built</div></td><td><div class="f">has / have been built</div><div class="m">уже построен</div></td></tr>
+        <tr><th scope="row">Past Simple</th><td><div class="f" style="color:var(--ink-2)">they built</div></td><td><div class="f">was / were built</div><div class="m">построили</div></td></tr>
+        <tr><th scope="row">Past Continuous</th><td><div class="f" style="color:var(--ink-2)">they were building</div></td><td><div class="f">was / were being built</div><div class="m">строился тогда</div></td></tr>
+        <tr><th scope="row">Past Perfect</th><td><div class="f" style="color:var(--ink-2)">they had built</div></td><td><div class="f">had been built</div><div class="m">был построен до того</div></td></tr>
+        <tr><th scope="row">Future Simple</th><td><div class="f" style="color:var(--ink-2)">they will build</div></td><td><div class="f">will be built</div><div class="m">построят</div></td></tr>
+        <tr><th scope="row">Future Perfect</th><td><div class="f" style="color:var(--ink-2)">they will have built</div></td><td><div class="f">will have been built</div><div class="m">будет построен к сроку</div></td></tr>
+        <tr class="no"><th scope="row">Future Continuous</th><td><div class="f" style="color:var(--ink-2)">they will be building</div></td><td><div class="f">will be being built</div><div class="m">не употребляется</div></td></tr>
+        <tr class="no"><th scope="row">Present Perfect Cont.</th><td><div class="f" style="color:var(--ink-2)">they have been building</div></td><td><div class="f">has been being built</div><div class="m">не употребляется</div></td></tr>
+        <tr class="no"><th scope="row">Past Perfect Cont.</th><td><div class="f" style="color:var(--ink-2)">they had been building</div></td><td><div class="f">had been being built</div><div class="m">не употребляется</div></td></tr>
+        <tr class="no"><th scope="row">Future Perfect Cont.</th><td><div class="f" style="color:var(--ink-2)">they will have been building</div></td><td><div class="f">will have been being built</div><div class="m">не употребляется</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>Последние четыре строки — не исключение, которое надо зубрить. Достаточно посмотреть на них вслух: <span class="en">will be being built</span>, <span class="en">had been being built</span>. Два <span class="en">be</span> подряд язык не выговаривает, поэтому носители их просто не используют. Что говорить вместо них — в <a href="#p3">части&nbsp;3</a>.</p>
+  </div>
+</section>
+<!-- ===================== ЧАСТЬ 2 ===================== -->
+<section class="part" id="p2">
+  <div class="part-head"><span class="part-num">Часть 2</span><span class="part-tc">08:00</span></div>
+  <h2>Восемь рабочих форм</h2>
+  <p class="part-lede">Линия времени у пассива ровно та же, что у актива: положение действия на оси не зависит от того, с какой стороны мы на него смотрим. Поэтому диаграммы здесь читаются точно так же — синим отмечено действие, которому <b>подвергается подлежащее</b>.</p>
+
+  <!-- 1 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Present · 01</div>
+        <h3>Present Simple Passive</h3>
+        <div class="card-ru">«Делают вообще, регулярно, всегда»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it is done · they are done</b></div>
+        <div><span>&minus;</span><b>is not (isn't) / are not (aren't) done</b></div>
+        <div><span>?</span><b>Is it done? · Are they done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-prs">
+      <figcaption><b>Линия:</b> цепочка точек по всей оси — действие совершается регулярно или верно всегда. Кто именно его совершает, диаграмму не интересует: в пассиве деятеля часто нет вовсе.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Самая частая форма пассива. Ею описывают <b>порядок вещей</b>: как что-то делается обычно, как устроен процесс, правила и инструкции.</p>
+          <p>Отсюда её родная среда — рецепты, техописания, правила, объявления. Там деятель не нужен: важно не кто, а что происходит.</p>
+        </div>
+        <ul class="uses">
+          <li>Регулярные, повторяющиеся действия над объектом</li>
+          <li>Правила, инструкции, описания процессов</li>
+          <li>Общеизвестные факты</li>
+          <li>Русское безличное «делают, продают, говорят»</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">They <u>clean</u> the office every day.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The office <u>is cleaned</u> every day.</span></div>
+            <div class="s-ru">Офис убирают каждый день.</div>
+            <div class="s-note">Кто убирает — неважно, поэтому by вообще не нужен.</div>
+          </li>
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">They <u>make</u> these cars in Japan.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">These cars <u>are made</u> in Japan.</span></div>
+            <div class="s-ru">Эти машины делают в Японии.</div>
+            <div class="s-note">Классическая надпись на товаре.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">English <u>is spoken</u> all over the world.</span></div>
+            <div class="s-ru">На английском говорят во всём мире.</div>
+            <div class="s-note">В русском — безличное «говорят», в английском — пассив.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en"><u>Is</u> breakfast <u>included</u> in the price?</span></div>
+            <div class="s-ru">Завтрак включён в стоимость?</div>
+            <div class="s-note">Вопрос: is выходит вперёд, included не меняется.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Present · 02</div>
+        <h3>Present Continuous Passive</h3>
+        <div class="card-ru">«Делается прямо сейчас»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it is being done</b></div>
+        <div><span>&minus;</span><b>isn't / aren't being done</b></div>
+        <div><span>?</span><b>Is it being done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-prc">
+      <figcaption><b>Линия:</b> полоса, накрывающая «сейчас». Процесс над объектом запущен и не завершён — ровно та же картинка, что у активного Present Continuous.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Здесь появляется <span class="en">being</span> — то самое место, где чаще всего спотыкаются. Запомните цепочку целиком: <b>is being done</b>. Без <span class="en">being</span> получится другое время, без <span class="en">is</span> — вообще не предложение.</p>
+          <p><b>Важнейшее различие:</b> <span class="en">The window is broken</span> — окно разбито, это его нынешнее <b>состояние</b>. <span class="en">The window is being broken</span> — окно разбивают прямо сейчас, это <b>процесс</b>. Первое описывает результат, второе — действие в разгаре.</p>
+        </div>
+        <ul class="uses">
+          <li>Процесс над объектом в момент речи</li>
+          <li>Временная, длящаяся ситуация</li>
+          <li>Русское «строится, ремонтируется, обсуждается»</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">They <u>are repairing</u> the road now.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The road <u>is being repaired</u> now.</span></div>
+            <div class="s-ru">Дорогу сейчас ремонтируют.</div>
+            <div class="s-note">are repairing → is being repaired: be встаёт в Continuous, глагол в V3.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">Your order <u>is being processed</u>.</span></div>
+            <div class="s-ru">Ваш заказ обрабатывается.</div>
+            <div class="s-note">Стандартная фраза интерфейсов и писем.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The problem <u>is being discussed</u> right now.</span></div>
+            <div class="s-ru">Проблема обсуждается прямо сейчас.</div>
+            <div class="s-note">Русское «-ся» — почти всегда сигнал пассива.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 3 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Present · 03</div>
+        <h3>Present Perfect Passive</h3>
+        <div class="card-ru">«Уже сделано — и это важно сейчас»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it has been done · they have been done</b></div>
+        <div><span>&minus;</span><b>hasn't / haven't been done</b></div>
+        <div><span>?</span><b>Has it been done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-prp">
+      <figcaption><b>Линия:</b> действие-точка в прошлом без даты и дуга к «сейчас». Смотрим не на само действие, а на состояние объекта в момент речи.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Пассив и Present Perfect — естественная пара: обоим важен <b>результат, а не деятель</b>. Поэтому эта форма особенно частая в новостях, отчётах и деловой переписке.</p>
+          <p>Правило про запрет конкретной даты действует и здесь: <span class="en">was built in 1990</span>, но <span class="en">has been built</span> — без года.</p>
+        </div>
+        <ul class="uses">
+          <li>Результат, который виден сейчас</li>
+          <li>Новость о только что случившемся</li>
+          <li>Отчёт о выполненной работе</li>
+          <li>Незаконченный период: today, this week</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">Someone <u>has taken</u> my umbrella.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">My umbrella <u>has been taken</u>.</span></div>
+            <div class="s-ru">Мой зонт взяли.</div>
+            <div class="s-note">Someone в пассиве просто исчезает — так и задумано.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The report <u>has already been sent</u>.</span></div>
+            <div class="s-ru">Отчёт уже отправлен.</div>
+            <div class="s-note">already встаёт между has и been.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">Nothing <u>has been decided</u> yet.</span></div>
+            <div class="s-ru">Пока ничего не решено.</div>
+            <div class="s-note">yet — в конце предложения.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 4 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Past · 04</div>
+        <h3>Past Simple Passive</h3>
+        <div class="card-ru">«Сделали тогда-то»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it was done · they were done</b></div>
+        <div><span>&minus;</span><b>wasn't / weren't done</b></div>
+        <div><span>?</span><b>Was it done? · Were they done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-pas">
+      <figcaption><b>Линия:</b> точка в прошлом с подписью «когда». Как и в активе, наличие даты — сигнал, что нужен именно Past Simple, а не перфект.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Основная форма пассива для рассказа о прошлом: история, биография, описание событий. Здесь чаще всего и появляется <span class="en">by</span> — когда деятель всё-таки важен: <span class="en">painted by Repin</span>.</p>
+          <p>Следите за числом: <span class="en">was</span> для единственного, <span class="en">were</span> для множественного. Ошибка в этом месте слышна сразу.</p>
+        </div>
+        <ul class="uses">
+          <li>Завершённое действие над объектом в прошлом</li>
+          <li>Исторические факты и даты</li>
+          <li>Авторство: написано, снято, построено кем-то</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">Someone <u>stole</u> my bike last night.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">My bike <u>was stolen</u> last night.</span></div>
+            <div class="s-ru">Мой велосипед украли вчера ночью.</div>
+            <div class="s-note">Деятель неизвестен — именно тот случай, ради которого пассив и существует.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">This church <u>was built</u> in 1785.</span></div>
+            <div class="s-ru">Эту церковь построили в 1785 году.</div>
+            <div class="s-note">Есть дата — значит, was built, а не has been built.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The letters <u>were written</u> by his mother.</span></div>
+            <div class="s-ru">Письма были написаны его матерью.</div>
+            <div class="s-note">Здесь деятель важен — и остаётся с предлогом by.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en"><u>Were</u> you <u>invited</u> to the party?</span></div>
+            <div class="s-ru">Тебя пригласили на вечеринку?</div>
+            <div class="s-note">Русское «тебя пригласили» — по-английски только пассив.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 5 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Past · 05</div>
+        <h3>Past Continuous Passive</h3>
+        <div class="card-ru">«Делалось в тот момент»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it was being done</b></div>
+        <div><span>&minus;</span><b>wasn't / weren't being done</b></div>
+        <div><span>?</span><b>Was it being done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-pac">
+      <figcaption><b>Линия:</b> полоса в прошлом, а внутри неё — точка короткого события. Процесс над объектом служит фоном для того, что случилось.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Форма редкая, но живая. Ей нужна вторая координата — точное время или другое событие: «пока это делалось, случилось вот что».</p>
+          <p>Цепочка <span class="en">was being done</span> — самая длинная из употребимых в пассиве прошедшего. Дальше язык уже отказывается: формы <span class="en">had been being done</span> не существует.</p>
+        </div>
+        <ul class="uses">
+          <li>Процесс над объектом в конкретный момент прошлого</li>
+          <li>Фон для короткого события</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">They <u>were painting</u> the house when I arrived.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The house <u>was being painted</u> when I arrived.</span></div>
+            <div class="s-ru">Дом красили, когда я приехал.</div>
+            <div class="s-note">Полоса шла — и в неё попала точка «я приехал».</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The car <u>was being repaired</u> all day yesterday.</span></div>
+            <div class="s-ru">Машину чинили весь вчерашний день.</div>
+            <div class="s-note">all day задаёт длину полосы.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 6 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Past · 06</div>
+        <h3>Past Perfect Passive</h3>
+        <div class="card-ru">«Было сделано ещё до того момента»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it had been done</b></div>
+        <div><span>&minus;</span><b>hadn't been done</b></div>
+        <div><span>?</span><b>Had it been done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-pap">
+      <figcaption><b>Линия:</b> две точки в прошлом. Действие над объектом произошло раньше второй точки — той, о которой идёт речь. Дуга показывает, к какому моменту всё уже было готово.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Нужна ровно тогда же, когда и активный Past Perfect: показать, что <b>одно случилось раньше другого</b>. Вторая точка обязательна — без неё эта форма не употребляется.</p>
+          <p>Частый гость косвенной речи: <span class="en">He said the room had been booked.</span></p>
+        </div>
+        <ul class="uses">
+          <li>Действие над объектом раньше другого прошлого события</li>
+          <li>Косвенная речь</li>
+          <li>Объяснение причины ситуации в прошлом</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">Someone <u>had cleaned</u> the room before we came.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The room <u>had been cleaned</u> before we came.</span></div>
+            <div class="s-ru">Комнату убрали до того, как мы приехали.</div>
+            <div class="s-note">Уборка — раньше приезда.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The money <u>had been spent</u> long before that.</span></div>
+            <div class="s-ru">Деньги были потрачены задолго до этого.</div>
+            <div class="s-note">Дуга тянется к точке в прошлом, а не к «сейчас».</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 7 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Future · 07</div>
+        <h3>Future Simple Passive</h3>
+        <div class="card-ru">«Сделают»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it will be done</b></div>
+        <div><span>&minus;</span><b>won't be done</b></div>
+        <div><span>?</span><b>Will it be done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-fus">
+      <figcaption><b>Линия:</b> точка справа от «сейчас». Действие произойдёт, объект его получит — кто именно исполнитель, чаще всего не называют.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Родная среда — объявления, обещания сервисов, договоры: <span class="en">You will be contacted shortly.</span> Пассив здесь звучит официально и снимает вопрос, кто именно будет действовать.</p>
+          <p>Помните про условия и время: после <span class="en">if</span>, <span class="en">when</span>, <span class="en">as soon as</span> будущее не ставится — там <span class="en">is done</span>, а не <span class="en">will be done</span>.</p>
+        </div>
+        <ul class="uses">
+          <li>Будущее действие над объектом</li>
+          <li>Объявления, инструкции, официальные обещания</li>
+          <li>Предсказания и планы</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">They <u>will announce</u> the results tomorrow.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The results <u>will be announced</u> tomorrow.</span></div>
+            <div class="s-ru">Результаты объявят завтра.</div>
+            <div class="s-note">will be + V3 — никакого being здесь нет.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">You <u>will be contacted</u> within 24 hours.</span></div>
+            <div class="s-ru">С вами свяжутся в течение суток.</div>
+            <div class="s-note">Русское «с вами свяжутся» — по-английски пассив с you в начале.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The order will be sent when payment <u>is received</u>.</span></div>
+            <div class="s-ru">Заказ отправят, когда получат оплату.</div>
+            <div class="s-note">После when — настоящее время, хотя смысл будущий.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 8 -->
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Future · 08</div>
+        <h3>Future Perfect Passive</h3>
+        <div class="card-ru">«Будет сделано к сроку»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it will have been done</b></div>
+        <div><span>&minus;</span><b>won't have been done</b></div>
+        <div><span>?</span><b>Will it have been done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-fup">
+      <figcaption><b>Линия:</b> флажок-срок в будущем, а действие завершается левее него. Самая длинная форма, которой ещё пользуются: четыре слова подряд.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл формы</div>
+        <div class="why">
+          <p>Живёт исключительно рядом со словом <span class="en">by</span>: <span class="en">by Friday</span>, <span class="en">by the time you arrive</span>. Именно оно ставит на ось флажок, к которому меряется готовность.</p>
+          <p>Встречается в договорах, планах и проектной документации — там, где важно зафиксировать срок, а не исполнителя.</p>
+        </div>
+        <ul class="uses">
+          <li>Завершение работы к сроку в будущем</li>
+          <li>Договорные обязательства и дедлайны</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Актив → пассив</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">актив</span><span class="s-en">They <u>will have finished</u> the bridge by June.</span></div>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">The bridge <u>will have been finished</u> by June.</span></div>
+            <div class="s-ru">Мост закончат к июню.</div>
+            <div class="s-note">by June — флажок на оси.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">пассив</span><span class="s-en">Everything <u>will have been prepared</u> by the time you arrive.</span></div>
+            <div class="s-ru">К твоему приезду всё будет подготовлено.</div>
+            <div class="s-note">Флажок задан событием, а не датой.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+<!-- ===================== ЧАСТЬ 3 ===================== -->
+<section class="part" id="p3">
+  <div class="part-head"><span class="part-num">Часть 3</span><span class="part-tc">21:30</span></div>
+  <h2>Чего в пассиве не бывает</h2>
+  <p class="part-lede">Четыре формы теоретически собираются по правилу, но в языке их нет. Причина не в грамматике, а в фонетике: в них подряд идут два <span class="en">be</span>, и это звучит так тяжело, что носители всегда перестраивают фразу.</p>
+
+  <div class="tab-wrap">
+    <table class="tab">
+      <thead><tr><th scope="col">Несуществующая форма</th><th scope="col">Что говорят вместо неё</th></tr></thead>
+      <tbody>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">will be being done</td><td class="v">Ставят Future Simple Passive: <span class="en">The road will be repaired at that time.</span></td></tr>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">has been being done</td><td class="v">Ставят Present Perfect Passive или переходят в актив: <span class="en">They have been repairing the road for a week.</span></td></tr>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">had been being done</td><td class="v">Ставят Past Perfect Passive: <span class="en">The road had been repaired by then.</span></td></tr>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">will have been being done</td><td class="v">Только актив: <span class="en">They will have been repairing the road for a year.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Практический вывод.</b> Если по смыслу нужна длительность в перфекте — просто верните предложение в актив. Это не поражение и не упрощение: носители поступают именно так. Пассив хорош там, где деятель не нужен; как только вам всё равно приходится его называть, актив короче и яснее.</p>
+    <p>Ещё одна группа глаголов не идёт в пассив никогда, даже в простых временах, — это <b>непереходные</b> и глаголы состояния: <span class="en">happen, occur, arrive, come, go, sleep, die, appear, belong, lack, resemble, suit, fit, have</span> (в значении «иметь»). У них нет дополнения, которое могло бы стать подлежащим.</p>
+  </div>
+
+  <div class="note">
+    <h4>Частая ошибка</h4>
+    <div class="body">
+      <p><span class="en" style="color:var(--c-no)">The accident was happened.</span> → <span class="en">The accident happened.</span></p>
+      <p><span class="en" style="color:var(--c-no)">He was died last year.</span> → <span class="en">He died last year.</span></p>
+      <p><span class="en" style="color:var(--c-no)">This book is belonged to me.</span> → <span class="en">This book belongs to me.</span></p>
+      <p>Логика одна: эти глаголы не делают ничего <b>с кем-то</b>, поэтому и превращать нечего.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 4 ===================== -->
+<section class="part" id="p4">
+  <div class="part-head"><span class="part-num">Часть 4</span><span class="part-tc">25:00</span></div>
+  <h2>Пассив после модальных глаголов и в инфинитиве</h2>
+  <p class="part-lede">Формула не меняется — меняется только то, что стоит перед <span class="en">be</span>. После любого модального глагола идёт голая форма, поэтому получается просто <b>модальный + be + V3</b>.</p>
+
+  <div class="tab-wrap">
+    <table class="tab">
+      <thead><tr><th scope="col">Конструкция</th><th scope="col">Пример и перевод</th></tr></thead>
+      <tbody>
+        <tr><td class="k">must / should / can be done</td><td class="v"><span class="en">The form must be signed.</span> — Бланк должен быть подписан.</td></tr>
+        <tr><td class="k">can't be done</td><td class="v"><span class="en">It can't be done in a day.</span> — Это нельзя сделать за день.</td></tr>
+        <tr><td class="k">may / might be done</td><td class="v"><span class="en">The flight might be delayed.</span> — Рейс могут задержать.</td></tr>
+        <tr><td class="k">have to be done</td><td class="v"><span class="en">This has to be fixed today.</span> — Это надо починить сегодня.</td></tr>
+        <tr><td class="k">should have been done</td><td class="v"><span class="en">It should have been done yesterday.</span> — Это надо было сделать вчера (но не сделали).</td></tr>
+        <tr><td class="k">to be done — инфинитив</td><td class="v"><span class="en">I want to be paid on time.</span> — Я хочу, чтобы мне платили вовремя.</td></tr>
+        <tr><td class="k">to have been done — перфектный инфинитив</td><td class="v"><span class="en">He seems to have been forgotten.</span> — Похоже, о нём забыли.</td></tr>
+        <tr><td class="k">being done — герундий</td><td class="v"><span class="en">She hates being interrupted.</span> — Она терпеть не может, когда её перебивают.</td></tr>
+        <tr><td class="k">having been done</td><td class="v"><span class="en">Having been warned, he left.</span> — Будучи предупреждён, он ушёл.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Обратите внимание на последние три строки.</b> Именно так по-английски говорят то, что по-русски выражается придаточным «когда меня…», «чтобы мне…», «что его…». Русский разворачивает фразу в целое предложение, английский обходится одной пассивной формой — и звучит короче.</p>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 5 ===================== -->
+<section class="part" id="p5">
+  <div class="part-head"><span class="part-num">Часть 5</span><span class="part-tc">29:40</span></div>
+  <h2>Особые случаи</h2>
+  <p class="part-lede">Пять ситуаций, в которых пассив ведёт себя не совсем так, как ожидается по основной схеме.</p>
+
+  <h3 style="margin-top:34px;font-size:20px">Два дополнения — два возможных пассива</h3>
+  <p class="part-lede" style="margin-top:10px">У глаголов <span class="en">give, tell, send, show, offer, ask, teach, pay, promise</span> есть сразу два дополнения: кому и что. Подлежащим может стать любое из них — и англичане почти всегда выбирают человека.</p>
+
+  <figure class="swap inset" data-swap="two">
+    <figcaption><b>Оба варианта верны</b>, но <span class="en">I was given a book</span> звучит намного естественнее, чем <span class="en">A book was given to me</span>. Английский предпочитает ставить в начало человека. И именно этот вариант точно совпадает с русским «мне дали книгу» — только подлежащим становится <span class="en">I</span>, а не «мне».</figcaption>
+  </figure>
+
+  <h3 style="margin-top:38px;font-size:20px">by или with</h3>
+  <div class="prose" style="margin-top:12px">
+    <p><b>by</b> — тот, <b>кто</b> сделал: <span class="en">The window was broken by a boy.</span></p>
+    <p><b>with</b> — то, <b>чем</b> сделали: <span class="en">The window was broken with a stone.</span></p>
+    <p>В одном предложении они спокойно уживаются: <span class="en">The window was broken by a boy with a stone.</span> Путаница здесь стоит дорого — <span class="en">broken with a boy</span> означает, что мальчиком разбили окно, как камнем.</p>
+  </div>
+
+  <h3 style="margin-top:38px;font-size:20px">Фразовые глаголы не теряют предлог</h3>
+  <div class="prose" style="margin-top:12px">
+    <p>Если глагол состоит из двух слов, в пассиве предлог остаётся <b>на месте, сразу после V3</b>, даже если оказывается в конце предложения и висит там без дополнения. Для русского уха это выглядит странно, но это норма.</p>
+    <p><span class="en">Somebody looked after the children.</span> → <span class="en">The children <u>were looked after</u>.</span></p>
+    <p><span class="en">They sent for the doctor.</span> → <span class="en">The doctor <u>was sent for</u>.</span></p>
+    <p><span class="en">Nobody has slept in this bed.</span> → <span class="en">This bed <u>hasn't been slept in</u>.</span></p>
+  </div>
+
+  <h3 style="margin-top:38px;font-size:20px">get вместо be — разговорный пассив</h3>
+  <div class="prose" style="margin-top:12px">
+    <p>В неформальной речи вместо <span class="en">be</span> часто ставят <span class="en">get</span>. Оттенок — <b>внезапность, неприятность, событие, а не состояние</b>: <span class="en">He got fired.</span> — Его уволили. <span class="en">They got married.</span> — Они поженились. <span class="en">My phone got stolen.</span> — У меня украли телефон.</p>
+    <p>В деловом письме и официальном тексте <span class="en">get</span>-пассив не используют — там только <span class="en">be</span>.</p>
+  </div>
+
+  <h3 style="margin-top:38px;font-size:20px">«Говорят, что…» — безличные обороты</h3>
+  <div class="prose" style="margin-top:12px">
+    <p>Русское «говорят / считают / полагают, что…» по-английски выражается двумя пассивными конструкциями сразу, и обе стоит знать:</p>
+    <p><span class="en">It is said that he lives in Paris.</span> — Говорят, что он живёт в Париже.</p>
+    <p><span class="en">He is said to live in Paris.</span> — То же самое, но короче и литературнее.</p>
+    <p>Так же работают <span class="en">believe, think, know, report, expect, consider</span>: <span class="en">The company is expected to grow.</span> — Ожидается, что компания вырастет.</p>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 6 ===================== -->
+<section class="part" id="p6">
+  <div class="part-head"><span class="part-num">Часть 6</span><span class="part-tc">36:00</span></div>
+  <h2>Русские ловушки</h2>
+  <p class="part-lede">Здесь собраны места, где русская конструкция подсказывает неправильный английский. Это самая полезная часть страницы: ошибки в пассиве почти всегда родом отсюда.</p>
+
+  <div class="grid2">
+    <div class="fq">
+      <div class="q">«Мне сказали / мне дали / меня спросили»</div>
+      <div class="a">В русском это безличное предложение без подлежащего. В английском подлежащее обязательно — и им становится <b>человек</b>.
+      <span class="s-en" style="color:var(--c-obj)">I was told. · I was given a key. · I was asked.</span>
+      Не <span class="en" style="color:var(--c-no)">To me was told</span> — такой конструкции нет.</div>
+    </div>
+    <div class="fq">
+      <div class="q">Глаголы на «-ся»: строится, продаётся, обсуждается</div>
+      <div class="a">Русское «-ся» почти всегда переводится пассивом, а не возвратной формой.
+      <span class="s-en" style="color:var(--c-obj)">The house is being built. · Tickets are sold here.</span>
+      Ошибка — переводить дословно через <span class="en">itself</span>.</div>
+    </div>
+    <div class="fq">
+      <div class="q">«Дом построен» — состояние или действие?</div>
+      <div class="a">Русское причастие покрывает оба смысла, английский их различает.
+      <span class="s-en" style="color:var(--c-obj)">The house is built.</span> — свойство, оно построено (а не деревянное).
+      <span class="s-en" style="color:var(--c-obj)">The house has been built.</span> — работа завершена, вот результат.</div>
+    </div>
+    <div class="fq">
+      <div class="q">Лишнее be с непереходными глаголами</div>
+      <div class="a">Русское «случилось, произошло, появился» не требует пассива в английском.
+      <span class="en" style="color:var(--c-no)">was happened · was appeared · was arrived</span> — все три невозможны. Только <span class="en">happened, appeared, arrived</span>.</div>
+    </div>
+    <div class="fq">
+      <div class="q">Забытое being в настоящем длительном</div>
+      <div class="a">«Дорогу ремонтируют сейчас» — не <span class="en" style="color:var(--c-no)">The road is repaired now</span>, это значит «дорога вообще-то отремонтирована».
+      <span class="s-en" style="color:var(--c-obj)">The road is being repaired now.</span></div>
+    </div>
+    <div class="fq">
+      <div class="q">Вторая форма вместо третьей</div>
+      <div class="a">В пассиве всегда <b>V3</b>, никогда V2. Для правильных глаголов они совпадают, и ошибка не видна, а на неправильных вылезает сразу.
+      <span class="en" style="color:var(--c-no)">was wrote · was took · was gave</span> → <span class="en">was written · was taken · was given</span>.</div>
+    </div>
+    <div class="fq">
+      <div class="q">do / does / did в пассивном вопросе</div>
+      <div class="a">В пассиве уже есть свой вспомогательный глагол, второго не нужно.
+      <span class="en" style="color:var(--c-no)">Did the letter was sent?</span> → <span class="en">Was the letter sent?</span></div>
+    </div>
+    <div class="fq">
+      <div class="q">Согласование be по числу</div>
+      <div class="a">Глагол <span class="en">be</span> согласуется с <b>новым</b> подлежащим, а не со старым деятелем.
+      <span class="s-en" style="color:var(--c-obj)">The documents were signed.</span> — не <span class="en" style="color:var(--c-no)">was signed</span>, хотя подписал один человек.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 7 ===================== -->
+<section class="part" id="p7">
+  <div class="part-head"><span class="part-num">Часть 7</span><span class="part-tc">43:00</span></div>
+  <h2>Когда пассив помогает, а когда портит текст</h2>
+  <p class="part-lede">Пассив — инструмент, а не украшение. В русской школьной традиции его иногда считают признаком «взрослого» языка; в английском всё наоборот — избыток пассива считается недостатком стиля.</p>
+
+  <div class="prose">
+    <p><b>Пассив уместен,</b> когда деятель неизвестен, неважен или очевиден; в научных и технических текстах, где важен процесс, а не автор; в новостях и официальных документах; когда объект — главный герой абзаца и вы не хотите его менять.</p>
+    <p><b>Пассив мешает,</b> когда деятель известен и важен. Сравните: <span class="en">The decision was made to close the office</span> — кем сделано, непонятно, и фраза звучит уклончиво. <span class="en">The board decided to close the office</span> — коротко и ясно.</p>
+    <p><b>Практическое правило.</b> В разговорной речи пассив занимает малую долю фраз. Если в вашем абзаце подряд идут три пассива — почти наверняка два из них лучше вернуть в актив. Английский любит, когда у действия есть исполнитель и он стоит в начале.</p>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 8 ===================== -->
+<section class="part" id="p8">
+  <div class="part-head"><span class="part-num">Часть 8</span><span class="part-tc">46:00</span></div>
+  <h2>Шпаргалка: как построить пассив за пять шагов</h2>
+
+  <div class="grid2">
+    <div class="fq"><div class="q">1. Найдите дополнение активного предложения</div><div class="a">То, что отвечает на вопрос «кого? что?». Нет дополнения — пассива не будет.</div></div>
+    <div class="fq"><div class="q">2. Поставьте его в начало</div><div class="a">Теперь это подлежащее, и с ним согласуется be.</div></div>
+    <div class="fq"><div class="q">3. Определите время активного глагола</div><div class="a">Именно в это время встанет be — сам смысловой глагол время больше не показывает.</div></div>
+    <div class="fq"><div class="q">4. Смысловой глагол — в третью форму</div><div class="a">V3 и только V3, дальше она не меняется никогда.</div></div>
+    <div class="fq"><div class="q">5. Решите судьбу деятеля</div><div class="a">Важен — в конец с <b>by</b>. Неважен, неизвестен или очевиден — уберите совсем. Это норма, а не потеря смысла.</div></div>
+    <div class="fq"><div class="q">Проверка на слух</div><div class="a">Прочитайте вслух. Услышали два <b>be</b> подряд (<span class="en">be being</span>, <span class="en">been being</span>) — такой формы нет, перестройте фразу или верните её в актив.</div></div>
+  </div>
+
+  <div class="prose">
+    <p><b>И главное.</b> Пассив не добавляет к предложению никакого нового времени — вся линия времени у него ровно та же, что у актива. Меняется только точка зрения: вместо того кто делает, вперёд выходит тот, с кем это делают.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Пассив на линии времени · 8 рабочих форм, 10 диаграмм, 23 пары предложений</span>
+  <span class="mono">Таймкоды — ориентир для видеоверсии, ≈49 минут</span>
+</footer>
+<script>
+(function(){
+  var C={o:'var(--c-obj)',a:'var(--c-act)',n:'var(--c-now)',i:'var(--ink-2)'};
+  function col(k){return C[k]||C.i;}
+
+  /* ---------------- линия времени ---------------- */
+  var AX={x0:60,x1:744,y:110,W:800,H:168};
+  function X(t){return AX.x0+(t/100)*(AX.x1-AX.x0);}
+  function RY(r){return AX.y-(r||0)*34;}
+
+  function W(c,inner){return '<g style="color:'+c+'">'+inner+'</g>';}
+  function label(x,y,txt,size,anchor){
+    var parts=String(txt).split('\n');
+    var out='<text x="'+x+'" y="'+(y-(parts.length-1)*13)+'" text-anchor="'+(anchor||'middle')+'" '+
+      'font-family="Golos Text, sans-serif" font-size="'+(size||12.5)+'" fill="currentColor" '+
+      'style="paint-order:stroke;stroke:var(--tl-bg);stroke-width:4px;stroke-linejoin:round">';
+    for(var i=0;i<parts.length;i++){out+='<tspan x="'+x+'" dy="'+(i===0?0:14)+'">'+parts[i]+'</tspan>';}
+    return out+'</text>';
+  }
+
+  function drawTL(spec){
+    var s='<svg viewBox="0 0 '+AX.W+' '+AX.H+'" role="img" aria-label="'+(spec.alt||'Диаграмма времени')+'">';
+    (spec.items||[]).forEach(function(it){
+      if(it.t!=='zone') return;
+      s+='<g style="color:var(--ink-3)">';
+      s+='<rect x="'+X(it.from)+'" y="4" width="'+(X(it.to)-X(it.from))+'" height="'+(AX.H-10)+'" fill="currentColor" opacity="0.07"/>';
+      s+='<text x="'+((X(it.from)+X(it.to))/2)+'" y="'+(AX.H-8)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2" fill="currentColor" opacity="0.75">'+it.lab+'</text>';
+      s+='</g>';
+    });
+    s+='<g style="color:var(--ink-3)">';
+    s+='<line x1="'+(AX.x0-14)+'" y1="'+AX.y+'" x2="'+(AX.x1+4)+'" y2="'+AX.y+'" stroke="currentColor" stroke-width="1.6" opacity="0.55"/>';
+    s+='<polygon points="'+(AX.x1+14)+','+AX.y+' '+(AX.x1+2)+','+(AX.y-5)+' '+(AX.x1+2)+','+(AX.y+5)+'" fill="currentColor" opacity="0.55"/>';
+    s+='</g>';
+    if(spec.now!==false){
+      var nx=X(spec.now===undefined?50:spec.now);
+      s+='<g style="color:var(--c-now)">';
+      s+='<line x1="'+nx+'" y1="26" x2="'+nx+'" y2="'+(AX.y+16)+'" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>';
+      s+='<text x="'+nx+'" y="18" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="1.6" fill="currentColor">СЕЙЧАС</text>';
+      s+='</g>';
+    }
+    var labs=[];
+    (spec.items||[]).forEach(function(it){
+      if(it.t==='zone') return;
+      var y=RY(it.row);
+      s+='<g style="color:'+col(it.c)+'">';
+      if(it.t==='span'){
+        var x1=X(it.from),x2=X(it.to);
+        s+='<rect x="'+x1+'" y="'+(y-9)+'" width="'+(x2-x1)+'" height="18" rx="9" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8"/>';
+        if(it.lab) labs.push(W(col(it.c),label((x1+x2)/2,y-17,it.lab)));
+      } else if(it.t==='point'){
+        var px=X(it.at);
+        if(it.row) s+='<line x1="'+px+'" y1="'+(y+8)+'" x2="'+px+'" y2="'+(AX.y-3)+'" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 3" opacity="0.6"/>';
+        s+='<circle cx="'+px+'" cy="'+y+'" r="7" fill="currentColor" stroke-width="2" style="stroke:var(--tl-bg)"/>';
+        if(it.lab) labs.push(W(col(it.c),label(px,y-16,it.lab)));
+      } else if(it.t==='dots'){
+        var n=it.n||7,a=X(it.from),b=X(it.to);
+        for(var j=0;j<n;j++){s+='<circle cx="'+(a+(b-a)*(j/(n-1)))+'" cy="'+y+'" r="5" fill="currentColor" opacity="0.85"/>';}
+        if(it.lab) labs.push(W(col(it.c),label((a+b)/2,y-16,it.lab)));
+      } else if(it.t==='flag'){
+        var fx=X(it.at);
+        s+='<line x1="'+fx+'" y1="'+(AX.y-38)+'" x2="'+fx+'" y2="'+(AX.y+12)+'" stroke="currentColor" stroke-width="2.4"/>';
+        s+='<polygon points="'+fx+','+(AX.y-38)+' '+(fx+22)+','+(AX.y-32)+' '+fx+','+(AX.y-26)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(col(it.c),label(fx+2,AX.y-46,it.lab,11.5)));
+        if(it.sub) s+='<text x="'+fx+'" y="'+(AX.y+26)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.sub+'</text>';
+      } else if(it.t==='arrow'){
+        var a1=X(it.from),a2=X(it.to),ay=RY(it.row)-14,mid=(a1+a2)/2;
+        s+='<path d="M'+a1+' '+ay+' Q'+mid+' '+(ay-26)+' '+a2+' '+(ay-2)+'" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="5 4"/>';
+        s+='<polygon points="'+a2+','+(ay+6)+' '+(a2-5)+','+(ay-4)+' '+(a2+5)+','+(ay-4)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(col(it.c),label(mid,ay-32,it.lab,11.5)));
+      } else if(it.t==='bracket'){
+        var b1=X(it.from),b2=X(it.to),by=AX.y+20;
+        s+='<path d="M'+b1+' '+(by-6)+' L'+b1+' '+by+' L'+b2+' '+by+' L'+b2+' '+(by-6)+'" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.85"/>';
+        s+='<text x="'+((b1+b2)/2)+'" y="'+(by+15)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.lab+'</text>';
+      }
+      s+='</g>';
+    });
+    s+=labs.join('');
+    return s+'</svg>';
+  }
+
+  /* ---------------- схема разворота ---------------- */
+  var SW={W:800,x0:100,x1:744,rowH:112,top:64};
+  var CH=8.42;
+  function chunkW(c){
+    var base=String(c.t).length*CH+(c.box===false?18:32);
+    if(c.role) base=Math.max(base,String(c.role).length*6.4+26);
+    return Math.max(c.box===false?52:92,base);
+  }
+
+  function drawSwap(spec){
+    var rows=spec.rows, H=SW.top+ (rows.length-1)*SW.rowH + 60;
+    var s='<svg viewBox="0 0 '+SW.W+' '+H+'" role="img" aria-label="'+(spec.alt||'Схема залога')+'">';
+    var pos=[];
+
+    rows.forEach(function(row,ri){
+      var cy=SW.top+ri*SW.rowH, ws=row.chunks.map(chunkW);
+      var total=ws.reduce(function(a,b){return a+b;},0)+(row.chunks.length-1)*16;
+      var x=SW.x0, avail=SW.x1-SW.x0;
+      if(total<avail) x=SW.x0;
+      pos[ri]=[];
+      var cursor=x;
+      row.chunks.forEach(function(c,ci){
+        pos[ri][ci]={x:cursor,w:ws[ci],cx:cursor+ws[ci]/2,cy:cy};
+        cursor+=ws[ci]+16;
+      });
+      row._end=cursor-16;
+    });
+
+    // связи между рядами (рисуем под блоками)
+    (spec.links||[]).forEach(function(l){
+      var f=pos[l.from[0]][l.from[1]], t=pos[l.to[0]][l.to[1]];
+      var y1=f.cy+24, y2=t.cy-30, my=(y1+y2)/2;
+      // длинную связь через несколько рядов уводим вправо, мимо содержимого промежуточного ряда
+      var d = (l.route==='right')
+        ? 'M'+f.cx+' '+y1+' C'+(Math.max(f.cx,t.cx)+110)+' '+y1+' '+(Math.max(f.cx,t.cx)+110)+' '+y2+' '+t.cx+' '+y2
+        : 'M'+f.cx+' '+y1+' C'+f.cx+' '+my+' '+t.cx+' '+my+' '+t.cx+' '+y2;
+      s+='<g style="color:'+col(l.c||'i')+'">';
+      s+='<path d="'+d+'" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.85"/>';
+      s+='<polygon points="'+t.cx+','+(y2+7)+' '+(t.cx-5)+','+(y2-3)+' '+(t.cx+5)+','+(y2-3)+'" fill="currentColor" opacity="0.85"/>';
+      s+='</g>';
+    });
+
+    rows.forEach(function(row,ri){
+      var cy=SW.top+ri*SW.rowH;
+      s+='<text x="8" y="'+(cy+4)+'" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.4" fill="var(--ink-3)">'+row.label+'</text>';
+      if(row.arrow){
+        // линию рисуем отрезками в промежутках между блоками, чтобы она не пересекала текст
+        var last=row.chunks.length-1;
+        s+='<g style="color:var(--ink-3)">';
+        for(var gi=0; gi<last; gi++){
+          var gL=pos[ri][gi].x+pos[ri][gi].w+3, gR=pos[ri][gi+1].x-3;
+          var head=(row.arrow==='right' && gi===last-1) ? 'r' : ((row.arrow==='left' && gi===0) ? 'l' : '');
+          var lineL=(head==='l')?gL+8:gL, lineR=(head==='r')?gR-8:gR;
+          s+='<line x1="'+lineL+'" y1="'+cy+'" x2="'+lineR+'" y2="'+cy+'" stroke="currentColor" stroke-width="1.3" opacity="0.65"/>';
+          if(head==='r') s+='<polygon points="'+gR+','+cy+' '+(gR-9)+','+(cy-4.5)+' '+(gR-9)+','+(cy+4.5)+'" fill="currentColor" opacity="0.65"/>';
+          if(head==='l') s+='<polygon points="'+gL+','+cy+' '+(gL+9)+','+(cy-4.5)+' '+(gL+9)+','+(cy+4.5)+'" fill="currentColor" opacity="0.65"/>';
+        }
+        s+='</g>';
+      }
+      row.chunks.forEach(function(c,ci){
+        var p=pos[ri][ci];
+        s+='<g style="color:'+col(c.c||'i')+'">';
+        if(c.box!==false){
+          s+='<rect x="'+p.x+'" y="'+(cy-23)+'" width="'+p.w+'" height="46" rx="9" fill="currentColor" fill-opacity="0.13" stroke="currentColor" stroke-width="1.7"'+(c.opt?' stroke-dasharray="6 4"':'')+'/>';
+          s+='<text x="'+p.cx+'" y="'+(cy+(c.role?-3:5))+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="currentColor">'+c.t+'</text>';
+          if(c.role) s+='<text x="'+p.cx+'" y="'+(cy+16)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="0.6" fill="currentColor" opacity="0.8">'+c.role+'</text>';
+        } else {
+          s+='<text x="'+p.cx+'" y="'+(cy+5)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--ink)" style="paint-order:stroke;stroke:var(--tl-bg);stroke-width:5px;stroke-linejoin:round">'+c.t+'</text>';
+        }
+        s+='</g>';
+      });
+    });
+    return s+'</svg>';
+  }
+
+  /* ---------------- данные ---------------- */
+  var PAST={t:'zone',from:0,to:50,lab:'ПРОШЛОЕ'}, FUT={t:'zone',from:50,to:100,lab:'БУДУЩЕЕ'};
+
+  var TL={
+    'ps-prs':{alt:'Регулярное действие над объектом',items:[PAST,FUT,
+      {t:'dots',from:10,to:90,n:8,c:'o',lab:'делается регулярно, всегда'}]},
+    'ps-prc':{alt:'Процесс над объектом сейчас',items:[PAST,FUT,
+      {t:'span',from:32,to:70,c:'o',lab:'делается и не закончено'}]},
+    'ps-prp':{alt:'Сделано, результат сейчас',items:[PAST,FUT,
+      {t:'point',at:24,c:'o',lab:'сделано'},
+      {t:'arrow',from:24,to:50,c:'o',lab:'результат сейчас'}]},
+    'ps-pas':{alt:'Сделали в конкретный момент прошлого',items:[PAST,FUT,
+      {t:'point',at:26,c:'o',lab:'сделали и закончили'},
+      {t:'bracket',from:16,to:36,c:'o',lab:'last night · in 1785'}]},
+    'ps-pac':{alt:'Процесс над объектом в прошлом',items:[PAST,FUT,
+      {t:'span',from:12,to:42,c:'o',lab:'делалось'},
+      {t:'point',at:30,row:1,c:'a',lab:'...когда случилось это'}]},
+    'ps-pap':{alt:'Сделано до другого момента прошлого',items:[PAST,FUT,
+      {t:'point',at:14,c:'o',lab:'было сделано'},
+      {t:'point',at:40,row:1,c:'a',lab:'момент рассказа'},
+      {t:'arrow',from:14,to:40,c:'o',lab:'раньше'}]},
+    'ps-fus':{alt:'Сделают в будущем',items:[PAST,FUT,
+      {t:'point',at:76,c:'o',lab:'сделают'},
+      {t:'bracket',from:66,to:86,c:'o',lab:'tomorrow · soon'}]},
+    'ps-fup':{alt:'Будет сделано к сроку',items:[PAST,FUT,
+      {t:'point',at:66,c:'o',lab:'завершится'},
+      {t:'flag',at:88,c:'i',lab:'срок',sub:'by June'},
+      {t:'arrow',from:66,to:88,c:'o',lab:'уже готово'}]}
+  };
+
+  var SWAPS={
+    'hero':{alt:'Как активное предложение превращается в пассивное',
+      rows:[
+        {label:'АКТИВ',arrow:'right',chunks:[
+          {t:'The teacher',role:'деятель',c:'a'},
+          {t:'checks',box:false},
+          {t:'the tests',role:'объект',c:'o'}
+        ]},
+        {label:'ПАССИВ',arrow:'left',chunks:[
+          {t:'The tests',role:'подлежащее',c:'o'},
+          {t:'are checked',box:false},
+          {t:'by the teacher',role:'можно убрать',c:'a',opt:true}
+        ]}
+      ],
+      links:[{from:[0,2],to:[1,0],c:'o'},{from:[0,0],to:[1,2],c:'a'}]},
+
+    'two':{alt:'Глагол с двумя дополнениями даёт два пассива',
+      rows:[
+        {label:'АКТИВ',chunks:[
+          {t:'They',role:'деятель',c:'a'},
+          {t:'gave',box:false},
+          {t:'me',role:'кому',c:'o'},
+          {t:'a book',role:'что',c:'i'}
+        ]},
+        {label:'ПАССИВ 1',chunks:[
+          {t:'I',role:'подлежащее',c:'o'},
+          {t:'was given',box:false},
+          {t:'a book',c:'i'}
+        ]},
+        {label:'ПАССИВ 2',chunks:[
+          {t:'A book',role:'подлежащее',c:'i'},
+          {t:'was given',box:false},
+          {t:'to me',c:'o'}
+        ]}
+      ],
+      links:[{from:[0,2],to:[1,0],c:'o'},{from:[0,3],to:[2,0],c:'i',route:'right'}]}
+  };
+
+  document.querySelectorAll('figure.tl[data-tl]').forEach(function(fig){
+    var spec=TL[fig.getAttribute('data-tl')]; if(!spec) return;
+    var cap=fig.querySelector('figcaption');
+    fig.insertAdjacentHTML('afterbegin',drawTL(spec));
+    if(cap) fig.appendChild(cap);
+  });
+  document.querySelectorAll('figure.swap[data-swap]').forEach(function(fig){
+    var spec=SWAPS[fig.getAttribute('data-swap')]; if(!spec) return;
+    var cap=fig.querySelector('figcaption');
+    fig.insertAdjacentHTML('afterbegin',drawSwap(spec));
+    if(cap) fig.appendChild(cap);
+  });
+})();
+</script>
+
+</main>
+</div>
+</div>

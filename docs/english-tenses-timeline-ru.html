@@ -1,0 +1,1579 @@
+<meta charset="utf-8">
+<title>Линия времени английского</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3;
+  --card:#FFFFFF;
+  --card-2:#E4EAEE;
+  --ink:#131C25;
+  --ink-2:#47555F;
+  --ink-3:#75838E;
+  --line:#CFD8DE;
+  --line-2:#E2E8EC;
+  --c-simple:#12746A;
+  --c-cont:#A6640B;
+  --c-perf:#5546B8;
+  --c-perfc:#A33A5F;
+  --c-now:#C23E2B;
+  --tint:.10;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D;
+    --card:#15202A;
+    --card-2:#1C2A35;
+    --ink:#E7EDF2;
+    --ink-2:#A8B7C2;
+    --ink-3:#7A8A96;
+    --line:#27353F;
+    --line-2:#1F2C36;
+    --c-simple:#4FC3B3;
+    --c-cont:#E8A44A;
+    --c-perf:#A798F7;
+    --c-perfc:#EE85A6;
+    --c-now:#FF7C64;
+    --tint:.16;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D;
+  --card:#15202A;
+  --card-2:#1C2A35;
+  --ink:#E7EDF2;
+  --ink-2:#A8B7C2;
+  --ink-3:#7A8A96;
+  --line:#27353F;
+  --line-2:#1F2C36;
+  --c-simple:#4FC3B3;
+  --c-cont:#E8A44A;
+  --c-perf:#A798F7;
+  --c-perfc:#EE85A6;
+  --c-now:#FF7C64;
+  --tint:.16;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Golos Text","Segoe UI",system-ui,sans-serif;
+  font-size:16.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+/* ---------- shell ---------- */
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){
+  .shell{display:grid;grid-template-columns:196px minmax(0,1fr);gap:56px;align-items:start}
+}
+.rail{display:none}
+@media (min-width:1080px){
+  .rail{
+    display:block;position:sticky;top:0;padding:40px 0;
+    max-height:100vh;overflow-y:auto;
+  }
+}
+.rail-title{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;
+}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{
+  display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:baseline;
+  text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);
+  border-left:2px solid transparent;
+}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-now)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.hero h1{font-size:clamp(38px,6.4vw,68px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:60ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{
+  font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;
+  border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);
+  background:var(--card);
+}
+.chip.s{border-color:color-mix(in srgb,var(--c-simple) 45%,var(--line));color:var(--c-simple)}
+.chip.c{border-color:color-mix(in srgb,var(--c-cont) 45%,var(--line));color:var(--c-cont)}
+.chip.p{border-color:color-mix(in srgb,var(--c-perf) 45%,var(--line));color:var(--c-perf)}
+.chip.pc{border-color:color-mix(in srgb,var(--c-perfc) 45%,var(--line));color:var(--c-perfc)}
+
+/* ---------- parts ---------- */
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--c-now);
+}
+.part-tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.part h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:66ch;color:var(--ink-2)}
+.rule{height:1px;background:var(--line);margin-top:22px}
+
+.prose{max-width:66ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+
+/* ---------- cards ---------- */
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:var(--shadow);margin-top:26px;overflow:hidden;
+}
+.card-top{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:flex-start;justify-content:space-between;padding:22px 24px 18px}
+.card-id{display:flex;flex-direction:column;gap:5px;min-width:min(100%,300px)}
+.card-kicker{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.card h3{font-size:clamp(21px,2.6vw,27px);letter-spacing:-.01em}
+.card-ru{color:var(--ink-2);font-size:15px}
+.formulas{display:flex;flex-direction:column;gap:5px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.formulas div{display:grid;grid-template-columns:16px 1fr;gap:8px;color:var(--ink-2)}
+.formulas span{color:var(--ink-3)}
+.formulas b{color:var(--ink);font-weight:500}
+
+.card[data-a="s"] .card-kicker{color:var(--c-simple)}
+.card[data-a="c"] .card-kicker{color:var(--c-cont)}
+.card[data-a="p"] .card-kicker{color:var(--c-perf)}
+.card[data-a="pc"] .card-kicker{color:var(--c-perfc)}
+.card[data-a="s"]{border-top:3px solid var(--c-simple)}
+.card[data-a="c"]{border-top:3px solid var(--c-cont)}
+.card[data-a="p"]{border-top:3px solid var(--c-perf)}
+.card[data-a="pc"]{border-top:3px solid var(--c-perfc)}
+
+.tl{--tl-bg:var(--card-2);margin:0;background:var(--tl-bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0 10px;overflow-x:auto}
+.tl svg{display:block;width:100%;min-width:600px;height:auto}
+.tl figcaption{
+  padding:6px 24px 0;font-size:13px;color:var(--ink-2);max-width:78ch;
+}
+.tl figcaption b{color:var(--ink);font-weight:600}
+
+.card-body{display:grid;gap:26px;padding:22px 24px 24px}
+@media (min-width:820px){.card-body{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:34px}}
+.sub{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;
+}
+.why{display:flex;flex-direction:column;gap:11px;color:var(--ink-2);font-size:15.5px}
+.why b{color:var(--ink);font-weight:600}
+.uses{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:15px;color:var(--ink-2)}
+.uses li{display:grid;grid-template-columns:14px 1fr;gap:9px}
+.uses li::before{content:"";width:6px;height:6px;border-radius:2px;background:currentColor;margin-top:9px;opacity:.55}
+.card[data-a="s"] .uses li::before{background:var(--c-simple);opacity:1}
+.card[data-a="c"] .uses li::before{background:var(--c-cont);opacity:1}
+.card[data-a="p"] .uses li::before{background:var(--c-perf);opacity:1}
+.card[data-a="pc"] .uses li::before{background:var(--c-perfc);opacity:1}
+
+.ex{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+.ex li{padding:11px 0;border-top:1px solid var(--line-2)}
+.ex li:first-child{border-top:0;padding-top:0}
+.ex .s-en{font-family:"JetBrains Mono",monospace;font-size:14px;line-height:1.5;color:var(--ink)}
+.ex .s-ru{font-size:14.5px;color:var(--ink-2);margin-top:3px}
+.ex .s-note{font-size:13px;color:var(--ink-3);margin-top:3px}
+.ex .s-en u{text-decoration:none;border-bottom:2px solid;padding-bottom:1px}
+.card[data-a="s"] .ex .s-en u{border-color:var(--c-simple)}
+.card[data-a="c"] .ex .s-en u{border-color:var(--c-cont)}
+.card[data-a="p"] .ex .s-en u{border-color:var(--c-perf)}
+.card[data-a="pc"] .ex .s-en u{border-color:var(--c-perfc)}
+
+.markers{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.mk{
+  font-family:"JetBrains Mono",monospace;font-size:11.5px;padding:3px 9px;border-radius:5px;
+  background:var(--card-2);color:var(--ink-2);border:1px solid var(--line);
+}
+
+/* ---------- matrix ---------- */
+.matrix-wrap{overflow-x:auto;margin-top:26px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow)}
+table.matrix{border-collapse:collapse;width:100%;min-width:760px}
+table.matrix th,table.matrix td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.matrix thead th{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--line);
+}
+table.matrix tbody th{width:190px}
+.asp{font-family:Bitter,serif;font-size:15px;font-weight:600}
+.asp-ru{font-size:12.5px;color:var(--ink-3);display:block;font-family:"Golos Text",sans-serif;font-weight:400;margin-top:2px}
+tr[data-a="s"] .asp{color:var(--c-simple)}
+tr[data-a="c"] .asp{color:var(--c-cont)}
+tr[data-a="p"] .asp{color:var(--c-perf)}
+tr[data-a="pc"] .asp{color:var(--c-perfc)}
+table.matrix td .f{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink)}
+table.matrix td .m{font-size:13px;color:var(--ink-2);margin-top:3px}
+table.matrix tbody tr:last-child th,table.matrix tbody tr:last-child td{border-bottom:0}
+
+/* ---------- legend ---------- */
+.legend{display:grid;gap:12px;margin-top:24px}
+@media (min-width:700px){.legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lg{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.lg svg{display:block;width:64px;height:34px}
+.lg .t{font-size:14.5px;color:var(--ink);font-weight:500}
+.lg .d{font-size:13px;color:var(--ink-2);line-height:1.45}
+
+/* ---------- compare ---------- */
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:26px;overflow:hidden}
+.cmp-head{padding:20px 24px 14px}
+.cmp-head h3{font-size:21px}
+.cmp-head p{margin-top:8px;color:var(--ink-2);font-size:15px;max-width:70ch}
+.cmp-grid{display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+@media (min-width:840px){.cmp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cmp-cell{background:var(--card);padding:0 0 18px}
+.cmp-cell .hd{padding:16px 22px 4px;font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.05em}
+.cmp-cell .tl{--tl-bg:var(--card);border:0;padding:6px 0 4px}
+.cmp-grid.three{grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.cmp-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cmp-cell .tl svg{min-width:420px}
+.cmp-cell .bd{padding:6px 22px 0;font-size:14.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
+.cmp-cell .bd .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink)}
+.cmp-cell[data-a="s"] .hd{color:var(--c-simple)}
+.cmp-cell[data-a="c"] .hd{color:var(--c-cont)}
+.cmp-cell[data-a="p"] .hd{color:var(--c-perf)}
+.cmp-cell[data-a="pc"] .hd{color:var(--c-perfc)}
+
+/* ---------- markers table ---------- */
+.mtab-wrap{overflow-x:auto;margin-top:24px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow)}
+table.mtab{border-collapse:collapse;width:100%;min-width:680px}
+table.mtab th,table.mtab td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.mtab thead th{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--line)}
+table.mtab td.k{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);width:38%}
+table.mtab td.v{font-size:14.5px;color:var(--ink-2)}
+table.mtab tbody tr:last-child td{border-bottom:0}
+
+/* ---------- final ---------- */
+.final{margin-top:30px;display:grid;gap:14px}
+@media (min-width:760px){.final{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fq{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.fq .q{font-family:Bitter,serif;font-weight:600;font-size:16px;color:var(--ink)}
+.fq .a{margin-top:7px;font-size:14.5px;color:var(--ink-2)}
+.fq .a b{color:var(--ink);font-weight:600}
+
+footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13.5px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Содержание">
+  <div class="rail-title">Части</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">00:00</span><span>Как читать линию</span></a></li>
+    <li><a href="#p1"><span class="tc">02:10</span><span>Логика системы</span></a></li>
+    <li><a href="#p2"><span class="tc">05:40</span><span>Present · 4</span></a></li>
+    <li><a href="#p3"><span class="tc">14:20</span><span>Past · 4</span></a></li>
+    <li><a href="#p4"><span class="tc">22:00</span><span>Future · 4</span></a></li>
+    <li><a href="#p5"><span class="tc">29:10</span><span>Future in the Past · 4</span></a></li>
+    <li><a href="#p6"><span class="tc">34:30</span><span>Сравнения</span></a></li>
+    <li><a href="#p7"><span class="tc">41:00</span><span>Маркеры времени</span></a></li>
+    <li><a href="#p8"><span class="tc">44:20</span><span>Шпаргалка</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">16 времён · 4 аспекта · 3 точки отсчёта</div>
+  <h1>Линия времени английского</h1>
+  <p class="lede">Полный разбор всех времён английского языка — <b>по-русски</b>, с диаграммой времени для каждого. Английского здесь ровно столько, сколько нужно: формула и примеры-предложения. Всё остальное — объяснение того, <b>где на линии времени</b> стоит действие и <b>что именно</b> форма глагола сообщает о времени.</p>
+  <div class="chips">
+    <span class="chip s">Simple — факт</span>
+    <span class="chip c">Continuous — процесс</span>
+    <span class="chip p">Perfect — результат до точки</span>
+    <span class="chip pc">Perfect Continuous — длительность до точки</span>
+  </div>
+</header>
+
+<!-- ===================== ЧАСТЬ 0 ===================== -->
+<section class="part" id="p0">
+  <div class="part-head">
+    <span class="part-num">Часть 0</span>
+    <span class="part-tc">00:00</span>
+  </div>
+  <h2>Как читать линию времени</h2>
+  <p class="part-lede">Все 16 диаграмм на этой странице нарисованы одними и теми же знаками. Потратьте минуту здесь — и дальше каждое время будет читаться с одного взгляда, без перевода на русский.</p>
+
+  <div class="legend">
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".35"/><polygon points="60,22 53,18.5 53,25.5" fill="currentColor" opacity=".35"/></svg>
+      <div><div class="t">Ось</div><div class="d">Время течёт слева направо: слева прошлое, справа будущее.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><line x1="32" y1="5" x2="32" y2="30" stroke="var(--c-now)" stroke-width="2" stroke-dasharray="4 3"/></svg>
+      <div><div class="t">Красный пунктир — «сейчас»</div><div class="d">Момент речи. Главная точка отсчёта: относительно неё стоят все времена группы Present.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><circle cx="32" cy="22" r="6" fill="var(--c-simple)"/></svg>
+      <div><div class="t">Точка</div><div class="d">Целое действие как факт. Не важно, сколько оно длилось — важно, что оно было / есть / будет.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><rect x="14" y="15" width="36" height="14" rx="7" fill="var(--c-cont)" fill-opacity=".28" stroke="var(--c-cont)" stroke-width="1.5"/></svg>
+      <div><div class="t">Полоса</div><div class="d">Действие-процесс: имеет длину, у него есть «внутри». Внутри полосы может произойти точка.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><circle cx="10" cy="22" r="3.4" fill="var(--c-simple)"/><circle cx="24" cy="22" r="3.4" fill="var(--c-simple)"/><circle cx="38" cy="22" r="3.4" fill="var(--c-simple)"/><circle cx="52" cy="22" r="3.4" fill="var(--c-simple)"/></svg>
+      <div><div class="t">Цепочка точек</div><div class="d">Повторяющееся, привычное, всегда истинное. Отдельные разы не важны — важна регулярность.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><path d="M14 14 Q32 0 50 14" fill="none" stroke="var(--c-perf)" stroke-width="1.6" stroke-dasharray="4 3"/><polygon points="50,16 46,9 54,9" fill="var(--c-perf)"/></svg>
+      <div><div class="t">Дуга</div><div class="d">Связь: действие сделано раньше, но важно оно для более поздней точки. Это и есть Perfect.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><line x1="32" y1="9" x2="32" y2="26" stroke="var(--ink-2)" stroke-width="2"/><rect x="28" y="6" width="9" height="7" fill="var(--ink-2)"/></svg>
+      <div><div class="t">Флажок</div><div class="d">Срок или граница: «к этому моменту». Perfect-времена всегда меряются от такой границы.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><rect x="2" y="4" width="30" height="26" fill="currentColor" opacity=".07"/><text x="8" y="14" font-size="7" fill="currentColor" opacity=".5" font-family="monospace">ПРОШЛОЕ</text></svg>
+      <div><div class="t">Затенённая зона</div><div class="d">Область прошлого или будущего — просто подсказка, в какой половине оси мы находимся.</div></div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p><b>Одно правило, которое объясняет половину ошибок.</b> В русском языке время глагола отвечает на вопрос «когда?». В английском форма глагола отвечает сразу на <b>два</b> вопроса: «когда?» — и «как я на это смотрю: как на факт, как на процесс, как на результат?». Поэтому времён не три, а двенадцать: три ответа на первый вопрос, умноженные на четыре ответа на второй.</p>
+    <p><b>Точка отсчёта</b> — второе ключевое понятие. Present-времена меряются от «сейчас», Past — от момента в прошлом, Future — от момента в будущем. Как только вы поняли, где стоит точка отсчёта, остаётся выбрать только аспект.</p>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 1 ===================== -->
+<section class="part" id="p1">
+  <div class="part-head">
+    <span class="part-num">Часть 1</span>
+    <span class="part-tc">02:10</span>
+  </div>
+  <h2>Логика системы: 4 × 3</h2>
+  <p class="part-lede">Не учите 12 времён как 12 отдельных правил. Выучите 4 аспекта и 3 точки отсчёта — и любое время собирается само, как из двух деталей.</p>
+
+  <div class="prose">
+    <p><b>Аспект — это взгляд на действие.</b> Он задаётся вспомогательным глаголом и формой смыслового:</p>
+  </div>
+
+  <div class="matrix-wrap">
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th scope="col">Аспект</th>
+        <th scope="col">Present · точка отсчёта «сейчас»</th>
+        <th scope="col">Past · точка отсчёта в прошлом</th>
+        <th scope="col">Future · точка отсчёта в будущем</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-a="s">
+        <th scope="row"><span class="asp">Simple</span><span class="asp-ru">факт, целиком</span></th>
+        <td><div class="f">V / V-s</div><div class="m">регулярно, вообще, всегда</div></td>
+        <td><div class="f">V2 (V-ed)</div><div class="m">случилось и закончилось</div></td>
+        <td><div class="f">will V</div><div class="m">случится</div></td>
+      </tr>
+      <tr data-a="c">
+        <th scope="row"><span class="asp">Continuous</span><span class="asp-ru">процесс, изнутри</span></th>
+        <td><div class="f">am / is / are + V-ing</div><div class="m">идёт прямо сейчас</div></td>
+        <td><div class="f">was / were + V-ing</div><div class="m">шло в тот момент</div></td>
+        <td><div class="f">will be + V-ing</div><div class="m">будет идти в тот момент</div></td>
+      </tr>
+      <tr data-a="p">
+        <th scope="row"><span class="asp">Perfect</span><span class="asp-ru">результат к точке</span></th>
+        <td><div class="f">have / has + V3</div><div class="m">уже сделано — результат сейчас</div></td>
+        <td><div class="f">had + V3</div><div class="m">было сделано до того момента</div></td>
+        <td><div class="f">will have + V3</div><div class="m">будет сделано к тому сроку</div></td>
+      </tr>
+      <tr data-a="pc">
+        <th scope="row"><span class="asp">Perfect Continuous</span><span class="asp-ru">длительность до точки</span></th>
+        <td><div class="f">have / has been + V-ing</div><div class="m">длится уже сколько-то времени</div></td>
+        <td><div class="f">had been + V-ing</div><div class="m">длилось до того момента</div></td>
+        <td><div class="f">will have been + V-ing</div><div class="m">будет длиться к тому сроку</div></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Как собрать любое время за два шага.</b> Шаг первый: выберите точку отсчёта — сейчас, момент в прошлом или момент в будущем. Она даёт вам вспомогательный глагол: <span class="en">have/am</span> → <span class="en">had/was</span> → <span class="en">will have/will be</span>. Шаг второй: выберите аспект — он даёт форму смыслового глагола: голая форма, <span class="en">-ing</span>, третья форма (V3) или <span class="en">been + -ing</span>.</p>
+    <p><b>V3 — это третья форма глагола</b> (причастие прошедшего времени): <span class="en">write → wrote → written</span>, <span class="en">work → worked → worked</span>. Она сама по себе не время; она появляется только вместе с <span class="en">have / had / will have</span> и означает «сделано».</p>
+    <p><b>Порядок слов всегда один.</b> Первый вспомогательный глагол — тот, который меняется по лицу и времени; всё остальное застывшее. В вопросе первый вспомогательный уходит в начало, в отрицании после него ставится <span class="en">not</span>. Больше ничего в предложении не двигается.</p>
+  </div>
+</section>
+<!-- ===================== ЧАСТЬ 2 ===================== -->
+<section class="part" id="p2">
+  <div class="part-head">
+    <span class="part-num">Часть 2 · Present</span>
+    <span class="part-tc">05:40</span>
+  </div>
+  <h2>Точка отсчёта — «сейчас»</h2>
+  <p class="part-lede">Четыре времени, у которых красный пунктир стоит в центре оси. Все они говорят о моменте речи — но каждое смотрит на него по-своему: одно вообще не касается оси, другое сидит прямо на пунктире, третье тянет к нему стрелку из прошлого.</p>
+
+  <!-- 1 -->
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Present · 01</div>
+        <h3>Present Simple</h3>
+        <div class="card-ru">Настоящее простое — «вообще, всегда, обычно»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / you / we / they work</b></div>
+        <div><span>+</span><b>he / she / it works</b></div>
+        <div><span>&minus;</span><b>do not (don't) / does not (doesn't) work</b></div>
+        <div><span>?</span><b>Do you work? · Does he work?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-s">
+      <figcaption><b>Линия:</b> действие не привязано ни к одной точке. Цепочка одинаковых точек тянется через всю ось — и через прошлое, и через будущее. Момент речи ничем не выделен: в момент речи действие может вообще не происходить.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Это единственное время, которое <b>не показывает на конкретный момент</b>. Оно описывает не событие, а свойство мира или человека: так устроено, так бывает, так повторяется.</p>
+          <p>Отсюда главная ловушка для русскоговорящих. Фраза <span class="en">I work in Moscow</span> не значит «я сейчас работаю» — она значит «моя работа в Москве», хоть я сейчас и лежу на пляже.</p>
+        </div>
+        <ul class="uses">
+          <li>Регулярные, повторяющиеся действия и привычки</li>
+          <li>Постоянные состояния и характеристики</li>
+          <li>Общие истины, законы природы, факты</li>
+          <li>Расписания и программы — даже о будущем</li>
+          <li>Глаголы состояния (know, want, love, need), которые почти не бывают в Continuous</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">always</span><span class="mk">usually</span><span class="mk">often</span><span class="mk">sometimes</span><span class="mk">rarely</span><span class="mk">never</span><span class="mk">every day</span><span class="mk">on Mondays</span><span class="mk">twice a week</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">She <u>drinks</u> coffee every morning.</div><div class="s-ru">Она пьёт кофе каждое утро.</div><div class="s-note">Привычка. Прямо сейчас, возможно, она спит.</div></li>
+          <li><div class="s-en">Water <u>boils</u> at 100 degrees.</div><div class="s-ru">Вода кипит при 100 градусах.</div><div class="s-note">Всегда истинно — точки по всей оси.</div></li>
+          <li><div class="s-en">I <u>don't understand</u> this rule.</div><div class="s-ru">Я не понимаю это правило.</div><div class="s-note">Состояние, а не процесс: «understanding» не говорят.</div></li>
+          <li><div class="s-en">The train <u>leaves</u> at six tomorrow.</div><div class="s-ru">Поезд отправляется завтра в шесть.</div><div class="s-note">Расписание: будущее, но форма настоящего.</div></li>
+          <li><div class="s-en"><u>Does</u> your brother <u>live</u> in Kazan?</div><div class="s-ru">Твой брат живёт в Казани?</div><div class="s-note">В вопросе does забирает -s, глагол остаётся голым.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Present · 02</div>
+        <h3>Present Continuous</h3>
+        <div class="card-ru">Настоящее длительное — «прямо сейчас идёт»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I am working</b></div>
+        <div><span>+</span><b>he is / we are working</b></div>
+        <div><span>&minus;</span><b>am not / is not (isn't) / are not (aren't) working</b></div>
+        <div><span>?</span><b>Are you working? · Is she working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-c">
+      <figcaption><b>Линия:</b> полоса, внутри которой находится «сейчас». Начало действия — в прошлом, конец — в будущем, а красный пунктир проходит сквозь середину. Мы смотрим на действие изнутри: оно ещё не закончено.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Полоса может быть узкой — <b>буквально эта секунда</b> (<span class="en">I am reading now</span>), а может быть широкой — <b>этот период жизни</b> (<span class="en">I am learning Spanish this year</span>). Во втором случае в момент речи вы можете спать: важно, что процесс запущен и не завершён.</p>
+          <p>Второе значение — <b>временность</b>. Continuous говорит «это ненадолго», Simple говорит «это моё постоянное свойство». Отсюда разница между <span class="en">He is rude</span> (он хам по натуре) и <span class="en">He is being rude</span> (он ведёт себя по-хамски сегодня).</p>
+        </div>
+        <ul class="uses">
+          <li>Действие в момент речи</li>
+          <li>Временный, ограниченный по сроку период</li>
+          <li>Меняющаяся, развивающаяся ситуация</li>
+          <li>Твёрдо запланированная договорённость на будущее</li>
+          <li>С always — раздражение от повторяющегося действия</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">now</span><span class="mk">right now</span><span class="mk">at the moment</span><span class="mk">currently</span><span class="mk">today</span><span class="mk">this week</span><span class="mk">Look!</span><span class="mk">Listen!</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">Be quiet, the baby <u>is sleeping</u>.</div><div class="s-ru">Тише, ребёнок спит.</div><div class="s-note">Процесс идёт ровно в момент речи.</div></li>
+          <li><div class="s-en">I <u>am reading</u> a great book this month.</div><div class="s-ru">Я читаю отличную книгу в этом месяце.</div><div class="s-note">Широкая полоса: сейчас книга закрыта, но процесс не завершён.</div></li>
+          <li><div class="s-en">The climate <u>is getting</u> warmer.</div><div class="s-ru">Климат становится теплее.</div><div class="s-note">Медленное изменение — тоже незавершённый процесс.</div></li>
+          <li><div class="s-en">We <u>are meeting</u> the lawyer on Friday.</div><div class="s-ru">Мы встречаемся с юристом в пятницу.</div><div class="s-note">Договорённость: время и место уже назначены.</div></li>
+          <li><div class="s-en">He <u>is</u> always <u>losing</u> his keys!</div><div class="s-ru">Он вечно теряет ключи!</div><div class="s-note">Не факт, а эмоция — раздражение.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 3 -->
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Present · 03</div>
+        <h3>Present Perfect</h3>
+        <div class="card-ru">Настоящее совершенное — «уже сделано, и это важно сейчас»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / you / we / they have done</b></div>
+        <div><span>+</span><b>he / she / it has done</b></div>
+        <div><span>&minus;</span><b>have not (haven't) / has not (hasn't) done</b></div>
+        <div><span>?</span><b>Have you done? · Has he done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-p">
+      <figcaption><b>Линия:</b> само действие — точка в прошлом, но она <b>не подписана временем</b>, а от неё идёт дуга к «сейчас». Важна не точка, а стрелка: результат действия существует в момент речи.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Это <b>не прошедшее время</b>, хотя переводится на русский прошедшим. Грамматически это настоящее: вспомогательный глагол <span class="en">have</span> стоит в настоящем времени. Предложение говорит о <b>текущем положении дел</b>, а прошлое действие — только его причина.</p>
+          <p>Отсюда железное правило: <b>с Present Perfect нельзя называть конкретное прошедшее время</b>. Нельзя <span class="en">I have seen him yesterday</span> — как только вы поставили точку на оси, связь с «сейчас» рвётся, и нужен Past Simple.</p>
+          <p>Три типичных смысла: результат виден сейчас; опыт за всю жизнь до сейчас; период, который ещё не закончился (<span class="en">today, this week, this year</span>).</p>
+        </div>
+        <ul class="uses">
+          <li>Результат в настоящем: что-то изменилось</li>
+          <li>Жизненный опыт без указания даты</li>
+          <li>Незаконченный период времени</li>
+          <li>Только что произошедшее — с just</li>
+          <li>Действие, которое ещё ожидается — с yet, already</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">just</span><span class="mk">already</span><span class="mk">yet</span><span class="mk">ever</span><span class="mk">never</span><span class="mk">so far</span><span class="mk">recently</span><span class="mk">this week</span><span class="mk">since 2019</span><span class="mk">for two years</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>have lost</u> my passport.</div><div class="s-ru">Я потерял паспорт.</div><div class="s-note">Потерял когда-то — но важно, что сейчас его нет.</div></li>
+          <li><div class="s-en">She <u>has never been</u> to Japan.</div><div class="s-ru">Она никогда не была в Японии.</div><div class="s-note">Опыт за всю жизнь до этой минуты.</div></li>
+          <li><div class="s-en">We <u>have finished</u> three chapters today.</div><div class="s-ru">Мы закончили три главы сегодня.</div><div class="s-note">«Сегодня» ещё не кончилось — период открыт.</div></li>
+          <li><div class="s-en">The train <u>has just left</u>.</div><div class="s-ru">Поезд только что ушёл.</div><div class="s-note">just — свежий результат, вы опоздали.</div></li>
+          <li><div class="s-en"><u>Have</u> you <u>read</u> the contract <u>yet</u>?</div><div class="s-ru">Ты уже прочитал договор?</div><div class="s-note">Спрашиваем не «когда», а «готово ли».</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 4 -->
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Present · 04</div>
+        <h3>Present Perfect Continuous</h3>
+        <div class="card-ru">Настоящее совершенное длительное — «длится уже столько-то»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I have been working</b></div>
+        <div><span>+</span><b>he has been working</b></div>
+        <div><span>&minus;</span><b>haven't / hasn't been working</b></div>
+        <div><span>?</span><b>Have you been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-pc">
+      <figcaption><b>Линия:</b> полоса, которая начинается в прошлом и <b>упирается в «сейчас»</b>. Часто она продолжается и дальше — поэтому справа от пунктира стоят бледные точки. Измеряется не момент, а длина полосы.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Отвечает на вопрос <b>«как долго?»</b>. Present Perfect говорит «сделано», а Perfect Continuous — «делается вот уже два часа». Здесь почти всегда есть <span class="en">for</span> (сколько времени) или <span class="en">since</span> (с какого момента).</p>
+          <p>Второе употребление — <b>объяснение видимого следствия</b>. Вы промокли, потому что бегали; глаза красные, потому что вы плакали. Действие могло только что закончиться, но его следы налицо.</p>
+          <p>Глаголы состояния (<span class="en">know, be, have, love</span>) в эту форму не идут: говорят <span class="en">I have known her for years</span>, а не <span class="en">have been knowing</span>.</p>
+        </div>
+        <ul class="uses">
+          <li>Действие началось в прошлом и длится до сих пор</li>
+          <li>Ответ на вопрос «как долго это уже происходит?»</li>
+          <li>Недавно закончившееся действие с видимым следом</li>
+          <li>Подчёркнутая длительность, иногда с оттенком усталости или раздражения</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">for an hour</span><span class="mk">since morning</span><span class="mk">all day</span><span class="mk">How long...?</span><span class="mk">lately</span><span class="mk">recently</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>have been waiting</u> for you for an hour.</div><div class="s-ru">Я жду тебя уже час.</div><div class="s-note">Русский настоящим — английский перфектом. Полоса упирается в «сейчас».</div></li>
+          <li><div class="s-en">She <u>has been working</u> here since 2019.</div><div class="s-ru">Она работает здесь с 2019 года.</div><div class="s-note">since — точка старта полосы.</div></li>
+          <li><div class="s-en">Your eyes are red. <u>Have</u> you <u>been crying</u>?</div><div class="s-ru">У тебя красные глаза. Ты плакал?</div><div class="s-note">Действие кончилось, но след виден.</div></li>
+          <li><div class="s-en"><u>How long have</u> you <u>been learning</u> English?</div><div class="s-ru">Как долго ты учишь английский?</div><div class="s-note">Главный вопрос этого времени — «сколько длится».</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+<!-- ===================== ЧАСТЬ 3 ===================== -->
+<section class="part" id="p3">
+  <div class="part-head">
+    <span class="part-num">Часть 3 · Past</span>
+    <span class="part-tc">14:20</span>
+  </div>
+  <h2>Точка отсчёта переезжает в прошлое</h2>
+  <p class="part-lede">Здесь красный пунктир перестаёт работать. Всё меряется от <b>момента в прошлом</b> — он отмечен на линиях серой вертикалью. Вспомогательные глаголы просто переходят в прошедшую форму: <span class="en">am/is → was</span>, <span class="en">are → were</span>, <span class="en">have/has → had</span>. Логика аспектов не меняется вообще.</p>
+
+  <!-- 5 -->
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Past · 05</div>
+        <h3>Past Simple</h3>
+        <div class="card-ru">Прошедшее простое — «случилось тогда-то и закончилось»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I worked · I went</b></div>
+        <div><span>&minus;</span><b>did not (didn't) work / go</b></div>
+        <div><span>?</span><b>Did you work? · Did he go?</b></div>
+        <div><span>!</span><b>после did — голая форма глагола</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-s">
+      <figcaption><b>Линия:</b> одна точка в прошлом, и под ней — подпись с конкретным временем. Именно эта подпись отличает Past Simple от Present Perfect: здесь мы точно знаем, <b>когда</b>, и связь с настоящим не нужна.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Базовое время для любого рассказа о прошлом. Действие <b>полностью закрыто</b>: оно случилось в законченный отрезок времени и к настоящему отношения не имеет.</p>
+          <p>Цепочка Past Simple — это <b>последовательность событий</b>: одно за другим, в том порядке, в каком написано. Поэтому вся повествовательная проза держится на этом времени.</p>
+          <p>Второе значение — регулярные действия в прошлом, которых больше нет: <span class="en">I played football at school</span>.</p>
+        </div>
+        <ul class="uses">
+          <li>Однократное завершённое действие с указанием времени</li>
+          <li>Цепочка событий в рассказе</li>
+          <li>Бывшие привычки и состояния</li>
+          <li>Факт из прошлого, когда сейчас его последствия не обсуждаются</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">yesterday</span><span class="mk">last week</span><span class="mk">two days ago</span><span class="mk">in 2010</span><span class="mk">when I was young</span><span class="mk">then</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>bought</u> this car in 2019.</div><div class="s-ru">Я купил эту машину в 2019 году.</div><div class="s-note">Есть дата — значит, только Past Simple.</div></li>
+          <li><div class="s-en">She <u>opened</u> the door, <u>looked</u> inside and <u>left</u>.</div><div class="s-ru">Она открыла дверь, заглянула внутрь и ушла.</div><div class="s-note">Три точки подряд — порядок событий.</div></li>
+          <li><div class="s-en">We <u>didn't know</u> about the meeting.</div><div class="s-ru">Мы не знали о встрече.</div><div class="s-note">didn't забирает прошедшее время, know остаётся голым.</div></li>
+          <li><div class="s-en"><u>Did</u> you <u>call</u> him last night?</div><div class="s-ru">Ты звонил ему вчера вечером?</div><div class="s-note">Вопрос о конкретном моменте прошлого.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 6 -->
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Past · 06</div>
+        <h3>Past Continuous</h3>
+        <div class="card-ru">Прошедшее длительное — «шло в тот момент»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he was working</b></div>
+        <div><span>+</span><b>we / you / they were working</b></div>
+        <div><span>&minus;</span><b>wasn't / weren't working</b></div>
+        <div><span>?</span><b>Were you working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-c">
+      <figcaption><b>Линия:</b> полоса в прошлом, а внутри неё — точка другого, короткого действия. Классическая картинка: длинный процесс служит <b>фоном</b>, короткое событие врывается в него.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Это время почти никогда не живёт одно — ему нужна <b>вторая координата</b>: либо точное время (<span class="en">at 7 o'clock</span>), либо другое действие в Past Simple (<span class="en">when he came</span>).</p>
+          <p>Запомните связку союзов: <b>while</b> ведёт за собой длинное (полосу), <b>when</b> — короткое (точку). <span class="en">While I was cooking, the phone rang.</span></p>
+          <p>Если оба действия в Past Continuous — они шли <b>параллельно</b>, две полосы рядом.</p>
+        </div>
+        <ul class="uses">
+          <li>Процесс в конкретный момент прошлого</li>
+          <li>Фон для короткого события</li>
+          <li>Два одновременных процесса</li>
+          <li>Описание обстановки в начале рассказа</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">at 5 o'clock</span><span class="mk">while</span><span class="mk">when...</span><span class="mk">all evening</span><span class="mk">at that moment</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">At eight o'clock I <u>was having</u> dinner.</div><div class="s-ru">В восемь часов я ужинал.</div><div class="s-note">Точка на оси задана — процесс её накрывает.</div></li>
+          <li><div class="s-en">While she <u>was driving</u>, it started to rain.</div><div class="s-ru">Пока она вела машину, начался дождь.</div><div class="s-note">while + полоса, событие внутри неё.</div></li>
+          <li><div class="s-en">They <u>were arguing</u> when I walked in.</div><div class="s-ru">Они спорили, когда я вошёл.</div><div class="s-note">Спор начался раньше моего прихода.</div></li>
+          <li><div class="s-en">He <u>was cooking</u> while I <u>was cleaning</u>.</div><div class="s-ru">Он готовил, пока я убирался.</div><div class="s-note">Две параллельные полосы.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 7 -->
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Past · 07</div>
+        <h3>Past Perfect</h3>
+        <div class="card-ru">Предпрошедшее — «уже было сделано до того момента»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he / they had done</b></div>
+        <div><span>&minus;</span><b>had not (hadn't) done</b></div>
+        <div><span>?</span><b>Had you done?</b></div>
+        <div><span>!</span><b>had — одна форма для всех лиц</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-p">
+      <figcaption><b>Линия:</b> две точки в прошлом. Правая — тот момент, о котором идёт речь (обычно Past Simple). Левая — то, что случилось <b>раньше него</b>. Дуга показывает: раннее действие важно именно для поздней точки.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Past Perfect не существует сам по себе — он всегда <b>относительно другой точки прошлого</b>. Нет второй точки (явной или подразумеваемой) — нет и Past Perfect: нужен обычный Past Simple.</p>
+          <p>Он нужен ровно тогда, когда порядок слов в предложении <b>не совпадает с порядком событий</b>. «Поезд ушёл, когда я приехал» — если сначала ушёл, а потом приехал, то ушёл будет в Past Perfect.</p>
+          <p>Ещё одно место обитания — <b>косвенная речь</b>: Present Perfect и Past Simple при пересказе оба превращаются в Past Perfect.</p>
+        </div>
+        <ul class="uses">
+          <li>Действие раньше другого действия в прошлом</li>
+          <li>Причина ситуации в прошлом</li>
+          <li>Косвенная речь и согласование времён</li>
+          <li>После before, after, by the time, because</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">by that time</span><span class="mk">before</span><span class="mk">after</span><span class="mk">already</span><span class="mk">by 2010</span><span class="mk">when I arrived</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">When I arrived, the train <u>had</u> already <u>left</u>.</div><div class="s-ru">Когда я приехал, поезд уже ушёл.</div><div class="s-note">Ушёл раньше, чем я приехал.</div></li>
+          <li><div class="s-en">She <u>had never seen</u> the sea before that trip.</div><div class="s-ru">До той поездки она никогда не видела моря.</div><div class="s-note">Опыт до точки в прошлом — как Present Perfect, но сдвинут назад.</div></li>
+          <li><div class="s-en">He was tired because he <u>had worked</u> all night.</div><div class="s-ru">Он устал, потому что работал всю ночь.</div><div class="s-note">Причина предшествует следствию.</div></li>
+          <li><div class="s-en">She said she <u>had lost</u> the keys.</div><div class="s-ru">Она сказала, что потеряла ключи.</div><div class="s-note">Прямая речь была: I have lost the keys.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 8 -->
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Past · 08</div>
+        <h3>Past Perfect Continuous</h3>
+        <div class="card-ru">Предпрошедшее длительное — «длилось столько-то до того момента»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I had been working</b></div>
+        <div><span>&minus;</span><b>hadn't been working</b></div>
+        <div><span>?</span><b>Had you been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-pc">
+      <figcaption><b>Линия:</b> полоса в прошлом, которая <b>упирается в точку прошлого</b>, а не в «сейчас». Тот же рисунок, что у Present Perfect Continuous, только весь сдвинут влево.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Отвечает на вопрос «сколько времени это уже длилось <b>к тому моменту</b>». Практически всегда есть <span class="en">for</span> или <span class="en">since</span> и вторая точка прошлого.</p>
+          <p>Второе употребление — <b>объяснение состояния в прошлом</b>: земля была мокрой, потому что перед этим шёл дождь.</p>
+          <p>В живой речи встречается редко, но в письменных текстах и на экзаменах — регулярно.</p>
+        </div>
+        <ul class="uses">
+          <li>Длительность до момента в прошлом</li>
+          <li>Причина того, что было видно в прошлом</li>
+          <li>Косвенная речь вместо Present Perfect Continuous</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">for two hours</span><span class="mk">since morning</span><span class="mk">before that</span><span class="mk">all day</span><span class="mk">by then</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">He <u>had been driving</u> for six hours when he stopped.</div><div class="s-ru">Он ехал уже шесть часов, когда остановился.</div><div class="s-note">Длина полосы измерена к точке «остановился».</div></li>
+          <li><div class="s-en">The ground was wet — it <u>had been raining</u>.</div><div class="s-ru">Земля была мокрая — перед этим шёл дождь.</div><div class="s-note">Видимое следствие в прошлом.</div></li>
+          <li><div class="s-en">She <u>had been waiting</u> since noon, so she was angry.</div><div class="s-ru">Она ждала с полудня, поэтому была злая.</div><div class="s-note">since задаёт начало полосы.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+<!-- ===================== ЧАСТЬ 4 ===================== -->
+<section class="part" id="p4">
+  <div class="part-head">
+    <span class="part-num">Часть 4 · Future</span>
+    <span class="part-tc">22:00</span>
+  </div>
+  <h2>Точка отсчёта справа от «сейчас»</h2>
+  <p class="part-lede">Ко всей конструкции спереди добавляется <span class="en">will</span> — и она уезжает в правую половину оси. После <span class="en">will</span> всегда идёт голая форма глагола, поэтому цепочки получаются длинные, но собираются они механически: <span class="en">will be doing</span>, <span class="en">will have done</span>, <span class="en">will have been doing</span>.</p>
+
+  <!-- 9 -->
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Future · 09</div>
+        <h3>Future Simple</h3>
+        <div class="card-ru">Будущее простое — «случится»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he / they will work</b></div>
+        <div><span>&minus;</span><b>will not (won't) work</b></div>
+        <div><span>?</span><b>Will you work?</b></div>
+        <div><span>!</span><b>will — одна форма для всех лиц</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-s">
+      <figcaption><b>Линия:</b> одна точка справа от «сейчас». Ничего больше — ни длины, ни связей. Просто событие, которое произойдёт.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>У <span class="en">will</span> есть важный оттенок: это <b>решение, принятое в момент речи</b>, предсказание или обещание. Если план был готов заранее, англичанин скажет <span class="en">be going to</span> или вообще Present Continuous.</p>
+          <p><span class="en">I'll help you</span> — решил только что, увидев вас. <span class="en">I'm going to help you</span> — собирался и раньше.</p>
+          <p><b>Ловушка:</b> после <span class="en">if</span>, <span class="en">when</span>, <span class="en">as soon as</span>, <span class="en">until</span> будущее время не ставится — там нужен Present Simple: <span class="en">When he comes, I will tell him.</span></p>
+        </div>
+        <ul class="uses">
+          <li>Спонтанное решение прямо в момент речи</li>
+          <li>Предсказание, мнение о будущем (I think, probably)</li>
+          <li>Обещание, отказ, предложение помощи</li>
+          <li>Неизбежные события, не зависящие от нас</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">tomorrow</span><span class="mk">next year</span><span class="mk">in an hour</span><span class="mk">soon</span><span class="mk">I think</span><span class="mk">probably</span><span class="mk">one day</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">I think it <u>will rain</u> tomorrow.</div><div class="s-ru">Думаю, завтра будет дождь.</div><div class="s-note">Прогноз, а не план.</div></li>
+          <li><div class="s-en">That bag looks heavy — I <u>will help</u> you.</div><div class="s-ru">Сумка тяжёлая — я тебе помогу.</div><div class="s-note">Решение родилось в этот момент.</div></li>
+          <li><div class="s-en">She <u>won't tell</u> anyone, I promise.</div><div class="s-ru">Она никому не скажет, обещаю.</div><div class="s-note">won't — ещё и «отказывается».</div></li>
+          <li><div class="s-en">When he <u>arrives</u>, we <u>will start</u>.</div><div class="s-ru">Когда он приедет, мы начнём.</div><div class="s-note">После when — настоящее время, хотя смысл будущий.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 10 -->
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Future · 10</div>
+        <h3>Future Continuous</h3>
+        <div class="card-ru">Будущее длительное — «будет идти в тот момент»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I will be working</b></div>
+        <div><span>&minus;</span><b>won't be working</b></div>
+        <div><span>?</span><b>Will you be working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-c">
+      <figcaption><b>Линия:</b> полоса в будущем и точка внутри неё — тот будущий момент, в который процесс уже будет идти. Начнётся он раньше этой точки и кончится позже.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Нужен, когда важно <b>застать действие в разгаре</b>. Не «я сделаю в 9», а «в 9 я буду занят этим».</p>
+          <p>Второе значение неожиданное: это <b>самый вежливый способ спросить о планах</b>. <span class="en">Will you be using the car?</span> звучит как «просто интересуюсь», без намёка на просьбу, тогда как <span class="en">Will you use the car?</span> может прозвучать как давление.</p>
+        </div>
+        <ul class="uses">
+          <li>Процесс в конкретный момент будущего</li>
+          <li>Действие, которое произойдёт естественным ходом вещей</li>
+          <li>Вежливый вопрос о чужих планах</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">at 10 tomorrow</span><span class="mk">this time next week</span><span class="mk">all day tomorrow</span><span class="mk">when you arrive</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">At nine tomorrow I <u>will be flying</u> to Berlin.</div><div class="s-ru">Завтра в девять я буду лететь в Берлин.</div><div class="s-note">Точка внутри полосы.</div></li>
+          <li><div class="s-en">Don't call at seven — we <u>will be having</u> dinner.</div><div class="s-ru">Не звони в семь — мы будем ужинать.</div><div class="s-note">Объясняем, почему момент занят.</div></li>
+          <li><div class="s-en"><u>Will</u> you <u>be using</u> the printer later?</div><div class="s-ru">Ты будешь пользоваться принтером позже?</div><div class="s-note">Вежливо: просто уточняю планы.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 11 -->
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Future · 11</div>
+        <h3>Future Perfect</h3>
+        <div class="card-ru">Будущее совершенное — «будет сделано к сроку»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I will have done</b></div>
+        <div><span>&minus;</span><b>won't have done</b></div>
+        <div><span>?</span><b>Will you have done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-p">
+      <figcaption><b>Линия:</b> флажок в будущем — это <b>срок</b>. Действие-точка стоит левее флажка, и дуга идёт к нему: к этому сроку всё уже будет закончено.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Ключевое слово — <b><span class="en">by</span></b>: <span class="en">by Friday</span>, <span class="en">by the time you come</span>. Именно <span class="en">by</span> ставит на ось тот флажок, к которому меряется готовность. Без срока это время не употребляется.</p>
+          <p>Сравните: <span class="en">I will finish at six</span> — закончу ровно в шесть. <span class="en">I will have finished by six</span> — к шести уже будет готово, может, и раньше.</p>
+        </div>
+        <ul class="uses">
+          <li>Действие завершится до определённого момента в будущем</li>
+          <li>Подведение итогов к сроку («к тому времени пройдёт 10 лет»)</li>
+          <li>Уверенное предположение о том, что уже произошло</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">by Friday</span><span class="mk">by then</span><span class="mk">by the time...</span><span class="mk">before you come</span><span class="mk">in two years</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>will have finished</u> the report by Friday.</div><div class="s-ru">Я закончу отчёт к пятнице.</div><div class="s-note">Флажок — пятница, работа завершится раньше.</div></li>
+          <li><div class="s-en">By the time you arrive, we <u>will have eaten</u>.</div><div class="s-ru">К твоему приезду мы уже поедим.</div><div class="s-note">После by the time — настоящее время.</div></li>
+          <li><div class="s-en">Next June they <u>will have been</u> married for ten years.</div><div class="s-ru">В июне будет десять лет, как они женаты.</div><div class="s-note">Итог к сроку.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 12 -->
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Future · 12</div>
+        <h3>Future Perfect Continuous</h3>
+        <div class="card-ru">Будущее совершенное длительное — «к сроку будет длиться столько-то»</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I will have been working</b></div>
+        <div><span>&minus;</span><b>won't have been working</b></div>
+        <div><span>?</span><b>Will you have been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-pc">
+      <figcaption><b>Линия:</b> полоса тянется к флажку в будущем и упирается в него. Меряется не готовность, а <b>накопленная длина</b>: сколько времени процесс будет идти к этому сроку.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Самое редкое время английского языка. Нужны сразу два условия: <b>срок в будущем</b> (<span class="en">by...</span>) и <b>длительность</b> (<span class="en">for...</span>). Полоса при этом обычно начинается ещё в прошлом и пересекает «сейчас».</p>
+          <p>Знать его нужно скорее для чтения и экзаменов, чем для разговора: в живой речи почти всегда обходятся Future Perfect.</p>
+        </div>
+        <ul class="uses">
+          <li>Длительность действия к моменту в будущем</li>
+          <li>Подчёркнутый непрерывный процесс, а не его результат</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">by 2030 ... for 20 years</span><span class="mk">by then</span><span class="mk">when you finish</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">By May I <u>will have been working</u> here for five years.</div><div class="s-ru">К маю я проработаю здесь пять лет.</div><div class="s-note">by — флажок, for — длина полосы.</div></li>
+          <li><div class="s-en">When you arrive, I <u>will have been driving</u> for ten hours.</div><div class="s-ru">Когда ты приедешь, я буду за рулём уже десять часов.</div><div class="s-note">Флажок задан событием, а не датой.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ===================== ЧАСТЬ 5 ===================== -->
+<section class="part" id="p5">
+  <div class="part-head">
+    <span class="part-num">Часть 5 · Future in the Past</span>
+    <span class="part-tc">29:10</span>
+  </div>
+  <h2>Будущее в прошедшем: четыре забытых времени</h2>
+  <p class="part-lede">Именно из-за них времён не 12, а 16. Идея простая: мы стоим в <b>прошлом</b> и смотрим оттуда <b>вперёд</b>. Событие для рассказчика уже прошло, но для героя рассказа оно ещё впереди. Механика — одна замена: <span class="en">will → would</span>. Всё остальное как в Future.</p>
+
+  <div class="prose">
+    <p><b>Где это встречается.</b> Прежде всего в косвенной речи: прямая фраза <span class="en">I will call you</span> при пересказе становится <span class="en">He said he would call me</span>. Затем — в любом повествовании о прошлом, где нужно сказать «и вот тогда его ждало то-то». И, наконец, в условных предложениях второго и третьего типа, где <span class="en">would</span> живёт постоянно.</p>
+  </div>
+
+  <!-- 13 -->
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Future in the Past · 13</div>
+        <h3>Future Simple in the Past</h3>
+        <div class="card-ru">«Собирался случиться» — взгляд вперёд из прошлого</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he would work</b></div>
+        <div><span>&minus;</span><b>would not (wouldn't) work</b></div>
+        <div><span>?</span><b>Would you work?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-s">
+      <figcaption><b>Линия:</b> серая вертикаль — момент в прошлом, когда прозвучали слова. Событие стоит <b>правее неё, но всё ещё левее «сейчас»</b>: для рассказчика оно давно случилось, для героя было будущим.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Точка на оси может оказаться где угодно относительно «сейчас» — это не важно. Важно только, что она <b>позже точки отсчёта в прошлом</b>.</p>
+          <p>Не путайте с <span class="en">would</span> в значении «бывало, делал раньше»: <span class="en">We would go there every summer</span> — это привычка в прошлом, другое употребление того же слова.</p>
+        </div>
+        <ul class="uses">
+          <li>Косвенная речь вместо will</li>
+          <li>Намерения и ожидания героя рассказа</li>
+          <li>Условные предложения второго типа</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">he said (that)...</span><span class="mk">she knew...</span><span class="mk">the next day</span><span class="mk">a week later</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">He said he <u>would call</u> me the next day.</div><div class="s-ru">Он сказал, что позвонит мне на следующий день.</div><div class="s-note">Прямая речь: I will call you tomorrow.</div></li>
+          <li><div class="s-en">We knew the meeting <u>would be</u> difficult.</div><div class="s-ru">Мы знали, что встреча будет трудной.</div><div class="s-note">Знали тогда — встреча была впереди.</div></li>
+          <li><div class="s-en">She promised she <u>wouldn't tell</u> anyone.</div><div class="s-ru">Она пообещала, что никому не скажет.</div><div class="s-note">Обещание, данное в прошлом.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 14 -->
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Future in the Past · 14</div>
+        <h3>Future Continuous in the Past</h3>
+        <div class="card-ru">«Будет идти» — из точки в прошлом</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I would be working</b></div>
+        <div><span>&minus;</span><b>wouldn't be working</b></div>
+        <div><span>?</span><b>Would you be working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-c">
+      <figcaption><b>Линия:</b> полоса-процесс правее момента речи в прошлом. Герой знал: в тот будущий для него час дело будет в разгаре.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Тот же Future Continuous, только пересказанный из прошлого. Встречается в основном в косвенной речи и в художественном повествовании.</p>
+        </div>
+        <ul class="uses">
+          <li>Косвенная речь вместо will be doing</li>
+          <li>Ожидаемый процесс в будущем героя</li>
+        </ul>
+        <div class="markers"><span class="mk">he said...</span><span class="mk">at that time the next day</span></div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">She said she <u>would be waiting</u> at the station.</div><div class="s-ru">Она сказала, что будет ждать на вокзале.</div><div class="s-note">Прямая речь: I will be waiting.</div></li>
+          <li><div class="s-en">I knew they <u>would be sleeping</u> at that hour.</div><div class="s-ru">Я знал, что в этот час они будут спать.</div><div class="s-note">Процесс, который накроет будущий момент.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 15 -->
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Future in the Past · 15</div>
+        <h3>Future Perfect in the Past</h3>
+        <div class="card-ru">«Будет сделано к сроку» — из точки в прошлом</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I would have done</b></div>
+        <div><span>&minus;</span><b>wouldn't have done</b></div>
+        <div><span>?</span><b>Would you have done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-p">
+      <figcaption><b>Линия:</b> момент речи в прошлом, правее него — флажок-срок, и до этого срока действие уже завершается. Вся конструкция Future Perfect, сдвинутая влево.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Эта же форма — <span class="en">would have done</span> — работает в условных предложениях <b>третьего типа</b>, про несбывшееся прошлое: <span class="en">If I had known, I would have come.</span> Различайте по контексту: косвенная речь или сожаление о нереальном.</p>
+        </div>
+        <ul class="uses">
+          <li>Косвенная речь вместо will have done</li>
+          <li>Условные предложения третьего типа (нереальное прошлое)</li>
+        </ul>
+        <div class="markers"><span class="mk">he said... by Friday</span><span class="mk">if I had known...</span></div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">He said he <u>would have finished</u> by Monday.</div><div class="s-ru">Он сказал, что закончит к понедельнику.</div><div class="s-note">Прямая речь: I will have finished by Monday.</div></li>
+          <li><div class="s-en">If I <u>had known</u>, I <u>would have helped</u> you.</div><div class="s-ru">Если бы я знал, я бы тебе помог.</div><div class="s-note">Третий тип условия: прошлое уже не изменить.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- 16 -->
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Future in the Past · 16</div>
+        <h3>Future Perfect Continuous in the Past</h3>
+        <div class="card-ru">«К сроку будет длиться столько-то» — из точки в прошлом</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I would have been working</b></div>
+        <div><span>&minus;</span><b>wouldn't have been working</b></div>
+        <div><span>?</span><b>Would you have been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-pc">
+      <figcaption><b>Линия:</b> полоса, упирающаяся во флажок, и всё это правее момента речи в прошлом. Самая длинная и самая редкая конструкция в языке.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">Смысл времени</div>
+        <div class="why">
+          <p>Встречается настолько редко, что многие носители за жизнь произносят её несколько раз. Достаточно уметь узнавать её в тексте и понимать: <b>длительность, посчитанная к сроку, который был будущим для прошлого</b>.</p>
+        </div>
+        <ul class="uses">
+          <li>Косвенная речь вместо will have been doing</li>
+          <li>Нереальное прошлое с длительностью</li>
+        </ul>
+        <div class="markers"><span class="mk">by then ... for years</span></div>
+      </div>
+      <div>
+        <div class="sub">Предложения</div>
+        <ul class="ex">
+          <li><div class="s-en">She said she <u>would have been teaching</u> for ten years by June.</div><div class="s-ru">Она сказала, что к июню будет преподавать уже десять лет.</div><div class="s-note">Прямая речь: I will have been teaching for ten years by June.</div></li>
+          <li><div class="s-en">By then he <u>would have been living</u> abroad for a decade.</div><div class="s-ru">К тому времени он прожил бы за границей уже десять лет.</div><div class="s-note">Взгляд вперёд из прошлой точки.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+<!-- ===================== ЧАСТЬ 6 ===================== -->
+<section class="part" id="p6">
+  <div class="part-head">
+    <span class="part-num">Часть 6</span>
+    <span class="part-tc">34:30</span>
+  </div>
+  <h2>Пары, которые путают</h2>
+  <p class="part-lede">Ошибки почти никогда не случаются между далёкими временами. Они случаются внутри пяти пар — и каждая пара различается ровно одной чертой на линии времени.</p>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Present Simple или Present Continuous</h3>
+      <p>Вопрос не «когда», а <b>«это вообще или это сейчас»</b>. Постоянное свойство против временного процесса.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">Present Simple — вообще</div>
+        <figure class="tl" data-tl="c1a"></figure>
+        <div class="bd">
+          <div class="s-en">She works in a bank.</div>
+          <div>Она работает в банке — это её профессия. Момент речи не важен: она может быть в отпуске.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="c">
+        <div class="hd">Present Continuous — сейчас</div>
+        <figure class="tl" data-tl="c1b"></figure>
+        <div class="bd">
+          <div class="s-en">She is working in a bank this month.</div>
+          <div>Временно, в этом месяце. Дальше будет что-то другое.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Past Simple или Present Perfect</h3>
+      <p>Главная пара всего английского. Различие простое: <b>есть ли на оси подпись «когда»</b>. Если время названо или подразумевается закрытым — Past Simple. Если важен только сегодняшний результат — Present Perfect.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">Past Simple — важно КОГДА</div>
+        <figure class="tl" data-tl="c2a"></figure>
+        <div class="bd">
+          <div class="s-en">I lost my keys yesterday.</div>
+          <div>Событие привязано ко вчера. Может, я их уже нашёл — предложение об этом молчит.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Present Perfect — важен РЕЗУЛЬТАТ</div>
+        <figure class="tl" data-tl="c2b"></figure>
+        <div class="bd">
+          <div class="s-en">I have lost my keys.</div>
+          <div>Когда — не сказано и не важно. Важно, что сейчас я без ключей.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Present Perfect или Present Perfect Continuous</h3>
+      <p>Оба тянутся к «сейчас». Разница в том, что мы измеряем: <b>сделанное количество</b> или <b>потраченное время</b>.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Perfect — сколько сделано</div>
+        <figure class="tl" data-tl="c3a"></figure>
+        <div class="bd">
+          <div class="s-en">I have written three letters.</div>
+          <div>Результат посчитан: три письма готовы.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="pc">
+        <div class="hd">Perfect Continuous — сколько длится</div>
+        <figure class="tl" data-tl="c3b"></figure>
+        <div class="bd">
+          <div class="s-en">I have been writing letters all morning.</div>
+          <div>Сколько написано — неизвестно. Известно, что процесс шёл всё утро.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Past Simple или Past Perfect</h3>
+      <p>Оба целиком в прошлом. Past Perfect нужен только тогда, когда надо показать, что <b>одно случилось раньше другого</b>, а порядок слов этого не показывает.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">Оба в Past Simple — по порядку</div>
+        <figure class="tl" data-tl="c4a"></figure>
+        <div class="bd">
+          <div class="s-en">When I arrived, she left.</div>
+          <div>Сначала я приехал, потом она ушла. События идут по цепочке.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Past Perfect — раньше</div>
+        <figure class="tl" data-tl="c4b"></figure>
+        <div class="bd">
+          <div class="s-en">When I arrived, she had left.</div>
+          <div>Она ушла до моего приезда — я её уже не застал.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Три способа сказать о будущем</h3>
+      <p>Времени в будущем на линии одно, а форм три — и выбор между ними показывает <b>не время, а степень готовности плана</b>.</p>
+    </div>
+    <div class="cmp-grid three">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">will — решил сейчас</div>
+        <figure class="tl" data-tl="c5a"></figure>
+        <div class="bd">
+          <div class="s-en">OK, I'll call him.</div>
+          <div>Спонтанное решение, прогноз, обещание. В момент речи плана ещё не было.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="c">
+        <div class="hd">be going to — намерение</div>
+        <figure class="tl" data-tl="c5b"></figure>
+        <div class="bd">
+          <div class="s-en">I'm going to call him tonight.</div>
+          <div>Решение принято до разговора. Ещё так говорят о видимых признаках: Look at the clouds — it's going to rain.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Present Continuous — договорено</div>
+        <figure class="tl" data-tl="c5c"></figure>
+        <div class="bd">
+          <div class="s-en">I'm meeting him at six.</div>
+          <div>Не просто намерение — назначены время и место, вторая сторона в курсе.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 7 ===================== -->
+<section class="part" id="p7">
+  <div class="part-head">
+    <span class="part-num">Часть 7</span>
+    <span class="part-tc">41:00</span>
+  </div>
+  <h2>Слова-указатели времени</h2>
+  <p class="part-lede">Эти слова сами ставят точку на оси — по ним время часто определяется быстрее, чем по смыслу. Но помните: указатель подсказывает, а решает всё-таки смысл.</p>
+
+  <div class="mtab-wrap">
+    <table class="mtab">
+      <thead>
+        <tr><th scope="col">Слово или оборот</th><th scope="col">Что оно делает с линией времени</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="k">always, usually, every day</td><td class="v">Рассыпает точки по всей оси — Present Simple.</td></tr>
+        <tr><td class="k">now, at the moment, Look!</td><td class="v">Ставит полосу поверх «сейчас» — Present Continuous.</td></tr>
+        <tr><td class="k">yesterday, last year, in 2010, ago</td><td class="v">Прибивает точку к конкретному месту в прошлом — только Past Simple. С Present Perfect несовместимо.</td></tr>
+        <tr><td class="k">just, already, yet, ever, never</td><td class="v">Тянут дугу от прошлого к «сейчас» — Present Perfect.</td></tr>
+        <tr><td class="k">for (сколько времени)</td><td class="v">Задаёт длину полосы: for two hours, for years.</td></tr>
+        <tr><td class="k">since (с какого момента)</td><td class="v">Задаёт левый край полосы: since Monday, since I was ten.</td></tr>
+        <tr><td class="k">by, by the time, by 2030</td><td class="v">Ставит флажок-срок — все Perfect-времена меряются от него.</td></tr>
+        <tr><td class="k">while</td><td class="v">Ведёт длинное действие — полосу (обычно Continuous).</td></tr>
+        <tr><td class="k">when</td><td class="v">Ведёт короткое действие — точку (обычно Simple).</td></tr>
+        <tr><td class="k">before, after</td><td class="v">Явно задают порядок двух точек; часто позволяют обойтись без Past Perfect.</td></tr>
+        <tr><td class="k">if, when, as soon as, until (о будущем)</td><td class="v">После них will не ставится — используется настоящее время.</td></tr>
+        <tr><td class="k">he said, she asked, I knew</td><td class="v">Сдвигают всю картину на шаг влево: will → would, have → had, Past Simple → Past Perfect.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== ЧАСТЬ 8 ===================== -->
+<section class="part" id="p8">
+  <div class="part-head">
+    <span class="part-num">Часть 8</span>
+    <span class="part-tc">44:20</span>
+  </div>
+  <h2>Шпаргалка: восемь вопросов к себе</h2>
+  <p class="part-lede">Когда нужно выбрать время, задайте себе эти вопросы по порядку — они выведут к ответу быстрее, чем перебор всех шестнадцати форм.</p>
+
+  <div class="final">
+    <div class="fq"><div class="q">1. Где моя точка отсчёта?</div><div class="a">Сейчас → группа <b>Present</b>. Момент в прошлом → <b>Past</b>. Момент в будущем → <b>Future</b>. Прошлое, но глядя вперёд → <b>would</b>.</div></div>
+    <div class="fq"><div class="q">2. Названо ли конкретное прошедшее время?</div><div class="a">Если да (yesterday, in 2019, ago) — <b>Past Simple</b>, и никаких have/has.</div></div>
+    <div class="fq"><div class="q">3. Важен результат прямо сейчас?</div><div class="a">Да, и время не названо — <b>Present Perfect</b>. Проверка: можно вставить «уже».</div></div>
+    <div class="fq"><div class="q">4. Есть ли слово «сколько времени»?</div><div class="a">for / since / How long — берите <b>Perfect Continuous</b> у нужной точки отсчёта.</div></div>
+    <div class="fq"><div class="q">5. Действие в разгаре в конкретный момент?</div><div class="a">Момент задан — значит, <b>Continuous</b>: am/was/will be + V-ing.</div></div>
+    <div class="fq"><div class="q">6. Одно случилось раньше другого?</div><div class="a">Раннее — в <b>Perfect</b> (had done / will have done), позднее — в Simple.</div></div>
+    <div class="fq"><div class="q">7. Это глагол состояния?</div><div class="a">know, want, love, need, believe, belong почти не бывают в Continuous — берите <b>Simple</b> или <b>Perfect</b>.</div></div>
+    <div class="fq"><div class="q">8. Это пересказ чужих слов?</div><div class="a">Сдвиньте всё на шаг в прошлое: will → <b>would</b>, do → did, have done → <b>had done</b>.</div></div>
+  </div>
+
+  <div class="prose">
+    <p><b>И последнее.</b> В живой речи девять из десяти предложений укладываются в пять времён: Present Simple, Present Continuous, Present Perfect, Past Simple и Future Simple. Освойте эти пять до автоматизма — остальные одиннадцать вы будете сначала узнавать в чужой речи, а потом однажды скажете сами, не задумываясь.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Линия времени английского · 16 времён, 16 диаграмм, 60 предложений</span>
+  <span class="mono">Таймкоды — ориентир для видеоверсии, ≈47 минут</span>
+</footer>
+
+<script>
+(function(){
+  var AX={x0:60,x1:744,y:110,W:800,H:168};
+  function X(t){return AX.x0+(t/100)*(AX.x1-AX.x0);}
+  function RY(r){return AX.y-(r||0)*34;}
+  var C={s:'var(--c-simple)',c:'var(--c-cont)',p:'var(--c-perf)',pc:'var(--c-perfc)',n:'var(--c-now)',i:'var(--ink-2)'};
+  function col(k){return C[k]||C.i;}
+
+  function W(c,inner){return '<g style="color:'+c+'">'+inner+'</g>';}
+  function label(x,y,txt,size,anchor){
+    var parts=String(txt).split('\n');
+    var out='<text x="'+x+'" y="'+(y-(parts.length-1)*13)+'" text-anchor="'+(anchor||'middle')+'" '+
+      'font-family="Golos Text, sans-serif" font-size="'+(size||12.5)+'" fill="currentColor" '+
+      'style="paint-order:stroke;stroke:var(--tl-bg);stroke-width:4px;stroke-linejoin:round">';
+    for(var i=0;i<parts.length;i++){
+      out+='<tspan x="'+x+'" dy="'+(i===0?0:14)+'">'+parts[i]+'</tspan>';
+    }
+    return out+'</text>';
+  }
+
+  function draw(spec){
+    var s='<svg viewBox="0 0 '+AX.W+' '+AX.H+'" role="img" aria-label="'+(spec.alt||'Диаграмма времени')+'">';
+
+    // zones
+    (spec.items||[]).forEach(function(it){
+      if(it.t!=='zone') return;
+      s+='<g style="color:var(--ink-3)">';
+      s+='<rect x="'+X(it.from)+'" y="4" width="'+(X(it.to)-X(it.from))+'" height="'+(AX.H-10)+'" fill="currentColor" opacity="0.07"/>';
+      s+='<text x="'+((X(it.from)+X(it.to))/2)+'" y="'+(AX.H-8)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2" fill="currentColor" opacity="0.75">'+it.lab+'</text>';
+      s+='</g>';
+    });
+
+    // axis
+    s+='<g style="color:var(--ink-3)">';
+    s+='<line x1="'+(AX.x0-14)+'" y1="'+AX.y+'" x2="'+(AX.x1+4)+'" y2="'+AX.y+'" stroke="currentColor" stroke-width="1.6" opacity="0.55"/>';
+    s+='<polygon points="'+(AX.x1+14)+','+AX.y+' '+(AX.x1+2)+','+(AX.y-5)+' '+(AX.x1+2)+','+(AX.y+5)+'" fill="currentColor" opacity="0.55"/>';
+    s+='</g>';
+
+    // now line
+    if(spec.now!==false){
+      var nx=X(spec.now===undefined?50:spec.now);
+      s+='<g style="color:var(--c-now)">';
+      s+='<line x1="'+nx+'" y1="26" x2="'+nx+'" y2="'+(AX.y+16)+'" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>';
+      s+='<text x="'+nx+'" y="18" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="1.6" fill="currentColor">СЕЙЧАС</text>';
+      s+='</g>';
+    }
+
+    // anchor (reference point in past/future)
+    (spec.items||[]).forEach(function(it){
+      if(it.t!=='anchor') return;
+      var ax=X(it.at);
+      s+='<g style="color:var(--ink-2)">';
+      s+='<line x1="'+ax+'" y1="40" x2="'+ax+'" y2="'+(AX.y+14)+'" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.8"/>';
+      s+=label(ax,32,it.lab,11.5);
+      s+='</g>';
+    });
+
+    var labs=[];
+    (spec.items||[]).forEach(function(it){
+      if(it.t==='zone'||it.t==='anchor') return;
+      var y=RY(it.row), c=col(it.c);
+      s+='<g style="color:'+c+'">';
+
+      if(it.t==='span'){
+        var x1=X(it.from), x2=X(it.to), w=x2-x1;
+        s+='<rect x="'+x1+'" y="'+(y-9)+'" width="'+w+'" height="18" rx="9" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8"/>';
+        if(it.open){
+          for(var k=0;k<3;k++){
+            s+='<circle cx="'+(x2+14+k*13)+'" cy="'+y+'" r="'+(3.4-k*0.6)+'" fill="currentColor" opacity="'+(0.5-k*0.13)+'"/>';
+          }
+        }
+        if(it.lab) labs.push(W(c,label((x1+x2)/2,y-17,it.lab)));
+      }
+      else if(it.t==='point'){
+        var px=X(it.at);
+        if(it.row) s+='<line x1="'+px+'" y1="'+(y+8)+'" x2="'+px+'" y2="'+(AX.y-3)+'" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 3" opacity="0.6"/>';
+        s+='<circle cx="'+px+'" cy="'+y+'" r="7" fill="currentColor" stroke-width="2" style="stroke:var(--tl-bg)"/>';
+        if(it.lab) labs.push(W(c,label(px,y-16,it.lab)));
+        if(it.sub) s+='<text x="'+px+'" y="'+(AX.y+24)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor" opacity="0.9">'+it.sub+'</text>';
+      }
+      else if(it.t==='dots'){
+        var n=it.n||7, a=X(it.from), b=X(it.to);
+        for(var j=0;j<n;j++){
+          var dx=a+(b-a)*(j/(n-1));
+          s+='<circle cx="'+dx+'" cy="'+y+'" r="5" fill="currentColor" opacity="0.85"/>';
+        }
+        if(it.lab) labs.push(W(c,label((a+b)/2,y-16,it.lab)));
+      }
+      else if(it.t==='flag'){
+        var fx=X(it.at);
+        s+='<line x1="'+fx+'" y1="'+(AX.y-38)+'" x2="'+fx+'" y2="'+(AX.y+12)+'" stroke="currentColor" stroke-width="2.4"/>';
+        s+='<polygon points="'+fx+','+(AX.y-38)+' '+(fx+22)+','+(AX.y-32)+' '+fx+','+(AX.y-26)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(c,label(fx+2,AX.y-46,it.lab,11.5)));
+        if(it.sub) s+='<text x="'+fx+'" y="'+(AX.y+26)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.sub+'</text>';
+      }
+      else if(it.t==='arrow'){
+        var a1=X(it.from), a2=X(it.to), ay=RY(it.row)-14, mid=(a1+a2)/2;
+        s+='<path d="M'+a1+' '+ay+' Q'+mid+' '+(ay-26)+' '+a2+' '+(ay-2)+'" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="5 4"/>';
+        s+='<polygon points="'+a2+','+(ay+6)+' '+(a2-5)+','+(ay-4)+' '+(a2+5)+','+(ay-4)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(c,label(mid,ay-32,it.lab,11.5)));
+      }
+      else if(it.t==='bracket'){
+        var b1=X(it.from), b2=X(it.to), by=AX.y+20;
+        s+='<path d="M'+b1+' '+(by-6)+' L'+b1+' '+by+' L'+b2+' '+by+' L'+b2+' '+(by-6)+'" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.85"/>';
+        s+='<text x="'+((b1+b2)/2)+'" y="'+(by+15)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.lab+'</text>';
+      }
+      s+='</g>';
+    });
+    s+=labs.join('');
+
+    return s+'</svg>';
+  }
+
+  var PAST={t:'zone',from:0,to:50,lab:'ПРОШЛОЕ'}, FUT={t:'zone',from:50,to:100,lab:'БУДУЩЕЕ'};
+
+  var TL={
+    'pr-s':{alt:'Регулярное действие по всей оси',items:[PAST,FUT,
+      {t:'dots',from:10,to:90,n:8,c:'s',lab:'повторяется — вчера, сегодня, завтра'}]},
+    'pr-c':{alt:'Процесс вокруг момента речи',items:[PAST,FUT,
+      {t:'span',from:32,to:70,c:'c',lab:'процесс идёт и не закончен'}]},
+    'pr-p':{alt:'Действие в прошлом с результатом сейчас',items:[PAST,FUT,
+      {t:'point',at:24,c:'p',lab:'действие'},
+      {t:'arrow',from:24,to:50,c:'p',lab:'результат виден сейчас'}]},
+    'pr-pc':{alt:'Длительность от прошлого до сейчас',items:[PAST,FUT,
+      {t:'span',from:16,to:50,c:'pc',open:true,lab:'длится уже N времени'},
+      {t:'bracket',from:16,to:50,c:'pc',lab:'for / since'}]},
+    'pa-s':{alt:'Точка в прошлом с указанием времени',items:[PAST,FUT,
+      {t:'point',at:26,c:'s',lab:'случилось и закончилось'},
+      {t:'bracket',from:16,to:36,c:'s',lab:'yesterday · in 2019'}]},
+    'pa-c':{alt:'Процесс в прошлом и короткое событие внутри',items:[PAST,FUT,
+      {t:'span',from:12,to:42,c:'c',lab:'шёл процесс'},
+      {t:'point',at:30,row:1,c:'s',lab:'...когда случилось это'}]},
+    'pa-p':{alt:'Два действия в прошлом, одно раньше другого',items:[PAST,FUT,
+      {t:'point',at:14,c:'p',lab:'случилось раньше'},
+      {t:'point',at:40,row:1,c:'s',lab:'момент рассказа'},
+      {t:'arrow',from:14,to:40,c:'p',lab:'раньше'}]},
+    'pa-pc':{alt:'Длительность до момента в прошлом',items:[PAST,FUT,
+      {t:'span',from:10,to:38,c:'pc',lab:'длилось N времени'},
+      {t:'point',at:38,row:1,c:'s',lab:'и тут — момент в прошлом'}]},
+    'fu-s':{alt:'Точка в будущем',items:[PAST,FUT,
+      {t:'point',at:76,c:'s',lab:'произойдёт'},
+      {t:'bracket',from:66,to:86,c:'s',lab:'tomorrow · soon'}]},
+    'fu-c':{alt:'Процесс в будущем и момент внутри него',items:[PAST,FUT,
+      {t:'span',from:60,to:92,c:'c',lab:'будет идти'},
+      {t:'point',at:76,row:1,c:'s',lab:'в этот час'}]},
+    'fu-p':{alt:'Завершение до срока в будущем',items:[PAST,FUT,
+      {t:'point',at:66,c:'p',lab:'завершится'},
+      {t:'flag',at:88,c:'i',lab:'срок',sub:'by Friday'},
+      {t:'arrow',from:66,to:88,c:'p',lab:'уже готово'}]},
+    'fu-pc':{alt:'Длительность к сроку в будущем',items:[PAST,FUT,
+      {t:'span',from:40,to:84,c:'pc',lab:'будет длиться N времени'},
+      {t:'flag',at:88,c:'i',lab:'срок',sub:'by 2030'}]},
+    'fp-s':{alt:'Будущее в прошедшем: точка',items:[PAST,FUT,
+      {t:'anchor',at:18,lab:'момент в прошлом\n(he said)'},
+      {t:'point',at:38,c:'s',lab:'для него это было впереди'},
+      {t:'arrow',from:18,to:38,c:'s'}]},
+    'fp-c':{alt:'Будущее в прошедшем: процесс',items:[PAST,FUT,
+      {t:'anchor',at:16,lab:'he said'},
+      {t:'span',from:30,to:46,c:'c',lab:'будет идти'}]},
+    'fp-p':{alt:'Будущее в прошедшем: результат к сроку',items:[PAST,FUT,
+      {t:'anchor',at:14,lab:'he said'},
+      {t:'point',at:30,c:'p',lab:'завершится'},
+      {t:'flag',at:44,c:'i',lab:'срок'},
+      {t:'arrow',from:30,to:44,c:'p'}]},
+    'fp-pc':{alt:'Будущее в прошедшем: длительность к сроку',items:[PAST,FUT,
+      {t:'anchor',at:14,lab:'he said'},
+      {t:'span',from:24,to:44,c:'pc',lab:'будет длиться N времени'},
+      {t:'flag',at:46,c:'i',lab:'срок'}]},
+
+    'c1a':{alt:'Постоянное свойство',items:[{t:'dots',from:12,to:88,n:7,c:'s',lab:'всегда, вообще'}]},
+    'c1b':{alt:'Временный процесс',items:[{t:'span',from:34,to:68,c:'c',lab:'временно, сейчас'}]},
+    'c2a':{alt:'Точка с датой в прошлом',items:[{t:'point',at:26,c:'s',lab:'потерял'},{t:'bracket',from:16,to:36,c:'s',lab:'yesterday'}]},
+    'c2b':{alt:'Результат в настоящем',items:[{t:'point',at:26,c:'p',lab:'потерял'},{t:'arrow',from:26,to:50,c:'p',lab:'ключей нет и сейчас'}]},
+    'c3a':{alt:'Посчитанный результат',items:[{t:'point',at:20,c:'p'},{t:'point',at:30,c:'p'},{t:'point',at:40,c:'p',lab:'три готовых письма'},{t:'arrow',from:40,to:50,c:'p'}]},
+    'c3b':{alt:'Измеренная длительность',items:[{t:'span',from:14,to:50,c:'pc',lab:'всё утро'},{t:'bracket',from:14,to:50,c:'pc',lab:'all morning'}]},
+    'c4a':{alt:'Два события по порядку',items:[{t:'point',at:26,c:'s',lab:'я приехал'},{t:'point',at:42,row:1,c:'s',lab:'она ушла'}]},
+    'c4b':{alt:'Одно раньше другого',items:[{t:'point',at:20,c:'p',lab:'она ушла'},{t:'point',at:42,row:1,c:'s',lab:'я приехал'},{t:'arrow',from:20,to:42,c:'p'}]},
+    'c5a':{alt:'Спонтанное решение',items:[{t:'point',at:50,row:1,c:'i',lab:'решил в этот миг'},{t:'point',at:76,c:'s',lab:'сделаю'}]},
+    'c5b':{alt:'Намерение',items:[{t:'point',at:26,row:1,c:'i',lab:'решил раньше'},{t:'point',at:76,c:'c',lab:'сделаю'},{t:'arrow',from:26,to:76,c:'c'}]},
+    'c5c':{alt:'Договорённость',items:[{t:'point',at:76,c:'p',lab:'назначено'},{t:'bracket',from:66,to:86,c:'p',lab:'at six'}]}
+  };
+
+  document.querySelectorAll('figure.tl[data-tl]').forEach(function(fig){
+    var spec=TL[fig.getAttribute('data-tl')];
+    if(!spec) return;
+    var cap=fig.querySelector('figcaption');
+    fig.insertAdjacentHTML('afterbegin',draw(spec));
+    if(cap) fig.appendChild(cap);
+  });
+})();
+</script>
+
+
+</main>
+</div>
+</div>
