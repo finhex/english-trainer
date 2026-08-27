@@ -77,41 +77,23 @@ a{color:inherit}
 
 .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 
-/* ---------- native-thinking · signals · triggers ---------- */
-.think{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:18px;padding:18px 20px}
-.think-sit{font-size:15px;color:var(--ink-2);margin-bottom:12px}
-.think-sit b{color:var(--ink);font-weight:600}
-.think-flow{display:flex;flex-direction:column;gap:9px;padding:14px 16px;background:var(--card-2);border-radius:10px;margin-bottom:14px}
-.think-beat{position:relative;padding-left:24px;font-size:14.5px;color:var(--ink-2);line-height:1.5}
-.think-beat::before{content:"\21B3";position:absolute;left:2px;top:-1px;font-family:"JetBrains Mono",monospace;color:var(--c-now)}
-.think-beat i{font-style:normal;color:var(--ink);font-weight:600}
-.think-out{display:flex;gap:12px;align-items:baseline;padding-left:14px;border-left:3px solid var(--c-now)}
-.think-out .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex:none;padding-top:3px}
-.think-out .en{font-size:15.5px;color:var(--ink);font-weight:500;line-height:1.45}
-
-.sig{margin-top:20px;display:grid;gap:12px}
-.sig-row{background:var(--card);border:1px solid var(--line);border-left-width:3px;border-radius:12px;box-shadow:var(--shadow);padding:13px 16px}
-.sig-row[data-a=s]{border-left-color:var(--c-simple)}
-.sig-row[data-a=c]{border-left-color:var(--c-cont)}
-.sig-row[data-a=p]{border-left-color:var(--c-perf)}
-.sig-row[data-a=pc]{border-left-color:var(--c-perfc)}
-.sig-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
-.sig-tense{font-family:Bitter,Georgia,serif;font-weight:700;font-size:15.5px}
-.sig-why{font-size:13.5px;color:var(--ink-3)}
-.sig-words{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.sig-w{font-family:"JetBrains Mono",monospace;font-size:12.5px;padding:3px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line-2);color:var(--ink)}
-.sig-ex{font-size:14px;color:var(--ink-2)}
-.sig-ex .en{font-size:.95em;color:var(--ink)}
-
-.trig{margin-top:20px;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
-.trig-item{padding:15px 18px;background:var(--card);border-top:1px solid var(--line-2)}
-.trig-item:first-child{border-top:none}
-.trig-when{font-weight:600;color:var(--ink);font-size:15px}
-.trig-then{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--c-now)}
-.trig-ex{margin-top:7px;font-size:14px;color:var(--ink-2)}
-.trig-ex .en{color:var(--ink)}
-.trig-think{margin-top:6px;font-size:13.5px;color:var(--ink-3)}
-.trig-think b{font-weight:600;color:var(--ink-2)}
+/* ---------- native-thinking (per tense) ---------- */
+.native{margin-top:2px;padding:16px 20px 8px;border-top:1px solid var(--line-2)}
+.native-h{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-now);margin-bottom:9px}
+.native p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:74ch;margin:0}
+.native b,.native strong{color:var(--ink);font-weight:600}
+.native i{font-style:italic}
+.native .en{font-family:"JetBrains Mono",monospace;font-size:.92em;color:var(--ink);font-style:normal}
+.native-think{margin-top:12px;padding:11px 14px;background:var(--card-2);border-radius:9px;font-size:14px;color:var(--ink);line-height:1.5;max-width:74ch}
+.native-think b{color:var(--c-now);font-weight:600}
+.native-sub{font-family:Bitter,Georgia,serif;font-weight:700;font-size:14px;color:var(--ink);margin:18px 0 9px}
+.usex,.sigex{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(160px,40%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en,.sigex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+.sigex li{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:8px 12px;background:var(--card-2);border-radius:8px}
+.sigex .sw{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--card);border:1px solid var(--line-2);color:var(--c-now);flex:none}
 
 /* ---------- shell ---------- */
 .page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
@@ -502,6 +484,29 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>Before speaking, the native feels <b>no link to this second at all</b>. The trigger is: <i>am I describing how the world simply is, rather than something unfolding now?</i> If they could quietly slip in <span class="en">in general</span> or <span class="en">as a rule</span> and nothing breaks, this gear locks in. It labels habits, permanent facts and identities — which is why <span class="en">I work in Moscow</span> stays true while you lie on a beach.</p>
+      <div class="native-think"><b>The thought:</b> “I'm stating how things are, not what's happening this second — bare verb, no -ing.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">A repeated action or habit</span><span class="s-en">She <b>drinks</b> coffee every morning.</span></li>
+        <li><span class="u">A permanent state or characteristic</span><span class="s-en">He <b>lives</b> in Berlin.</span></li>
+        <li><span class="u">A general truth or law of nature</span><span class="s-en">Water <b>boils</b> at 100 degrees.</span></li>
+        <li><span class="u">A timetable, even about the future</span><span class="s-en">The train <b>leaves</b> at six tomorrow.</span></li>
+        <li><span class="u">A state verb (no -ing)</span><span class="s-en">I <b>don't understand</b> this rule.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">always</span><span class="s-en">He <b>always</b> forgets my name.</span></li>
+        <li><span class="sw">usually</span><span class="s-en">We <b>usually</b> eat at seven.</span></li>
+        <li><span class="sw">often</span><span class="s-en">She <b>often</b> works late.</span></li>
+        <li><span class="sw">every day</span><span class="s-en">I check my email <b>every day</b>.</span></li>
+        <li><span class="sw">on Mondays</span><span class="s-en">The class meets <b>on Mondays</b>.</span></li>
+        <li><span class="sw">twice a week</span><span class="s-en">He trains <b>twice a week</b>.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="c">
@@ -549,6 +554,29 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en">He <u>is</u> always <u>losing</u> his keys!</div><div class="s-note">Not a fact but an emotion — irritation.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The trigger fires the moment something is <b>visibly in progress</b> (<span class="en">Look — it's raining</span>) or already <b>fixed in the diary</b> (<span class="en">I'm seeing her tomorrow</span>). The native's mind asks: <i>is this live around now, or an arrangement I've already made?</i> It also carries change (<span class="en">prices are rising</span>) and, with <span class="en">always</span>, a flash of irritation. Frozen states — <span class="en">know, want, believe</span> — refuse it.</p>
+      <div class="native-think"><b>The thought:</b> “It's happening around now, or it's arranged — am/is/are + -ing.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">An action in progress right now</span><span class="s-en">She <b>is reading</b> in her room.</span></li>
+        <li><span class="u">A temporary situation around now</span><span class="s-en">I <b>'m staying</b> with friends this week.</span></li>
+        <li><span class="u">A fixed future arrangement</span><span class="s-en">We <b>'re meeting</b> them tomorrow.</span></li>
+        <li><span class="u">A changing / developing situation</span><span class="s-en">Prices <b>are rising</b> fast.</span></li>
+        <li><span class="u">An irritating habit (with always)</span><span class="s-en">He <b>'s always losing</b> his keys.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">now</span><span class="s-en">Be quiet — the baby <b>is</b> sleeping <b>now</b>.</span></li>
+        <li><span class="sw">right now</span><span class="s-en">I <b>'m cooking right now</b>.</span></li>
+        <li><span class="sw">at the moment</span><span class="s-en">She <b>'s busy at the moment</b>.</span></li>
+        <li><span class="sw">Look! / Listen!</span><span class="s-en"><b>Listen!</b> Someone <b>is</b> singing.</span></li>
+        <li><span class="sw">these days</span><span class="s-en">I <b>'m reading</b> a lot <b>these days</b>.</span></li>
+        <li><span class="sw">tonight (plan)</span><span class="s-en">We <b>'re eating</b> out <b>tonight</b>.</span></li>
+      </ul>
     </div>
   </article>
 
@@ -599,6 +627,32 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The native throws a <b>bridge from a past event to right now</b>. The trigger: <i>the time doesn't matter, but the result is standing here in front of me.</i> The instant a finished-time word shows up (<span class="en">yesterday, in 2010</span>) the bridge collapses and they drop to Past Simple. Their silent test: <i>can I slip in </i><span class="en">already</span><i>?</i></p>
+      <div class="native-think"><b>The thought:</b> “It's done, I'm not saying when, and the result is in front of me now.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">A present result: something has changed</span><span class="s-en">I <b>'ve lost</b> my keys. (I can't get in now)</span></li>
+        <li><span class="u">Life experience, no date attached</span><span class="s-en">She <b>'s been</b> to Japan.</span></li>
+        <li><span class="u">An unfinished time period</span><span class="s-en">I <b>'ve seen</b> three films <b>this week</b>.</span></li>
+        <li><span class="u">Something that has just happened</span><span class="s-en">He <b>'s just</b> left.</span></li>
+        <li><span class="u">Something still expected / not yet</span><span class="s-en">They <b>haven't</b> arrived <b>yet</b>.</span></li>
+        <li><span class="u">A state lasting up to now</span><span class="s-en">We <b>'ve known</b> them <b>for</b> years.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">already</span><span class="s-en">She <b>'s already</b> finished.</span></li>
+        <li><span class="sw">yet</span><span class="s-en">Have you eaten <b>yet</b>?</span></li>
+        <li><span class="sw">just</span><span class="s-en">I <b>'ve just</b> seen it.</span></li>
+        <li><span class="sw">ever</span><span class="s-en">Have you <b>ever</b> flown?</span></li>
+        <li><span class="sw">never</span><span class="s-en">I <b>'ve never</b> tried sushi.</span></li>
+        <li><span class="sw">so far</span><span class="s-en">We <b>'ve sold</b> ten <b>so far</b>.</span></li>
+        <li><span class="sw">since</span><span class="s-en">He <b>'s worked</b> here <b>since</b> May.</span></li>
+        <li><span class="sw">for</span><span class="s-en">I <b>'ve had</b> this car <b>for</b> years.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="pc">
@@ -645,6 +699,26 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en"><u>How long have</u> you <u>been learning</u> English?</div><div class="s-note">"How long" is this tense's home question.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The trigger is <b>measuring a stretch that runs right up to now</b> (<span class="en">I've been waiting for an hour</span>), or explaining a present state by the activity behind it (<span class="en">I'm out of breath — I've been running</span>). The native's focus is the <i>process and its length</i>, not a countable result; <span class="en">for / since / how long</span> are almost always hovering nearby.</p>
+      <div class="native-think"><b>The thought:</b> “How long it's been going, up to now — or why I'm in this state.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">Duration up to now (still going)</span><span class="s-en">I <b>'ve been waiting for</b> an hour.</span></li>
+        <li><span class="u">An activity explaining a present state</span><span class="s-en">I'm tired — I <b>'ve been working</b>.</span></li>
+        <li><span class="u">A recent, repeated activity</span><span class="s-en">She <b>'s been going</b> to the gym lately.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">for</span><span class="s-en">We <b>'ve been living</b> here <b>for</b> five years.</span></li>
+        <li><span class="sw">since</span><span class="s-en">He <b>'s been studying since</b> nine.</span></li>
+        <li><span class="sw">how long</span><span class="s-en"><b>How long</b> have you <b>been learning</b> English?</span></li>
+        <li><span class="sw">all day</span><span class="s-en">It <b>'s been raining all day</b>.</span></li>
+        <li><span class="sw">lately</span><span class="s-en">I <b>'ve been sleeping</b> badly <b>lately</b>.</span></li>
+      </ul>
     </div>
   </article>
 </section>
@@ -703,6 +777,28 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The default storytelling gear. The trigger: <i>this is sealed in a finished past — a time is named or understood, and there is no live thread to now.</i> Each event is a single closed dot; a chain of them is simply a narrative moving forward.</p>
+      <div class="native-think"><b>The thought:</b> “It happened, it's over, and I could point to when.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">A finished action at a stated time</span><span class="s-en">I <b>saw</b> her <b>yesterday</b>.</span></li>
+        <li><span class="u">A sequence of past events</span><span class="s-en">He <b>came</b> in, <b>sat</b> down and <b>spoke</b>.</span></li>
+        <li><span class="u">A past habit (now over)</span><span class="s-en">We <b>walked</b> to school every day.</span></li>
+        <li><span class="u">A past state</span><span class="s-en">She <b>was</b> very shy as a child.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">yesterday</span><span class="s-en">They <b>arrived yesterday</b>.</span></li>
+        <li><span class="sw">ago</span><span class="s-en">He <b>left</b> ten minutes <b>ago</b>.</span></li>
+        <li><span class="sw">last night</span><span class="s-en">We <b>watched</b> a film <b>last night</b>.</span></li>
+        <li><span class="sw">in 2010</span><span class="s-en">She <b>graduated in 2010</b>.</span></li>
+        <li><span class="sw">then</span><span class="s-en">I <b>knew</b> the answer <b>then</b>.</span></li>
+        <li><span class="sw">when + past</span><span class="s-en"><b>When</b> I <b>was</b> young, I <b>played</b> tennis.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="c">
@@ -749,6 +845,27 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en">He <u>was cooking</u> while I <u>was cleaning</u>.</div><div class="s-note">Two parallel bars.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The <b>scene-setting</b> trigger. The native lays down an action already in progress as a backdrop, then usually drops a shorter Past Simple event into it (<span class="en">I was cooking when she called</span>), or runs two long actions side by side. Their mind asks: <i>what was the ongoing 'meanwhile' when the real event hit?</i></p>
+      <div class="native-think"><b>The thought:</b> “This was the ongoing backdrop; something shorter cut across it.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">In progress at a past moment</span><span class="s-en">At eight I <b>was having</b> dinner.</span></li>
+        <li><span class="u">A long action interrupted by a short one</span><span class="s-en">I <b>was cooking when</b> she called.</span></li>
+        <li><span class="u">Two parallel past actions</span><span class="s-en"><b>While</b> she read, I <b>was cooking</b>.</span></li>
+        <li><span class="u">Setting the background of a story</span><span class="s-en">The sun <b>was shining</b> and birds <b>were singing</b>.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">while</span><span class="s-en"><b>While</b> we <b>were talking</b>, it started to rain.</span></li>
+        <li><span class="sw">as</span><span class="s-en"><b>As</b> I <b>was leaving</b>, the phone rang.</span></li>
+        <li><span class="sw">when (interrupted)</span><span class="s-en">I <b>was sleeping when</b> the alarm went off.</span></li>
+        <li><span class="sw">at 8 last night</span><span class="s-en"><b>At 8 last night</b> I <b>was driving</b> home.</span></li>
+        <li><span class="sw">all day yesterday</span><span class="s-en">It <b>was raining all day yesterday</b>.</span></li>
+      </ul>
     </div>
   </article>
 
@@ -797,6 +914,27 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>Already inside a past story, the native needs to <b>flash back to something earlier still</b>, so they push it one more step down with <span class="en">had + V3</span>. The trigger: <i>two past events, and I must make the order unmistakable</i> — especially after <span class="en">before, after, by the time</span>, or to give the <b>cause</b> of a past state. If the order is already obvious, they relax into two Past Simples.</p>
+      <div class="native-think"><b>The thought:</b> “Two past events — I'll mark the earlier one with had.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">An action before another past action</span><span class="s-en">When I arrived, the film <b>had</b> already <b>started</b>.</span></li>
+        <li><span class="u">The cause of a past situation</span><span class="s-en">He was tired; he <b>had worked</b> all night.</span></li>
+        <li><span class="u">A completed action before a past deadline</span><span class="s-en">By six, she <b>had finished</b>.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">before</span><span class="s-en">She <b>had left before</b> I called.</span></li>
+        <li><span class="sw">after</span><span class="s-en">We ate <b>after</b> we <b>had washed</b> up.</span></li>
+        <li><span class="sw">by the time</span><span class="s-en"><b>By the time</b> we came, it <b>had</b> ended.</span></li>
+        <li><span class="sw">already (past)</span><span class="s-en">It <b>had already</b> gone.</span></li>
+        <li><span class="sw">until then</span><span class="s-en">I <b>hadn't</b> met him <b>until then</b>.</span></li>
+        <li><span class="sw">no sooner … than</span><span class="s-en"><b>No sooner had</b> he sat down <b>than</b> it rang.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="pc">
@@ -840,6 +978,24 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en">She <u>had been waiting</u> since noon, so she was angry.</div><div class="s-note"><b>since</b> sets where the bar starts.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The trigger is a <b>duration that had built up before a past moment</b>, or the <b>reason a past scene looked as it did</b> (<span class="en">the ground was wet — it had been raining</span>). It is the 'past of the present perfect continuous': a process, measured, sitting just before the past reference point.</p>
+      <div class="native-think"><b>The thought:</b> “How long it had been going before that moment — or why the past scene looked that way.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">Duration before a past point</span><span class="s-en">By noon she <b>had been working for</b> six hours.</span></li>
+        <li><span class="u">The cause of a past state</span><span class="s-en">His eyes were red; he <b>had been crying</b>.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">for</span><span class="s-en">They <b>had been driving for</b> hours.</span></li>
+        <li><span class="sw">since</span><span class="s-en">He <b>had been waiting since</b> dawn.</span></li>
+        <li><span class="sw">how long</span><span class="s-en"><b>How long had</b> she <b>been living</b> there?</span></li>
+        <li><span class="sw">all morning</span><span class="s-en">I <b>had been reading all morning</b>.</span></li>
+      </ul>
     </div>
   </article>
 </section>
@@ -897,6 +1053,27 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p><span class="en">will</span> fires on a <b>decision made as they speak</b> (<span class="en">the phone's ringing — I'll get it</span>), a <b>prediction with no present evidence</b> (<span class="en">I think it'll rain</span>), a promise or an offer. The trigger: <i>am I deciding or guessing right now, out of my head?</i> If they can already <i>see</i> the future coming from the here-and-now, they switch to <span class="en">going to</span>.</p>
+      <div class="native-think"><b>The thought:</b> “I'm deciding or predicting right now — will.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">An on-the-spot decision</span><span class="s-en">The phone's ringing — I <b>'ll get</b> it.</span></li>
+        <li><span class="u">A prediction (opinion / no evidence)</span><span class="s-en">I think it <b>'ll rain</b> tomorrow.</span></li>
+        <li><span class="u">A promise or offer</span><span class="s-en">I <b>'ll help</b> you, don't worry.</span></li>
+        <li><span class="u">A prediction with present evidence (going to)</span><span class="s-en">Look at the clouds — it <b>'s going to</b> rain.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">tomorrow</span><span class="s-en">I <b>'ll call</b> you <b>tomorrow</b>.</span></li>
+        <li><span class="sw">next week</span><span class="s-en">They <b>'ll arrive next week</b>.</span></li>
+        <li><span class="sw">soon</span><span class="s-en">She <b>'ll be</b> here <b>soon</b>.</span></li>
+        <li><span class="sw">I think / hope</span><span class="s-en">I <b>hope</b> it <b>'ll work</b>.</span></li>
+        <li><span class="sw">probably</span><span class="s-en">He <b>'ll probably</b> be late.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="c">
@@ -939,6 +1116,23 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en"><u>Will</u> you <u>be using</u> the printer later?</div><div class="s-note">Polite: just checking your plans.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The trigger is picturing an action <b>mid-flow at a future moment</b> (<span class="en">this time tomorrow I'll be flying</span>), or a <b>soft, pressure-free</b> way to ask about plans (<span class="en">Will you be using the car?</span> — just checking, no request implied). The native's mind stands at a future point and sees the action already underway.</p>
+      <div class="native-think"><b>The thought:</b> “At that future moment it'll already be underway.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">In progress at a future moment</span><span class="s-en">This time tomorrow I <b>'ll be flying</b> to Rome.</span></li>
+        <li><span class="u">A polite, neutral question about plans</span><span class="s-en"><b>Will</b> you <b>be using</b> the car tonight?</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">this time tomorrow</span><span class="s-en"><b>This time tomorrow</b> we <b>'ll be sitting</b> on the beach.</span></li>
+        <li><span class="sw">at 8 tomorrow</span><span class="s-en"><b>At 8 tomorrow</b> I <b>'ll be working</b>.</span></li>
+        <li><span class="sw">all day tomorrow</span><span class="s-en">He <b>'ll be travelling all day tomorrow</b>.</span></li>
+      </ul>
     </div>
   </article>
 
@@ -983,6 +1177,24 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The native mentally <b>stands at a future deadline and looks back</b> at a job that's finished by then (<span class="en">by 2030 they'll have finished</span>). The trigger is the phrase <span class="en">by + a future point</span> and the feeling of a task <i>completed before</i> it.</p>
+      <div class="native-think"><b>The thought:</b> “By that future point it'll be done — will have + V3.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">Finished before a future point</span><span class="s-en">By nine I <b>'ll have finished</b> the report.</span></li>
+        <li><span class="u">An assumption about now</span><span class="s-en">They <b>'ll have landed</b> by now, surely.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">by 2030</span><span class="s-en"><b>By 2030</b> they <b>'ll have built</b> it.</span></li>
+        <li><span class="sw">by then</span><span class="s-en"><b>By then</b> we <b>'ll have left</b>.</span></li>
+        <li><span class="sw">by the time</span><span class="s-en"><b>By the time</b> you read this, I <b>'ll have gone</b>.</span></li>
+        <li><span class="sw">in two years</span><span class="s-en"><b>In two years</b> she <b>'ll have graduated</b>.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="pc">
@@ -1023,6 +1235,21 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en">When you arrive, I <u>will have been driving</u> for ten hours.</div><div class="s-note">The flag is set by an event, not a date.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>Rare and precise. The trigger: <i>measuring a stretch as seen from a future moment</i> (<span class="en">by June I'll have been working here for ten years</span>). It answers 'how long' from a vantage point that hasn't arrived yet.</p>
+      <div class="native-think"><b>The thought:</b> “By then it'll have been going on for that long.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">Duration up to a future point</span><span class="s-en">By June I <b>'ll have been working</b> here <b>for</b> ten years.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">by … for</span><span class="s-en"><b>By</b> next month they <b>'ll have been dating for</b> a year.</span></li>
+        <li><span class="sw">by then</span><span class="s-en"><b>By then</b> I <b>'ll have been driving</b> for six hours.</span></li>
+      </ul>
     </div>
   </article>
 </section>
@@ -1081,6 +1308,23 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>Narrating from a <b>past vantage point</b>, the native refers to what was <i>still ahead</i> from there, so <span class="en">will</span> backshifts to <span class="en">would</span> (<span class="en">He said he would come</span>), and a plan becomes <span class="en">was going to</span> (<span class="en">I was going to call, but…</span>). The trigger: <i>from back then, this hadn't happened yet.</i></p>
+      <div class="native-think"><b>The thought:</b> “From that past moment, this was still to come — will → would.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">Reported future (will → would)</span><span class="s-en">He said he <b>would come</b>.</span></li>
+        <li><span class="u">A past intention (was going to)</span><span class="s-en">I <b>was going to</b> call, but I forgot.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">said (that) … would</span><span class="s-en">She said she <b>would</b> help.</span></li>
+        <li><span class="sw">was going to</span><span class="s-en">We <b>were going to</b> leave early.</span></li>
+        <li><span class="sw">the next day</span><span class="s-en">He knew he <b>would</b> see her <b>the next day</b>.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="c">
@@ -1118,6 +1362,20 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en">I knew they <u>would be sleeping</u> at that hour.</div><div class="s-note">A process that would cover that future moment.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The backshifted Future Continuous: from a past moment, an action that <b>would be in progress</b> later (<span class="en">She knew he would be waiting</span>). The trigger: <i>from back then, this would already be underway at the later point.</i></p>
+      <div class="native-think"><b>The thought:</b> “From back then, it would be underway at that later point.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">In progress at a later point, seen from the past</span><span class="s-en">She knew he <b>would be waiting</b> at the station.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">would be + -ing</span><span class="s-en">I thought they <b>would be sleeping</b> by then.</span></li>
+      </ul>
     </div>
   </article>
 
@@ -1157,6 +1415,20 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </ul>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>From a past viewpoint, something that <b>would be finished by a later point</b> (<span class="en">By Friday, he thought, he would have finished</span>). The trigger: <i>from back then, this would be done by the deadline ahead.</i></p>
+      <div class="native-think"><b>The thought:</b> “From back then, it would be done by the later deadline.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">Done by a later point, seen from the past</span><span class="s-en">By Friday, he thought, he <b>would have finished</b>.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">would have + V3</span><span class="s-en">She hoped they <b>would have arrived</b> by dark.</span></li>
+      </ul>
+    </div>
   </article>
 
   <article class="card" data-a="pc">
@@ -1194,6 +1466,20 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <li><div class="s-en">By then he <u>would have been living</u> abroad for a decade.</div><div class="s-note">Looking forward from a point in the past.</div></li>
         </ul>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The rarest form. From a past viewpoint, a stretch that <b>would have been running</b> up to a later point (<span class="en">By then she would have been teaching for thirty years</span>). The trigger: <i>from back then, measuring a duration up to a later moment.</i></p>
+      <div class="native-think"><b>The thought:</b> “From back then, it would have been going on for that long.”</div>
+      <div class="native-sub">When they use it — each with an example</div>
+      <ul class="usex">
+        <li><span class="u">Duration up to a later point, seen from the past</span><span class="s-en">By then she <b>would have been teaching for</b> thirty years.</span></li>
+      </ul>
+      <div class="native-sub">Signal words — each in a sentence</div>
+      <ul class="sigex">
+        <li><span class="sw">would have been + -ing</span><span class="s-en">He realised he <b>would have been driving for</b> ten hours.</span></li>
+      </ul>
     </div>
   </article>
 </section>
@@ -1397,206 +1683,6 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
     <p><b>And finally.</b> In real speech nine sentences out of ten fit into five tenses: Present Simple, Present Continuous, Present Perfect, Past Simple and Future Simple. Get those five to the point of reflex — the other eleven you will first recognise in other people's speech, and then one day produce without thinking.</p>
   </div>
 </section>
-<!-- ===================== PART 9 ===================== -->
-<section class="part" id="p9">
-  <div class="part-head">
-    <span class="part-num">Part 9</span>
-    <span class="part-tc">48:00</span>
-  </div>
-  <h2>Inside a native speaker's head</h2>
-  <p class="part-lede">A native doesn't run through rules. In the half-second before speaking they ask two silent questions — <b>where am I standing in time?</b> and <b>how do I see the action — as a whole, in progress, or as a result?</b> — and the form falls out. Here is that inner monologue, slowed down, on the sentences learners find hardest.</p>
-
-  <div class="think">
-    <div class="think-sit"><b>Situation.</b> There's something you keep planning to do and still haven't.</div>
-    <div class="think-flow">
-      <div class="think-beat">It started in the past and it's <i>still true now</i> — I need a tie back to <i>now</i>, so: perfect.</div>
-      <div class="think-beat">But it isn't a finished result — it's an <i>ongoing, unfinished</i> intention. So: continuous.</div>
-      <div class="think-beat">Perfect + continuous, anchored at now → <i>have been + -ing</i>.</div>
-    </div>
-    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">I've been meaning to call you.</span></div>
-  </div>
-
-  <div class="think">
-    <div class="think-sit"><b>Situation.</b> Two things happened in the past and you want to show which came first.</div>
-    <div class="think-flow">
-      <div class="think-beat">Both are past. The one I mention isn't the anchor — <i>our arrival</i> is the past reference point.</div>
-      <div class="think-beat">The other event happened <i>before</i> that point, so I push it one step further back → <i>had + V3</i>.</div>
-      <div class="think-beat"><span class="en">already</span> confirms it: the leaving was complete by the time we got there.</div>
-    </div>
-    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">The train had already left when we arrived.</span></div>
-  </div>
-
-  <div class="think">
-    <div class="think-sit"><b>Situation.</b> A deadline in the future, and you want to say the job will be done in time.</div>
-    <div class="think-flow">
-      <div class="think-beat">I mentally stand at the future moment — <span class="en">by nine</span> — and look back from there.</div>
-      <div class="think-beat">From that spot the action is already <i>finished</i>: a result at a future point → <i>will have + V3</i>.</div>
-    </div>
-    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">By nine I'll have finished the report.</span></div>
-  </div>
-
-  <div class="think">
-    <div class="think-sit"><b>Situation.</b> You explain why a past state was the way it was — the cause behind it.</div>
-    <div class="think-flow">
-      <div class="think-beat">The red eyes are the past scene. The cause happened <i>even earlier and lasted</i> — before that scene.</div>
-      <div class="think-beat">Earlier-than-past + duration → past perfect continuous, <i>had been + -ing</i>.</div>
-    </div>
-    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">Her eyes were red — she'd been crying.</span></div>
-  </div>
-
-  <div class="think">
-    <div class="think-sit"><b>Situation.</b> You report what someone told you earlier.</div>
-    <div class="think-flow">
-      <div class="think-beat">The saying happened in the past, so the whole quoted world shifts <i>one step back</i> with it.</div>
-      <div class="think-beat"><span class="en">will → would</span>, <span class="en">is → was</span>, <span class="en">have done → had done</span>. That backshift is the signal it's reported, not live.</div>
-    </div>
-    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">He said he would come. → (from "I will come.")</span></div>
-  </div>
-
-  <div class="think">
-    <div class="think-sit"><b>Situation.</b> Same three words, two different pictures — <span class="en">for ten years</span>.</div>
-    <div class="think-flow">
-      <div class="think-beat">If she <i>still lives here</i>, the ten years reach up to now → present perfect: <span class="en">She's lived here for ten years.</span></div>
-      <div class="think-beat">If she has <i>moved away</i>, the ten years are a closed, finished box → past simple: <span class="en">She lived here for ten years.</span></div>
-      <div class="think-beat">The tense isn't decorating the sentence — it's telling the listener whether she's still your neighbour.</div>
-    </div>
-    <div class="think-out"><span class="lab">The&nbsp;point</span><span class="en">The form carries the fact. Choose it on purpose.</span></div>
-  </div>
-</section>
-<!-- ===================== PART 10 ===================== -->
-<section class="part" id="p10">
-  <div class="part-head">
-    <span class="part-num">Part 10</span>
-    <span class="part-tc">52:30</span>
-  </div>
-  <h2>The signal words that decide the tense</h2>
-  <p class="part-lede">Certain little words are almost tense-magnets: hear one and a native's hand is already on a particular form. Learn them as bundles — the marker and the tense it pulls — and half your choices are made before you think. The colour of each card matches its aspect.</p>
-
-  <div class="sig">
-    <div class="sig-row" data-a="s">
-      <div class="sig-head"><span class="sig-tense">Past Simple</span><span class="sig-why">a finished time is named</span></div>
-      <div class="sig-words"><span class="sig-w">yesterday</span><span class="sig-w">ago</span><span class="sig-w">last night / week</span><span class="sig-w">in 2010</span><span class="sig-w">then</span><span class="sig-w">when + past</span><span class="sig-w">at 5 o'clock</span></div>
-      <div class="sig-ex">The time is closed and gone, so no <span class="en">have/has</span> anywhere: <span class="en">I saw her <b>in 2010</b>.</span> · <span class="en">He left <b>ten minutes ago</b>.</span></div>
-    </div>
-    <div class="sig-row" data-a="p">
-      <div class="sig-head"><span class="sig-tense">Present Perfect</span><span class="sig-why">a result touching now, no fixed time</span></div>
-      <div class="sig-words"><span class="sig-w">already</span><span class="sig-w">yet</span><span class="sig-w">just</span><span class="sig-w">ever / never</span><span class="sig-w">so far</span><span class="sig-w">up to now</span><span class="sig-w">recently / lately</span><span class="sig-w">this week</span><span class="sig-w">since</span><span class="sig-w">for</span></div>
-      <div class="sig-ex">Test: you can slip in <span class="en">already</span>. <span class="en">Have you finished <b>yet</b>?</span> · <span class="en">I've <b>just</b> seen it.</span> · <span class="en">We've known them <b>since</b> 2019.</span></div>
-    </div>
-    <div class="sig-row" data-a="p">
-      <div class="sig-head"><span class="sig-tense">Past Perfect</span><span class="sig-why">earlier than another past moment</span></div>
-      <div class="sig-words"><span class="sig-w">before</span><span class="sig-w">after</span><span class="sig-w">by the time</span><span class="sig-w">by 2010</span><span class="sig-w">already (in the past)</span><span class="sig-w">when + earlier event</span><span class="sig-w">until then</span><span class="sig-w">no sooner … than</span><span class="sig-w">hardly … when</span></div>
-      <div class="sig-ex"><span class="en"><b>By the time</b> we arrived, it <b>had</b> started.</span> · <span class="en">She <b>had</b> left <b>before</b> I called.</span> · <span class="en"><b>No sooner had</b> he sat down <b>than</b> the phone rang.</span></div>
-    </div>
-    <div class="sig-row" data-a="c">
-      <div class="sig-head"><span class="sig-tense">Present Continuous</span><span class="sig-why">happening around now / arranged</span></div>
-      <div class="sig-words"><span class="sig-w">now</span><span class="sig-w">right now</span><span class="sig-w">at the moment</span><span class="sig-w">currently</span><span class="sig-w">Look! / Listen!</span><span class="sig-w">these days</span><span class="sig-w">tonight (plan)</span></div>
-      <div class="sig-ex"><span class="en"><b>Look!</b> It's raining.</span> · <span class="en">I'm meeting her <b>tomorrow</b>.</span> (a fixed arrangement, not "will")</div>
-    </div>
-    <div class="sig-row" data-a="c">
-      <div class="sig-head"><span class="sig-tense">Past Continuous</span><span class="sig-why">in progress at, or interrupted at, a past moment</span></div>
-      <div class="sig-words"><span class="sig-w">while</span><span class="sig-w">as</span><span class="sig-w">when + interruption</span><span class="sig-w">at 8 last night</span><span class="sig-w">all day yesterday</span></div>
-      <div class="sig-ex"><span class="en">I <b>was cooking when</b> she called.</span> · <span class="en"><b>While</b> we <b>were talking</b>, the lights went out.</span></div>
-    </div>
-    <div class="sig-row" data-a="pc">
-      <div class="sig-head"><span class="sig-tense">Perfect Continuous</span><span class="sig-why">how long — duration up to a point</span></div>
-      <div class="sig-words"><span class="sig-w">for</span><span class="sig-w">since</span><span class="sig-w">how long</span><span class="sig-w">all day / morning</span><span class="sig-w">lately</span></div>
-      <div class="sig-ex"><span class="en">I've <b>been</b> waiting <b>for</b> an hour.</span> · <span class="en">She'd <b>been</b> working there <b>since</b> May.</span> (<span class="en">for/since</span> + a live process = the continuous, not the simple)</div>
-    </div>
-    <div class="sig-row" data-a="s">
-      <div class="sig-head"><span class="sig-tense">Future — will / going to / Future Perfect</span><span class="sig-why">predictions, plans, deadlines</span></div>
-      <div class="sig-words"><span class="sig-w">tomorrow</span><span class="sig-w">next week</span><span class="sig-w">soon</span><span class="sig-w">I think / hope</span><span class="sig-w">probably</span><span class="sig-w">going to (evidence)</span><span class="sig-w">by 2030</span><span class="sig-w">by then</span><span class="sig-w">in two years</span></div>
-      <div class="sig-ex"><span class="en">I <b>think</b> it'll rain.</span> · <span class="en">Look at those clouds — it's <b>going to</b> rain.</span> · <span class="en"><b>By 2030</b> they'll <b>have</b> finished.</span></div>
-    </div>
-  </div>
-</section>
-<!-- ===================== PART 11 ===================== -->
-<section class="part" id="p11">
-  <div class="part-head">
-    <span class="part-num">Part 11</span>
-    <span class="part-tc">57:00</span>
-  </div>
-  <h2>Situations that force a tense</h2>
-  <p class="part-lede">Forget the words for a moment and look at the <b>situation</b>. Each of these real-life meanings pulls one tense toward it almost automatically. The italic line is what a native is really thinking.</p>
-
-  <div class="trig">
-    <div class="trig-item">
-      <span class="trig-when">An action earlier than another past action</span> <span class="trig-then">→ Past Perfect</span>
-      <div class="trig-ex"><span class="en">When I arrived, the meeting <b>had</b> already <b>started</b>.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "Two past events — I'll shove the first one a step deeper into the past so the order is unmistakable."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">The cause of a past situation or state</span> <span class="trig-then">→ Past Perfect / Past Perfect Continuous</span>
-      <div class="trig-ex"><span class="en">The ground was wet; it <b>had been raining</b>.</span> · <span class="en">He failed because he <b>hadn't revised</b>.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "The scene is in the past; the reason for it sits <i>even further</i> back — perfect handles 'before the past'."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">Reporting speech — backshift one step</span> <span class="trig-then">→ shift the tense back</span>
-      <div class="trig-ex"><span class="en">"I <b>am</b> tired." → She said she <b>was</b> tired.</span> · <span class="en">"I <b>will</b> help." → He said he <b>would</b> help.</span> · <span class="en">"I <b>have</b> seen it." → They said they <b>had</b> seen it.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "The telling is already in the past, so everything inside the quote slides back with it: <span class="en">is→was, will→would, have→had</span>."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">After <span class="en">before</span>, <span class="en">after</span>, <span class="en">by the time</span>, <span class="en">until</span></span> <span class="trig-then">→ sequence, often Past Perfect</span>
-      <div class="trig-ex"><span class="en"><b>By the time</b> the police came, the thief <b>had</b> disappeared.</span> · <span class="en">She ate <b>after</b> she <b>had</b> washed her hands.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "These words already fix the order for me, so I mark the earlier action with <span class="en">had</span> — or, if the order is obvious, I relax and use two past simples."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">After <span class="en">because</span> — giving a reason</span> <span class="trig-then">→ match the timing of the cause</span>
-      <div class="trig-ex"><span class="en">I'm tired <b>because</b> I've <b>been working</b> all day.</span> · <span class="en">We were late <b>because</b> the train <b>had</b> been cancelled.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "<span class="en">because</span> doesn't force one tense — I just ask when the cause happened relative to the result, and pick accordingly."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">A finished action with a result you can see now</span> <span class="trig-then">→ Present Perfect</span>
-      <div class="trig-ex"><span class="en">I've <b>lost</b> my keys.</span> (so I can't get in <i>now</i>) · <span class="en">She's <b>broken</b> her arm.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "I don't care <i>when</i> — I care that the result is standing here in front of me right now."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">How long something has gone on — up to now</span> <span class="trig-then">→ Present Perfect Continuous</span>
-      <div class="trig-ex"><span class="en">We've <b>been living</b> here <b>for</b> five years.</span> · <span class="en">How long have you <b>been learning</b> English?</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "It's still going, and I'm measuring the stretch of it — <span class="en">for/since</span> plus a live process."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">One action interrupted by another in the past</span> <span class="trig-then">→ Past Continuous + Past Simple</span>
-      <div class="trig-ex"><span class="en">I <b>was sleeping when</b> the alarm <b>went</b> off.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "The long background is the continuous; the short thing that cuts into it is the simple."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">A timetable / schedule in the future</span> <span class="trig-then">→ Present Simple</span>
-      <div class="trig-ex"><span class="en">The train <b>leaves</b> at 6.</span> · <span class="en">The film <b>starts</b> at eight.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "It's fixed by a timetable, not by me — so I treat it like a present fact."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">A plan or arrangement you've already made</span> <span class="trig-then">→ Present Continuous</span>
-      <div class="trig-ex"><span class="en">We're <b>having</b> dinner with them <b>on Friday</b>.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "It's settled, diary-fixed, with a person and a time — that's the present continuous, not <span class="en">will</span>."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">A prediction with evidence in front of you</span> <span class="trig-then">→ going to</span>
-      <div class="trig-ex"><span class="en">She's <b>going to</b> have a baby.</span> · <span class="en">Watch out — you're <b>going to</b> drop it!</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "I can see it coming from the here-and-now, so <span class="en">going to</span> — <span class="en">will</span> would sound like a guess out of nowhere."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">A decision made at the moment of speaking</span> <span class="trig-then">→ will</span>
-      <div class="trig-ex"><span class="en">The phone's ringing — I'll <b>get</b> it.</span> · <span class="en">Fine, I'll <b>help</b> you.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "I decided this half a second ago, on the spot — that's exactly what <span class="en">will</span> is for."</div>
-    </div>
-    <div class="trig-item">
-      <span class="trig-when">An unreal or imagined past (<span class="en">if</span>)</span> <span class="trig-then">→ Third Conditional: had + V3 … would have + V3</span>
-      <div class="trig-ex"><span class="en"><b>If</b> I'<b>d known</b>, I <b>would have</b> come.</span></div>
-      <div class="trig-think"><b>Native's thought:</b> "It didn't happen — I'm rewinding a past that never was, so both halves go one step past the past."</div>
-    </div>
-  </div>
-
-  <div class="prose">
-    <p><b>The habit to build.</b> Before you speak, don't scan for a rule — scan the <i>situation</i>. Is the time closed or open? Is the action whole, in progress, or a result? Is one thing before another? Those three questions, asked in a blink, are what a fluent speaker is really doing, and they land you on the right tense far faster than the sixteen boxes ever could.</p>
-  </div>
-</section>
-
-<footer>
-  <span>The English Timeline · 16 tenses, 16 diagrams, 60 sentences</span>
-  <span class="mono">Timecodes are a rough guide for a video version, ≈47 minutes</span>
-</footer>
-
 <script>
 (function(){
   var AX={x0:60,x1:744,y:110,W:800,H:168};
