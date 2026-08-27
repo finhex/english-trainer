@@ -95,6 +95,23 @@ a{color:inherit}
 .sigex li{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:8px 12px;background:var(--card-2);border-radius:8px}
 .sigex .sw{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--card);border:1px solid var(--line-2);color:var(--c-now);flex:none}
 
+/* ---------- confused-pairs native block ---------- */
+.diffpair{display:grid;gap:10px;margin-bottom:4px}
+@media(min-width:720px){.diffpair.two{grid-template-columns:1fr 1fr}.diffpair.three{grid-template-columns:1fr 1fr 1fr}}
+.dp{padding:12px 14px;background:var(--card-2);border-radius:9px;border-top:3px solid var(--line)}
+.dp[data-a=s]{border-top-color:var(--c-simple)}
+.dp[data-a=c]{border-top-color:var(--c-cont)}
+.dp[data-a=p]{border-top-color:var(--c-perf)}
+.dp[data-a=pc]{border-top-color:var(--c-perfc)}
+.dp-t{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-2);margin-bottom:6px}
+.dp .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.45}
+.dp-th{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5;font-style:italic}
+.hardex{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.hardex li{padding:11px 14px;background:var(--card-2);border-radius:9px;border-left:3px solid var(--c-now)}
+.hardex .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.5}
+.hardex .ht{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.hardex .ht b{color:var(--c-now);font-weight:600}
+
 /* ---------- shell ---------- */
 .page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
 .shell{display:block}
@@ -1516,6 +1533,22 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </div>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>Before choosing, the native asks: <i>am I stating a permanent truth about the world, or something happening — and temporary — around now?</i> Permanent and general goes Simple; live, changing or diary-fixed goes Continuous.</p>
+      <div class="native-sub">The difference, from the inside</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="s"><div class="dp-t">Present Simple</div><div class="s-en">Water boils at 100°C.</div><div class="dp-th">“A law of the world — always true. There is no 'now' in it at all.”</div></div>
+        <div class="dp" data-a="c"><div class="dp-t">Present Continuous</div><div class="s-en">Look — the water's boiling!</div><div class="dp-th">“Right now, on this stove. Come and see it happen.”</div></div>
+      </div>
+      <div class="native-sub">Hard sentences — and the thought behind them</div>
+      <ul class="hardex">
+        <li><div class="s-en">I'm loving this course.</div><div class="ht"><b>Native thought:</b> Normally <span class="en">love</span> is a state and refuses <span class="en">-ing</span>. I stretch it on purpose to say 'right now, temporarily, this feels great' — a deliberate, informal continuous.</div></li>
+        <li><div class="s-en">She's always interrupting me.</div><div class="ht"><b>Native thought:</b> It's a repeated habit, but by choosing <span class="en">-ing + always</span> instead of the plain Present Simple, I load it with irritation, not neutral fact.</div></li>
+        <li><div class="s-en">I live in Rome, but I'm living with my parents this month.</div><div class="ht"><b>Native thought:</b> First half: my permanent home. Second half: a temporary arrangement — same verb, two different time-feelings.</div></li>
+      </ul>
+    </div>
   </div>
 
   <div class="cmp">
@@ -1540,6 +1573,23 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <div>When is neither stated nor relevant. What counts is that I have no keys now.</div>
         </div>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>This is the single most important pair in English. The native asks one question: <i>am I telling you a closed historical fact — where WHEN it happened is the point — or am I bringing up a past event because its RESULT matters right now, or because it's part of my life experience?</i> The instant a finished time is named or understood (<span class="en">yesterday, in 2010, when I was young</span>), the door to the perfect slams shut and only Past Simple fits.</p>
+      <div class="native-sub">The difference, from the inside</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="s"><div class="dp-t">Past Simple — WHEN matters</div><div class="s-en">I lost my key.</div><div class="dp-th">“This happened at some past time — I'm just reporting history. Maybe I found it since, maybe not; the sentence doesn't say.”</div></div>
+        <div class="dp" data-a="p"><div class="dp-t">Present Perfect — the RESULT matters</div><div class="s-en">I've lost my key.</div><div class="dp-th">“I don't have my key right now, and that's the whole point — notice the present state, help me look.”</div></div>
+      </div>
+      <div class="native-sub">Hard sentences — and the thought behind them</div>
+      <ul class="hardex">
+        <li><div class="s-en">He has been working on this bug for six hours, but he still hasn't found the root cause.</div><div class="ht"><b>Native thought:</b> He started six hours ago, is still at it (continuous), and up to this exact second there's zero result — everything is anchored to <i>now</i>.</div></li>
+        <li><div class="s-en">This is the third time this week that the build has broken.</div><div class="ht"><b>Native thought:</b> We're inside <span class="en">this week</span> — an unfinished period — so I count the occurrences up to the present moment.</div></li>
+        <li><div class="s-en">I lived in Paris for three years. / I've lived in Paris for three years.</div><div class="ht"><b>Native thought:</b> First: I've moved away — a closed, finished chapter. Second: I still live there — the three years reach right up to now.</div></li>
+        <li><div class="s-en">Did you see the email? / Have you seen the email?</div><div class="ht"><b>Native thought:</b> First points at one finished occasion (this morning, in the meeting). Second asks about your experience up to now — is it in your head yet?</div></li>
+      </ul>
     </div>
   </div>
 
@@ -1566,6 +1616,21 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </div>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>The native asks: <i>do I care about the finished result — how much, how many, done — or about the ongoing activity and its length, how long, maybe still going?</i> Result → the plain Perfect. Process and duration → the Continuous.</p>
+      <div class="native-sub">The difference, from the inside</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="p"><div class="dp-t">Present Perfect — the result</div><div class="s-en">I've read three chapters.</div><div class="dp-th">“A countable, completed result: three, done. You can check the box.”</div></div>
+        <div class="dp" data-a="pc"><div class="dp-t">Present Perfect Continuous — the activity</div><div class="s-en">I've been reading all afternoon.</div><div class="dp-th">“The activity and how long it's run — and I may not be finished.”</div></div>
+      </div>
+      <div class="native-sub">Hard sentences — and the thought behind them</div>
+      <ul class="hardex">
+        <li><div class="s-en">I've painted the fence. / I've been painting the fence.</div><div class="ht"><b>Native thought:</b> First: the job is done — look at it. Second: that's why I'm covered in paint — the activity explains my present state, finished or not.</div></li>
+        <li><div class="s-en">She's written five emails. / She's been writing emails all morning.</div><div class="ht"><b>Native thought:</b> First counts the product (five). Second measures the process (all morning).</div></li>
+      </ul>
+    </div>
   </div>
 
   <div class="cmp">
@@ -1590,6 +1655,21 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <div>She left before I got there — I missed her.</div>
         </div>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>Two events, both in the past. The native asks: <i>do I just tell them in the order they happened, or do I need to rewind and flag that one happened before the other?</i> If the order is already clear, two Past Simples are enough; when I must mark the earlier one, it takes <span class="en">had + V3</span>.</p>
+      <div class="native-sub">The difference, from the inside</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="s"><div class="dp-t">Past Simple sequence</div><div class="s-en">I arrived and the train left.</div><div class="dp-th">“In order: first I arrived, then it pulled away. I might well have caught it.”</div></div>
+        <div class="dp" data-a="p"><div class="dp-t">Past Perfect — one before the other</div><div class="s-en">When I arrived, the train had left.</div><div class="dp-th">“It left BEFORE I got there. I missed it — the <span class="en">had</span> makes that unmistakable.”</div></div>
+      </div>
+      <div class="native-sub">Hard sentences — and the thought behind them</div>
+      <ul class="hardex">
+        <li><div class="s-en">Had I known the rules were so strict, I wouldn't have set it that way.</div><div class="ht"><b>Native thought:</b> I set up a hypothetical past: rewind to before I acted (Past Perfect), which would have changed what happened next (would have + V3).</div></li>
+        <li><div class="s-en">She had barely finished the patch when the server crashed again.</div><div class="ht"><b>Native thought:</b> Two past events collide: A (finishing) was 99% complete when B (the crash) cut in.</div></li>
+      </ul>
     </div>
   </div>
 
@@ -1623,6 +1703,22 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <div>More than an intention: time and place are fixed and the other person knows.</div>
         </div>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">The Native Mental Trigger</div>
+      <p>Three futures, one quick sort. The native asks: <i>am I deciding this very second (will), can I see it coming from evidence I have now, or already intend it (going to), or is it a fixed arrangement with a person and a time (present continuous)?</i></p>
+      <div class="native-sub">The difference, from the inside</div>
+      <div class="diffpair three">
+        <div class="dp" data-a="s"><div class="dp-t">will — decide now</div><div class="s-en">The phone's ringing — I'll get it.</div><div class="dp-th">“Decided this half-second, on the spot. Also predictions and promises.”</div></div>
+        <div class="dp" data-a="c"><div class="dp-t">going to — intention / evidence</div><div class="s-en">Look at the clouds — it's going to rain.</div><div class="dp-th">“I can see it coming from the here-and-now, or I already planned it.”</div></div>
+        <div class="dp" data-a="p"><div class="dp-t">present continuous — arrangement</div><div class="s-en">I'm meeting her at six.</div><div class="dp-th">“Settled and diary-fixed, with a person and a time. Not a guess.”</div></div>
+      </div>
+      <div class="native-sub">Hard sentences — and the thought behind them</div>
+      <ul class="hardex">
+        <li><div class="s-en">The meeting starts at nine, so I'm leaving at eight, and I'll grab a coffee on the way.</div><div class="ht"><b>Native thought:</b> A timetable (Present Simple) → my fixed arrangement (Present Continuous) → a spontaneous add-on decided as I speak (will) — three futures in one breath.</div></li>
+        <li><div class="s-en">I'm going to fix it tonight — I'll call you the moment it works.</div><div class="ht"><b>Native thought:</b> First: a settled intention (going to). Second: an on-the-spot promise (will).</div></li>
+      </ul>
     </div>
   </div>
 </section>

@@ -95,6 +95,23 @@ a{color:inherit}
 .sigex li{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:8px 12px;background:var(--card-2);border-radius:8px}
 .sigex .sw{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--card);border:1px solid var(--line-2);color:var(--c-now);flex:none}
 
+/* ---------- confused-pairs native block ---------- */
+.diffpair{display:grid;gap:10px;margin-bottom:4px}
+@media(min-width:720px){.diffpair.two{grid-template-columns:1fr 1fr}.diffpair.three{grid-template-columns:1fr 1fr 1fr}}
+.dp{padding:12px 14px;background:var(--card-2);border-radius:9px;border-top:3px solid var(--line)}
+.dp[data-a=s]{border-top-color:var(--c-simple)}
+.dp[data-a=c]{border-top-color:var(--c-cont)}
+.dp[data-a=p]{border-top-color:var(--c-perf)}
+.dp[data-a=pc]{border-top-color:var(--c-perfc)}
+.dp-t{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--ink-2);margin-bottom:6px}
+.dp .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.45}
+.dp-th{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5;font-style:italic}
+.hardex{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.hardex li{padding:11px 14px;background:var(--card-2);border-radius:9px;border-left:3px solid var(--c-now)}
+.hardex .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.5}
+.hardex .ht{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.hardex .ht b{color:var(--c-now);font-weight:600}
+
 /* ---------- shell ---------- */
 .page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
 .shell{display:block}
@@ -1530,6 +1547,22 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </div>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">Ментальный триггер носителя</div>
+      <p>Прежде чем выбрать, носитель спрашивает: <i>я излагаю постоянную истину о мире или что-то происходящее — и временное — около «сейчас»?</i> Постоянное и общее → Simple; живое, меняющееся или вписанное в ежедневник → Continuous.</p>
+      <div class="native-sub">Разница — изнутри</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="s"><div class="dp-t">Present Simple</div><div class="s-en">Water boils at 100°C.</div><div class="dp-th">“Закон мира — всегда верно. «Сейчас» тут вообще нет.”</div></div>
+        <div class="dp" data-a="c"><div class="dp-t">Present Continuous</div><div class="s-en">Look — the water's boiling!</div><div class="dp-th">“Прямо сейчас, на этой плите. Иди посмотри.”</div></div>
+      </div>
+      <div class="native-sub">Трудные предложения — и мысль за ними</div>
+      <ul class="hardex">
+        <li><div class="s-en">I'm loving this course.</div><div class="ht"><b>Мысль носителя:</b> Обычно <span class="en">love</span> — состояние и не берёт <span class="en">-ing</span>. Я намеренно растягиваю его, чтобы сказать «прямо сейчас, временно, это здорово» — сознательный, разговорный континиус.</div></li>
+        <li><div class="s-en">She's always interrupting me.</div><div class="ht"><b>Мысль носителя:</b> Это повторяющаяся привычка, но выбрав <span class="en">-ing + always</span> вместо простого Present Simple, я вкладываю раздражение, а не нейтральный факт.</div></li>
+        <li><div class="s-en">I live in Rome, but I'm living with my parents this month.</div><div class="ht"><b>Мысль носителя:</b> Первая часть — постоянный дом. Вторая — временная ситуация: один глагол, два разных ощущения времени.</div></li>
+      </ul>
+    </div>
   </div>
 
   <div class="cmp">
@@ -1554,6 +1587,23 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <div>Когда — не сказано и не важно. Важно, что сейчас я без ключей.</div>
         </div>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">Ментальный триггер носителя</div>
+      <p>Это самая важная пара в английском. Носитель задаёт один вопрос: <i>я сообщаю закрытый исторический факт — где важно, КОГДА это было, — или поднимаю прошлое событие, потому что его РЕЗУЛЬТАТ важен прямо сейчас, или это часть моего жизненного опыта?</i> Как только назван или подразумевается завершённый момент (<span class="en">yesterday, in 2010, when I was young</span>), дверь к перфекту захлопывается, и подходит только Past Simple.</p>
+      <div class="native-sub">Разница — изнутри</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="s"><div class="dp-t">Past Simple — важно КОГДА</div><div class="s-en">I lost my key.</div><div class="dp-th">“Это случилось в какой-то прошлый момент — я просто излагаю историю. Может, нашёл с тех пор, может, нет; предложение об этом молчит.”</div></div>
+        <div class="dp" data-a="p"><div class="dp-t">Present Perfect — важен РЕЗУЛЬТАТ</div><div class="s-en">I've lost my key.</div><div class="dp-th">“У меня сейчас нет ключа, и в этом вся суть — обрати внимание на нынешнее состояние, помоги искать.”</div></div>
+      </div>
+      <div class="native-sub">Трудные предложения — и мысль за ними</div>
+      <ul class="hardex">
+        <li><div class="s-en">He has been working on this bug for six hours, but he still hasn't found the root cause.</div><div class="ht"><b>Мысль носителя:</b> Он начал шесть часов назад, всё ещё занят (континиус), и до этой самой секунды результат нулевой — всё привязано к <i>сейчас</i>.</div></li>
+        <li><div class="s-en">This is the third time this week that the build has broken.</div><div class="ht"><b>Мысль носителя:</b> Мы внутри <span class="en">this week</span> — незавершённого периода, — поэтому я считаю случаи вплоть до настоящего момента.</div></li>
+        <li><div class="s-en">I lived in Paris for three years. / I've lived in Paris for three years.</div><div class="ht"><b>Мысль носителя:</b> Первое: я уехал — закрытая, завершённая глава. Второе: я всё ещё живу там — три года дотягиваются до сейчас.</div></li>
+        <li><div class="s-en">Did you see the email? / Have you seen the email?</div><div class="ht"><b>Мысль носителя:</b> Первое указывает на один завершённый случай (сегодня утром, на встрече). Второе спрашивает о твоём опыте до сих пор — уже в курсе или нет?</div></li>
+      </ul>
     </div>
   </div>
 
@@ -1580,6 +1630,21 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
         </div>
       </div>
     </div>
+  
+    <div class="native">
+      <div class="native-h">Ментальный триггер носителя</div>
+      <p>Носитель спрашивает: <i>мне важен завершённый результат — сколько, готово, — или сама деятельность и её длина, как долго, может, ещё идёт?</i> Результат → чистый Perfect. Процесс и длительность → Continuous.</p>
+      <div class="native-sub">Разница — изнутри</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="p"><div class="dp-t">Present Perfect — результат</div><div class="s-en">I've read three chapters.</div><div class="dp-th">“Счётный, завершённый результат: три, готово. Можно ставить галочку.”</div></div>
+        <div class="dp" data-a="pc"><div class="dp-t">Present Perfect Continuous — деятельность</div><div class="s-en">I've been reading all afternoon.</div><div class="dp-th">“Деятельность и её длина — и, может, я ещё не закончил.”</div></div>
+      </div>
+      <div class="native-sub">Трудные предложения — и мысль за ними</div>
+      <ul class="hardex">
+        <li><div class="s-en">I've painted the fence. / I've been painting the fence.</div><div class="ht"><b>Мысль носителя:</b> Первое: работа сделана — смотри. Второе: вот почему я весь в краске — деятельность объясняет моё нынешнее состояние, законченная или нет.</div></li>
+        <li><div class="s-en">She's written five emails. / She's been writing emails all morning.</div><div class="ht"><b>Мысль носителя:</b> Первое считает продукт (пять). Второе меряет процесс (всё утро).</div></li>
+      </ul>
+    </div>
   </div>
 
   <div class="cmp">
@@ -1604,6 +1669,21 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <div>Она ушла до моего приезда — я её уже не застал.</div>
         </div>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">Ментальный триггер носителя</div>
+      <p>Два события, оба в прошлом. Носитель спрашивает: <i>просто рассказать их в порядке, в котором они случились, или нужно отмотать назад и пометить, что одно произошло раньше другого?</i> Если порядок и так ясен, хватит двух Past Simple; когда надо пометить более раннее, берётся <span class="en">had + V3</span>.</p>
+      <div class="native-sub">Разница — изнутри</div>
+      <div class="diffpair two">
+        <div class="dp" data-a="s"><div class="dp-t">Последовательность в Past Simple</div><div class="s-en">I arrived and the train left.</div><div class="dp-th">“По порядку: сначала я пришёл, потом он отъехал. Возможно, я даже успел на него.”</div></div>
+        <div class="dp" data-a="p"><div class="dp-t">Past Perfect — одно раньше другого</div><div class="s-en">When I arrived, the train had left.</div><div class="dp-th">“Он ушёл ДО того, как я добрался. Я опоздал — <span class="en">had</span> делает это однозначным.”</div></div>
+      </div>
+      <div class="native-sub">Трудные предложения — и мысль за ними</div>
+      <ul class="hardex">
+        <li><div class="s-en">Had I known the rules were so strict, I wouldn't have set it that way.</div><div class="ht"><b>Мысль носителя:</b> Я строю гипотетическое прошлое: отматываю к моменту до действия (Past Perfect), что изменило бы дальнейшее (would have + V3).</div></li>
+        <li><div class="s-en">She had barely finished the patch when the server crashed again.</div><div class="ht"><b>Мысль носителя:</b> Два прошлых события сталкиваются: A (завершение) было готово на 99%, когда врезалось B (сбой).</div></li>
+      </ul>
     </div>
   </div>
 
@@ -1637,6 +1717,22 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
           <div>Не просто намерение — назначены время и место, вторая сторона в курсе.</div>
         </div>
       </div>
+    </div>
+  
+    <div class="native">
+      <div class="native-h">Ментальный триггер носителя</div>
+      <p>Три будущих, одна быстрая сортировка. Носитель спрашивает: <i>я решаю прямо сейчас (will), вижу это по имеющимся уликам или уже намерен (going to), или это назначенная договорённость с человеком и временем (present continuous)?</i></p>
+      <div class="native-sub">Разница — изнутри</div>
+      <div class="diffpair three">
+        <div class="dp" data-a="s"><div class="dp-t">will — решаю сейчас</div><div class="s-en">The phone's ringing — I'll get it.</div><div class="dp-th">“Решил в эту полсекунды, на месте. А ещё прогнозы и обещания.”</div></div>
+        <div class="dp" data-a="c"><div class="dp-t">going to — намерение / улики</div><div class="s-en">Look at the clouds — it's going to rain.</div><div class="dp-th">“Вижу приближение из здесь-и-сейчас, или уже запланировал.”</div></div>
+        <div class="dp" data-a="p"><div class="dp-t">present continuous — договорённость</div><div class="s-en">I'm meeting her at six.</div><div class="dp-th">“Решено и вписано в ежедневник, с человеком и временем. Не догадка.”</div></div>
+      </div>
+      <div class="native-sub">Трудные предложения — и мысль за ними</div>
+      <ul class="hardex">
+        <li><div class="s-en">The meeting starts at nine, so I'm leaving at eight, and I'll grab a coffee on the way.</div><div class="ht"><b>Мысль носителя:</b> Расписание (Present Simple) → моя назначенная договорённость (Present Continuous) → спонтанное добавление, решённое в момент речи (will) — три будущих на одном дыхании.</div></li>
+        <li><div class="s-en">I'm going to fix it tonight — I'll call you the moment it works.</div><div class="ht"><b>Мысль носителя:</b> Первое: устоявшееся намерение (going to). Второе: обещание на месте (will).</div></li>
+      </ul>
     </div>
   </div>
 </section>
