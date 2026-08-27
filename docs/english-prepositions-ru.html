@@ -48,6 +48,33 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 
+/* ---------- native-thinking block ---------- */
+.native{margin-top:22px;padding:18px 20px 8px;border:1px solid var(--line);border-left:3px solid var(--c-now);border-radius:12px;background:var(--card);box-shadow:var(--shadow)}
+.native-h{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-now);margin-bottom:9px}
+.native p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:74ch;margin:0}
+.native b,.native strong{color:var(--ink);font-weight:600}
+.native i{font-style:italic}
+.native .en{font-family:"JetBrains Mono",monospace;font-size:.92em;color:var(--ink);font-style:normal}
+.native-think{margin-top:12px;padding:11px 14px;background:var(--card-2);border-radius:9px;font-size:14px;color:var(--ink);line-height:1.5;max-width:74ch}
+.native-think b{color:var(--c-now);font-weight:600}
+.native-sub{font-family:Bitter,Georgia,serif;font-weight:700;font-size:14px;color:var(--ink);margin:18px 0 9px}
+.diffpair{display:grid;gap:10px;margin-bottom:4px}
+@media(min-width:720px){.diffpair.two{grid-template-columns:1fr 1fr}.diffpair.three{grid-template-columns:1fr 1fr 1fr}}
+.dp{padding:12px 14px;background:var(--card-2);border-radius:9px;border-top:3px solid var(--c-place)}
+.dp-t{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-2);margin-bottom:6px}
+.dp .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.45}
+.dp-th{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5;font-style:italic}
+.usex{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(180px,44%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+.hardex{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.hardex li{padding:11px 14px;background:var(--card-2);border-radius:9px;border-left:3px solid var(--c-now)}
+.hardex .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.5}
+.hardex .ht{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.hardex .ht b{color:var(--c-now);font-weight:600}
+
 .page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
 .shell{display:block}
 @media (min-width:1080px){.shell{display:grid;grid-template-columns:196px minmax(0,1fr);gap:56px;align-items:start}}
@@ -284,6 +311,39 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
       <p>«Фотография на стене» — стена это поверхность → <span class="en">on the wall</span>.</p>
       <p>«Ключи в сумке» — сумка это объём → <span class="en">in the bag</span>.</p>
     </div>
+  </div>
+
+  <div class="native">
+    <div class="native-h">Ментальный триггер носителя</div>
+    <p>Прежде чем выбрать предлог места или времени, носитель не вспоминает правило — он <b>видит форму</b>. <i>Это точка, поверхность или объём?</i> Точка без размера → <span class="en">at</span>. Поверхность или линия, которой касаются → <span class="en">on</span>. Пространство, внутри которого ты заключён → <span class="en">in</span>. Одна оговорка: с транспортом решает <b>поза, а не размер</b> — автобус это платформа, на которой стоят (<span class="en">on</span>), а машина — тесная коробка, в которой сидят (<span class="en">in</span>).</p>
+    <div class="native-think"><b>Мысль:</b> «Точка, поверхность или объём? Как увижу форму — слово уже выбрано.»</div>
+
+    <div class="native-sub">Одно место, три формы — «the corner»</div>
+    <div class="diffpair three">
+      <div class="dp"><div class="dp-t">at — точка</div><div class="s-en">I'll wait at the corner.</div><div class="dp-th">«Где сходятся две улицы — точка на карте.»</div></div>
+      <div class="dp"><div class="dp-t">on — поверхность / место</div><div class="s-en">The shop is on the corner.</div><div class="dp-th">«Стоит на этом внешнем углу квартала.»</div></div>
+      <div class="dp"><div class="dp-t">in — замкнутый угол</div><div class="s-en">The lamp is in the corner.</div><div class="dp-th">«Внутренний угол комнаты, стены с двух сторон.»</div></div>
+    </div>
+
+    <div class="native-sub">Та же логика формы, классические путаницы — каждая с примером</div>
+    <ul class="usex">
+      <li><span class="u">on the bus / train (платформа, на которой стоят)</span><span class="s-en">I'm <b>on the</b> train — I'll call you at the station.</span></li>
+      <li><span class="u">in the car / taxi (тесная коробка, в которой сидят)</span><span class="s-en">She's <b>in the</b> car, waiting outside.</span></li>
+      <li><span class="u">on time = точно в назначенный момент</span><span class="s-en">The train left <b>on time</b>, to the minute.</span></li>
+      <li><span class="u">in time = с запасом, не опоздав</span><span class="s-en">We got there just <b>in time</b> to catch it.</span></li>
+      <li><span class="u">at the end = точка (места или времени)</span><span class="s-en">Turn left <b>at the end</b> of the street.</span></li>
+      <li><span class="u">in the end = в конце концов, в итоге</span><span class="s-en"><b>In the end</b>, we decided to stay.</span></li>
+      <li><span class="u">at school = учреждение / занятие</span><span class="s-en">The kids are <b>at school</b> until three.</span></li>
+      <li><span class="u">in the school = внутри здания</span><span class="s-en">The meeting is <b>in the school</b>, room 4.</span></li>
+    </ul>
+
+    <div class="native-sub">Трудные предложения — и мысль за ними</div>
+    <ul class="hardex">
+      <li><div class="s-en">I'll meet you at the station at six, on platform 4.</div><div class="ht"><b>Мысль носителя:</b> Вокзал — точка на карте (<span class="en">at</span>), шесть — точка во времени (<span class="en">at</span>), платформа — длинная плоская поверхность (<span class="en">on</span>).</div></li>
+      <li><div class="s-en">There's a crack in the wall and a poster on the wall.</div><div class="ht"><b>Мысль носителя:</b> Трещина — <i>внутри</i> материала, объём (<span class="en">in</span>); плакат — на плоской грани, поверхность (<span class="en">on</span>).</div></li>
+      <li><div class="s-en">We're on the train now, arriving in ten minutes.</div><div class="ht"><b>Мысль носителя:</b> Поезд — платформа, на которой стою (поза, <span class="en">on</span>); десять минут — отрезок, внутри которого отсчитываю (<span class="en">in</span>).</div></li>
+      <li><div class="s-en">She's in hospital in Leeds, on the third floor.</div><div class="ht"><b>Мысль носителя:</b> Состояние пациента и город — оба объёмы (<span class="en">in</span>); этаж — плоский уровень, на котором стоят (<span class="en">on</span>).</div></li>
+    </ul>
   </div>
 </section>
 <!-- ===================== ЧАСТЬ 2 ===================== -->
