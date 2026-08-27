@@ -1,0 +1,640 @@
+<meta charset="utf-8">
+<title>The Sentence Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3; --card:#FFFFFF; --card-2:#E4EAEE;
+  --ink:#131C25; --ink-2:#47555F; --ink-3:#75838E;
+  --line:#CFD8DE; --line-2:#E2E8EC;
+  --c-s:#2F6DB8;   /* subject */
+  --c-v:#12746A;   /* verb    */
+  --c-o:#A6640B;   /* object  */
+  --c-c:#5546B8;   /* complement */
+  --c-a:#A33A5F;   /* adverbial  */
+  --c-now:#C23E2B;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+    --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+    --line:#27353F; --line-2:#1F2C36;
+    --c-s:#6FB0F2; --c-v:#4FC3B3; --c-o:#E8A44A; --c-c:#A798F7; --c-a:#EE85A6;
+    --c-now:#FF7C64;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+  --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+  --line:#27353F; --line-2:#1F2C36;
+  --c-s:#6FB0F2; --c-v:#4FC3B3; --c-o:#E8A44A; --c-c:#A798F7; --c-a:#EE85A6;
+  --c-now:#FF7C64;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Golos Text","Segoe UI",system-ui,sans-serif;font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+
+/* ---------- shell ---------- */
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){.shell{display:grid;grid-template-columns:210px minmax(0,1fr);gap:56px;align-items:start}}
+.rail{display:none}
+@media (min-width:1080px){.rail{display:block;position:sticky;top:0;padding:40px 0;max-height:100vh;overflow-y:auto}}
+.rail-title{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:baseline;text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);border-left:2px solid transparent}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-now)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3)}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.hero h1{font-size:clamp(38px,6.4vw,68px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:62ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);background:var(--card)}
+.chip.s{color:var(--c-s);border-color:color-mix(in srgb,var(--c-s) 45%,var(--line))}
+.chip.v{color:var(--c-v);border-color:color-mix(in srgb,var(--c-v) 45%,var(--line))}
+.chip.o{color:var(--c-o);border-color:color-mix(in srgb,var(--c-o) 45%,var(--line))}
+.chip.c{color:var(--c-c);border-color:color-mix(in srgb,var(--c-c) 45%,var(--line))}
+.chip.a{color:var(--c-a);border-color:color-mix(in srgb,var(--c-a) 45%,var(--line))}
+
+/* ---------- parts ---------- */
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-now)}
+.part h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:68ch;color:var(--ink-2)}
+.prose{max-width:70ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.prose h3{color:var(--ink);font-size:19px;margin-top:10px}
+
+/* ---------- role tags + sentence breakdown ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.rt{font-family:"JetBrains Mono",monospace;font-size:11.5px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.rt.s{color:var(--c-s)} .rt.v{color:var(--c-v)} .rt.o{color:var(--c-o)} .rt.c{color:var(--c-c)} .rt.a{color:var(--c-a)}
+.bd{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.piece{flex:0 1 auto;padding:8px 12px;border-radius:9px;background:var(--card-2);border-top:3px solid var(--ink-3);min-width:0}
+.piece.s{border-top-color:var(--c-s)} .piece.v{border-top-color:var(--c-v)} .piece.o{border-top-color:var(--c-o)} .piece.c{border-top-color:var(--c-c)} .piece.a{border-top-color:var(--c-a)}
+.piece .pl{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;color:var(--ink-3)}
+.piece.s .pl{color:var(--c-s)} .piece.v .pl{color:var(--c-v)} .piece.o .pl{color:var(--c-o)} .piece.c .pl{color:var(--c-c)} .piece.a .pl{color:var(--c-a)}
+.piece .pt{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink)}
+.bd-cap{font-size:13px;color:var(--ink-3);margin-top:6px;max-width:74ch}
+
+/* inline colored constituents */
+.k{font-weight:600}
+.k.s{color:var(--c-s)} .k.v{color:var(--c-v)} .k.o{color:var(--c-o)} .k.c{color:var(--c-c)} .k.a{color:var(--c-a)}
+
+/* ---------- pattern / info table ---------- */
+.tbl-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+table.tbl{border-collapse:collapse;width:100%;min-width:560px;background:var(--card);font-size:14.5px}
+table.tbl th,table.tbl td{text-align:left;padding:11px 15px;border-top:1px solid var(--line-2);vertical-align:top}
+table.tbl thead th{background:var(--card-2);border-top:0;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+table.tbl td.f{font-family:"JetBrains Mono",monospace;color:var(--ink);white-space:nowrap}
+table.tbl td .en{font-size:13.5px}
+table.tbl tr td:first-child{font-weight:600;color:var(--ink)}
+
+/* ---------- structure-type cards ---------- */
+.sty{display:grid;gap:14px;margin-top:22px}
+@media(min-width:760px){.sty{grid-template-columns:1fr 1fr}}
+.sty-card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c-now);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px}
+.sty-card h4{font-size:16px}
+.sty-card .lab{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);margin-top:2px}
+.sty-card p{margin-top:8px;font-size:14px;color:var(--ink-2)}
+.sty-card .ex{margin-top:10px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.5;background:var(--card-2);padding:9px 12px;border-radius:8px}
+
+/* ---------- native / difference / hard / uses ---------- */
+.note{margin-top:22px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--c-now);border-radius:12px;box-shadow:var(--shadow);padding:16px 20px 8px}
+.note-h{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-now);margin-bottom:9px}
+.note p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:74ch}
+.note b{color:var(--ink);font-weight:600}
+.note-sub{font-family:Bitter,Georgia,serif;font-weight:700;font-size:14px;color:var(--ink);margin:18px 0 9px}
+.usex{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(190px,42%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+.hardex{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.hardex li{padding:11px 14px;background:var(--card-2);border-radius:9px;border-left:3px solid var(--c-now)}
+.hardex .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.5}
+.hardex .ht{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.hardex .ht b{color:var(--c-now);font-weight:600}
+
+footer{margin-top:80px;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--ink-3);font-size:13px}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Contents">
+  <div class="rail-title">Parts</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">0</span><span>The atom</span></a></li>
+    <li><a href="#p1"><span class="tc">1</span><span>The five roles</span></a></li>
+    <li><a href="#p2"><span class="tc">2</span><span>Clause patterns</span></a></li>
+    <li><a href="#p3"><span class="tc">3</span><span>Phrases vs clauses</span></a></li>
+    <li><a href="#p4"><span class="tc">4</span><span>Finite vs non-finite</span></a></li>
+    <li><a href="#p5"><span class="tc">5</span><span>Independent vs dependent</span></a></li>
+    <li><a href="#p6"><span class="tc">6</span><span>Four sentence types</span></a></li>
+    <li><a href="#p7"><span class="tc">7</span><span>Coordination</span></a></li>
+    <li><a href="#p8"><span class="tc">8</span><span>Noun clauses</span></a></li>
+    <li><a href="#p9"><span class="tc">9</span><span>Relative clauses</span></a></li>
+    <li><a href="#p10"><span class="tc">10</span><span>Adverbial clauses</span></a></li>
+    <li><a href="#p11"><span class="tc">11</span><span>Non-finite clauses</span></a></li>
+    <li><a href="#p12"><span class="tc">12</span><span>Combining & embedding</span></a></li>
+    <li><a href="#p13"><span class="tc">13</span><span>The hardest structures</span></a></li>
+    <li><a href="#p14"><span class="tc">14</span><span>Punctuating clauses</span></a></li>
+    <li><a href="#p15"><span class="tc">15</span><span>Form vs function</span></a></li>
+    <li><a href="#p16"><span class="tc">16</span><span>Build & check</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">Sentence architecture · from one clause to the hardest</div>
+  <h1>The Sentence Blueprint</h1>
+  <p class="lede">Every English sentence, however long, is built from one small kit: a handful of <b>roles</b> (subject, verb, object, complement, adverbial), assembled into <b>clauses</b>, joined by two moves only — <b>coordination</b> (linking equals) and <b>subordination</b> (embedding one inside another). Learn the kit and the two moves, and even a page-long sentence becomes readable. This page goes from the smallest sentence to the hardest, missing nothing in between.</p>
+  <div class="chips">
+    <span class="chip s">Subject</span>
+    <span class="chip v">Verb</span>
+    <span class="chip o">Object</span>
+    <span class="chip c">Complement</span>
+    <span class="chip a">Adverbial</span>
+  </div>
+</header>
+
+<!-- ============ PART 0 ============ -->
+<section class="part" id="p0">
+  <div class="part-head"><span class="part-num">Part 0</span></div>
+  <h2>The atom: a subject and a predicate</h2>
+  <p class="part-lede">The smallest complete sentence is two parts: a <b>subject</b> (who or what the sentence is about) and a <b>predicate</b> (what is said about it — always built around a verb). Everything else on this page is these two parts growing.</p>
+
+  <div class="bd">
+    <div class="piece s"><span class="pl">Subject</span><span class="pt">Birds</span></div>
+    <div class="piece v"><span class="pl">Predicate (verb)</span><span class="pt">sing.</span></div>
+  </div>
+  <p class="bd-cap">Two words, one complete thought. The subject names the topic; the predicate makes a claim about it.</p>
+
+  <div class="prose">
+    <p><b>The subject is usually a noun phrase</b> — a noun and everything hanging off it: <span class="en">The old man next door</span> is one subject, however many words it contains. <b>The predicate is a verb phrase</b> — the verb plus whatever the verb needs to feel complete.</p>
+    <p><b>The verb is the engine.</b> It decides what the rest of the sentence must contain: some verbs need nothing (<span class="en">sing</span>), some need an object (<span class="en">need a key</span>), some need a description (<span class="en">seem tired</span>). That demand is the single most useful thing to notice about any verb — Part&nbsp;2 turns it into five fixed patterns.</p>
+  </div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<section class="part" id="p1">
+  <div class="part-head"><span class="part-num">Part 1</span></div>
+  <h2>The five roles every clause is built from</h2>
+  <p class="part-lede">English has only five grammatical roles. Master what each one <i>is</i>, and you can label any clause on Earth.</p>
+
+  <div class="legend">
+    <span class="rt s">S — Subject</span>
+    <span class="rt v">V — Verb</span>
+    <span class="rt o">O — Object</span>
+    <span class="rt c">C — Complement</span>
+    <span class="rt a">A — Adverbial</span>
+  </div>
+
+  <div class="prose">
+    <p><b class="k s">Subject (S)</b> — who or what does the action or is described. Normally before the verb: <span class="en">The engineers approved it.</span></p>
+    <p><b class="k v">Verb (V)</b> — the action or state. The one role no clause can drop.</p>
+    <p><b class="k o">Object (O)</b> — who or what receives the action. A <b>direct object</b> answers "what/whom?" (<span class="en">She wrote <u>a letter</u></span>); an <b>indirect object</b> is the receiver of the direct one (<span class="en">She wrote <u>him</u> a letter</span>).</p>
+    <p><b class="k c">Complement (C)</b> — completes the meaning by <i>describing</i> the subject or object, rather than receiving action. It follows linking verbs (<span class="en">be, seem, become, look</span>): <span class="en">She is <u>a doctor</u></span> · <span class="en">He looks <u>tired</u></span> · <span class="en">They elected her <u>chair</u></span> (object complement).</p>
+    <p><b class="k a">Adverbial (A)</b> — when, where, why, how, how often. Almost always optional, and movable: <span class="en"><u>Yesterday</u> she left <u>quietly</u>.</span></p>
+    <p><b>The crucial difference — object vs complement.</b> An object is a <i>different thing</i> from the subject (<span class="en">She saw a doctor</span> — two people); a complement is the <i>same thing</i>, renamed or described (<span class="en">She is a doctor</span> — one person).</p>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<section class="part" id="p2">
+  <div class="part-head"><span class="part-num">Part 2</span></div>
+  <h2>The clause patterns: the verb decides the shape</h2>
+  <p class="part-lede">Combine the five roles and you get just seven basic clause patterns. Which one you use is dictated entirely by the verb — this is the backbone of every English sentence.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Pattern</th><th>Shape</th><th>Example</th><th>Verb type</th></tr></thead>
+    <tbody>
+      <tr><td>Intransitive</td><td class="f">S + V</td><td><span class="en"><span class="k s">The baby</span> <span class="k v">slept</span>.</span></td><td>needs nothing</td></tr>
+      <tr><td>Transitive</td><td class="f">S + V + O</td><td><span class="en"><span class="k s">She</span> <span class="k v">wrote</span> <span class="k o">a letter</span>.</span></td><td>needs one object</td></tr>
+      <tr><td>Ditransitive</td><td class="f">S + V + O + O</td><td><span class="en"><span class="k s">He</span> <span class="k v">gave</span> <span class="k o">her</span> <span class="k o">a book</span>.</span></td><td>indirect + direct</td></tr>
+      <tr><td>Linking</td><td class="f">S + V + C</td><td><span class="en"><span class="k s">They</span> <span class="k v">are</span> <span class="k c">happy</span>.</span></td><td>describes the subject</td></tr>
+      <tr><td>Complex-transitive</td><td class="f">S + V + O + C</td><td><span class="en"><span class="k s">We</span> <span class="k v">painted</span> <span class="k o">the door</span> <span class="k c">red</span>.</span></td><td>describes the object</td></tr>
+      <tr><td>Intransitive + adverbial</td><td class="f">S + V + A</td><td><span class="en"><span class="k s">She</span> <span class="k v">lives</span> <span class="k a">in Rome</span>.</span></td><td>needs a place/adverbial</td></tr>
+      <tr><td>Transitive + adverbial</td><td class="f">S + V + O + A</td><td><span class="en"><span class="k s">He</span> <span class="k v">put</span> <span class="k o">the keys</span> <span class="k a">on the table</span>.</span></td><td>object + obligatory adverbial</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Why this matters more than any rule.</b> The verb carries its pattern with it, like a plug shape. <span class="en">put</span> demands an object <i>and</i> a place (<span class="en">✗ He put the keys</span> is broken); <span class="en">sleep</span> refuses an object (<span class="en">✗ She slept the baby</span>); <span class="en">give</span> happily takes two. When a sentence feels wrong, the verb's pattern is usually the reason.</p>
+  </div>
+</section>
+
+<!-- ============ PART 3 ============ -->
+<section class="part" id="p3">
+  <div class="part-head"><span class="part-num">Part 3</span></div>
+  <h2>Phrases vs clauses — the key distinction</h2>
+  <p class="part-lede">A <b>phrase</b> is a group of words acting as one unit but with <i>no subject–verb pair</i>. A <b>clause</b> has a subject and a verb of its own. Everything about sentence-building comes down to knowing which you are looking at.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Phrase type</th><th>Built around</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Noun phrase (NP)</td><td class="f">a noun</td><td><span class="en">the tall man in the grey coat</span></td></tr>
+      <tr><td>Verb phrase (VP)</td><td class="f">a verb</td><td><span class="en">has been working</span></td></tr>
+      <tr><td>Adjective phrase (AdjP)</td><td class="f">an adjective</td><td><span class="en">very proud of her</span></td></tr>
+      <tr><td>Adverb phrase (AdvP)</td><td class="f">an adverb</td><td><span class="en">quite slowly</span></td></tr>
+      <tr><td>Prepositional phrase (PP)</td><td class="f">a preposition</td><td><span class="en">in the morning</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>The test.</b> <span class="en">in the morning</span> is a phrase — no verb. <span class="en">when the sun rose</span> is a clause — it has a subject (<span class="en">the sun</span>) and a verb (<span class="en">rose</span>). Both can do the same job (tell you <i>when</i>), but only the clause contains a mini-sentence inside it. Growing a sentence means slotting clauses into the roles of Part&nbsp;1.</p>
+  </div>
+</section>
+
+<!-- ============ PART 4 ============ -->
+<section class="part" id="p4">
+  <div class="part-head"><span class="part-num">Part 4</span></div>
+  <h2>Finite vs non-finite clauses</h2>
+  <p class="part-lede">Clauses split into two families by their verb. This split explains half of the "hard" sentences later.</p>
+
+  <div class="sty">
+    <div class="sty-card">
+      <h4>Finite clause</h4>
+      <div class="lab">verb shows tense + a real subject</div>
+      <p>The verb is marked for tense and agrees with a subject. A finite clause can stand as a full sentence (if independent).</p>
+      <div class="ex"><span class="k s">She</span> <span class="k v">arrived</span> late. · because <span class="k s">he</span> <span class="k v">was</span> tired</div>
+    </div>
+    <div class="sty-card">
+      <h4>Non-finite clause</h4>
+      <div class="lab">to-infinitive / -ing / -ed · often no subject</div>
+      <p>The verb shows no tense; the subject is usually left out and understood. It never stands alone — it always leans on a main clause.</p>
+      <div class="ex">To be honest, … · <span class="k v">Feeling</span> tired, she left. · the report <span class="k v">written</span> last week</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p><b>Why it matters.</b> Non-finite clauses are how English compresses. <span class="en">Because she felt tired, she left</span> (finite) shrinks to <span class="en">Feeling tired, she left</span> (non-finite) — same meaning, fewer words. Most "advanced" style is finite clauses collapsed into non-finite ones. Part&nbsp;11 is devoted to them.</p>
+  </div>
+</section>
+
+<!-- ============ PART 5 ============ -->
+<section class="part" id="p5">
+  <div class="part-head"><span class="part-num">Part 5</span></div>
+  <h2>Independent vs dependent clauses</h2>
+  <p class="part-lede">A finite clause is one of two kinds — and the whole grammar of sentence types rests on the difference.</p>
+
+  <div class="sty">
+    <div class="sty-card" style="border-top-color:var(--c-v)">
+      <h4 class="k v">Independent (main) clause</h4>
+      <div class="lab">stands alone as a sentence</div>
+      <p>Expresses a complete thought by itself. Every grammatical sentence has at least one.</p>
+      <div class="ex">The train left.</div>
+    </div>
+    <div class="sty-card" style="border-top-color:var(--c-a)">
+      <h4 class="k a">Dependent (subordinate) clause</h4>
+      <div class="lab">opens with a subordinator; cannot stand alone</div>
+      <p>Begins with a word like <span class="en">because, when, if, that, which, who</span> that <i>hooks</i> it onto a main clause. Alone it is a fragment.</p>
+      <div class="ex">✗ because the train left · ✓ We waited because the train left.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p><b>The fragment trap.</b> <span class="en">When the lights went out.</span> feels like a sentence — it has a subject and a verb — but the opening <span class="en">when</span> leaves the thought hanging: <i>then what?</i> A dependent clause always needs a main clause to complete it.</p>
+  </div>
+</section>
+
+<!-- ============ PART 6 ============ -->
+<section class="part" id="p6">
+  <div class="part-head"><span class="part-num">Part 6</span></div>
+  <h2>The four sentence types</h2>
+  <p class="part-lede">Count the clauses and how they are joined, and every sentence in English is one of exactly four shapes.</p>
+
+  <div class="sty">
+    <div class="sty-card">
+      <h4>Simple</h4>
+      <div class="lab">one independent clause</div>
+      <p>A single main clause. It can still be long — one subject, one verb, plenty of phrases.</p>
+      <div class="ex">The tired old dog slept by the fire all afternoon.</div>
+    </div>
+    <div class="sty-card">
+      <h4>Compound</h4>
+      <div class="lab">two+ independent clauses, joined as equals</div>
+      <p>Main clauses linked by a coordinator (FANBOYS) or a semicolon. Neither outranks the other.</p>
+      <div class="ex">She knocked, but no one answered.</div>
+    </div>
+    <div class="sty-card">
+      <h4>Complex</h4>
+      <div class="lab">one independent + one+ dependent</div>
+      <p>A main clause with one or more subordinate clauses embedded in it.</p>
+      <div class="ex">She left because the train that she wanted had gone.</div>
+    </div>
+    <div class="sty-card">
+      <h4>Compound-complex</h4>
+      <div class="lab">two+ independent + one+ dependent</div>
+      <p>The two previous moves at once — the workhorse of real writing.</p>
+      <div class="ex">She left because the train had gone, and she walked home.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p><b>The whole game in one line.</b> There are only two ways to put clauses together: <b class="k v">coordinate</b> them (link equals — Part&nbsp;7) or <b class="k a">subordinate</b> one (embed it as a role inside another — Parts&nbsp;8–10). Every sentence, up to the longest, is these two moves used repeatedly.</p>
+  </div>
+</section>
+
+<!-- ============ PART 7 ============ -->
+<section class="part" id="p7">
+  <div class="part-head"><span class="part-num">Part 7</span></div>
+  <h2>Coordination: joining equals</h2>
+  <p class="part-lede">Coordination links two units of the <i>same rank</i> — two clauses, two objects, two adjectives. The joiners are few and worth memorising.</p>
+
+  <div class="prose">
+    <h3>The seven coordinators — FANBOYS</h3>
+    <p><span class="en"><b>F</b>or</span> (reason), <span class="en"><b>A</b>nd</span> (addition), <span class="en"><b>N</b>or</span> (negative addition), <span class="en"><b>B</b>ut</span> (contrast), <span class="en"><b>O</b>r</span> (alternative), <span class="en"><b>Y</b>et</span> (contrast), <span class="en"><b>S</b>o</span> (result). When one joins two <i>full clauses</i>, put a comma before it: <span class="en">It was late, <b>so</b> we left.</span></p>
+    <h3>Correlative pairs</h3>
+    <p><span class="en">both … and</span>, <span class="en">either … or</span>, <span class="en">neither … nor</span>, <span class="en">not only … but also</span>, <span class="en">whether … or</span>. They must bracket <i>parallel</i> items: <span class="en">✗ She not only sings but also she dances</span> → <span class="en">✓ She not only sings but also dances</span>.</p>
+    <h3>Conjunctive adverbs are not coordinators</h3>
+    <p><span class="en">however, therefore, moreover, nevertheless, thus</span> feel like joiners but are adverbs. Two clauses around one need a <b>semicolon</b>, not a comma: <span class="en">It rained; <b>however</b>, we went.</span> Using a comma there is the classic <i>comma splice</i> (Part&nbsp;14).</p>
+  </div>
+
+  <div class="note">
+    <div class="note-h">The Native Mental Trigger — coordinate or subordinate?</div>
+    <p>Before joining two ideas, a native asks: <i>are these two equal, side-by-side facts, or is one the main point and the other a condition, cause, or detail attached to it?</i> Equal weight → coordinate with <span class="en">and / but / so</span>. One serving the other → subordinate it with <span class="en">because / although / when / which</span>.</p>
+    <div class="note-sub">The same two facts, weighted two ways</div>
+    <ul class="usex">
+      <li><span class="u">Coordinated — equal billing</span><span class="s-en">It was raining, <b>and</b> we stayed in.</span></li>
+      <li><span class="u">Subordinated — the rain is just the reason</span><span class="s-en"><b>Because</b> it was raining, we stayed in.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ PART 8 ============ -->
+<section class="part" id="p8">
+  <div class="part-head"><span class="part-num">Part 8</span></div>
+  <h2>Subordinate clause #1 — noun clauses</h2>
+  <p class="part-lede">A subordinate clause does one of three jobs: it acts as a <b class="k o">noun</b>, an <b class="k c">adjective</b>, or an <b class="k a">adverb</b>. First the noun clause — a whole clause filling a slot where a single noun could sit.</p>
+
+  <div class="prose">
+    <p>A <b>noun clause</b> can be the subject, the object, or the complement of a bigger clause. It opens with <span class="en">that</span>, a <i>wh-</i>word (<span class="en">what, who, why, how, where, when</span>), or <span class="en">whether / if</span>.</p>
+  </div>
+
+  <div class="bd">
+    <div class="piece s"><span class="pl">Subject = a clause</span><span class="pt">What he said</span></div>
+    <div class="piece v"><span class="pl">Verb</span><span class="pt">surprised</span></div>
+    <div class="piece o"><span class="pl">Object</span><span class="pt">everyone.</span></div>
+  </div>
+  <p class="bd-cap">The whole clause <span class="en">What he said</span> is the subject — swap it for the pronoun <span class="en">it</span> and the frame still holds.</p>
+
+  <div class="prose">
+    <ul class="usex" style="margin-top:6px">
+      <li><span class="u">Object of a verb (that-clause)</span><span class="s-en">I know <b>that</b> she's right.</span></li>
+      <li><span class="u">Object — the <span class="en">that</span> is often dropped</span><span class="s-en">I know she's right.</span></li>
+      <li><span class="u">wh- clause as object</span><span class="s-en">Tell me <b>what</b> you want.</span></li>
+      <li><span class="u">whether / if — a yes-no question embedded</span><span class="s-en">I wonder <b>whether</b> it's true.</span></li>
+      <li><span class="u">Complement after <span class="en">be</span></span><span class="s-en">The problem is <b>that</b> we're late.</span></li>
+      <li><span class="u">After a preposition (only wh-/whether)</span><span class="s-en">It depends on <b>what</b> he decides.</span></li>
+    </ul>
+    <p><b>Extraposition — the "it" trick.</b> A clause subject at the front feels top-heavy, so English usually shoves it to the end and puts a placeholder <span class="en">it</span> in front: <span class="en">That he lied is obvious</span> → <span class="en"><b>It</b> is obvious <b>that</b> he lied.</span> The <span class="en">it</span> means nothing; it just holds the subject slot.</p>
+    <p><b>Reported speech is noun clauses.</b> <span class="en">"I'm tired," she said</span> → <span class="en">She said <b>that</b> she was tired.</span> The quoted words become a <span class="en">that</span>-clause object, and the tense backshifts one step.</p>
+  </div>
+</section>
+
+<!-- ============ PART 9 ============ -->
+<section class="part" id="p9">
+  <div class="part-head"><span class="part-num">Part 9</span></div>
+  <h2>Subordinate clause #2 — relative (adjective) clauses</h2>
+  <p class="part-lede">A relative clause does the job of an adjective: it sits right after a noun and tells you <i>which one</i> or adds information about it. It is the single most powerful tool for packing detail into a sentence.</p>
+
+  <div class="bd">
+    <div class="piece o"><span class="pl">Noun</span><span class="pt">the man</span></div>
+    <div class="piece a"><span class="pl">Relative clause (adjective job)</span><span class="pt">who fixed my car</span></div>
+  </div>
+  <p class="bd-cap">The clause <span class="en">who fixed my car</span> modifies <span class="en">the man</span> exactly as an adjective would.</p>
+
+  <div class="prose">
+    <h3>The relative words</h3>
+    <p><span class="en">who / whom</span> (people), <span class="en">which</span> (things), <span class="en">that</span> (people or things, defining only), <span class="en">whose</span> (possession), and the relative adverbs <span class="en">where, when, why</span>.</p>
+    <h3>Defining vs non-defining — the comma changes the meaning</h3>
+    <ul class="usex">
+      <li><span class="u">Defining — identifies which one, no commas</span><span class="s-en">The book <b>that</b> I lent you is overdue.</span></li>
+      <li><span class="u">Non-defining — extra info, commas, never <span class="en">that</span></span><span class="s-en">This book, <b>which</b> I love, is overdue.</span></li>
+    </ul>
+    <p><b>Why the comma is not decoration.</b> <span class="en">My brother who lives in Rome</span> (defining) implies I have several brothers and mean the Roman one. <span class="en">My brother, who lives in Rome,</span> (non-defining) implies I have one brother, and mention Rome as an aside. The punctuation carries real information.</p>
+    <h3>Dropping the relative pronoun</h3>
+    <p>When the relative word is the <i>object</i> of its clause, you can drop it: <span class="en">the book <b>(that)</b> I lent you</span>. When it is the <i>subject</i>, you cannot: <span class="en">the man <b>who</b> fixed my car</span> (✗ <span class="en">the man fixed my car</span> loses the join).</p>
+    <h3>Prepositions in relative clauses</h3>
+    <p>Everyday English leaves the preposition at the end and drops the pronoun: <span class="en">the house <b>(that)</b> we lived <b>in</b></span>. Formal English pulls it to the front with <span class="en">which/whom</span>: <span class="en">the house <b>in which</b> we lived</span>.</p>
+    <h3>Reduced relative clauses</h3>
+    <p>A relative clause often collapses to a phrase. <span class="en">the parcel <b>that was</b> left at the door</span> → <span class="en">the parcel <b>left</b> at the door</span> (past participle). <span class="en">the man <b>who is</b> waiting</span> → <span class="en">the man <b>waiting</b></span> (-ing). This is why long noun phrases so often end in <span class="en">-ing</span> or <span class="en">-ed</span> — they are relative clauses with the <span class="en">who/which + be</span> squeezed out.</p>
+  </div>
+</section>
+
+<!-- ============ PART 10 ============ -->
+<section class="part" id="p10">
+  <div class="part-head"><span class="part-num">Part 10</span></div>
+  <h2>Subordinate clause #3 — adverbial clauses</h2>
+  <p class="part-lede">An adverbial clause does an adverb's job on the whole main clause: it tells when, where, why, despite what, on what condition. It is introduced by a subordinating conjunction, and it can usually move to the front (with a comma) or the end (without).</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Meaning</th><th>Subordinators</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Time</td><td class="f">when, while, as, before, after, until, since, as soon as, by the time</td><td><span class="en"><b>As soon as</b> she arrived, we ate.</span></td></tr>
+      <tr><td>Condition</td><td class="f">if, unless, provided (that), as long as, in case</td><td><span class="en">We'll go <b>unless</b> it rains.</span></td></tr>
+      <tr><td>Concession (contrast)</td><td class="f">although, though, even though, while, whereas</td><td><span class="en"><b>Although</b> he tried, he failed.</span></td></tr>
+      <tr><td>Reason / cause</td><td class="f">because, since, as, seeing that</td><td><span class="en">We stayed <b>because</b> it was late.</span></td></tr>
+      <tr><td>Purpose</td><td class="f">so that, in order that, so as to, to</td><td><span class="en">She whispered <b>so that</b> no one would hear.</span></td></tr>
+      <tr><td>Result</td><td class="f">so … that, such … that</td><td><span class="en">It was <b>so</b> cold <b>that</b> the pipes froze.</span></td></tr>
+      <tr><td>Manner / comparison</td><td class="f">as, as if, as though, than, the … the</td><td><span class="en">He talks <b>as if</b> he knew everything.</span></td></tr>
+      <tr><td>Place</td><td class="f">where, wherever</td><td><span class="en">Sit <b>wherever</b> you like.</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Front or end — and the comma.</b> Put the adverbial clause <i>first</i> for emphasis or set-up, and mark the join with a comma: <span class="en"><b>When the bell rang,</b> everyone stood.</span> Put it <i>last</i> and the comma usually disappears: <span class="en">Everyone stood <b>when the bell rang</b>.</span></p>
+    <p><b>Conditionals are adverbial clauses of condition.</b> The whole conditional system (zero, first, second, third, mixed) is just an <span class="en">if</span>-clause plus a main clause, with the verb forms shifted to mark how real or unreal the situation is — see the tenses page for the timeline behind them.</p>
+  </div>
+</section>
+
+<!-- ============ PART 11 ============ -->
+<section class="part" id="p11">
+  <div class="part-head"><span class="part-num">Part 11</span></div>
+  <h2>Non-finite &amp; verbless clauses — how English compresses</h2>
+  <p class="part-lede">These are clauses with no tensed verb and usually no stated subject. They let you fold a whole clause into a phrase, and they are everywhere in fluent writing.</p>
+
+  <div class="prose">
+    <ul class="usex">
+      <li><span class="u">to-infinitive clause (purpose, etc.)</span><span class="s-en">She stopped <b>to buy</b> milk.</span></li>
+      <li><span class="u">-ing clause (simultaneous action, reason)</span><span class="s-en"><b>Feeling</b> tired, he sat down.</span></li>
+      <li><span class="u">-ed (past-participle) clause (passive sense)</span><span class="s-en"><b>Shaken</b> by the news, she left.</span></li>
+      <li><span class="u">verbless clause (a phrase standing in for a clause)</span><span class="s-en"><b>When in doubt,</b> ask.</span></li>
+      <li><span class="u">absolute construction (its own subject)</span><span class="s-en"><b>The work finished,</b> we went home.</span></li>
+    </ul>
+    <p><b>The dangling-participle danger.</b> A non-finite clause borrows its missing subject from the nearest noun — usually the subject of the main clause. If they don't match, the sentence says something absurd: <span class="en">✗ Walking to school, the rain started.</span> (the rain wasn't walking) → <span class="en">✓ Walking to school, I got caught in the rain.</span> Always check that the hidden subject of the <span class="en">-ing</span>/<span class="en">-ed</span> clause is the one you mean.</p>
+  </div>
+</section>
+
+<!-- ============ PART 12 ============ -->
+<section class="part" id="p12">
+  <div class="part-head"><span class="part-num">Part 12</span></div>
+  <h2>Combining &amp; embedding: growing a real sentence</h2>
+  <p class="part-lede">Long sentences are not a different grammar — they are the same clauses nested and chained. Here is how a native builds one up, and how to keep it readable.</p>
+
+  <div class="prose">
+    <p><b>Start with the spine</b> — the one main clause that carries the point:</p>
+  </div>
+  <div class="bd"><div class="piece v"><span class="pl">Main clause (the spine)</span><span class="pt">The report was rejected.</span></div></div>
+
+  <div class="prose">
+    <p><b>Hang subordinate clauses onto its roles</b> — a relative clause on the noun, an adverbial on the whole thing:</p>
+  </div>
+  <div class="bd">
+    <div class="piece o"><span class="pl">noun + relative clause</span><span class="pt">The report that we submitted</span></div>
+    <div class="piece v"><span class="pl">main verb</span><span class="pt">was rejected</span></div>
+    <div class="piece a"><span class="pl">adverbial clause</span><span class="pt">because it missed the deadline.</span></div>
+  </div>
+
+  <div class="prose">
+    <p><b>Coordinate a second spine if the ideas are equal:</b></p>
+    <ul class="hardex">
+      <li><div class="s-en">The report that we submitted was rejected because it missed the deadline, but the client agreed to a second attempt, which the team is now preparing.</div><div class="ht"><b>How it's built:</b> two main clauses (<span class="en">was rejected</span> · <span class="en">the client agreed</span>) joined by <span class="en">but</span>; each carries subordinate clauses — a relative (<span class="en">that we submitted</span>), an adverbial (<span class="en">because it missed…</span>), a purpose object (<span class="en">to a second attempt</span>), and a trailing relative (<span class="en">which the team is now preparing</span>). Compound-complex, yet every piece is a Part 1–10 unit.</div></li>
+    </ul>
+    <h3>Parallelism — the rule that keeps long sentences readable</h3>
+    <p>Items joined by <span class="en">and / or / but</span> must share the same grammatical form. Mismatched forms are the commonest sign of a sentence that has grown out of control: <span class="en">✗ She likes reading, to swim, and cooked meals</span> → <span class="en">✓ She likes reading, swimming, and cooking.</span></p>
+    <h3>When to stop</h3>
+    <p>English tolerates deep nesting, but readers hold only so much. If a sentence forces the reader to remember an unfinished clause across many words (Part&nbsp;13's centre-embedding), break it in two. Fluency is not maximum length — it is putting the main point where it can be found.</p>
+  </div>
+</section>
+
+<!-- ============ PART 13 ============ -->
+<section class="part" id="p13">
+  <div class="part-head"><span class="part-num">Part 13</span></div>
+  <h2>The hardest structures — and how to read them</h2>
+  <p class="part-lede">These are the constructions that make a sentence feel impossible. Each is just the ordinary kit rearranged for emphasis, focus, or economy. Learn the shape and the difficulty evaporates.</p>
+
+  <div class="prose">
+    <h3>Cleft sentences — splitting one clause to spotlight a part</h3>
+    <ul class="usex">
+      <li><span class="u">it-cleft (spotlights one element)</span><span class="s-en"><b>It was</b> John <b>who</b> broke it. (not anyone else)</span></li>
+      <li><span class="u">wh-cleft / pseudo-cleft</span><span class="s-en"><b>What</b> I need <b>is</b> a holiday.</span></li>
+    </ul>
+    <h3>Extraposition — a heavy clause pushed to the end</h3>
+    <p><span class="en">To finish this today is impossible</span> → <span class="en"><b>It</b> is impossible <b>to finish this today</b>.</span> The <span class="en">it</span> is an empty placeholder; the real subject waits at the back.</p>
+    <h3>Fronting &amp; inversion — moving a piece to the front for effect</h3>
+    <p>Push an element to the front and, with negatives, flip subject and auxiliary: <span class="en"><b>Never have</b> I seen such a mess.</span> · <span class="en"><b>Not only did</b> she win, but she also set a record.</span> · <span class="en"><b>Down the hill rolled</b> the barrel.</span></p>
+    <h3>Centre-embedding — a clause buried inside a clause inside a clause</h3>
+    <ul class="hardex">
+      <li><div class="s-en">The rumour that the manager the board hired had resigned spread quickly.</div><div class="ht"><b>How to read it:</b> peel from the outside. Spine: <span class="en">The rumour … spread quickly</span>. Inside: <span class="en">the rumour [that the manager … had resigned]</span>. Inside that: <span class="en">the manager [(that) the board hired]</span>. Three clauses nested at the same point — grammatical, but the reason writers avoid stacking them.</div></li>
+    </ul>
+    <h3>Garden-path sentences — grammatical, but they trick the parser</h3>
+    <ul class="hardex">
+      <li><div class="s-en">The horse raced past the barn fell.</div><div class="ht"><b>The trick:</b> <span class="en">raced past the barn</span> looks like the main verb, but it's a reduced relative — <span class="en">the horse [that was] raced past the barn</span> — and <span class="en">fell</span> is the real verb. You must re-read; that is the point.</div></li>
+      <li><div class="s-en">The old man the boats.</div><div class="ht"><b>The trick:</b> <span class="en">man</span> here is the verb (to staff), <span class="en">the old</span> is the subject (old people): <span class="en">The old [people] man [operate] the boats.</span></div></li>
+    </ul>
+    <h3>Apposition — a noun phrase renaming another</h3>
+    <p><span class="en">My neighbour, <b>a retired pilot</b>, flies drones.</span> The middle phrase is not a clause; it simply renames <span class="en">my neighbour</span>, set off by commas.</p>
+    <h3>Ellipsis — leaving out what can be recovered</h3>
+    <p>English deletes repeated material: <span class="en">She can sing and he can [sing] too</span> → <span class="en">She can sing and he can too.</span> · <span class="en">I'll help if I can [help].</span> The gap is understood from context.</p>
+  </div>
+</section>
+
+<!-- ============ PART 14 ============ -->
+<section class="part" id="p14">
+  <div class="part-head"><span class="part-num">Part 14</span></div>
+  <h2>Punctuating clauses — the joints of a sentence</h2>
+  <p class="part-lede">Punctuation marks the seams between clauses. Get these five right and most sentence errors disappear.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Mark</th><th>Joins</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Comma + FANBOYS</td><td>two independent clauses</td><td><span class="en">It was late, <b>so</b> we left.</span></td></tr>
+      <tr><td>Semicolon</td><td>two related independent clauses, no conjunction</td><td><span class="en">It was late<b>;</b> we left.</span></td></tr>
+      <tr><td>Colon</td><td>a clause that leads to an explanation or list</td><td><span class="en">She had one goal<b>:</b> to finish.</span></td></tr>
+      <tr><td>Comma (front adverbial / non-defining)</td><td>an introductory or extra clause</td><td><span class="en"><b>When it rang,</b> he answered.</span></td></tr>
+      <tr><td>Dash</td><td>an abrupt aside or afterthought</td><td><span class="en">He agreed — reluctantly — to help.</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <h3>The three classic sentence errors</h3>
+    <ul class="usex">
+      <li><span class="u">Comma splice — two clauses, only a comma</span><span class="s-en">✗ It was late, we left. → ✓ It was late<b>;</b> we left.</span></li>
+      <li><span class="u">Run-on / fused — no mark at all</span><span class="s-en">✗ It was late we left. → ✓ It was late<b>,</b> so we left.</span></li>
+      <li><span class="u">Fragment — a dependent clause alone</span><span class="s-en">✗ Because it was late. → ✓ We left <b>because it was late.</b></span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ PART 15 ============ -->
+<section class="part" id="p15">
+  <div class="part-head"><span class="part-num">Part 15</span></div>
+  <h2>Form vs function: the four sentence purposes</h2>
+  <p class="part-lede">A separate axis from structure: <i>what the sentence does</i>. Form (how it's built) and function (what it's for) usually match — but not always, and the mismatch is where politeness and nuance live.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Function</th><th>Typical form</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Statement (declarative)</td><td class="f">S + V …</td><td><span class="en">The door is open.</span></td></tr>
+      <tr><td>Question (interrogative)</td><td class="f">aux + S + V / wh-</td><td><span class="en">Is the door open?</span></td></tr>
+      <tr><td>Command (imperative)</td><td class="f">V … (no subject)</td><td><span class="en">Open the door.</span></td></tr>
+      <tr><td>Exclamation (exclamative)</td><td class="f">What / How …!</td><td><span class="en">What a mess this is!</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>When form and function part ways.</b> A question-shaped sentence can be a request (<span class="en">Could you open the door?</span> = a command, politely), and a statement can be a question by intonation (<span class="en">You're leaving?</span>). Native fluency is largely this gap — choosing a gentler <i>form</i> for a direct <i>function</i>.</p>
+  </div>
+</section>
+
+<!-- ============ PART 16 ============ -->
+<section class="part" id="p16">
+  <div class="part-head"><span class="part-num">Part 16</span></div>
+  <h2>Build &amp; check any sentence — the drill</h2>
+  <p class="part-lede">A repeatable routine for writing a clear sentence and for unpicking a hard one.</p>
+
+  <div class="prose">
+    <h3>To build</h3>
+    <ul class="usex">
+      <li><span class="u">1. Fix the spine</span><span class="s-en">One main clause = the point. S + V + whatever the verb needs.</span></li>
+      <li><span class="u">2. Attach detail as clauses</span><span class="s-en">which/who (relative) on a noun; because/when/if (adverbial) on the whole.</span></li>
+      <li><span class="u">3. Decide equal vs subordinate</span><span class="s-en">Equal ideas → and/but/so. One serving another → subordinate it.</span></li>
+      <li><span class="u">4. Keep joined items parallel</span><span class="s-en">reading, swimming, cooking — not reading, to swim, cooked.</span></li>
+      <li><span class="u">5. Punctuate the seams</span><span class="s-en">comma+FANBOYS, semicolon, front-comma; no comma splices.</span></li>
+    </ul>
+    <h3>To decode a hard sentence</h3>
+    <ul class="usex">
+      <li><span class="u">1. Find the main verb</span><span class="s-en">Ignore everything in commas/brackets first — locate the spine's verb.</span></li>
+      <li><span class="u">2. Name its subject</span><span class="s-en">Who or what does that verb? That pair is the sentence's core claim.</span></li>
+      <li><span class="u">3. Bracket each subordinate clause</span><span class="s-en">Mark where each which/that/because/when clause starts and ends.</span></li>
+      <li><span class="u">4. Peel from the outside in</span><span class="s-en">Read the spine, then drop each clause back into its role.</span></li>
+    </ul>
+    <p><b>The one idea to keep.</b> There is no such thing as an "advanced" sentence — only the five roles, the two families of clause, and the two moves of joining them, used again and again. Every sentence you will ever meet is this kit, rearranged.</p>
+  </div>
+</section>
+
+<footer>
+  <span>The Sentence Blueprint · 5 roles · 7 patterns · 3 clause jobs · 2 moves</span>
+  <span class="mono">A companion to The English Timeline, The Passive Turn &amp; The Preposition Map</span>
+</footer>
+
+</main>
+</div>
+</div>
