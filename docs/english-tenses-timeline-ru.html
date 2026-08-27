@@ -77,6 +77,42 @@ a{color:inherit}
 
 .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 
+/* ---------- native-thinking · signals · triggers ---------- */
+.think{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:18px;padding:18px 20px}
+.think-sit{font-size:15px;color:var(--ink-2);margin-bottom:12px}
+.think-sit b{color:var(--ink);font-weight:600}
+.think-flow{display:flex;flex-direction:column;gap:9px;padding:14px 16px;background:var(--card-2);border-radius:10px;margin-bottom:14px}
+.think-beat{position:relative;padding-left:24px;font-size:14.5px;color:var(--ink-2);line-height:1.5}
+.think-beat::before{content:"\21B3";position:absolute;left:2px;top:-1px;font-family:"JetBrains Mono",monospace;color:var(--c-now)}
+.think-beat i{font-style:normal;color:var(--ink);font-weight:600}
+.think-out{display:flex;gap:12px;align-items:baseline;padding-left:14px;border-left:3px solid var(--c-now)}
+.think-out .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex:none;padding-top:3px}
+.think-out .en{font-size:15.5px;color:var(--ink);font-weight:500;line-height:1.45}
+
+.sig{margin-top:20px;display:grid;gap:12px}
+.sig-row{background:var(--card);border:1px solid var(--line);border-left-width:3px;border-radius:12px;box-shadow:var(--shadow);padding:13px 16px}
+.sig-row[data-a=s]{border-left-color:var(--c-simple)}
+.sig-row[data-a=c]{border-left-color:var(--c-cont)}
+.sig-row[data-a=p]{border-left-color:var(--c-perf)}
+.sig-row[data-a=pc]{border-left-color:var(--c-perfc)}
+.sig-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.sig-tense{font-family:Bitter,Georgia,serif;font-weight:700;font-size:15.5px}
+.sig-why{font-size:13.5px;color:var(--ink-3)}
+.sig-words{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.sig-w{font-family:"JetBrains Mono",monospace;font-size:12.5px;padding:3px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line-2);color:var(--ink)}
+.sig-ex{font-size:14px;color:var(--ink-2)}
+.sig-ex .en{font-size:.95em;color:var(--ink)}
+
+.trig{margin-top:20px;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.trig-item{padding:15px 18px;background:var(--card);border-top:1px solid var(--line-2)}
+.trig-item:first-child{border-top:none}
+.trig-when{font-weight:600;color:var(--ink);font-size:15px}
+.trig-then{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--c-now)}
+.trig-ex{margin-top:7px;font-size:14px;color:var(--ink-2)}
+.trig-ex .en{color:var(--ink)}
+.trig-think{margin-top:6px;font-size:13.5px;color:var(--ink-3)}
+.trig-think b{font-weight:600;color:var(--ink-2)}
+
 /* ---------- shell ---------- */
 .page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
 .shell{display:block}
@@ -1373,6 +1409,200 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
 
   <div class="prose">
     <p><b>И последнее.</b> В живой речи девять из десяти предложений укладываются в пять времён: Present Simple, Present Continuous, Present Perfect, Past Simple и Future Simple. Освойте эти пять до автоматизма — остальные одиннадцать вы будете сначала узнавать в чужой речи, а потом однажды скажете сами, не задумываясь.</p>
+  </div>
+</section>
+<!-- ===================== ЧАСТЬ 9 ===================== -->
+<section class="part" id="p9">
+  <div class="part-head">
+    <span class="part-num">Часть 9</span>
+    <span class="part-tc">48:00</span>
+  </div>
+  <h2>В голове у носителя языка</h2>
+  <p class="part-lede">Носитель не перебирает правила. За полсекунды до того, как заговорить, он задаёт себе два безмолвных вопроса — <b>где я стою во времени?</b> и <b>как я вижу действие — как целое, в процессе или как результат?</b> — и форма выпадает сама. Вот этот внутренний монолог, замедленный, на предложениях, которые труднее всего даются изучающим.</p>
+
+  <div class="think">
+    <div class="think-sit"><b>Ситуация.</b> Есть что-то, что вы всё собираетесь сделать и до сих пор не сделали.</div>
+    <div class="think-flow">
+      <div class="think-beat">Началось в прошлом и <i>до сих пор верно</i> — нужна связь с <i>сейчас</i>, значит: перфект.</div>
+      <div class="think-beat">Но это не завершённый результат — это <i>длящееся, незаконченное</i> намерение. Значит: континиус.</div>
+      <div class="think-beat">Перфект + континиус с опорой на «сейчас» → <i>have been + -ing</i>.</div>
+    </div>
+    <div class="think-out"><span class="lab">Вслух</span><span class="en">I've been meaning to call you.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Ситуация.</b> Два события в прошлом, и нужно показать, какое было раньше.</div>
+    <div class="think-flow">
+      <div class="think-beat">Оба в прошлом. То, что я упоминаю, — не опора: опорная точка прошлого — <i>наш приход</i>.</div>
+      <div class="think-beat">Другое событие произошло <i>раньше</i> этой точки, поэтому отодвигаю его ещё на шаг назад → <i>had + V3</i>.</div>
+      <div class="think-beat"><span class="en">already</span> это подтверждает: к моменту прихода отправление уже завершилось.</div>
+    </div>
+    <div class="think-out"><span class="lab">Вслух</span><span class="en">The train had already left when we arrived.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Ситуация.</b> Срок в будущем, и нужно сказать, что дело будет сделано вовремя.</div>
+    <div class="think-flow">
+      <div class="think-beat">Я мысленно встаю в будущую точку — <span class="en">by nine</span> — и смотрю оттуда назад.</div>
+      <div class="think-beat">С этой точки действие уже <i>завершено</i>: результат в будущей точке → <i>will have + V3</i>.</div>
+    </div>
+    <div class="think-out"><span class="lab">Вслух</span><span class="en">By nine I'll have finished the report.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Ситуация.</b> Вы объясняете, почему прошлое состояние было именно таким — его причину.</div>
+    <div class="think-flow">
+      <div class="think-beat">Красные глаза — это прошлая сцена. Причина случилась <i>ещё раньше и длилась</i> — до этой сцены.</div>
+      <div class="think-beat">Раньше-чем-прошлое + длительность → past perfect continuous, <i>had been + -ing</i>.</div>
+    </div>
+    <div class="think-out"><span class="lab">Вслух</span><span class="en">Her eyes were red — she'd been crying.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Ситуация.</b> Вы передаёте то, что вам сказали раньше.</div>
+    <div class="think-flow">
+      <div class="think-beat">Сам факт «сказал» — в прошлом, поэтому весь мир внутри цитаты сдвигается <i>на шаг назад</i> вместе с ним.</div>
+      <div class="think-beat"><span class="en">will → would</span>, <span class="en">is → was</span>, <span class="en">have done → had done</span>. Этот сдвиг и есть сигнал, что речь пересказана, а не звучит вживую.</div>
+    </div>
+    <div class="think-out"><span class="lab">Вслух</span><span class="en">He said he would come. → (из "I will come.")</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Ситуация.</b> Одни и те же три слова — <span class="en">for ten years</span> — две разные картины.</div>
+    <div class="think-flow">
+      <div class="think-beat">Если она <i>всё ещё живёт здесь</i>, десять лет тянутся до «сейчас» → present perfect: <span class="en">She's lived here for ten years.</span></div>
+      <div class="think-beat">Если она <i>уехала</i>, десять лет — закрытая, завершённая «коробка» → past simple: <span class="en">She lived here for ten years.</span></div>
+      <div class="think-beat">Время не украшает предложение — оно сообщает слушателю, живёт ли она всё ещё по соседству.</div>
+    </div>
+    <div class="think-out"><span class="lab">Суть</span><span class="en">Форма несёт факт. Выбирайте её осознанно.</span></div>
+  </div>
+</section>
+<!-- ===================== ЧАСТЬ 10 ===================== -->
+<section class="part" id="p10">
+  <div class="part-head">
+    <span class="part-num">Часть 10</span>
+    <span class="part-tc">52:30</span>
+  </div>
+  <h2>Слова-сигналы, которые решают время</h2>
+  <p class="part-lede">Некоторые словечки — почти магниты для времени: услышав такое, носитель уже тянется к определённой форме. Учите их связками — маркер и время, которое он притягивает, — и половина выборов сделана ещё до размышления. Цвет каждой карточки соответствует её аспекту.</p>
+
+  <div class="sig">
+    <div class="sig-row" data-a="s">
+      <div class="sig-head"><span class="sig-tense">Past Simple</span><span class="sig-why">назван завершённый момент</span></div>
+      <div class="sig-words"><span class="sig-w">yesterday</span><span class="sig-w">ago</span><span class="sig-w">last night / week</span><span class="sig-w">in 2010</span><span class="sig-w">then</span><span class="sig-w">when + прошлое</span><span class="sig-w">at 5 o'clock</span></div>
+      <div class="sig-ex">Время закрыто и прошло, поэтому нигде нет <span class="en">have/has</span>: <span class="en">I saw her <b>in 2010</b>.</span> · <span class="en">He left <b>ten minutes ago</b>.</span></div>
+    </div>
+    <div class="sig-row" data-a="p">
+      <div class="sig-head"><span class="sig-tense">Present Perfect</span><span class="sig-why">результат касается «сейчас», момент не назван</span></div>
+      <div class="sig-words"><span class="sig-w">already</span><span class="sig-w">yet</span><span class="sig-w">just</span><span class="sig-w">ever / never</span><span class="sig-w">so far</span><span class="sig-w">up to now</span><span class="sig-w">recently / lately</span><span class="sig-w">this week</span><span class="sig-w">since</span><span class="sig-w">for</span></div>
+      <div class="sig-ex">Проверка: можно вставить <span class="en">already</span>. <span class="en">Have you finished <b>yet</b>?</span> · <span class="en">I've <b>just</b> seen it.</span> · <span class="en">We've known them <b>since</b> 2019.</span></div>
+    </div>
+    <div class="sig-row" data-a="p">
+      <div class="sig-head"><span class="sig-tense">Past Perfect</span><span class="sig-why">раньше другого момента в прошлом</span></div>
+      <div class="sig-words"><span class="sig-w">before</span><span class="sig-w">after</span><span class="sig-w">by the time</span><span class="sig-w">by 2010</span><span class="sig-w">already (в прошлом)</span><span class="sig-w">when + раннее событие</span><span class="sig-w">until then</span><span class="sig-w">no sooner … than</span><span class="sig-w">hardly … when</span></div>
+      <div class="sig-ex"><span class="en"><b>By the time</b> we arrived, it <b>had</b> started.</span> · <span class="en">She <b>had</b> left <b>before</b> I called.</span> · <span class="en"><b>No sooner had</b> he sat down <b>than</b> the phone rang.</span></div>
+    </div>
+    <div class="sig-row" data-a="c">
+      <div class="sig-head"><span class="sig-tense">Present Continuous</span><span class="sig-why">происходит около «сейчас» / договорённость</span></div>
+      <div class="sig-words"><span class="sig-w">now</span><span class="sig-w">right now</span><span class="sig-w">at the moment</span><span class="sig-w">currently</span><span class="sig-w">Look! / Listen!</span><span class="sig-w">these days</span><span class="sig-w">tonight (план)</span></div>
+      <div class="sig-ex"><span class="en"><b>Look!</b> It's raining.</span> · <span class="en">I'm meeting her <b>tomorrow</b>.</span> (назначенная встреча, а не «will»)</div>
+    </div>
+    <div class="sig-row" data-a="c">
+      <div class="sig-head"><span class="sig-tense">Past Continuous</span><span class="sig-why">шло — или было прервано — в момент прошлого</span></div>
+      <div class="sig-words"><span class="sig-w">while</span><span class="sig-w">as</span><span class="sig-w">when + прерывание</span><span class="sig-w">at 8 last night</span><span class="sig-w">all day yesterday</span></div>
+      <div class="sig-ex"><span class="en">I <b>was cooking when</b> she called.</span> · <span class="en"><b>While</b> we <b>were talking</b>, the lights went out.</span></div>
+    </div>
+    <div class="sig-row" data-a="pc">
+      <div class="sig-head"><span class="sig-tense">Perfect Continuous</span><span class="sig-why">как долго — длительность до точки</span></div>
+      <div class="sig-words"><span class="sig-w">for</span><span class="sig-w">since</span><span class="sig-w">how long</span><span class="sig-w">all day / morning</span><span class="sig-w">lately</span></div>
+      <div class="sig-ex"><span class="en">I've <b>been</b> waiting <b>for</b> an hour.</span> · <span class="en">She'd <b>been</b> working there <b>since</b> May.</span> (<span class="en">for/since</span> + живой процесс = континиус, а не симпл)</div>
+    </div>
+    <div class="sig-row" data-a="s">
+      <div class="sig-head"><span class="sig-tense">Future — will / going to / Future Perfect</span><span class="sig-why">прогнозы, планы, сроки</span></div>
+      <div class="sig-words"><span class="sig-w">tomorrow</span><span class="sig-w">next week</span><span class="sig-w">soon</span><span class="sig-w">I think / hope</span><span class="sig-w">probably</span><span class="sig-w">going to (очевидность)</span><span class="sig-w">by 2030</span><span class="sig-w">by then</span><span class="sig-w">in two years</span></div>
+      <div class="sig-ex"><span class="en">I <b>think</b> it'll rain.</span> · <span class="en">Look at those clouds — it's <b>going to</b> rain.</span> · <span class="en"><b>By 2030</b> they'll <b>have</b> finished.</span></div>
+    </div>
+  </div>
+</section>
+<!-- ===================== ЧАСТЬ 11 ===================== -->
+<section class="part" id="p11">
+  <div class="part-head">
+    <span class="part-num">Часть 11</span>
+    <span class="part-tc">57:00</span>
+  </div>
+  <h2>Ситуации, которые вынуждают выбрать время</h2>
+  <p class="part-lede">На мгновение забудьте о словах и посмотрите на <b>ситуацию</b>. Каждое из этих реальных значений почти автоматически притягивает к себе одно время. Строка курсивом — то, о чём на самом деле думает носитель.</p>
+
+  <div class="trig">
+    <div class="trig-item">
+      <span class="trig-when">Действие раньше другого действия в прошлом</span> <span class="trig-then">→ Past Perfect</span>
+      <div class="trig-ex"><span class="en">When I arrived, the meeting <b>had</b> already <b>started</b>.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Два прошлых события — отодвину первое на шаг глубже в прошлое, чтобы порядок был очевиден».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Причина прошлой ситуации или состояния</span> <span class="trig-then">→ Past Perfect / Past Perfect Continuous</span>
+      <div class="trig-ex"><span class="en">The ground was wet; it <b>had been raining</b>.</span> · <span class="en">He failed because he <b>hadn't revised</b>.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Сцена в прошлом; причина сидит <i>ещё дальше</i> назад — перфект как раз про „до прошлого“».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Пересказ речи — сдвиг на шаг назад</span> <span class="trig-then">→ сдвинуть время назад</span>
+      <div class="trig-ex"><span class="en">"I <b>am</b> tired." → She said she <b>was</b> tired.</span> · <span class="en">"I <b>will</b> help." → He said he <b>would</b> help.</span> · <span class="en">"I <b>have</b> seen it." → They said they <b>had</b> seen it.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Само „сказал“ уже в прошлом, поэтому всё внутри цитаты съезжает назад: <span class="en">is→was, will→would, have→had</span>».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">После <span class="en">before</span>, <span class="en">after</span>, <span class="en">by the time</span>, <span class="en">until</span></span> <span class="trig-then">→ последовательность, часто Past Perfect</span>
+      <div class="trig-ex"><span class="en"><b>By the time</b> the police came, the thief <b>had</b> disappeared.</span> · <span class="en">She ate <b>after</b> she <b>had</b> washed her hands.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Эти слова уже задают порядок за меня, поэтому более раннее действие помечаю <span class="en">had</span> — а если порядок и так очевиден, расслабляюсь и беру два past simple».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">После <span class="en">because</span> — причина</span> <span class="trig-then">→ по времени самой причины</span>
+      <div class="trig-ex"><span class="en">I'm tired <b>because</b> I've <b>been working</b> all day.</span> · <span class="en">We were late <b>because</b> the train <b>had</b> been cancelled.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «<span class="en">because</span> не диктует одно время — я просто спрашиваю, когда случилась причина относительно результата, и выбираю».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Завершённое действие с видимым сейчас результатом</span> <span class="trig-then">→ Present Perfect</span>
+      <div class="trig-ex"><span class="en">I've <b>lost</b> my keys.</span> (поэтому <i>сейчас</i> не могу войти) · <span class="en">She's <b>broken</b> her arm.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Мне не важно, <i>когда</i> — важно, что результат стоит прямо передо мной прямо сейчас».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Как долго что-то длится — вплоть до сейчас</span> <span class="trig-then">→ Present Perfect Continuous</span>
+      <div class="trig-ex"><span class="en">We've <b>been living</b> here <b>for</b> five years.</span> · <span class="en">How long have you <b>been learning</b> English?</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Всё ещё идёт, и я меряю протяжённость — <span class="en">for/since</span> плюс живой процесс».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Одно действие прервано другим в прошлом</span> <span class="trig-then">→ Past Continuous + Past Simple</span>
+      <div class="trig-ex"><span class="en">I <b>was sleeping when</b> the alarm <b>went</b> off.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Длинный фон — континиус; короткое, что врезается в него, — симпл».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Расписание / график в будущем</span> <span class="trig-then">→ Present Simple</span>
+      <div class="trig-ex"><span class="en">The train <b>leaves</b> at 6.</span> · <span class="en">The film <b>starts</b> at eight.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Это задано расписанием, а не мной, — значит, обращаюсь с этим как с фактом настоящего».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">План или договорённость, уже назначенные</span> <span class="trig-then">→ Present Continuous</span>
+      <div class="trig-ex"><span class="en">We're <b>having</b> dinner with them <b>on Friday</b>.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Всё решено, вписано в ежедневник, есть человек и время — это present continuous, а не <span class="en">will</span>».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Прогноз по очевидности перед глазами</span> <span class="trig-then">→ going to</span>
+      <div class="trig-ex"><span class="en">She's <b>going to</b> have a baby.</span> · <span class="en">Watch out — you're <b>going to</b> drop it!</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Я вижу это по здесь-и-сейчас, поэтому <span class="en">going to</span> — <span class="en">will</span> звучал бы как догадка из ниоткуда».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Решение в момент речи</span> <span class="trig-then">→ will</span>
+      <div class="trig-ex"><span class="en">The phone's ringing — I'll <b>get</b> it.</span> · <span class="en">Fine, I'll <b>help</b> you.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Решил это полсекунды назад, прямо сейчас — это ровно то, для чего есть <span class="en">will</span>».</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Нереальное или воображаемое прошлое (<span class="en">if</span>)</span> <span class="trig-then">→ Third Conditional: had + V3 … would have + V3</span>
+      <div class="trig-ex"><span class="en"><b>If</b> I'<b>d known</b>, I <b>would have</b> come.</span></div>
+      <div class="trig-think"><b>Мысль носителя:</b> «Этого не случилось — я отматываю прошлое, которого не было, поэтому обе половины уходят на шаг за прошлое».</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p><b>Привычка, которую стоит выработать.</b> Прежде чем заговорить, не ищите правило — оцените <i>ситуацию</i>. Время закрыто или открыто? Действие целое, в процессе или это результат? Одно раньше другого? Эти три вопроса, заданные в мгновение, — и есть то, что на самом деле делает беглый говорящий; они выводят вас на нужное время куда быстрее, чем шестнадцать клеток.</p>
   </div>
 </section>
 

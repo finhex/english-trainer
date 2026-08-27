@@ -1,0 +1,1795 @@
+<meta charset="utf-8">
+<title>The English Timeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3;
+  --card:#FFFFFF;
+  --card-2:#E4EAEE;
+  --ink:#131C25;
+  --ink-2:#47555F;
+  --ink-3:#75838E;
+  --line:#CFD8DE;
+  --line-2:#E2E8EC;
+  --c-simple:#12746A;
+  --c-cont:#A6640B;
+  --c-perf:#5546B8;
+  --c-perfc:#A33A5F;
+  --c-now:#C23E2B;
+  --tint:.10;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D;
+    --card:#15202A;
+    --card-2:#1C2A35;
+    --ink:#E7EDF2;
+    --ink-2:#A8B7C2;
+    --ink-3:#7A8A96;
+    --line:#27353F;
+    --line-2:#1F2C36;
+    --c-simple:#4FC3B3;
+    --c-cont:#E8A44A;
+    --c-perf:#A798F7;
+    --c-perfc:#EE85A6;
+    --c-now:#FF7C64;
+    --tint:.16;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D;
+  --card:#15202A;
+  --card-2:#1C2A35;
+  --ink:#E7EDF2;
+  --ink-2:#A8B7C2;
+  --ink-3:#7A8A96;
+  --line:#27353F;
+  --line-2:#1F2C36;
+  --c-simple:#4FC3B3;
+  --c-cont:#E8A44A;
+  --c-perf:#A798F7;
+  --c-perfc:#EE85A6;
+  --c-now:#FF7C64;
+  --tint:.16;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Golos Text","Segoe UI",system-ui,sans-serif;
+  font-size:16.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+/* ---------- native-thinking · signals · triggers ---------- */
+.think{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:18px;padding:18px 20px}
+.think-sit{font-size:15px;color:var(--ink-2);margin-bottom:12px}
+.think-sit b{color:var(--ink);font-weight:600}
+.think-flow{display:flex;flex-direction:column;gap:9px;padding:14px 16px;background:var(--card-2);border-radius:10px;margin-bottom:14px}
+.think-beat{position:relative;padding-left:24px;font-size:14.5px;color:var(--ink-2);line-height:1.5}
+.think-beat::before{content:"\21B3";position:absolute;left:2px;top:-1px;font-family:"JetBrains Mono",monospace;color:var(--c-now)}
+.think-beat i{font-style:normal;color:var(--ink);font-weight:600}
+.think-out{display:flex;gap:12px;align-items:baseline;padding-left:14px;border-left:3px solid var(--c-now)}
+.think-out .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);flex:none;padding-top:3px}
+.think-out .en{font-size:15.5px;color:var(--ink);font-weight:500;line-height:1.45}
+
+.sig{margin-top:20px;display:grid;gap:12px}
+.sig-row{background:var(--card);border:1px solid var(--line);border-left-width:3px;border-radius:12px;box-shadow:var(--shadow);padding:13px 16px}
+.sig-row[data-a=s]{border-left-color:var(--c-simple)}
+.sig-row[data-a=c]{border-left-color:var(--c-cont)}
+.sig-row[data-a=p]{border-left-color:var(--c-perf)}
+.sig-row[data-a=pc]{border-left-color:var(--c-perfc)}
+.sig-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.sig-tense{font-family:Bitter,Georgia,serif;font-weight:700;font-size:15.5px}
+.sig-why{font-size:13.5px;color:var(--ink-3)}
+.sig-words{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.sig-w{font-family:"JetBrains Mono",monospace;font-size:12.5px;padding:3px 9px;border-radius:999px;background:var(--card-2);border:1px solid var(--line-2);color:var(--ink)}
+.sig-ex{font-size:14px;color:var(--ink-2)}
+.sig-ex .en{font-size:.95em;color:var(--ink)}
+
+.trig{margin-top:20px;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.trig-item{padding:15px 18px;background:var(--card);border-top:1px solid var(--line-2)}
+.trig-item:first-child{border-top:none}
+.trig-when{font-weight:600;color:var(--ink);font-size:15px}
+.trig-then{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--c-now)}
+.trig-ex{margin-top:7px;font-size:14px;color:var(--ink-2)}
+.trig-ex .en{color:var(--ink)}
+.trig-think{margin-top:6px;font-size:13.5px;color:var(--ink-3)}
+.trig-think b{font-weight:600;color:var(--ink-2)}
+
+/* ---------- shell ---------- */
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){
+  .shell{display:grid;grid-template-columns:196px minmax(0,1fr);gap:56px;align-items:start}
+}
+.rail{display:none}
+@media (min-width:1080px){
+  .rail{
+    display:block;position:sticky;top:0;padding:40px 0;
+    max-height:100vh;overflow-y:auto;
+  }
+}
+.rail-title{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;
+}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{
+  display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:baseline;
+  text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);
+  border-left:2px solid transparent;
+}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-now)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.hero h1{font-size:clamp(38px,6.4vw,68px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:60ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{
+  font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;
+  border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);
+  background:var(--card);
+}
+.chip.s{border-color:color-mix(in srgb,var(--c-simple) 45%,var(--line));color:var(--c-simple)}
+.chip.c{border-color:color-mix(in srgb,var(--c-cont) 45%,var(--line));color:var(--c-cont)}
+.chip.p{border-color:color-mix(in srgb,var(--c-perf) 45%,var(--line));color:var(--c-perf)}
+.chip.pc{border-color:color-mix(in srgb,var(--c-perfc) 45%,var(--line));color:var(--c-perfc)}
+
+/* ---------- parts ---------- */
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--c-now);
+}
+.part-tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.part h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:66ch;color:var(--ink-2)}
+.rule{height:1px;background:var(--line);margin-top:22px}
+
+.prose{max-width:66ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+
+/* ---------- cards ---------- */
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:var(--shadow);margin-top:26px;overflow:hidden;
+}
+.card-top{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:flex-start;justify-content:space-between;padding:22px 24px 18px}
+.card-id{display:flex;flex-direction:column;gap:5px;min-width:min(100%,300px)}
+.card-kicker{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.card h3{font-size:clamp(21px,2.6vw,27px);letter-spacing:-.01em}
+.card-ru{color:var(--ink-2);font-size:15px}
+.formulas{display:flex;flex-direction:column;gap:5px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.formulas div{display:grid;grid-template-columns:16px 1fr;gap:8px;color:var(--ink-2)}
+.formulas span{color:var(--ink-3)}
+.formulas b{color:var(--ink);font-weight:500}
+
+.card[data-a="s"] .card-kicker{color:var(--c-simple)}
+.card[data-a="c"] .card-kicker{color:var(--c-cont)}
+.card[data-a="p"] .card-kicker{color:var(--c-perf)}
+.card[data-a="pc"] .card-kicker{color:var(--c-perfc)}
+.card[data-a="s"]{border-top:3px solid var(--c-simple)}
+.card[data-a="c"]{border-top:3px solid var(--c-cont)}
+.card[data-a="p"]{border-top:3px solid var(--c-perf)}
+.card[data-a="pc"]{border-top:3px solid var(--c-perfc)}
+
+.tl{--tl-bg:var(--card-2);margin:0;background:var(--tl-bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0 10px;overflow-x:auto}
+.tl svg{display:block;width:100%;min-width:600px;height:auto}
+.tl figcaption{
+  padding:6px 24px 0;font-size:13px;color:var(--ink-2);max-width:78ch;
+}
+.tl figcaption b{color:var(--ink);font-weight:600}
+
+.card-body{display:grid;gap:26px;padding:22px 24px 24px}
+@media (min-width:820px){.card-body{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:34px}}
+.sub{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;
+}
+.why{display:flex;flex-direction:column;gap:11px;color:var(--ink-2);font-size:15.5px}
+.why b{color:var(--ink);font-weight:600}
+.uses{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:15px;color:var(--ink-2)}
+.uses li{position:relative;padding-left:23px}
+.uses li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:2px;background:currentColor;opacity:.55}
+.card[data-a="s"] .uses li::before{background:var(--c-simple);opacity:1}
+.card[data-a="c"] .uses li::before{background:var(--c-cont);opacity:1}
+.card[data-a="p"] .uses li::before{background:var(--c-perf);opacity:1}
+.card[data-a="pc"] .uses li::before{background:var(--c-perfc);opacity:1}
+
+.ex{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+.ex li{padding:11px 0;border-top:1px solid var(--line-2)}
+.ex li:first-child{border-top:0;padding-top:0}
+.ex .s-en{font-family:"JetBrains Mono",monospace;font-size:14px;line-height:1.5;color:var(--ink)}
+.ex .s-ru{font-size:14.5px;color:var(--ink-2);margin-top:3px}
+.ex .s-note{font-size:13px;color:var(--ink-3);margin-top:3px}
+.ex .s-en u{text-decoration:none;border-bottom:2px solid;padding-bottom:1px}
+.card[data-a="s"] .ex .s-en u{border-color:var(--c-simple)}
+.card[data-a="c"] .ex .s-en u{border-color:var(--c-cont)}
+.card[data-a="p"] .ex .s-en u{border-color:var(--c-perf)}
+.card[data-a="pc"] .ex .s-en u{border-color:var(--c-perfc)}
+
+.markers{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.mk{
+  font-family:"JetBrains Mono",monospace;font-size:11.5px;padding:3px 9px;border-radius:5px;
+  background:var(--card-2);color:var(--ink-2);border:1px solid var(--line);
+}
+
+/* ---------- matrix ---------- */
+.matrix-wrap{overflow-x:auto;margin-top:26px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow)}
+table.matrix{border-collapse:collapse;width:100%;min-width:760px}
+table.matrix th,table.matrix td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.matrix thead th{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--line);
+}
+table.matrix tbody th{width:190px}
+.asp{font-family:Bitter,serif;font-size:15px;font-weight:600}
+.asp-ru{font-size:12.5px;color:var(--ink-3);display:block;font-family:"Golos Text",sans-serif;font-weight:400;margin-top:2px}
+tr[data-a="s"] .asp{color:var(--c-simple)}
+tr[data-a="c"] .asp{color:var(--c-cont)}
+tr[data-a="p"] .asp{color:var(--c-perf)}
+tr[data-a="pc"] .asp{color:var(--c-perfc)}
+table.matrix td .f{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink)}
+table.matrix td .m{font-size:13px;color:var(--ink-2);margin-top:3px}
+table.matrix tbody tr:last-child th,table.matrix tbody tr:last-child td{border-bottom:0}
+
+/* ---------- legend ---------- */
+.legend{display:grid;gap:12px;margin-top:24px}
+@media (min-width:700px){.legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lg{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.lg svg{display:block;width:64px;height:34px}
+.lg .t{font-size:14.5px;color:var(--ink);font-weight:500}
+.lg .d{font-size:13px;color:var(--ink-2);line-height:1.45}
+
+/* ---------- compare ---------- */
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:26px;overflow:hidden}
+.cmp-head{padding:20px 24px 14px}
+.cmp-head h3{font-size:21px}
+.cmp-head p{margin-top:8px;color:var(--ink-2);font-size:15px;max-width:70ch}
+.cmp-grid{display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+@media (min-width:840px){.cmp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cmp-cell{background:var(--card);padding:0 0 18px}
+.cmp-cell .hd{padding:16px 22px 4px;font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.05em}
+.cmp-cell .tl{--tl-bg:var(--card);border:0;padding:6px 0 4px}
+.cmp-grid.three{grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.cmp-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cmp-cell .tl svg{min-width:420px}
+.cmp-cell .bd{padding:6px 22px 0;font-size:14.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
+.cmp-cell .bd .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink)}
+.cmp-cell[data-a="s"] .hd{color:var(--c-simple)}
+.cmp-cell[data-a="c"] .hd{color:var(--c-cont)}
+.cmp-cell[data-a="p"] .hd{color:var(--c-perf)}
+.cmp-cell[data-a="pc"] .hd{color:var(--c-perfc)}
+
+/* ---------- markers table ---------- */
+.mtab-wrap{overflow-x:auto;margin-top:24px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow)}
+table.mtab{border-collapse:collapse;width:100%;min-width:680px}
+table.mtab th,table.mtab td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.mtab thead th{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--line)}
+table.mtab td.k{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);width:38%}
+table.mtab td.v{font-size:14.5px;color:var(--ink-2)}
+table.mtab tbody tr:last-child td{border-bottom:0}
+
+/* ---------- final ---------- */
+.final{margin-top:30px;display:grid;gap:14px}
+@media (min-width:760px){.final{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fq{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.fq .q{font-family:Bitter,serif;font-weight:600;font-size:16px;color:var(--ink)}
+.fq .a{margin-top:7px;font-size:14.5px;color:var(--ink-2)}
+.fq .a b{color:var(--ink);font-weight:600}
+
+footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13.5px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Contents">
+  <div class="rail-title">Parts</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">00:00</span><span>Reading the diagrams</span></a></li>
+    <li><a href="#p1"><span class="tc">02:10</span><span>How the system works</span></a></li>
+    <li><a href="#p2"><span class="tc">05:40</span><span>Present · 4</span></a></li>
+    <li><a href="#p3"><span class="tc">14:20</span><span>Past · 4</span></a></li>
+    <li><a href="#p4"><span class="tc">22:00</span><span>Future · 4</span></a></li>
+    <li><a href="#p5"><span class="tc">29:10</span><span>Future in the Past · 4</span></a></li>
+    <li><a href="#p6"><span class="tc">34:30</span><span>Pairs people confuse</span></a></li>
+    <li><a href="#p7"><span class="tc">41:00</span><span>Time signals</span></a></li>
+    <li><a href="#p8"><span class="tc">44:20</span><span>Cheat sheet</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">16 tenses · 4 aspects · 3 reference points</div>
+  <h1>The English Timeline</h1>
+  <p class="lede">Every English tense answers two questions at once: <b>when</b> did it happen, and <b>how are you looking at it</b> — as a fact, as a process, or as a result. Three answers to the first question multiplied by four answers to the second is why there are twelve tenses, not three. Each one gets a diagram showing exactly which part of the timeline it occupies.</p>
+  <div class="chips">
+    <span class="chip s">Simple — a fact</span>
+    <span class="chip c">Continuous — a process</span>
+    <span class="chip p">Perfect — a result before a point</span>
+    <span class="chip pc">Perfect Continuous — duration up to a point</span>
+  </div>
+</header>
+
+<!-- ===================== PART 0 ===================== -->
+<section class="part" id="p0">
+  <div class="part-head">
+    <span class="part-num">Part 0</span>
+    <span class="part-tc">00:00</span>
+  </div>
+  <h2>Reading the diagrams</h2>
+  <p class="part-lede">All sixteen diagrams on this page are drawn with the same handful of marks. Spend a minute here and every tense below will read at a glance.</p>
+
+  <div class="legend">
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".35"/><polygon points="60,22 53,18.5 53,25.5" fill="currentColor" opacity=".35"/></svg>
+      <div><div class="t">The axis</div><div class="d">Time runs left to right: past on the left, future on the right.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><line x1="32" y1="5" x2="32" y2="30" stroke="var(--c-now)" stroke-width="2" stroke-dasharray="4 3"/></svg>
+      <div><div class="t">Red dashes — now</div><div class="d">The moment of speaking. The main reference point: every Present tense is measured against it.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><circle cx="32" cy="22" r="6" fill="var(--c-simple)"/></svg>
+      <div><div class="t">A dot</div><div class="d">A whole action seen as a fact. How long it took does not matter — only that it happened.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><rect x="14" y="15" width="36" height="14" rx="7" fill="var(--c-cont)" fill-opacity=".28" stroke="var(--c-cont)" stroke-width="1.5"/></svg>
+      <div><div class="t">A bar</div><div class="d">An action with length — it has an inside. Something else can happen while it runs.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><circle cx="10" cy="22" r="3.4" fill="var(--c-simple)"/><circle cx="24" cy="22" r="3.4" fill="var(--c-simple)"/><circle cx="38" cy="22" r="3.4" fill="var(--c-simple)"/><circle cx="52" cy="22" r="3.4" fill="var(--c-simple)"/></svg>
+      <div><div class="t">A row of dots</div><div class="d">Repeated, habitual or always true. The individual occasions do not matter — the pattern does.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><path d="M14 14 Q32 0 50 14" fill="none" stroke="var(--c-perf)" stroke-width="1.6" stroke-dasharray="4 3"/><polygon points="50,16 46,9 54,9" fill="var(--c-perf)"/></svg>
+      <div><div class="t">An arc</div><div class="d">A link: the action happened earlier but matters for a later point. That is what Perfect means.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><line x1="32" y1="9" x2="32" y2="26" stroke="var(--ink-2)" stroke-width="2"/><rect x="28" y="6" width="9" height="7" fill="var(--ink-2)"/></svg>
+      <div><div class="t">A flag</div><div class="d">A deadline or boundary: "by this moment". Every Perfect tense is measured from one.</div></div>
+    </div>
+    <div class="lg">
+      <svg viewBox="0 0 64 34" aria-hidden="true"><line x1="2" y1="22" x2="60" y2="22" stroke="currentColor" stroke-width="1.5" opacity=".25"/><rect x="2" y="4" width="30" height="26" fill="currentColor" opacity=".07"/><text x="8" y="14" font-size="7" fill="currentColor" opacity=".5" font-family="monospace">PAST</text></svg>
+      <div><div class="t">A shaded zone</div><div class="d">The past or future half of the axis — a hint about which side of "now" you are on.</div></div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p><b>One idea explains half of all tense mistakes.</b> In most languages the form of the verb answers a single question: when? English verbs answer two at once — <b>when</b>, and <b>how you are viewing the action</b>: as a complete fact, as a process in progress, or as a result that stands at some later point. Pick the wrong view and the sentence is still grammatical but says something you did not mean.</p>
+    <p><b>The reference point</b> is the second key idea. Present tenses are measured from <b>now</b>; Past tenses from <b>a moment in the past</b>; Future tenses from <b>a moment in the future</b>. Once you know where the reference point stands, all that is left is choosing the aspect.</p>
+  </div>
+</section>
+
+<!-- ===================== PART 1 ===================== -->
+<section class="part" id="p1">
+  <div class="part-head">
+    <span class="part-num">Part 1</span>
+    <span class="part-tc">02:10</span>
+  </div>
+  <h2>How the system works: 4 × 3</h2>
+  <p class="part-lede">Do not learn twelve tenses as twelve separate rules. Learn four aspects and three reference points, and any tense assembles itself from two parts.</p>
+
+  <div class="prose">
+    <p><b>The aspect is your view of the action.</b> It is set by the auxiliary verb and the form of the main verb:</p>
+  </div>
+
+  <div class="matrix-wrap">
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th scope="col">Aspect</th>
+        <th scope="col">Present · measured from now</th>
+        <th scope="col">Past · measured from a past point</th>
+        <th scope="col">Future · measured from a future point</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-a="s">
+        <th scope="row"><span class="asp">Simple</span><span class="asp-ru">a fact, seen whole</span></th>
+        <td><div class="f">V / V-s</div><div class="m">regularly, generally, always</div></td>
+        <td><div class="f">V2 (V-ed)</div><div class="m">happened and finished</div></td>
+        <td><div class="f">will V</div><div class="m">will happen</div></td>
+      </tr>
+      <tr data-a="c">
+        <th scope="row"><span class="asp">Continuous</span><span class="asp-ru">a process, seen from inside</span></th>
+        <td><div class="f">am / is / are + V-ing</div><div class="m">in progress right now</div></td>
+        <td><div class="f">was / were + V-ing</div><div class="m">was in progress then</div></td>
+        <td><div class="f">will be + V-ing</div><div class="m">will be in progress then</div></td>
+      </tr>
+      <tr data-a="p">
+        <th scope="row"><span class="asp">Perfect</span><span class="asp-ru">a result at a point</span></th>
+        <td><div class="f">have / has + V3</div><div class="m">already done — result stands now</div></td>
+        <td><div class="f">had + V3</div><div class="m">was done before that moment</div></td>
+        <td><div class="f">will have + V3</div><div class="m">will be done by that deadline</div></td>
+      </tr>
+      <tr data-a="pc">
+        <th scope="row"><span class="asp">Perfect Continuous</span><span class="asp-ru">duration up to a point</span></th>
+        <td><div class="f">have / has been + V-ing</div><div class="m">has been going on for a while</div></td>
+        <td><div class="f">had been + V-ing</div><div class="m">had been going on until then</div></td>
+        <td><div class="f">will have been + V-ing</div><div class="m">will have been going on by then</div></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Building any tense takes two steps.</b> First, choose the reference point — now, a moment in the past, or a moment in the future. That gives you the auxiliary: <span class="en">have/am</span> → <span class="en">had/was</span> → <span class="en">will have/will be</span>. Second, choose the aspect — that gives you the form of the main verb: bare form, <span class="en">-ing</span>, third form (V3), or <span class="en">been + -ing</span>.</p>
+    <p><b>V3 is the past participle</b>: <span class="en">write → wrote → written</span>, <span class="en">work → worked → worked</span>. On its own it is not a tense. It appears only alongside <span class="en">have / had / will have</span>, and it means "done".</p>
+    <p><b>Word order never changes.</b> The first auxiliary is the one that carries person and tense; everything after it is frozen. In a question the first auxiliary moves to the front; in a negative, <span class="en">not</span> goes straight after it. Nothing else in the sentence moves.</p>
+  </div>
+</section>
+<!-- ===================== PART 2 ===================== -->
+<section class="part" id="p2">
+  <div class="part-head">
+    <span class="part-num">Part 2 · Present</span>
+    <span class="part-tc">05:40</span>
+  </div>
+  <h2>Reference point: now</h2>
+  <p class="part-lede">Four tenses whose red dashes sit in the middle of the axis. All of them talk about the moment of speaking — but each looks at it differently: one never touches it, one sits right on it, one throws an arc towards it from the past.</p>
+
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Present · 01</div>
+        <h3>Present Simple</h3>
+        <div class="card-ru">generally, always, usually</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / you / we / they work</b></div>
+        <div><span>+</span><b>he / she / it works</b></div>
+        <div><span>&minus;</span><b>do not (don't) / does not (doesn't) work</b></div>
+        <div><span>?</span><b>Do you work? · Does he work?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-s">
+      <figcaption><b>The line:</b> the action is not tied to any single point. A row of identical dots runs across the whole axis, through past and future alike. The moment of speaking is not marked at all — the action may well not be happening right now.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>This is the one tense that <b>does not point at a moment</b>. It describes not an event but a property of the world or of a person: this is how things are, this is what happens, this is what repeats.</p>
+          <p>Hence the classic trap. <span class="en">I work in Moscow</span> does not mean "I am working at this second" — it means "Moscow is where my job is", even if you are lying on a beach as you say it.</p>
+        </div>
+        <ul class="uses">
+          <li>Regular, repeated actions and habits</li>
+          <li>Permanent states and characteristics</li>
+          <li>General truths, laws of nature, facts</li>
+          <li>Timetables and schedules — even about the future</li>
+          <li>State verbs (know, want, love, need), which almost never take Continuous</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">always</span><span class="mk">usually</span><span class="mk">often</span><span class="mk">sometimes</span><span class="mk">rarely</span><span class="mk">never</span><span class="mk">every day</span><span class="mk">on Mondays</span><span class="mk">twice a week</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">She <u>drinks</u> coffee every morning.</div><div class="s-note">A habit. Right now she may well be asleep.</div></li>
+          <li><div class="s-en">Water <u>boils</u> at 100 degrees.</div><div class="s-note">Always true — dots across the entire axis.</div></li>
+          <li><div class="s-en">I <u>don't understand</u> this rule.</div><div class="s-note">A state, not a process: "understanding" is not used here.</div></li>
+          <li><div class="s-en">The train <u>leaves</u> at six tomorrow.</div><div class="s-note">A timetable: future meaning, present form.</div></li>
+          <li><div class="s-en"><u>Does</u> your brother <u>live</u> here?</div><div class="s-note">In questions <b>does</b> takes the -s and the main verb goes bare.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Present · 02</div>
+        <h3>Present Continuous</h3>
+        <div class="card-ru">in progress right now</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I am working</b></div>
+        <div><span>+</span><b>he is / we are working</b></div>
+        <div><span>&minus;</span><b>am not / is not (isn't) / are not (aren't) working</b></div>
+        <div><span>?</span><b>Are you working? · Is she working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-c">
+      <figcaption><b>The line:</b> a bar with "now" inside it. The action started in the past and will end in the future, and the red dashes pass through its middle. We are looking at the action from inside: it is not finished.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The bar can be narrow — <b>literally this second</b> (<span class="en">I am reading now</span>) — or wide, covering <b>this period of your life</b> (<span class="en">I am learning Spanish this year</span>). In the second case you may be asleep as you speak: what matters is that the process is under way and unfinished.</p>
+          <p>The second meaning is <b>temporariness</b>. Continuous says "this won't last"; Simple says "this is what I am like". Hence the difference between <span class="en">He is rude</span> (he is a rude person) and <span class="en">He is being rude</span> (he is behaving badly today).</p>
+        </div>
+        <ul class="uses">
+          <li>An action at the moment of speaking</li>
+          <li>A temporary situation with a limited span</li>
+          <li>A changing, developing situation</li>
+          <li>A firm arrangement in the future</li>
+          <li>With <b>always</b> — irritation at something repeated</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">now</span><span class="mk">right now</span><span class="mk">at the moment</span><span class="mk">currently</span><span class="mk">today</span><span class="mk">this week</span><span class="mk">Look!</span><span class="mk">Listen!</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">Be quiet, the baby <u>is sleeping</u>.</div><div class="s-note">The process runs exactly at the moment of speaking.</div></li>
+          <li><div class="s-en">I <u>am reading</u> a great book this month.</div><div class="s-note">A wide bar: the book is shut right now, but the process is unfinished.</div></li>
+          <li><div class="s-en">The climate <u>is getting</u> warmer.</div><div class="s-note">Slow change — also an unfinished process.</div></li>
+          <li><div class="s-en">We <u>are meeting</u> the lawyer on Friday.</div><div class="s-note">An arrangement: time and place are already fixed.</div></li>
+          <li><div class="s-en">He <u>is</u> always <u>losing</u> his keys!</div><div class="s-note">Not a fact but an emotion — irritation.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Present · 03</div>
+        <h3>Present Perfect</h3>
+        <div class="card-ru">already done, and it matters now</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / you / we / they have done</b></div>
+        <div><span>+</span><b>he / she / it has done</b></div>
+        <div><span>&minus;</span><b>have not (haven't) / has not (hasn't) done</b></div>
+        <div><span>?</span><b>Have you done? · Has he done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-p">
+      <figcaption><b>The line:</b> the action itself is a dot in the past, but it carries <b>no time label</b> — and an arc runs from it to "now". The dot is not the point; the arc is. The result of the action exists at the moment of speaking.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>Despite the name, this is <b>not a past tense</b>. Grammatically it is present: the auxiliary <span class="en">have</span> is in the present. The sentence is about <b>the current state of affairs</b>, and the past action is only its cause.</p>
+          <p>Hence the iron rule: <b>you cannot name a finished past time with Present Perfect</b>. Not <span class="en">I have seen him yesterday</span> — the moment you pin the action to a point on the axis, the link with "now" snaps and you need Past Simple.</p>
+          <p>Three typical meanings: a result you can see now; experience over a lifetime up to now; a period that has not finished yet (<span class="en">today, this week, this year</span>).</p>
+        </div>
+        <ul class="uses">
+          <li>A present result: something has changed</li>
+          <li>Life experience with no date attached</li>
+          <li>An unfinished time period</li>
+          <li>Something that has just happened — with <b>just</b></li>
+          <li>Something still expected — with <b>yet</b>, <b>already</b></li>
+        </ul>
+        <div class="markers">
+          <span class="mk">just</span><span class="mk">already</span><span class="mk">yet</span><span class="mk">ever</span><span class="mk">never</span><span class="mk">so far</span><span class="mk">recently</span><span class="mk">this week</span><span class="mk">since 2019</span><span class="mk">for two years</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>have lost</u> my passport.</div><div class="s-note">Lost at some point — what matters is that it is missing now.</div></li>
+          <li><div class="s-en">She <u>has never been</u> to Japan.</div><div class="s-note">Experience across a whole life up to this minute.</div></li>
+          <li><div class="s-en">We <u>have finished</u> three chapters today.</div><div class="s-note">"Today" is not over — the period is still open.</div></li>
+          <li><div class="s-en">The train <u>has just left</u>.</div><div class="s-note">A fresh result: you have missed it.</div></li>
+          <li><div class="s-en"><u>Have</u> you <u>read</u> the contract <u>yet</u>?</div><div class="s-note">Asking not "when" but "is it done".</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Present · 04</div>
+        <h3>Present Perfect Continuous</h3>
+        <div class="card-ru">it has been going on for a while</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I have been working</b></div>
+        <div><span>+</span><b>he has been working</b></div>
+        <div><span>&minus;</span><b>haven't / hasn't been working</b></div>
+        <div><span>?</span><b>Have you been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pr-pc">
+      <figcaption><b>The line:</b> a bar that starts in the past and <b>runs into "now"</b>. Often it continues past it — hence the faded dots on the right. What is being measured is not a moment but the length of the bar.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>It answers the question <b>"how long?"</b>. Present Perfect says "done"; Perfect Continuous says "has been going on for two hours". There is almost always a <span class="en">for</span> (how long) or a <span class="en">since</span> (starting when).</p>
+          <p>The second use is <b>explaining visible evidence</b>. You are soaked because you have been running; your eyes are red because you have been crying. The action may have just stopped, but its traces are on show.</p>
+          <p>State verbs (<span class="en">know, be, have, love</span>) do not go into this form: it is <span class="en">I have known her for years</span>, never <span class="en">have been knowing</span>.</p>
+        </div>
+        <ul class="uses">
+          <li>An action that began in the past and still continues</li>
+          <li>Answering "how long has this been going on?"</li>
+          <li>A recently finished action with visible traces</li>
+          <li>Emphasised duration, sometimes with a hint of tiredness or annoyance</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">for an hour</span><span class="mk">since morning</span><span class="mk">all day</span><span class="mk">How long...?</span><span class="mk">lately</span><span class="mk">recently</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>have been waiting</u> for you for an hour.</div><div class="s-note">The bar runs right into "now" — that is why English needs a perfect here.</div></li>
+          <li><div class="s-en">She <u>has been working</u> here since 2019.</div><div class="s-note"><b>since</b> marks where the bar starts.</div></li>
+          <li><div class="s-en">Your eyes are red. <u>Have</u> you <u>been crying</u>?</div><div class="s-note">The action has stopped, but the evidence is visible.</div></li>
+          <li><div class="s-en"><u>How long have</u> you <u>been learning</u> English?</div><div class="s-note">"How long" is this tense's home question.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ===================== PART 3 ===================== -->
+<section class="part" id="p3">
+  <div class="part-head">
+    <span class="part-num">Part 3 · Past</span>
+    <span class="part-tc">14:20</span>
+  </div>
+  <h2>The reference point moves into the past</h2>
+  <p class="part-lede">Here the red dashes stop doing any work. Everything is measured from <b>a moment in the past</b>, marked on the diagrams by a grey vertical. The auxiliaries simply shift into their past forms: <span class="en">am/is → was</span>, <span class="en">are → were</span>, <span class="en">have/has → had</span>. The logic of the aspects does not change at all.</p>
+
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Past · 05</div>
+        <h3>Past Simple</h3>
+        <div class="card-ru">it happened then and it ended</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I worked · I went</b></div>
+        <div><span>&minus;</span><b>did not (didn't) work / go</b></div>
+        <div><span>?</span><b>Did you work? · Did he go?</b></div>
+        <div><span>!</span><b>after did — the bare verb</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-s">
+      <figcaption><b>The line:</b> a single dot in the past with a time label underneath. That label is exactly what separates Past Simple from Present Perfect: here we know <b>when</b>, and no link to the present is needed.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The default tense for any story about the past. The action is <b>completely closed</b>: it happened inside a finished stretch of time and has no bearing on the present.</p>
+          <p>A chain of Past Simples is <b>a sequence of events</b>, one after another, in the order written. That is why all narrative prose rests on this tense.</p>
+          <p>Its second use is habits that are over: <span class="en">I played football at school</span>.</p>
+        </div>
+        <ul class="uses">
+          <li>A single finished action with a stated time</li>
+          <li>A chain of events in a narrative</li>
+          <li>Former habits and states</li>
+          <li>A past fact whose present consequences are not the topic</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">yesterday</span><span class="mk">last week</span><span class="mk">two days ago</span><span class="mk">in 2010</span><span class="mk">when I was young</span><span class="mk">then</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>bought</u> this car in 2019.</div><div class="s-note">There is a date — so it can only be Past Simple.</div></li>
+          <li><div class="s-en">She <u>opened</u> the door, <u>looked</u> inside and <u>left</u>.</div><div class="s-note">Three dots in a row — the order of events.</div></li>
+          <li><div class="s-en">We <u>didn't know</u> about the meeting.</div><div class="s-note"><b>didn't</b> carries the past; <b>know</b> stays bare.</div></li>
+          <li><div class="s-en"><u>Did</u> you <u>call</u> him last night?</div><div class="s-note">A question about a specific past moment.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Past · 06</div>
+        <h3>Past Continuous</h3>
+        <div class="card-ru">it was in progress at that moment</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he was working</b></div>
+        <div><span>+</span><b>we / you / they were working</b></div>
+        <div><span>&minus;</span><b>wasn't / weren't working</b></div>
+        <div><span>?</span><b>Were you working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-c">
+      <figcaption><b>The line:</b> a bar in the past with a dot inside it — a second, shorter action. The classic picture: a long process serves as the <b>background</b> and a short event breaks into it.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>This tense almost never lives alone — it needs a <b>second coordinate</b>: either a clock time (<span class="en">at 7 o'clock</span>) or another action in Past Simple (<span class="en">when he came</span>).</p>
+          <p>Remember the pair of conjunctions: <b>while</b> introduces the long action (the bar), <b>when</b> introduces the short one (the dot). <span class="en">While I was cooking, the phone rang.</span></p>
+          <p>If both actions are in Past Continuous, they ran <b>in parallel</b> — two bars side by side.</p>
+        </div>
+        <ul class="uses">
+          <li>A process at a specific past moment</li>
+          <li>Background for a short event</li>
+          <li>Two simultaneous processes</li>
+          <li>Setting the scene at the start of a story</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">at 5 o'clock</span><span class="mk">while</span><span class="mk">when...</span><span class="mk">all evening</span><span class="mk">at that moment</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">At eight o'clock I <u>was having</u> dinner.</div><div class="s-note">The point on the axis is given — the process covers it.</div></li>
+          <li><div class="s-en">While she <u>was driving</u>, it started to rain.</div><div class="s-note"><b>while</b> + the bar, with the event inside it.</div></li>
+          <li><div class="s-en">They <u>were arguing</u> when I walked in.</div><div class="s-note">The argument began before I arrived.</div></li>
+          <li><div class="s-en">He <u>was cooking</u> while I <u>was cleaning</u>.</div><div class="s-note">Two parallel bars.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Past · 07</div>
+        <h3>Past Perfect</h3>
+        <div class="card-ru">it was already done before that moment</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he / they had done</b></div>
+        <div><span>&minus;</span><b>had not (hadn't) done</b></div>
+        <div><span>?</span><b>Had you done?</b></div>
+        <div><span>!</span><b>had — one form for every person</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-p">
+      <figcaption><b>The line:</b> two dots in the past. The right one is the moment being talked about (usually Past Simple). The left one happened <b>before it</b>. The arc shows that the earlier action matters precisely for the later point.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>Past Perfect never stands on its own — it is always <b>relative to another past point</b>. No second point, stated or implied, means no Past Perfect: use plain Past Simple.</p>
+          <p>You need it exactly when the order of the words <b>does not match the order of events</b>. "The train left when I arrived" — if the leaving came first, that verb goes into Past Perfect.</p>
+          <p>Its other home is <b>reported speech</b>: both Present Perfect and Past Simple turn into Past Perfect when you report them.</p>
+        </div>
+        <ul class="uses">
+          <li>An action earlier than another past action</li>
+          <li>The cause of a past situation</li>
+          <li>Reported speech and backshifting</li>
+          <li>After before, after, by the time, because</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">by that time</span><span class="mk">before</span><span class="mk">after</span><span class="mk">already</span><span class="mk">by 2010</span><span class="mk">when I arrived</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">When I arrived, the train <u>had</u> already <u>left</u>.</div><div class="s-note">The leaving came before the arriving.</div></li>
+          <li><div class="s-en">She <u>had never seen</u> the sea before that trip.</div><div class="s-note">Experience up to a past point — Present Perfect shifted backwards.</div></li>
+          <li><div class="s-en">He was tired because he <u>had worked</u> all night.</div><div class="s-note">The cause precedes the effect.</div></li>
+          <li><div class="s-en">She said she <u>had lost</u> the keys.</div><div class="s-note">Her actual words were: I have lost the keys.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Past · 08</div>
+        <h3>Past Perfect Continuous</h3>
+        <div class="card-ru">it had been going on for a while by then</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I had been working</b></div>
+        <div><span>&minus;</span><b>hadn't been working</b></div>
+        <div><span>?</span><b>Had you been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="pa-pc">
+      <figcaption><b>The line:</b> a bar in the past that <b>runs into a past point</b> rather than into "now". The same picture as Present Perfect Continuous, shifted left.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>It answers "how long had this been going on <b>by that moment</b>". There is nearly always a <span class="en">for</span> or a <span class="en">since</span>, plus a second past point.</p>
+          <p>Its second use is <b>explaining something visible in the past</b>: the ground was wet because it had been raining.</p>
+          <p>Rare in speech, but regular in written texts and exams.</p>
+        </div>
+        <ul class="uses">
+          <li>Duration up to a moment in the past</li>
+          <li>The cause of something visible in the past</li>
+          <li>Reported speech in place of Present Perfect Continuous</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">for two hours</span><span class="mk">since morning</span><span class="mk">before that</span><span class="mk">all day</span><span class="mk">by then</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">He <u>had been driving</u> for six hours when he stopped.</div><div class="s-note">The bar is measured up to the point "he stopped".</div></li>
+          <li><div class="s-en">The ground was wet — it <u>had been raining</u>.</div><div class="s-note">Visible evidence in the past.</div></li>
+          <li><div class="s-en">She <u>had been waiting</u> since noon, so she was angry.</div><div class="s-note"><b>since</b> sets where the bar starts.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+<!-- ===================== PART 4 ===================== -->
+<section class="part" id="p4">
+  <div class="part-head">
+    <span class="part-num">Part 4 · Future</span>
+    <span class="part-tc">22:00</span>
+  </div>
+  <h2>The reference point moves right of "now"</h2>
+  <p class="part-lede"><span class="en">will</span> is added to the front of the whole structure and it slides into the right half of the axis. After <span class="en">will</span> comes the bare verb, so the chains get long — but they assemble mechanically: <span class="en">will be doing</span>, <span class="en">will have done</span>, <span class="en">will have been doing</span>.</p>
+
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Future · 09</div>
+        <h3>Future Simple</h3>
+        <div class="card-ru">it will happen</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he / they will work</b></div>
+        <div><span>&minus;</span><b>will not (won't) work</b></div>
+        <div><span>?</span><b>Will you work?</b></div>
+        <div><span>!</span><b>will — one form for every person</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-s">
+      <figcaption><b>The line:</b> a single dot to the right of "now". Nothing else — no length, no links. Just an event that will occur.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p><span class="en">will</span> carries an important flavour: it is a <b>decision made at the moment of speaking</b>, a prediction, or a promise. If the plan was ready beforehand, English prefers <span class="en">be going to</span> or even Present Continuous.</p>
+          <p><span class="en">I'll help you</span> — decided just now, on seeing you. <span class="en">I'm going to help you</span> — you had already intended to.</p>
+          <p><b>The trap:</b> after <span class="en">if</span>, <span class="en">when</span>, <span class="en">as soon as</span>, <span class="en">until</span> the future is not used — the present goes there instead: <span class="en">When he comes, I will tell him.</span></p>
+        </div>
+        <ul class="uses">
+          <li>A spontaneous decision made as you speak</li>
+          <li>A prediction or opinion about the future (I think, probably)</li>
+          <li>A promise, a refusal, an offer of help</li>
+          <li>Inevitable events outside anyone's control</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">tomorrow</span><span class="mk">next year</span><span class="mk">in an hour</span><span class="mk">soon</span><span class="mk">I think</span><span class="mk">probably</span><span class="mk">one day</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">I think it <u>will rain</u> tomorrow.</div><div class="s-note">A forecast, not a plan.</div></li>
+          <li><div class="s-en">That bag looks heavy — I <u>will help</u> you.</div><div class="s-note">The decision was born at this moment.</div></li>
+          <li><div class="s-en">She <u>won't tell</u> anyone, I promise.</div><div class="s-note"><b>won't</b> also means "refuses to".</div></li>
+          <li><div class="s-en">When he <u>arrives</u>, we <u>will start</u>.</div><div class="s-note">Present after <b>when</b>, even though the meaning is future.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Future · 10</div>
+        <h3>Future Continuous</h3>
+        <div class="card-ru">it will be in progress at that moment</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I will be working</b></div>
+        <div><span>&minus;</span><b>won't be working</b></div>
+        <div><span>?</span><b>Will you be working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-c">
+      <figcaption><b>The line:</b> a bar in the future with a dot inside it — the future moment at which the process will already be running. It starts before that dot and ends after it.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>Use it when it matters that you will <b>catch the action mid-flow</b>. Not "I'll do it at nine" but "at nine I'll be busy with it".</p>
+          <p>The second meaning is unexpected: it is <b>the politest way to ask about someone's plans</b>. <span class="en">Will you be using the car?</span> sounds like idle curiosity, whereas <span class="en">Will you use the car?</span> can sound like pressure.</p>
+        </div>
+        <ul class="uses">
+          <li>A process at a specific future moment</li>
+          <li>Something that will happen in the natural course of events</li>
+          <li>A polite enquiry about someone's plans</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">at 10 tomorrow</span><span class="mk">this time next week</span><span class="mk">all day tomorrow</span><span class="mk">when you arrive</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">At nine tomorrow I <u>will be flying</u> to Berlin.</div><div class="s-note">A dot inside the bar.</div></li>
+          <li><div class="s-en">Don't call at seven — we <u>will be having</u> dinner.</div><div class="s-note">Explaining why that moment is taken.</div></li>
+          <li><div class="s-en"><u>Will</u> you <u>be using</u> the printer later?</div><div class="s-note">Polite: just checking your plans.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Future · 11</div>
+        <h3>Future Perfect</h3>
+        <div class="card-ru">it will be done by the deadline</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I will have done</b></div>
+        <div><span>&minus;</span><b>won't have done</b></div>
+        <div><span>?</span><b>Will you have done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-p">
+      <figcaption><b>The line:</b> the flag in the future is the <b>deadline</b>. The action-dot sits to the left of it and an arc runs across: by that time everything will already be finished.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The key word is <b><span class="en">by</span></b>: <span class="en">by Friday</span>, <span class="en">by the time you come</span>. It is <span class="en">by</span> that plants the flag the readiness is measured against. Without a deadline this tense is not used.</p>
+          <p>Compare: <span class="en">I will finish at six</span> — I'll finish exactly at six. <span class="en">I will have finished by six</span> — by six it will already be done, possibly earlier.</p>
+        </div>
+        <ul class="uses">
+          <li>An action completed before a set future moment</li>
+          <li>Totting things up at a deadline ("by then it will be ten years")</li>
+          <li>A confident assumption about something already done</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">by Friday</span><span class="mk">by then</span><span class="mk">by the time...</span><span class="mk">before you come</span><span class="mk">in two years</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">I <u>will have finished</u> the report by Friday.</div><div class="s-note">Friday is the flag; the work ends before it.</div></li>
+          <li><div class="s-en">By the time you arrive, we <u>will have eaten</u>.</div><div class="s-note">Present tense after <b>by the time</b>.</div></li>
+          <li><div class="s-en">Next June they <u>will have been</u> married for ten years.</div><div class="s-note">A total at a deadline.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Future · 12</div>
+        <h3>Future Perfect Continuous</h3>
+        <div class="card-ru">by then it will have been going on for N</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I will have been working</b></div>
+        <div><span>&minus;</span><b>won't have been working</b></div>
+        <div><span>?</span><b>Will you have been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fu-pc">
+      <figcaption><b>The line:</b> the bar stretches towards the flag in the future and runs into it. What is measured is not completion but <b>accumulated length</b>: how long the process will have been running by that date.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The rarest tense in the language. It needs two conditions at once: <b>a future deadline</b> (<span class="en">by…</span>) and <b>a duration</b> (<span class="en">for…</span>). The bar usually starts back in the past and crosses "now" on its way.</p>
+          <p>Worth knowing for reading and exams rather than for conversation: in real speech people almost always use Future Perfect instead.</p>
+        </div>
+        <ul class="uses">
+          <li>Duration of an action up to a future moment</li>
+          <li>Emphasis on the unbroken process rather than its result</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">by 2030 ... for 20 years</span><span class="mk">by then</span><span class="mk">when you finish</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">By May I <u>will have been working</u> here for five years.</div><div class="s-note"><b>by</b> is the flag, <b>for</b> is the length of the bar.</div></li>
+          <li><div class="s-en">When you arrive, I <u>will have been driving</u> for ten hours.</div><div class="s-note">The flag is set by an event, not a date.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ===================== PART 5 ===================== -->
+<section class="part" id="p5">
+  <div class="part-head">
+    <span class="part-num">Part 5 · Future in the Past</span>
+    <span class="part-tc">29:10</span>
+  </div>
+  <h2>Future in the Past: the four forgotten tenses</h2>
+  <p class="part-lede">These are why the count is sixteen rather than twelve. The idea is simple: we stand <b>in the past</b> and look <b>forward</b> from there. For the narrator the event is already over; for the character in the story it is still ahead. The mechanics are one substitution: <span class="en">will → would</span>. Everything else works as in the Future.</p>
+
+  <div class="prose">
+    <p><b>Where you meet them.</b> First and foremost in reported speech: <span class="en">I will call you</span> becomes <span class="en">He said he would call me</span>. Then in any narrative about the past where you need to say "and this is what lay ahead of him". And finally in second and third conditionals, where <span class="en">would</span> lives permanently.</p>
+  </div>
+
+  <article class="card" data-a="s">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Simple · Future in the Past · 13</div>
+        <h3>Future Simple in the Past</h3>
+        <div class="card-ru">it was going to happen — looking forward from the past</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I / he would work</b></div>
+        <div><span>&minus;</span><b>would not (wouldn't) work</b></div>
+        <div><span>?</span><b>Would you work?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-s">
+      <figcaption><b>The line:</b> the grey vertical is the past moment when the words were spoken. The event sits <b>to the right of it but still left of "now"</b>: long over for the narrator, still in the future for the character.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The dot can land anywhere relative to "now" — that is not the point. All that matters is that it is <b>later than the reference point in the past</b>.</p>
+          <p>Do not confuse it with <span class="en">would</span> meaning "used to": <span class="en">We would go there every summer</span> is a past habit, a different use of the same word.</p>
+        </div>
+        <ul class="uses">
+          <li>Reported speech in place of will</li>
+          <li>Intentions and expectations of a character in a story</li>
+          <li>Second conditionals</li>
+        </ul>
+        <div class="markers">
+          <span class="mk">he said (that)...</span><span class="mk">she knew...</span><span class="mk">the next day</span><span class="mk">a week later</span>
+        </div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">He said he <u>would call</u> me the next day.</div><div class="s-note">His words were: I will call you tomorrow.</div></li>
+          <li><div class="s-en">We knew the meeting <u>would be</u> difficult.</div><div class="s-note">We knew it then — the meeting lay ahead.</div></li>
+          <li><div class="s-en">She promised she <u>wouldn't tell</u> anyone.</div><div class="s-note">A promise made in the past.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="c">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Continuous · Future in the Past · 14</div>
+        <h3>Future Continuous in the Past</h3>
+        <div class="card-ru">would be in progress — seen from the past</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I would be working</b></div>
+        <div><span>&minus;</span><b>wouldn't be working</b></div>
+        <div><span>?</span><b>Would you be working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-c">
+      <figcaption><b>The line:</b> a process-bar to the right of the past moment of speaking. The character knew that at that hour the action would be under way.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The same Future Continuous, reported from the past. Mostly found in reported speech and in narrative fiction.</p>
+        </div>
+        <ul class="uses">
+          <li>Reported speech in place of will be doing</li>
+          <li>An expected process in the character's future</li>
+        </ul>
+        <div class="markers"><span class="mk">he said...</span><span class="mk">at that time the next day</span></div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">She said she <u>would be waiting</u> at the station.</div><div class="s-note">Her words: I will be waiting.</div></li>
+          <li><div class="s-en">I knew they <u>would be sleeping</u> at that hour.</div><div class="s-note">A process that would cover that future moment.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="p">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect · Future in the Past · 15</div>
+        <h3>Future Perfect in the Past</h3>
+        <div class="card-ru">would be done by the deadline — seen from the past</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I would have done</b></div>
+        <div><span>&minus;</span><b>wouldn't have done</b></div>
+        <div><span>?</span><b>Would you have done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-p">
+      <figcaption><b>The line:</b> the past moment of speaking, a deadline-flag to the right of it, and the action finishing before that flag. The whole Future Perfect structure, shifted left.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The very same form — <span class="en">would have done</span> — also does the work of the <b>third conditional</b>, about an unreal past: <span class="en">If I had known, I would have come.</span> Tell them apart by context: reported speech, or regret about something that never happened.</p>
+        </div>
+        <ul class="uses">
+          <li>Reported speech in place of will have done</li>
+          <li>Third conditionals (an unreal past)</li>
+        </ul>
+        <div class="markers"><span class="mk">he said... by Friday</span><span class="mk">if I had known...</span></div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">He said he <u>would have finished</u> by Monday.</div><div class="s-note">His words: I will have finished by Monday.</div></li>
+          <li><div class="s-en">If I <u>had known</u>, I <u>would have helped</u> you.</div><div class="s-note">Third conditional: the past cannot be changed now.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" data-a="pc">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Perfect Continuous · Future in the Past · 16</div>
+        <h3>Future Perfect Continuous in the Past</h3>
+        <div class="card-ru">would have been going on for N by then</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>I would have been working</b></div>
+        <div><span>&minus;</span><b>wouldn't have been working</b></div>
+        <div><span>?</span><b>Would you have been working?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="fp-pc">
+      <figcaption><b>The line:</b> a bar running into a flag, and all of it to the right of the past moment of speaking. The longest and rarest structure in the language.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>So rare that many native speakers produce it a handful of times in a lifetime. It is enough to recognise it in a text and understand what it says: <b>a duration counted up to a deadline that was in the future of a past moment</b>.</p>
+        </div>
+        <ul class="uses">
+          <li>Reported speech in place of will have been doing</li>
+          <li>An unreal past with a duration</li>
+        </ul>
+        <div class="markers"><span class="mk">by then ... for years</span></div>
+      </div>
+      <div>
+        <div class="sub">Sentences</div>
+        <ul class="ex">
+          <li><div class="s-en">She said she <u>would have been teaching</u> for ten years by June.</div><div class="s-note">Her words: I will have been teaching for ten years by June.</div></li>
+          <li><div class="s-en">By then he <u>would have been living</u> abroad for a decade.</div><div class="s-note">Looking forward from a point in the past.</div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ===================== PART 6 ===================== -->
+<section class="part" id="p6">
+  <div class="part-head">
+    <span class="part-num">Part 6</span>
+    <span class="part-tc">34:30</span>
+  </div>
+  <h2>Pairs people confuse</h2>
+  <p class="part-lede">Mistakes almost never happen between distant tenses. They happen inside five pairs — and each pair differs by exactly one feature on the timeline.</p>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Present Simple or Present Continuous</h3>
+      <p>The question is not "when" but <b>"in general or right now"</b>. A permanent property against a temporary process.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">Present Simple — in general</div>
+        <figure class="tl" data-tl="c1a"></figure>
+        <div class="bd">
+          <div class="s-en">She works in a bank.</div>
+          <div>Banking is her profession. The moment of speaking is irrelevant — she could be on holiday.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="c">
+        <div class="hd">Present Continuous — right now</div>
+        <figure class="tl" data-tl="c1b"></figure>
+        <div class="bd">
+          <div class="s-en">She is working in a bank this month.</div>
+          <div>Temporarily, just this month. After that it will be something else.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Past Simple or Present Perfect</h3>
+      <p>The single most important pair in English. The test is simple: <b>is there a time label on the axis?</b> If the time is stated or understood as closed, use Past Simple. If only today's result matters, use Present Perfect.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">Past Simple — WHEN matters</div>
+        <figure class="tl" data-tl="c2a"></figure>
+        <div class="bd">
+          <div class="s-en">I lost my keys yesterday.</div>
+          <div>Pinned to yesterday. I may have found them since — the sentence says nothing about that.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Present Perfect — the RESULT matters</div>
+        <figure class="tl" data-tl="c2b"></figure>
+        <div class="bd">
+          <div class="s-en">I have lost my keys.</div>
+          <div>When is neither stated nor relevant. What counts is that I have no keys now.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Present Perfect or Present Perfect Continuous</h3>
+      <p>Both reach "now". The difference is what you are measuring: <b>how much got done</b> or <b>how much time was spent</b>.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Perfect — how much is done</div>
+        <figure class="tl" data-tl="c3a"></figure>
+        <div class="bd">
+          <div class="s-en">I have written three letters.</div>
+          <div>The result is counted: three letters exist.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="pc">
+        <div class="hd">Perfect Continuous — how long it took</div>
+        <figure class="tl" data-tl="c3b"></figure>
+        <div class="bd">
+          <div class="s-en">I have been writing letters all morning.</div>
+          <div>How many is unknown. What is known is that the process ran all morning.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Past Simple or Past Perfect</h3>
+      <p>Both are entirely in the past. Past Perfect is needed only when you must show that <b>one thing happened before another</b> and the word order does not show it.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">Both Past Simple — in sequence</div>
+        <figure class="tl" data-tl="c4a"></figure>
+        <div class="bd">
+          <div class="s-en">When I arrived, she left.</div>
+          <div>First I arrived, then she left. The events run in a chain.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Past Perfect — earlier</div>
+        <figure class="tl" data-tl="c4b"></figure>
+        <div class="bd">
+          <div class="s-en">When I arrived, she had left.</div>
+          <div>She left before I got there — I missed her.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-head">
+      <h3>Three ways to talk about the future</h3>
+      <p>There is one future on the timeline but three forms — and the choice shows <b>not the time but how ready the plan is</b>.</p>
+    </div>
+    <div class="cmp-grid three">
+      <div class="cmp-cell" data-a="s">
+        <div class="hd">will — decided now</div>
+        <figure class="tl" data-tl="c5a"></figure>
+        <div class="bd">
+          <div class="s-en">OK, I'll call him.</div>
+          <div>A spontaneous decision, a prediction, a promise. There was no plan a second ago.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="c">
+        <div class="hd">be going to — intention</div>
+        <figure class="tl" data-tl="c5b"></figure>
+        <div class="bd">
+          <div class="s-en">I'm going to call him tonight.</div>
+          <div>The decision predates the conversation. Also used for visible evidence: Look at the clouds — it's going to rain.</div>
+        </div>
+      </div>
+      <div class="cmp-cell" data-a="p">
+        <div class="hd">Present Continuous — arranged</div>
+        <figure class="tl" data-tl="c5c"></figure>
+        <div class="bd">
+          <div class="s-en">I'm meeting him at six.</div>
+          <div>More than an intention: time and place are fixed and the other person knows.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PART 7 ===================== -->
+<section class="part" id="p7">
+  <div class="part-head">
+    <span class="part-num">Part 7</span>
+    <span class="part-tc">41:00</span>
+  </div>
+  <h2>Time signals</h2>
+  <p class="part-lede">These words plant a point on the axis by themselves, and they often identify the tense faster than the meaning does. But remember: a signal is a hint, not a verdict — the meaning decides.</p>
+
+  <div class="mtab-wrap">
+    <table class="mtab">
+      <thead>
+        <tr><th scope="col">Word or phrase</th><th scope="col">What it does to the timeline</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="k">always, usually, every day</td><td class="v">Scatters dots across the whole axis — Present Simple.</td></tr>
+        <tr><td class="k">now, at the moment, Look!</td><td class="v">Lays a bar over "now" — Present Continuous.</td></tr>
+        <tr><td class="k">yesterday, last year, in 2010, ago</td><td class="v">Nails a dot to a fixed spot in the past — Past Simple only. Incompatible with Present Perfect.</td></tr>
+        <tr><td class="k">just, already, yet, ever, never</td><td class="v">Draw an arc from the past to "now" — Present Perfect.</td></tr>
+        <tr><td class="k">for (a length of time)</td><td class="v">Sets the length of the bar: for two hours, for years.</td></tr>
+        <tr><td class="k">since (a starting point)</td><td class="v">Sets the left edge of the bar: since Monday, since I was ten.</td></tr>
+        <tr><td class="k">by, by the time, by 2030</td><td class="v">Plants a deadline flag — every Perfect tense is measured from one.</td></tr>
+        <tr><td class="k">while</td><td class="v">Introduces the long action — the bar (usually Continuous).</td></tr>
+        <tr><td class="k">when</td><td class="v">Introduces the short action — the dot (usually Simple).</td></tr>
+        <tr><td class="k">before, after</td><td class="v">State the order of two dots explicitly; often they let you skip Past Perfect.</td></tr>
+        <tr><td class="k">if, when, as soon as, until (about the future)</td><td class="v">No <b>will</b> after them — the present tense goes there.</td></tr>
+        <tr><td class="k">he said, she asked, I knew</td><td class="v">Shift the whole picture one step left: will → would, have → had, Past Simple → Past Perfect.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== PART 8 ===================== -->
+<section class="part" id="p8">
+  <div class="part-head">
+    <span class="part-num">Part 8</span>
+    <span class="part-tc">44:20</span>
+  </div>
+  <h2>Cheat sheet: eight questions to ask yourself</h2>
+  <p class="part-lede">When you need to pick a tense, run these questions in order — they get you there faster than sorting through all sixteen forms.</p>
+
+  <div class="final">
+    <div class="fq"><div class="q">1. Where is my reference point?</div><div class="a">Now → the <b>Present</b> group. A past moment → <b>Past</b>. A future moment → <b>Future</b>. The past, looking forward → <b>would</b>.</div></div>
+    <div class="fq"><div class="q">2. Is a finished past time named?</div><div class="a">If yes (yesterday, in 2019, ago) — <b>Past Simple</b>, and no have/has anywhere.</div></div>
+    <div class="fq"><div class="q">3. Does the result matter right now?</div><div class="a">Yes, and no time is stated — <b>Present Perfect</b>. Test: you can slip in the word "already".</div></div>
+    <div class="fq"><div class="q">4. Is there a "how long"?</div><div class="a">for / since / How long — take <b>Perfect Continuous</b> at the right reference point.</div></div>
+    <div class="fq"><div class="q">5. Is the action mid-flow at a stated moment?</div><div class="a">A moment is given — so <b>Continuous</b>: am/was/will be + V-ing.</div></div>
+    <div class="fq"><div class="q">6. Did one thing happen before another?</div><div class="a">The earlier one goes into <b>Perfect</b> (had done / will have done); the later one into Simple.</div></div>
+    <div class="fq"><div class="q">7. Is it a state verb?</div><div class="a">know, want, love, need, believe, belong hardly ever take Continuous — use <b>Simple</b> or <b>Perfect</b>.</div></div>
+    <div class="fq"><div class="q">8. Are you reporting someone's words?</div><div class="a">Shift everything one step back: will → <b>would</b>, do → did, have done → <b>had done</b>.</div></div>
+  </div>
+
+  <div class="prose">
+    <p><b>And finally.</b> In real speech nine sentences out of ten fit into five tenses: Present Simple, Present Continuous, Present Perfect, Past Simple and Future Simple. Get those five to the point of reflex — the other eleven you will first recognise in other people's speech, and then one day produce without thinking.</p>
+  </div>
+</section>
+<!-- ===================== PART 9 ===================== -->
+<section class="part" id="p9">
+  <div class="part-head">
+    <span class="part-num">Part 9</span>
+    <span class="part-tc">48:00</span>
+  </div>
+  <h2>Inside a native speaker's head</h2>
+  <p class="part-lede">A native doesn't run through rules. In the half-second before speaking they ask two silent questions — <b>where am I standing in time?</b> and <b>how do I see the action — as a whole, in progress, or as a result?</b> — and the form falls out. Here is that inner monologue, slowed down, on the sentences learners find hardest.</p>
+
+  <div class="think">
+    <div class="think-sit"><b>Situation.</b> There's something you keep planning to do and still haven't.</div>
+    <div class="think-flow">
+      <div class="think-beat">It started in the past and it's <i>still true now</i> — I need a tie back to <i>now</i>, so: perfect.</div>
+      <div class="think-beat">But it isn't a finished result — it's an <i>ongoing, unfinished</i> intention. So: continuous.</div>
+      <div class="think-beat">Perfect + continuous, anchored at now → <i>have been + -ing</i>.</div>
+    </div>
+    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">I've been meaning to call you.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Situation.</b> Two things happened in the past and you want to show which came first.</div>
+    <div class="think-flow">
+      <div class="think-beat">Both are past. The one I mention isn't the anchor — <i>our arrival</i> is the past reference point.</div>
+      <div class="think-beat">The other event happened <i>before</i> that point, so I push it one step further back → <i>had + V3</i>.</div>
+      <div class="think-beat"><span class="en">already</span> confirms it: the leaving was complete by the time we got there.</div>
+    </div>
+    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">The train had already left when we arrived.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Situation.</b> A deadline in the future, and you want to say the job will be done in time.</div>
+    <div class="think-flow">
+      <div class="think-beat">I mentally stand at the future moment — <span class="en">by nine</span> — and look back from there.</div>
+      <div class="think-beat">From that spot the action is already <i>finished</i>: a result at a future point → <i>will have + V3</i>.</div>
+    </div>
+    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">By nine I'll have finished the report.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Situation.</b> You explain why a past state was the way it was — the cause behind it.</div>
+    <div class="think-flow">
+      <div class="think-beat">The red eyes are the past scene. The cause happened <i>even earlier and lasted</i> — before that scene.</div>
+      <div class="think-beat">Earlier-than-past + duration → past perfect continuous, <i>had been + -ing</i>.</div>
+    </div>
+    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">Her eyes were red — she'd been crying.</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Situation.</b> You report what someone told you earlier.</div>
+    <div class="think-flow">
+      <div class="think-beat">The saying happened in the past, so the whole quoted world shifts <i>one step back</i> with it.</div>
+      <div class="think-beat"><span class="en">will → would</span>, <span class="en">is → was</span>, <span class="en">have done → had done</span>. That backshift is the signal it's reported, not live.</div>
+    </div>
+    <div class="think-out"><span class="lab">Out&nbsp;loud</span><span class="en">He said he would come. → (from "I will come.")</span></div>
+  </div>
+
+  <div class="think">
+    <div class="think-sit"><b>Situation.</b> Same three words, two different pictures — <span class="en">for ten years</span>.</div>
+    <div class="think-flow">
+      <div class="think-beat">If she <i>still lives here</i>, the ten years reach up to now → present perfect: <span class="en">She's lived here for ten years.</span></div>
+      <div class="think-beat">If she has <i>moved away</i>, the ten years are a closed, finished box → past simple: <span class="en">She lived here for ten years.</span></div>
+      <div class="think-beat">The tense isn't decorating the sentence — it's telling the listener whether she's still your neighbour.</div>
+    </div>
+    <div class="think-out"><span class="lab">The&nbsp;point</span><span class="en">The form carries the fact. Choose it on purpose.</span></div>
+  </div>
+</section>
+<!-- ===================== PART 10 ===================== -->
+<section class="part" id="p10">
+  <div class="part-head">
+    <span class="part-num">Part 10</span>
+    <span class="part-tc">52:30</span>
+  </div>
+  <h2>The signal words that decide the tense</h2>
+  <p class="part-lede">Certain little words are almost tense-magnets: hear one and a native's hand is already on a particular form. Learn them as bundles — the marker and the tense it pulls — and half your choices are made before you think. The colour of each card matches its aspect.</p>
+
+  <div class="sig">
+    <div class="sig-row" data-a="s">
+      <div class="sig-head"><span class="sig-tense">Past Simple</span><span class="sig-why">a finished time is named</span></div>
+      <div class="sig-words"><span class="sig-w">yesterday</span><span class="sig-w">ago</span><span class="sig-w">last night / week</span><span class="sig-w">in 2010</span><span class="sig-w">then</span><span class="sig-w">when + past</span><span class="sig-w">at 5 o'clock</span></div>
+      <div class="sig-ex">The time is closed and gone, so no <span class="en">have/has</span> anywhere: <span class="en">I saw her <b>in 2010</b>.</span> · <span class="en">He left <b>ten minutes ago</b>.</span></div>
+    </div>
+    <div class="sig-row" data-a="p">
+      <div class="sig-head"><span class="sig-tense">Present Perfect</span><span class="sig-why">a result touching now, no fixed time</span></div>
+      <div class="sig-words"><span class="sig-w">already</span><span class="sig-w">yet</span><span class="sig-w">just</span><span class="sig-w">ever / never</span><span class="sig-w">so far</span><span class="sig-w">up to now</span><span class="sig-w">recently / lately</span><span class="sig-w">this week</span><span class="sig-w">since</span><span class="sig-w">for</span></div>
+      <div class="sig-ex">Test: you can slip in <span class="en">already</span>. <span class="en">Have you finished <b>yet</b>?</span> · <span class="en">I've <b>just</b> seen it.</span> · <span class="en">We've known them <b>since</b> 2019.</span></div>
+    </div>
+    <div class="sig-row" data-a="p">
+      <div class="sig-head"><span class="sig-tense">Past Perfect</span><span class="sig-why">earlier than another past moment</span></div>
+      <div class="sig-words"><span class="sig-w">before</span><span class="sig-w">after</span><span class="sig-w">by the time</span><span class="sig-w">by 2010</span><span class="sig-w">already (in the past)</span><span class="sig-w">when + earlier event</span><span class="sig-w">until then</span><span class="sig-w">no sooner … than</span><span class="sig-w">hardly … when</span></div>
+      <div class="sig-ex"><span class="en"><b>By the time</b> we arrived, it <b>had</b> started.</span> · <span class="en">She <b>had</b> left <b>before</b> I called.</span> · <span class="en"><b>No sooner had</b> he sat down <b>than</b> the phone rang.</span></div>
+    </div>
+    <div class="sig-row" data-a="c">
+      <div class="sig-head"><span class="sig-tense">Present Continuous</span><span class="sig-why">happening around now / arranged</span></div>
+      <div class="sig-words"><span class="sig-w">now</span><span class="sig-w">right now</span><span class="sig-w">at the moment</span><span class="sig-w">currently</span><span class="sig-w">Look! / Listen!</span><span class="sig-w">these days</span><span class="sig-w">tonight (plan)</span></div>
+      <div class="sig-ex"><span class="en"><b>Look!</b> It's raining.</span> · <span class="en">I'm meeting her <b>tomorrow</b>.</span> (a fixed arrangement, not "will")</div>
+    </div>
+    <div class="sig-row" data-a="c">
+      <div class="sig-head"><span class="sig-tense">Past Continuous</span><span class="sig-why">in progress at, or interrupted at, a past moment</span></div>
+      <div class="sig-words"><span class="sig-w">while</span><span class="sig-w">as</span><span class="sig-w">when + interruption</span><span class="sig-w">at 8 last night</span><span class="sig-w">all day yesterday</span></div>
+      <div class="sig-ex"><span class="en">I <b>was cooking when</b> she called.</span> · <span class="en"><b>While</b> we <b>were talking</b>, the lights went out.</span></div>
+    </div>
+    <div class="sig-row" data-a="pc">
+      <div class="sig-head"><span class="sig-tense">Perfect Continuous</span><span class="sig-why">how long — duration up to a point</span></div>
+      <div class="sig-words"><span class="sig-w">for</span><span class="sig-w">since</span><span class="sig-w">how long</span><span class="sig-w">all day / morning</span><span class="sig-w">lately</span></div>
+      <div class="sig-ex"><span class="en">I've <b>been</b> waiting <b>for</b> an hour.</span> · <span class="en">She'd <b>been</b> working there <b>since</b> May.</span> (<span class="en">for/since</span> + a live process = the continuous, not the simple)</div>
+    </div>
+    <div class="sig-row" data-a="s">
+      <div class="sig-head"><span class="sig-tense">Future — will / going to / Future Perfect</span><span class="sig-why">predictions, plans, deadlines</span></div>
+      <div class="sig-words"><span class="sig-w">tomorrow</span><span class="sig-w">next week</span><span class="sig-w">soon</span><span class="sig-w">I think / hope</span><span class="sig-w">probably</span><span class="sig-w">going to (evidence)</span><span class="sig-w">by 2030</span><span class="sig-w">by then</span><span class="sig-w">in two years</span></div>
+      <div class="sig-ex"><span class="en">I <b>think</b> it'll rain.</span> · <span class="en">Look at those clouds — it's <b>going to</b> rain.</span> · <span class="en"><b>By 2030</b> they'll <b>have</b> finished.</span></div>
+    </div>
+  </div>
+</section>
+<!-- ===================== PART 11 ===================== -->
+<section class="part" id="p11">
+  <div class="part-head">
+    <span class="part-num">Part 11</span>
+    <span class="part-tc">57:00</span>
+  </div>
+  <h2>Situations that force a tense</h2>
+  <p class="part-lede">Forget the words for a moment and look at the <b>situation</b>. Each of these real-life meanings pulls one tense toward it almost automatically. The italic line is what a native is really thinking.</p>
+
+  <div class="trig">
+    <div class="trig-item">
+      <span class="trig-when">An action earlier than another past action</span> <span class="trig-then">→ Past Perfect</span>
+      <div class="trig-ex"><span class="en">When I arrived, the meeting <b>had</b> already <b>started</b>.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "Two past events — I'll shove the first one a step deeper into the past so the order is unmistakable."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">The cause of a past situation or state</span> <span class="trig-then">→ Past Perfect / Past Perfect Continuous</span>
+      <div class="trig-ex"><span class="en">The ground was wet; it <b>had been raining</b>.</span> · <span class="en">He failed because he <b>hadn't revised</b>.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "The scene is in the past; the reason for it sits <i>even further</i> back — perfect handles 'before the past'."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">Reporting speech — backshift one step</span> <span class="trig-then">→ shift the tense back</span>
+      <div class="trig-ex"><span class="en">"I <b>am</b> tired." → She said she <b>was</b> tired.</span> · <span class="en">"I <b>will</b> help." → He said he <b>would</b> help.</span> · <span class="en">"I <b>have</b> seen it." → They said they <b>had</b> seen it.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "The telling is already in the past, so everything inside the quote slides back with it: <span class="en">is→was, will→would, have→had</span>."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">After <span class="en">before</span>, <span class="en">after</span>, <span class="en">by the time</span>, <span class="en">until</span></span> <span class="trig-then">→ sequence, often Past Perfect</span>
+      <div class="trig-ex"><span class="en"><b>By the time</b> the police came, the thief <b>had</b> disappeared.</span> · <span class="en">She ate <b>after</b> she <b>had</b> washed her hands.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "These words already fix the order for me, so I mark the earlier action with <span class="en">had</span> — or, if the order is obvious, I relax and use two past simples."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">After <span class="en">because</span> — giving a reason</span> <span class="trig-then">→ match the timing of the cause</span>
+      <div class="trig-ex"><span class="en">I'm tired <b>because</b> I've <b>been working</b> all day.</span> · <span class="en">We were late <b>because</b> the train <b>had</b> been cancelled.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "<span class="en">because</span> doesn't force one tense — I just ask when the cause happened relative to the result, and pick accordingly."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">A finished action with a result you can see now</span> <span class="trig-then">→ Present Perfect</span>
+      <div class="trig-ex"><span class="en">I've <b>lost</b> my keys.</span> (so I can't get in <i>now</i>) · <span class="en">She's <b>broken</b> her arm.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "I don't care <i>when</i> — I care that the result is standing here in front of me right now."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">How long something has gone on — up to now</span> <span class="trig-then">→ Present Perfect Continuous</span>
+      <div class="trig-ex"><span class="en">We've <b>been living</b> here <b>for</b> five years.</span> · <span class="en">How long have you <b>been learning</b> English?</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "It's still going, and I'm measuring the stretch of it — <span class="en">for/since</span> plus a live process."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">One action interrupted by another in the past</span> <span class="trig-then">→ Past Continuous + Past Simple</span>
+      <div class="trig-ex"><span class="en">I <b>was sleeping when</b> the alarm <b>went</b> off.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "The long background is the continuous; the short thing that cuts into it is the simple."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">A timetable / schedule in the future</span> <span class="trig-then">→ Present Simple</span>
+      <div class="trig-ex"><span class="en">The train <b>leaves</b> at 6.</span> · <span class="en">The film <b>starts</b> at eight.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "It's fixed by a timetable, not by me — so I treat it like a present fact."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">A plan or arrangement you've already made</span> <span class="trig-then">→ Present Continuous</span>
+      <div class="trig-ex"><span class="en">We're <b>having</b> dinner with them <b>on Friday</b>.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "It's settled, diary-fixed, with a person and a time — that's the present continuous, not <span class="en">will</span>."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">A prediction with evidence in front of you</span> <span class="trig-then">→ going to</span>
+      <div class="trig-ex"><span class="en">She's <b>going to</b> have a baby.</span> · <span class="en">Watch out — you're <b>going to</b> drop it!</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "I can see it coming from the here-and-now, so <span class="en">going to</span> — <span class="en">will</span> would sound like a guess out of nowhere."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">A decision made at the moment of speaking</span> <span class="trig-then">→ will</span>
+      <div class="trig-ex"><span class="en">The phone's ringing — I'll <b>get</b> it.</span> · <span class="en">Fine, I'll <b>help</b> you.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "I decided this half a second ago, on the spot — that's exactly what <span class="en">will</span> is for."</div>
+    </div>
+    <div class="trig-item">
+      <span class="trig-when">An unreal or imagined past (<span class="en">if</span>)</span> <span class="trig-then">→ Third Conditional: had + V3 … would have + V3</span>
+      <div class="trig-ex"><span class="en"><b>If</b> I'<b>d known</b>, I <b>would have</b> come.</span></div>
+      <div class="trig-think"><b>Native's thought:</b> "It didn't happen — I'm rewinding a past that never was, so both halves go one step past the past."</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p><b>The habit to build.</b> Before you speak, don't scan for a rule — scan the <i>situation</i>. Is the time closed or open? Is the action whole, in progress, or a result? Is one thing before another? Those three questions, asked in a blink, are what a fluent speaker is really doing, and they land you on the right tense far faster than the sixteen boxes ever could.</p>
+  </div>
+</section>
+
+<footer>
+  <span>The English Timeline · 16 tenses, 16 diagrams, 60 sentences</span>
+  <span class="mono">Timecodes are a rough guide for a video version, ≈47 minutes</span>
+</footer>
+
+<script>
+(function(){
+  var AX={x0:60,x1:744,y:110,W:800,H:168};
+  function X(t){return AX.x0+(t/100)*(AX.x1-AX.x0);}
+  function RY(r){return AX.y-(r||0)*34;}
+  var C={s:'var(--c-simple)',c:'var(--c-cont)',p:'var(--c-perf)',pc:'var(--c-perfc)',n:'var(--c-now)',i:'var(--ink-2)'};
+  function col(k){return C[k]||C.i;}
+
+  function W(c,inner){return '<g style="color:'+c+'">'+inner+'</g>';}
+  function label(x,y,txt,size,anchor){
+    var parts=String(txt).split('\n');
+    var out='<text x="'+x+'" y="'+(y-(parts.length-1)*13)+'" text-anchor="'+(anchor||'middle')+'" '+
+      'font-family="Golos Text, sans-serif" font-size="'+(size||12.5)+'" fill="currentColor" '+
+      'style="paint-order:stroke;stroke:var(--tl-bg);stroke-width:4px;stroke-linejoin:round">';
+    for(var i=0;i<parts.length;i++){
+      out+='<tspan x="'+x+'" dy="'+(i===0?0:14)+'">'+parts[i]+'</tspan>';
+    }
+    return out+'</text>';
+  }
+
+  function draw(spec){
+    var s='<svg viewBox="0 0 '+AX.W+' '+AX.H+'" role="img" aria-label="'+(spec.alt||'Timeline diagram')+'">';
+
+    // zones
+    (spec.items||[]).forEach(function(it){
+      if(it.t!=='zone') return;
+      s+='<g style="color:var(--ink-3)">';
+      s+='<rect x="'+X(it.from)+'" y="4" width="'+(X(it.to)-X(it.from))+'" height="'+(AX.H-10)+'" fill="currentColor" opacity="0.07"/>';
+      s+='<text x="'+((X(it.from)+X(it.to))/2)+'" y="'+(AX.H-8)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2" fill="currentColor" opacity="0.75">'+it.lab+'</text>';
+      s+='</g>';
+    });
+
+    // axis
+    s+='<g style="color:var(--ink-3)">';
+    s+='<line x1="'+(AX.x0-14)+'" y1="'+AX.y+'" x2="'+(AX.x1+4)+'" y2="'+AX.y+'" stroke="currentColor" stroke-width="1.6" opacity="0.55"/>';
+    s+='<polygon points="'+(AX.x1+14)+','+AX.y+' '+(AX.x1+2)+','+(AX.y-5)+' '+(AX.x1+2)+','+(AX.y+5)+'" fill="currentColor" opacity="0.55"/>';
+    s+='</g>';
+
+    // now line
+    if(spec.now!==false){
+      var nx=X(spec.now===undefined?50:spec.now);
+      s+='<g style="color:var(--c-now)">';
+      s+='<line x1="'+nx+'" y1="26" x2="'+nx+'" y2="'+(AX.y+16)+'" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>';
+      s+='<text x="'+nx+'" y="18" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="1.6" fill="currentColor">NOW</text>';
+      s+='</g>';
+    }
+
+    // anchor (reference point in past/future)
+    (spec.items||[]).forEach(function(it){
+      if(it.t!=='anchor') return;
+      var ax=X(it.at);
+      s+='<g style="color:var(--ink-2)">';
+      s+='<line x1="'+ax+'" y1="40" x2="'+ax+'" y2="'+(AX.y+14)+'" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.8"/>';
+      s+=label(ax,32,it.lab,11.5);
+      s+='</g>';
+    });
+
+    var labs=[];
+    (spec.items||[]).forEach(function(it){
+      if(it.t==='zone'||it.t==='anchor') return;
+      var y=RY(it.row), c=col(it.c);
+      s+='<g style="color:'+c+'">';
+
+      if(it.t==='span'){
+        var x1=X(it.from), x2=X(it.to), w=x2-x1;
+        s+='<rect x="'+x1+'" y="'+(y-9)+'" width="'+w+'" height="18" rx="9" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8"/>';
+        if(it.open){
+          for(var k=0;k<3;k++){
+            s+='<circle cx="'+(x2+14+k*13)+'" cy="'+y+'" r="'+(3.4-k*0.6)+'" fill="currentColor" opacity="'+(0.5-k*0.13)+'"/>';
+          }
+        }
+        if(it.lab) labs.push(W(c,label((x1+x2)/2,y-17,it.lab)));
+      }
+      else if(it.t==='point'){
+        var px=X(it.at);
+        if(it.row) s+='<line x1="'+px+'" y1="'+(y+8)+'" x2="'+px+'" y2="'+(AX.y-3)+'" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 3" opacity="0.6"/>';
+        s+='<circle cx="'+px+'" cy="'+y+'" r="7" fill="currentColor" stroke-width="2" style="stroke:var(--tl-bg)"/>';
+        if(it.lab) labs.push(W(c,label(px,y-16,it.lab)));
+        if(it.sub) s+='<text x="'+px+'" y="'+(AX.y+24)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor" opacity="0.9">'+it.sub+'</text>';
+      }
+      else if(it.t==='dots'){
+        var n=it.n||7, a=X(it.from), b=X(it.to);
+        for(var j=0;j<n;j++){
+          var dx=a+(b-a)*(j/(n-1));
+          s+='<circle cx="'+dx+'" cy="'+y+'" r="5" fill="currentColor" opacity="0.85"/>';
+        }
+        if(it.lab) labs.push(W(c,label((a+b)/2,y-16,it.lab)));
+      }
+      else if(it.t==='flag'){
+        var fx=X(it.at);
+        s+='<line x1="'+fx+'" y1="'+(AX.y-38)+'" x2="'+fx+'" y2="'+(AX.y+12)+'" stroke="currentColor" stroke-width="2.4"/>';
+        s+='<polygon points="'+fx+','+(AX.y-38)+' '+(fx+22)+','+(AX.y-32)+' '+fx+','+(AX.y-26)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(c,label(fx+2,AX.y-46,it.lab,11.5)));
+        if(it.sub) s+='<text x="'+fx+'" y="'+(AX.y+26)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.sub+'</text>';
+      }
+      else if(it.t==='arrow'){
+        var a1=X(it.from), a2=X(it.to), ay=RY(it.row)-14, mid=(a1+a2)/2;
+        s+='<path d="M'+a1+' '+ay+' Q'+mid+' '+(ay-26)+' '+a2+' '+(ay-2)+'" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="5 4"/>';
+        s+='<polygon points="'+a2+','+(ay+6)+' '+(a2-5)+','+(ay-4)+' '+(a2+5)+','+(ay-4)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(c,label(mid,ay-32,it.lab,11.5)));
+      }
+      else if(it.t==='bracket'){
+        var b1=X(it.from), b2=X(it.to), by=AX.y+20;
+        s+='<path d="M'+b1+' '+(by-6)+' L'+b1+' '+by+' L'+b2+' '+by+' L'+b2+' '+(by-6)+'" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.85"/>';
+        s+='<text x="'+((b1+b2)/2)+'" y="'+(by+15)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.lab+'</text>';
+      }
+      s+='</g>';
+    });
+    s+=labs.join('');
+
+    return s+'</svg>';
+  }
+
+  var PAST={t:'zone',from:0,to:50,lab:'PAST'}, FUT={t:'zone',from:50,to:100,lab:'FUTURE'};
+
+  var TL={
+    'pr-s':{alt:'Regular action across the whole axis',items:[PAST,FUT,
+      {t:'dots',from:10,to:90,n:8,c:'s',lab:'repeats — yesterday, today, tomorrow'}]},
+    'pr-c':{alt:'Process around the moment of speaking',items:[PAST,FUT,
+      {t:'span',from:32,to:70,c:'c',lab:'in progress, not finished'}]},
+    'pr-p':{alt:'Past action with a present result',items:[PAST,FUT,
+      {t:'point',at:24,c:'p',lab:'the action'},
+      {t:'arrow',from:24,to:50,c:'p',lab:'result visible now'}]},
+    'pr-pc':{alt:'Duration from the past up to now',items:[PAST,FUT,
+      {t:'span',from:16,to:50,c:'pc',open:true,lab:'has lasted N so far'},
+      {t:'bracket',from:16,to:50,c:'pc',lab:'for / since'}]},
+    'pa-s':{alt:'A past point with a stated time',items:[PAST,FUT,
+      {t:'point',at:26,c:'s',lab:'happened and ended'},
+      {t:'bracket',from:16,to:36,c:'s',lab:'yesterday · in 2019'}]},
+    'pa-c':{alt:'A past process with a short event inside',items:[PAST,FUT,
+      {t:'span',from:12,to:42,c:'c',lab:'process was running'},
+      {t:'point',at:30,row:1,c:'s',lab:'...when this happened'}]},
+    'pa-p':{alt:'Two past actions, one before the other',items:[PAST,FUT,
+      {t:'point',at:14,c:'p',lab:'happened earlier'},
+      {t:'point',at:40,row:1,c:'s',lab:'the past moment'},
+      {t:'arrow',from:14,to:40,c:'p',lab:'earlier'}]},
+    'pa-pc':{alt:'Duration up to a past moment',items:[PAST,FUT,
+      {t:'span',from:10,to:38,c:'pc',lab:'had lasted N'},
+      {t:'point',at:38,row:1,c:'s',lab:'and here — the past moment'}]},
+    'fu-s':{alt:'A point in the future',items:[PAST,FUT,
+      {t:'point',at:76,c:'s',lab:'will happen'},
+      {t:'bracket',from:66,to:86,c:'s',lab:'tomorrow · soon'}]},
+    'fu-c':{alt:'A future process with a moment inside',items:[PAST,FUT,
+      {t:'span',from:60,to:92,c:'c',lab:'will be in progress'},
+      {t:'point',at:76,row:1,c:'s',lab:'at that hour'}]},
+    'fu-p':{alt:'Completion before a future deadline',items:[PAST,FUT,
+      {t:'point',at:66,c:'p',lab:'will be finished'},
+      {t:'flag',at:88,c:'i',lab:'deadline',sub:'by Friday'},
+      {t:'arrow',from:66,to:88,c:'p',lab:'already done'}]},
+    'fu-pc':{alt:'Duration up to a future deadline',items:[PAST,FUT,
+      {t:'span',from:40,to:84,c:'pc',lab:'will have lasted N'},
+      {t:'flag',at:88,c:'i',lab:'deadline',sub:'by 2030'}]},
+    'fp-s':{alt:'Future in the past: a point',items:[PAST,FUT,
+      {t:'anchor',at:18,lab:'a past moment\n(he said)'},
+      {t:'point',at:38,c:'s',lab:'still ahead for him'},
+      {t:'arrow',from:18,to:38,c:'s'}]},
+    'fp-c':{alt:'Future in the past: a process',items:[PAST,FUT,
+      {t:'anchor',at:16,lab:'he said'},
+      {t:'span',from:30,to:46,c:'c',lab:'will be in progress'}]},
+    'fp-p':{alt:'Future in the past: result by a deadline',items:[PAST,FUT,
+      {t:'anchor',at:14,lab:'he said'},
+      {t:'point',at:30,c:'p',lab:'will be finished'},
+      {t:'flag',at:44,c:'i',lab:'deadline'},
+      {t:'arrow',from:30,to:44,c:'p'}]},
+    'fp-pc':{alt:'Future in the past: duration by a deadline',items:[PAST,FUT,
+      {t:'anchor',at:14,lab:'he said'},
+      {t:'span',from:24,to:44,c:'pc',lab:'will have lasted N'},
+      {t:'flag',at:46,c:'i',lab:'deadline'}]},
+
+    'c1a':{alt:'A permanent property',items:[{t:'dots',from:12,to:88,n:7,c:'s',lab:'always, in general'}]},
+    'c1b':{alt:'A temporary process',items:[{t:'span',from:34,to:68,c:'c',lab:'temporary, now'}]},
+    'c2a':{alt:'A dated point in the past',items:[{t:'point',at:26,c:'s',lab:'lost it'},{t:'bracket',from:16,to:36,c:'s',lab:'yesterday'}]},
+    'c2b':{alt:'A present result',items:[{t:'point',at:26,c:'p',lab:'lost it'},{t:'arrow',from:26,to:50,c:'p',lab:'still no keys now'}]},
+    'c3a':{alt:'A counted result',items:[{t:'point',at:20,c:'p'},{t:'point',at:30,c:'p'},{t:'point',at:40,c:'p',lab:'three letters done'},{t:'arrow',from:40,to:50,c:'p'}]},
+    'c3b':{alt:'A measured duration',items:[{t:'span',from:14,to:50,c:'pc',lab:'all morning'},{t:'bracket',from:14,to:50,c:'pc',lab:'all morning'}]},
+    'c4a':{alt:'Two events in sequence',items:[{t:'point',at:26,c:'s',lab:'I arrived'},{t:'point',at:42,row:1,c:'s',lab:'she left'}]},
+    'c4b':{alt:'One before the other',items:[{t:'point',at:20,c:'p',lab:'she left'},{t:'point',at:42,row:1,c:'s',lab:'I arrived'},{t:'arrow',from:20,to:42,c:'p'}]},
+    'c5a':{alt:'A spontaneous decision',items:[{t:'point',at:50,row:1,c:'i',lab:'decided just now'},{t:'point',at:76,c:'s',lab:'will do it'}]},
+    'c5b':{alt:'An intention',items:[{t:'point',at:26,row:1,c:'i',lab:'decided earlier'},{t:'point',at:76,c:'c',lab:'will do it'},{t:'arrow',from:26,to:76,c:'c'}]},
+    'c5c':{alt:'An arrangement',items:[{t:'point',at:76,c:'p',lab:'arranged'},{t:'bracket',from:66,to:86,c:'p',lab:'at six'}]}
+  };
+
+  document.querySelectorAll('figure.tl[data-tl]').forEach(function(fig){
+    var spec=TL[fig.getAttribute('data-tl')];
+    if(!spec) return;
+    var cap=fig.querySelector('figcaption');
+    fig.insertAdjacentHTML('afterbegin',draw(spec));
+    if(cap) fig.appendChild(cap);
+  });
+})();
+</script>
+
+
+</main>
+</div>
+</div>
