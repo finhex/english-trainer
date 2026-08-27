@@ -1,0 +1,1175 @@
+<meta charset="utf-8">
+<title>The Passive Turn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3;
+  --card:#FFFFFF;
+  --card-2:#E4EAEE;
+  --ink:#131C25;
+  --ink-2:#47555F;
+  --ink-3:#75838E;
+  --line:#CFD8DE;
+  --line-2:#E2E8EC;
+  --c-obj:#1A6C9E;
+  --c-act:#A85419;
+  --c-now:#C23E2B;
+  --c-no:#8A5A8C;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D;
+    --card:#15202A;
+    --card-2:#1C2A35;
+    --ink:#E7EDF2;
+    --ink-2:#A8B7C2;
+    --ink-3:#7A8A96;
+    --line:#27353F;
+    --line-2:#1F2C36;
+    --c-obj:#63B6E2;
+    --c-act:#ED9A57;
+    --c-now:#FF7C64;
+    --c-no:#C79AC9;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D;
+  --card:#15202A;
+  --card-2:#1C2A35;
+  --ink:#E7EDF2;
+  --ink-2:#A8B7C2;
+  --ink-3:#7A8A96;
+  --line:#27353F;
+  --line-2:#1F2C36;
+  --c-obj:#63B6E2;
+  --c-act:#ED9A57;
+  --c-now:#FF7C64;
+  --c-no:#C79AC9;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Golos Text","Segoe UI",system-ui,sans-serif;
+  font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+/* ---------- native-thinking block ---------- */
+.native{margin-top:22px;padding:18px 20px 8px;border:1px solid var(--line);border-left:3px solid var(--c-now);border-radius:12px;background:var(--card);box-shadow:var(--shadow)}
+.native-h{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-now);margin-bottom:9px}
+.native p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:74ch;margin:0}
+.native b,.native strong{color:var(--ink);font-weight:600}
+.native i{font-style:italic}
+.native .en{font-family:"JetBrains Mono",monospace;font-size:.92em;color:var(--ink);font-style:normal}
+.native-think{margin-top:12px;padding:11px 14px;background:var(--card-2);border-radius:9px;font-size:14px;color:var(--ink);line-height:1.5;max-width:74ch}
+.native-think b{color:var(--c-now);font-weight:600}
+.native-sub{font-family:Bitter,Georgia,serif;font-weight:700;font-size:14px;color:var(--ink);margin:18px 0 9px}
+.diffpair{display:grid;gap:10px;margin-bottom:4px}
+@media(min-width:720px){.diffpair.two{grid-template-columns:1fr 1fr}}
+.dp{padding:12px 14px;background:var(--card-2);border-radius:9px;border-top:3px solid var(--line)}
+.dp[data-a=act]{border-top-color:var(--c-act)}
+.dp[data-a=obj]{border-top-color:var(--c-obj)}
+.dp-t{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-2);margin-bottom:6px}
+.dp .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.45}
+.dp-th{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5;font-style:italic}
+.usex{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(170px,42%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+.hardex{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.hardex li{padding:11px 14px;background:var(--card-2);border-radius:9px;border-left:3px solid var(--c-now)}
+.hardex .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.5}
+.hardex .ht{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.hardex .ht b{color:var(--c-now);font-weight:600}
+
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){.shell{display:grid;grid-template-columns:196px minmax(0,1fr);gap:56px;align-items:start}}
+.rail{display:none}
+@media (min-width:1080px){.rail{display:block;position:sticky;top:0;padding:40px 0;max-height:100vh;overflow-y:auto}}
+.rail-title{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:baseline;text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);border-left:2px solid transparent}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-obj)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.hero h1{font-size:clamp(38px,6.4vw,68px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:60ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);background:var(--card)}
+.chip.o{border-color:color-mix(in srgb,var(--c-obj) 45%,var(--line));color:var(--c-obj)}
+.chip.a{border-color:color-mix(in srgb,var(--c-act) 45%,var(--line));color:var(--c-act)}
+
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-now)}
+.part-tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.part h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:66ch;color:var(--ink-2)}
+.prose{max-width:66ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+
+/* ---------- swap diagram ---------- */
+.swap{margin:26px 0 0;background:var(--card);--tl-bg:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 0 12px;overflow-x:auto}
+.swap svg{display:block;width:100%;min-width:660px;height:auto}
+.swap figcaption{padding:10px 24px 0;font-size:14px;color:var(--ink-2);max-width:80ch}
+.swap figcaption b{color:var(--ink);font-weight:600}
+.swap.inset{box-shadow:none;background:var(--card-2);--tl-bg:var(--card-2)}
+
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c-obj);border-radius:14px;box-shadow:var(--shadow);margin-top:26px;overflow:hidden}
+.card-top{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:flex-start;justify-content:space-between;padding:22px 24px 18px}
+.card-id{display:flex;flex-direction:column;gap:5px;min-width:min(100%,300px)}
+.card-kicker{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-obj)}
+.card h3{font-size:clamp(21px,2.6vw,27px);letter-spacing:-.01em}
+.card-ru{color:var(--ink-2);font-size:15px}
+.formulas{display:flex;flex-direction:column;gap:5px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.formulas div{display:grid;grid-template-columns:16px 1fr;gap:8px;color:var(--ink-2)}
+.formulas span{color:var(--ink-3)}
+.formulas b{color:var(--ink);font-weight:500}
+
+.tl{--tl-bg:var(--card-2);margin:0;background:var(--tl-bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0 10px;overflow-x:auto}
+.tl svg{display:block;width:100%;min-width:600px;height:auto}
+.tl figcaption{padding:6px 24px 0;font-size:13px;color:var(--ink-2);max-width:78ch}
+.tl figcaption b{color:var(--ink);font-weight:600}
+
+.card-body{display:grid;gap:26px;padding:22px 24px 24px}
+@media (min-width:820px){.card-body{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:34px}}
+.sub{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.why{display:flex;flex-direction:column;gap:11px;color:var(--ink-2);font-size:15.5px}
+.why b{color:var(--ink);font-weight:600}
+.uses{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:15px;color:var(--ink-2)}
+.uses li{position:relative;padding-left:23px}
+.uses li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:2px;background:var(--c-obj)}
+
+/* ---------- active/passive pairs ---------- */
+.ex{list-style:none;margin:0;padding:0}
+.ex li{padding:12px 0;border-top:1px solid var(--line-2)}
+.ex li:first-child{border-top:0;padding-top:0}
+.pline{display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:baseline}
+.pline+.pline{margin-top:3px}
+.tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding-top:2px}
+.pas .tag{color:var(--c-obj)}
+.s-en{font-family:"JetBrains Mono",monospace;font-size:13.8px;line-height:1.5;color:var(--ink)}
+.act .s-en{color:var(--ink-2)}
+.s-en u{text-decoration:none;border-bottom:2px solid var(--c-obj);padding-bottom:1px}
+.act .s-en u{border-bottom-color:var(--c-act)}
+.s-ru{font-size:14.5px;color:var(--ink-2);margin-top:6px;padding-left:64px}
+.s-note{font-size:13px;color:var(--ink-3);margin-top:3px;padding-left:64px}
+@media (max-width:560px){
+  .pline{grid-template-columns:1fr}
+  .tag{text-align:left}
+  .s-ru,.s-note{padding-left:0}
+}
+
+/* ---------- tables ---------- */
+.tab-wrap{overflow-x:auto;margin-top:26px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow)}
+table.tab{border-collapse:collapse;width:100%;min-width:760px}
+table.tab th,table.tab td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.tab thead th{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--line)}
+table.tab tbody th{font-family:Bitter,serif;font-size:14.5px;font-weight:600;width:210px;color:var(--ink)}
+table.tab td .f{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--c-obj)}
+table.tab td .m{font-size:13.5px;color:var(--ink-2);margin-top:3px}
+table.tab td.k{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);width:40%}
+table.tab td.v{font-size:14.5px;color:var(--ink-2)}
+table.tab tbody tr:last-child th,table.tab tbody tr:last-child td{border-bottom:0}
+tr.no th,tr.no td .f{color:var(--c-no)}
+tr.no td .f{text-decoration:line-through;text-decoration-thickness:1px}
+
+/* ---------- notes ---------- */
+.note{margin-top:26px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--c-act);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.note h4{font-size:16px;margin-bottom:8px}
+.note .body{font-size:15px;color:var(--ink-2);display:flex;flex-direction:column;gap:9px}
+.note .body b{color:var(--ink);font-weight:600}
+
+.grid2{display:grid;gap:14px;margin-top:26px}
+@media (min-width:760px){.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fq{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.fq .q{font-family:Bitter,serif;font-weight:600;font-size:16px;color:var(--ink)}
+.fq .a{margin-top:7px;font-size:14.5px;color:var(--ink-2)}
+.fq .a b{color:var(--ink);font-weight:600}
+.fq .a .s-en{display:block;margin-top:5px;font-size:13.5px}
+
+footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13.5px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Contents">
+  <div class="rail-title">Parts</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">00:00</span><span>What the passive is</span></a></li>
+    <li><a href="#p1"><span class="tc">04:10</span><span>One formula · be + V3</span></a></li>
+    <li><a href="#p2"><span class="tc">08:00</span><span>The eight forms</span></a></li>
+    <li><a href="#p3"><span class="tc">21:30</span><span>What does not exist</span></a></li>
+    <li><a href="#p4"><span class="tc">25:00</span><span>Modals and infinitives</span></a></li>
+    <li><a href="#p5"><span class="tc">29:40</span><span>Special cases</span></a></li>
+    <li><a href="#p6"><span class="tc">36:00</span><span>Common mistakes</span></a></li>
+    <li><a href="#p7"><span class="tc">43:00</span><span>When the passive hurts</span></a></li>
+    <li><a href="#p8"><span class="tc">46:00</span><span>Cheat sheet</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">8 working forms · 4 that do not exist · 1 formula</div>
+  <h1>The Passive Turn</h1>
+  <p class="lede">The passive adds no new tense to English. The same sixteen stay exactly where they were — the sentence simply <b>turns around</b>, and the thing that the action is done <b>to</b> becomes the subject. One formula covers all of it: <b>be + V3</b>. Everything else is tense knowledge you already have, applied to the verb <span class="en">be</span>.</p>
+  <div class="chips">
+    <span class="chip a">doer — who does it</span>
+    <span class="chip o">object — who it is done to</span>
+    <span class="chip">be + V3 — the whole formula</span>
+  </div>
+</header>
+
+<!-- ===================== PART 0 ===================== -->
+<section class="part" id="p0">
+  <div class="part-head"><span class="part-num">Part 0</span><span class="part-tc">00:00</span></div>
+  <h2>What the passive is</h2>
+  <p class="part-lede">The passive is not a new tense and not a new meaning. It is <b>a different order of roles</b> in the same sentence. The action stays the same; what changes is who gets put first and made the subject.</p>
+
+  <figure class="swap" data-swap="hero">
+    <figcaption><b>What happens:</b> the object moves to the front and becomes the subject, while the doer goes to the end behind <span class="en">by</span> — or disappears entirely. The verb must turn into <span class="en">be + V3</span>: without that, the sentence would say that the tests are checking somebody.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p><b>Why it exists.</b> English word order is rigid: whoever stands first is the sentence's main character. If the character of your story is not the doer but the thing being acted on, the passive is the only way to put it in front.</p>
+    <p><b>Four reasons to choose it.</b> The doer is unknown (<span class="en">My bike was stolen</span> — by whom, I have no idea). The doer is unimportant or obvious (<span class="en">He was arrested</span> — by the police, clearly). The doer is being hidden on purpose (<span class="en">Mistakes were made</span> — by whom, nobody wants to say). Or the object is simply the topic and you do not want to switch away from it.</p>
+    <p><b>The one hard limit.</b> The passive works only with <b>transitive</b> verbs — ones that take an object. You cannot build it from <span class="en">sleep</span>, <span class="en">come</span>, <span class="en">happen</span> or <span class="en">arrive</span>: there is nothing to promote to subject.</p>
+  </div>
+
+  <div class="note">
+    <h4>A one-phrase test</h4>
+    <div class="body">
+      <p>If you can ask "what?" or "whom?" after the verb, a passive is possible. <span class="en">read what? — a book</span> → <span class="en">The book was read.</span></p>
+      <p>If you cannot, there is no passive. You cannot "happen something", which is why <span class="en">The accident was happened</span> is badly wrong. It is simply <span class="en">The accident happened.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PART 1 ===================== -->
+<section class="part" id="p1">
+  <div class="part-head"><span class="part-num">Part 1</span><span class="part-tc">04:10</span></div>
+  <h2>One formula for every tense</h2>
+  <p class="part-lede">There is exactly one thing to learn: <b>be + V3</b>. Everything else is what you already know about tenses, applied to the verb <span class="en">be</span>.</p>
+
+  <div class="prose">
+    <p><b>The mechanics in two steps.</b> Step one: take the tense the active verb was in. Step two: put the verb <span class="en">be</span> into that tense, turn the main verb into its <b>third form</b> (V3) and never touch it again — it is frozen from then on.</p>
+    <p>Watch it work on a single verb: <span class="en">does → is done</span>, <span class="en">is doing → is being done</span>, <span class="en">has done → has been done</span>, <span class="en">did → was done</span>, <span class="en">will do → will be done</span>. Only <span class="en">be</span> moves. The word <span class="en">done</span> stands still in all eight forms.</p>
+    <p><b>Negatives and questions</b> are built as usual, off the first auxiliary: <span class="en">is not done</span>, <span class="en">has not been done</span>, <span class="en">Was it done?</span>, <span class="en">Will it be done?</span> There is never any <span class="en">do / does / did</span> in the passive — it already has an auxiliary of its own.</p>
+  </div>
+
+  <div class="tab-wrap">
+    <table class="tab">
+      <thead><tr><th scope="col">Tense</th><th scope="col">Active</th><th scope="col">Passive</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Present Simple</th><td><div class="f" style="color:var(--ink-2)">they build</div></td><td><div class="f">is / are built</div><div class="m">it gets built</div></td></tr>
+        <tr><th scope="row">Present Continuous</th><td><div class="f" style="color:var(--ink-2)">they are building</div></td><td><div class="f">is / are being built</div><div class="m">it is being built now</div></td></tr>
+        <tr><th scope="row">Present Perfect</th><td><div class="f" style="color:var(--ink-2)">they have built</div></td><td><div class="f">has / have been built</div><div class="m">it is built by now</div></td></tr>
+        <tr><th scope="row">Past Simple</th><td><div class="f" style="color:var(--ink-2)">they built</div></td><td><div class="f">was / were built</div><div class="m">it was built then</div></td></tr>
+        <tr><th scope="row">Past Continuous</th><td><div class="f" style="color:var(--ink-2)">they were building</div></td><td><div class="f">was / were being built</div><div class="m">it was being built then</div></td></tr>
+        <tr><th scope="row">Past Perfect</th><td><div class="f" style="color:var(--ink-2)">they had built</div></td><td><div class="f">had been built</div><div class="m">it was built before that</div></td></tr>
+        <tr><th scope="row">Future Simple</th><td><div class="f" style="color:var(--ink-2)">they will build</div></td><td><div class="f">will be built</div><div class="m">it will be built</div></td></tr>
+        <tr><th scope="row">Future Perfect</th><td><div class="f" style="color:var(--ink-2)">they will have built</div></td><td><div class="f">will have been built</div><div class="m">it will be built by then</div></td></tr>
+        <tr class="no"><th scope="row">Future Continuous</th><td><div class="f" style="color:var(--ink-2)">they will be building</div></td><td><div class="f">will be being built</div><div class="m">not used</div></td></tr>
+        <tr class="no"><th scope="row">Present Perfect Cont.</th><td><div class="f" style="color:var(--ink-2)">they have been building</div></td><td><div class="f">has been being built</div><div class="m">not used</div></td></tr>
+        <tr class="no"><th scope="row">Past Perfect Cont.</th><td><div class="f" style="color:var(--ink-2)">they had been building</div></td><td><div class="f">had been being built</div><div class="m">not used</div></td></tr>
+        <tr class="no"><th scope="row">Future Perfect Cont.</th><td><div class="f" style="color:var(--ink-2)">they will have been building</div></td><td><div class="f">will have been being built</div><div class="m">not used</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>The last four rows are not an exception to memorise. Just say them out loud: <span class="en">will be being built</span>, <span class="en">had been being built</span>. Two forms of <span class="en">be</span> in a row is more than the language will carry, so speakers simply do not use them. What to say instead is in <a href="#p3">part&nbsp;3</a>.</p>
+  </div>
+</section>
+<!-- ===================== PART 2 ===================== -->
+<section class="part" id="p2">
+  <div class="part-head"><span class="part-num">Part 2</span><span class="part-tc">08:00</span></div>
+  <h2>The eight working forms</h2>
+  <p class="part-lede">The timeline is exactly the same as in the active: where an action sits on the axis does not depend on which side you look at it from. So these diagrams read the same way — blue marks the action the <b>subject undergoes</b>.</p>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Present · 01</div>
+        <h3>Present Simple Passive</h3>
+        <div class="card-ru">it gets done — generally, regularly, always</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it is done · they are done</b></div>
+        <div><span>&minus;</span><b>is not (isn't) / are not (aren't) done</b></div>
+        <div><span>?</span><b>Is it done? · Are they done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-prs">
+      <figcaption><b>The line:</b> a row of dots across the whole axis — the action is performed regularly, or is simply always true. Who performs it does not interest the diagram: in the passive there is often no doer at all.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The most common passive form of all. It describes <b>how things work</b>: how something is normally done, how a process is arranged, what the rules are.</p>
+          <p>Hence its natural home — recipes, technical descriptions, rules, notices. The doer is unnecessary there: what matters is not who, but what happens.</p>
+        </div>
+        <ul class="uses">
+          <li>Regular, repeated actions on the object</li>
+          <li>Rules, instructions, process descriptions</li>
+          <li>Widely known facts</li>
+          <li>Statements where the doer is "people in general"</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">They <u>clean</u> the office every day.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The office <u>is cleaned</u> every day.</span></div>
+            <div class="s-note">Who cleans it does not matter, so no <b>by</b> is needed.</div>
+          </li>
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">They <u>make</u> these cars in Japan.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">These cars <u>are made</u> in Japan.</span></div>
+            <div class="s-note">The classic label on a product.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">English <u>is spoken</u> all over the world.</span></div>
+            <div class="s-note">The doer is "everyone", which is the same as nobody in particular.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en"><u>Is</u> breakfast <u>included</u> in the price?</span></div>
+            <div class="s-note">In a question <b>is</b> moves to the front; <b>included</b> does not change.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Present · 02</div>
+        <h3>Present Continuous Passive</h3>
+        <div class="card-ru">it is being done right now</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it is being done</b></div>
+        <div><span>&minus;</span><b>isn't / aren't being done</b></div>
+        <div><span>?</span><b>Is it being done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-prc">
+      <figcaption><b>The line:</b> a bar covering "now". The process on the object is under way and unfinished — the very same picture as the active Present Continuous.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>This is where <span class="en">being</span> appears — and where most people stumble. Learn the chain whole: <b>is being done</b>. Without <span class="en">being</span> you get a different tense; without <span class="en">is</span> you get no sentence at all.</p>
+          <p><b>The crucial contrast:</b> <span class="en">The window is broken</span> means the window is in a broken <b>state</b>. <span class="en">The window is being broken</span> means someone is smashing it right now — a <b>process</b>. The first describes a result, the second an action in progress.</p>
+        </div>
+        <ul class="uses">
+          <li>A process on the object at the moment of speaking</li>
+          <li>A temporary, ongoing situation</li>
+          <li>Work in progress: being built, repaired, discussed</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">They <u>are repairing</u> the road now.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The road <u>is being repaired</u> now.</span></div>
+            <div class="s-note">are repairing → is being repaired: <b>be</b> goes into Continuous, the verb into V3.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">Your order <u>is being processed</u>.</span></div>
+            <div class="s-note">The standard line in interfaces and emails.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The problem <u>is being discussed</u> right now.</span></div>
+            <div class="s-note">Compare: <span class="en">The problem is discussed in chapter 4</span> — a general fact, not a process.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Present · 03</div>
+        <h3>Present Perfect Passive</h3>
+        <div class="card-ru">it has been done — and it matters now</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it has been done · they have been done</b></div>
+        <div><span>&minus;</span><b>hasn't / haven't been done</b></div>
+        <div><span>?</span><b>Has it been done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-prp">
+      <figcaption><b>The line:</b> an undated action-dot in the past and an arc to "now". We are looking not at the action but at the state of the object at the moment of speaking.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The passive and the Present Perfect are a natural pair: both care about <b>the result rather than the doer</b>. That is why this form is everywhere in news, reports and business writing.</p>
+          <p>The ban on naming a finished past time applies here too: <span class="en">was built in 1990</span>, but <span class="en">has been built</span> with no year attached.</p>
+        </div>
+        <ul class="uses">
+          <li>A result that is visible now</li>
+          <li>News about something that has just happened</li>
+          <li>Reporting completed work</li>
+          <li>An unfinished period: today, this week</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">Someone <u>has taken</u> my umbrella.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">My umbrella <u>has been taken</u>.</span></div>
+            <div class="s-note"><b>Someone</b> simply vanishes — that is the whole point.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The report <u>has already been sent</u>.</span></div>
+            <div class="s-note"><b>already</b> goes between <b>has</b> and <b>been</b>.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">Nothing <u>has been decided</u> yet.</span></div>
+            <div class="s-note"><b>yet</b> goes at the end.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Past · 04</div>
+        <h3>Past Simple Passive</h3>
+        <div class="card-ru">it was done then</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it was done · they were done</b></div>
+        <div><span>&minus;</span><b>wasn't / weren't done</b></div>
+        <div><span>?</span><b>Was it done? · Were they done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-pas">
+      <figcaption><b>The line:</b> a dot in the past with a "when" label. As in the active, a stated date is the signal that you need Past Simple and not a perfect.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>The main passive form for telling a story: history, biography, a description of events. This is also where <span class="en">by</span> shows up most often — when the doer does matter after all: <span class="en">painted by Turner</span>.</p>
+          <p>Watch the number: <span class="en">was</span> for singular, <span class="en">were</span> for plural. A slip here is audible immediately.</p>
+        </div>
+        <ul class="uses">
+          <li>A finished action on the object in the past</li>
+          <li>Historical facts and dates</li>
+          <li>Authorship: written, filmed, built by someone</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">Someone <u>stole</u> my bike last night.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">My bike <u>was stolen</u> last night.</span></div>
+            <div class="s-note">The doer is unknown — exactly the case the passive exists for.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">This church <u>was built</u> in 1785.</span></div>
+            <div class="s-note">There is a date, so it is <b>was built</b>, not <b>has been built</b>.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The letters <u>were written</u> by his mother.</span></div>
+            <div class="s-note">Here the doer matters and stays, behind <b>by</b>.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en"><u>Were</u> you <u>invited</u> to the party?</span></div>
+            <div class="s-note">The person invited becomes the subject.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Past · 05</div>
+        <h3>Past Continuous Passive</h3>
+        <div class="card-ru">it was being done at that moment</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it was being done</b></div>
+        <div><span>&minus;</span><b>wasn't / weren't being done</b></div>
+        <div><span>?</span><b>Was it being done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-pac">
+      <figcaption><b>The line:</b> a bar in the past with a short event as a dot inside it. The process on the object serves as background for what happened.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>Rare but alive. It needs a second coordinate — an exact time or another event: "while this was being done, that happened".</p>
+          <p>The chain <span class="en">was being done</span> is the longest the past passive will carry. Beyond it the language gives up: there is no <span class="en">had been being done</span>.</p>
+        </div>
+        <ul class="uses">
+          <li>A process on the object at a specific past moment</li>
+          <li>Background for a short event</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">They <u>were painting</u> the house when I arrived.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The house <u>was being painted</u> when I arrived.</span></div>
+            <div class="s-note">The bar was running and the dot "I arrived" landed inside it.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The car <u>was being repaired</u> all day yesterday.</span></div>
+            <div class="s-note"><b>all day</b> sets the length of the bar.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Past · 06</div>
+        <h3>Past Perfect Passive</h3>
+        <div class="card-ru">it had been done before that moment</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it had been done</b></div>
+        <div><span>&minus;</span><b>hadn't been done</b></div>
+        <div><span>?</span><b>Had it been done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-pap">
+      <figcaption><b>The line:</b> two dots in the past. The action on the object happened before the second dot — the one being talked about. The arc shows by which moment everything was already done.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>Needed in exactly the same situations as the active Past Perfect: to show that <b>one thing happened before another</b>. The second point is compulsory — without it the form is not used.</p>
+          <p>A frequent visitor to reported speech: <span class="en">He said the room had been booked.</span></p>
+        </div>
+        <ul class="uses">
+          <li>An action on the object earlier than another past event</li>
+          <li>Reported speech</li>
+          <li>Explaining the cause of a past situation</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">Someone <u>had cleaned</u> the room before we came.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The room <u>had been cleaned</u> before we came.</span></div>
+            <div class="s-note">The cleaning came before the arrival.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The money <u>had been spent</u> long before that.</span></div>
+            <div class="s-note">The arc reaches a past point, not "now".</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Future · 07</div>
+        <h3>Future Simple Passive</h3>
+        <div class="card-ru">it will be done</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it will be done</b></div>
+        <div><span>&minus;</span><b>won't be done</b></div>
+        <div><span>?</span><b>Will it be done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-fus">
+      <figcaption><b>The line:</b> a dot to the right of "now". The action will happen and the object will receive it — who exactly will do it usually goes unmentioned.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>Its home ground is notices, service promises and contracts: <span class="en">You will be contacted shortly.</span> The passive sounds official here and removes the question of who will act.</p>
+          <p>Remember the conditional and time clauses: after <span class="en">if</span>, <span class="en">when</span>, <span class="en">as soon as</span> the future is not used — it is <span class="en">is done</span>, not <span class="en">will be done</span>.</p>
+        </div>
+        <ul class="uses">
+          <li>A future action on the object</li>
+          <li>Notices, instructions, official promises</li>
+          <li>Predictions and plans</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">They <u>will announce</u> the results tomorrow.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The results <u>will be announced</u> tomorrow.</span></div>
+            <div class="s-note">will be + V3 — there is no <b>being</b> anywhere here.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">You <u>will be contacted</u> within 24 hours.</span></div>
+            <div class="s-note">The person becomes the subject — very common in service language.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The order will be sent when payment <u>is received</u>.</span></div>
+            <div class="s-note">Present tense after <b>when</b>, though the meaning is future.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-top">
+      <div class="card-id">
+        <div class="card-kicker">Future · 08</div>
+        <h3>Future Perfect Passive</h3>
+        <div class="card-ru">it will have been done by the deadline</div>
+      </div>
+      <div class="formulas">
+        <div><span>+</span><b>it will have been done</b></div>
+        <div><span>&minus;</span><b>won't have been done</b></div>
+        <div><span>?</span><b>Will it have been done?</b></div>
+      </div>
+    </div>
+    <figure class="tl" data-tl="ps-fup">
+      <figcaption><b>The line:</b> a deadline flag in the future, with the action finishing to the left of it. The longest form still in real use: four words in a row.</figcaption>
+    </figure>
+    <div class="card-body">
+      <div>
+        <div class="sub">What it means</div>
+        <div class="why">
+          <p>It lives exclusively next to the word <span class="en">by</span>: <span class="en">by Friday</span>, <span class="en">by the time you arrive</span>. That is what plants the flag the readiness is measured against.</p>
+          <p>You meet it in contracts, plans and project documents — wherever the deadline matters and the contractor does not.</p>
+        </div>
+        <ul class="uses">
+          <li>Work completed by a future deadline</li>
+          <li>Contractual obligations</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub">Active → passive</div>
+        <ul class="ex">
+          <li>
+            <div class="pline act"><span class="tag">active</span><span class="s-en">They <u>will have finished</u> the bridge by June.</span></div>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">The bridge <u>will have been finished</u> by June.</span></div>
+            <div class="s-note"><b>by June</b> is the flag on the axis.</div>
+          </li>
+          <li>
+            <div class="pline pas"><span class="tag">passive</span><span class="s-en">Everything <u>will have been prepared</u> by the time you arrive.</span></div>
+            <div class="s-note">The flag is set by an event rather than a date.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</section>
+<!-- ===================== PART 3 ===================== -->
+<section class="part" id="p3">
+  <div class="part-head"><span class="part-num">Part 3</span><span class="part-tc">21:30</span></div>
+  <h2>What does not exist</h2>
+  <p class="part-lede">Four forms assemble correctly by the rule but are absent from the language. The reason is not grammar but sound: they put two forms of <span class="en">be</span> back to back, which is heavy enough that speakers always rebuild the sentence instead.</p>
+
+  <div class="tab-wrap">
+    <table class="tab">
+      <thead><tr><th scope="col">Non-existent form</th><th scope="col">What people say instead</th></tr></thead>
+      <tbody>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">will be being done</td><td class="v">Future Simple Passive: <span class="en">The road will be repaired at that time.</span></td></tr>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">has been being done</td><td class="v">Present Perfect Passive, or switch to the active: <span class="en">They have been repairing the road for a week.</span></td></tr>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">had been being done</td><td class="v">Past Perfect Passive: <span class="en">The road had been repaired by then.</span></td></tr>
+        <tr><td class="k" style="color:var(--c-no);text-decoration:line-through">will have been being done</td><td class="v">Active only: <span class="en">They will have been repairing the road for a year.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p><b>The practical takeaway.</b> If the meaning really calls for duration in a perfect, just put the sentence back into the active. That is not a defeat or a simplification — it is what native speakers do. The passive is good where the doer is unwanted; the moment you have to name one anyway, the active is shorter and clearer.</p>
+    <p>A second group of verbs never goes passive at all, even in simple tenses — the <b>intransitive</b> ones and the verbs of state: <span class="en">happen, occur, arrive, come, go, sleep, die, appear, belong, lack, resemble, suit, fit, have</span> (in the sense of "own"). They have no object to promote to subject.</p>
+  </div>
+
+  <div class="note">
+    <h4>A common mistake</h4>
+    <div class="body">
+      <p><span class="en" style="color:var(--c-no)">The accident was happened.</span> → <span class="en">The accident happened.</span></p>
+      <p><span class="en" style="color:var(--c-no)">He was died last year.</span> → <span class="en">He died last year.</span></p>
+      <p><span class="en" style="color:var(--c-no)">This book is belonged to me.</span> → <span class="en">This book belongs to me.</span></p>
+      <p>One logic covers all three: these verbs do not do anything <b>to</b> anybody, so there is nothing to turn around.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PART 4 ===================== -->
+<section class="part" id="p4">
+  <div class="part-head"><span class="part-num">Part 4</span><span class="part-tc">25:00</span></div>
+  <h2>The passive after modals and in infinitives</h2>
+  <p class="part-lede">The formula does not change — only what stands in front of <span class="en">be</span> does. After any modal verb comes the bare form, so you simply get <b>modal + be + V3</b>.</p>
+
+  <div class="tab-wrap">
+    <table class="tab">
+      <thead><tr><th scope="col">Structure</th><th scope="col">Example</th></tr></thead>
+      <tbody>
+        <tr><td class="k">must / should / can be done</td><td class="v"><span class="en">The form must be signed.</span></td></tr>
+        <tr><td class="k">can't be done</td><td class="v"><span class="en">It can't be done in a day.</span></td></tr>
+        <tr><td class="k">may / might be done</td><td class="v"><span class="en">The flight might be delayed.</span></td></tr>
+        <tr><td class="k">have to be done</td><td class="v"><span class="en">This has to be fixed today.</span></td></tr>
+        <tr><td class="k">should have been done</td><td class="v"><span class="en">It should have been done yesterday</span> — and it wasn't.</td></tr>
+        <tr><td class="k">to be done — infinitive</td><td class="v"><span class="en">I want to be paid on time.</span></td></tr>
+        <tr><td class="k">to have been done — perfect infinitive</td><td class="v"><span class="en">He seems to have been forgotten.</span></td></tr>
+        <tr><td class="k">being done — gerund</td><td class="v"><span class="en">She hates being interrupted.</span></td></tr>
+        <tr><td class="k">having been done</td><td class="v"><span class="en">Having been warned, he left.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Look at the last three rows.</b> These are the structures that let English compress a whole subordinate clause into one form: not "she hates it when people interrupt her" but <span class="en">she hates being interrupted</span>. Learners tend to build the long version; the short one is what sounds native.</p>
+  </div>
+</section>
+
+<!-- ===================== PART 5 ===================== -->
+<section class="part" id="p5">
+  <div class="part-head"><span class="part-num">Part 5</span><span class="part-tc">29:40</span></div>
+  <h2>Special cases</h2>
+  <p class="part-lede">Five situations where the passive behaves differently from the basic pattern.</p>
+
+  <h3 style="margin-top:34px;font-size:20px">Two objects give two passives</h3>
+  <p class="part-lede" style="margin-top:10px">Verbs like <span class="en">give, tell, send, show, offer, ask, teach, pay, promise</span> take two objects: to whom, and what. Either can become the subject — and English almost always picks the person.</p>
+
+  <figure class="swap inset" data-swap="two">
+    <figcaption><b>Both versions are correct</b>, but <span class="en">I was given a book</span> is far more natural than <span class="en">A book was given to me</span>. English prefers a person in first position. Note that the indirect object becomes the subject in the nominative: <span class="en">I</span>, not <span class="en">me</span>.</figcaption>
+  </figure>
+
+  <h3 style="margin-top:38px;font-size:20px">by or with</h3>
+  <div class="prose" style="margin-top:12px">
+    <p><b>by</b> — <b>who</b> did it: <span class="en">The window was broken by a boy.</span></p>
+    <p><b>with</b> — <b>what</b> it was done with: <span class="en">The window was broken with a stone.</span></p>
+    <p>They coexist happily in one sentence: <span class="en">The window was broken by a boy with a stone.</span> Mixing them up is expensive — <span class="en">broken with a boy</span> says the boy was used as the tool.</p>
+  </div>
+
+  <h3 style="margin-top:38px;font-size:20px">Phrasal verbs keep their preposition</h3>
+  <div class="prose" style="margin-top:12px">
+    <p>If the verb is made of two words, the preposition stays <b>in place, right after the V3</b>, even when that leaves it stranded at the end of the sentence with nothing after it. It looks odd but it is standard.</p>
+    <p><span class="en">Somebody looked after the children.</span> → <span class="en">The children <u>were looked after</u>.</span></p>
+    <p><span class="en">They sent for the doctor.</span> → <span class="en">The doctor <u>was sent for</u>.</span></p>
+    <p><span class="en">Nobody has slept in this bed.</span> → <span class="en">This bed <u>hasn't been slept in</u>.</span></p>
+  </div>
+
+  <h3 style="margin-top:38px;font-size:20px">get instead of be — the spoken passive</h3>
+  <div class="prose" style="margin-top:12px">
+    <p>In informal speech <span class="en">get</span> often replaces <span class="en">be</span>. The flavour is <b>suddenness, an event rather than a state</b>, and often something unwelcome: <span class="en">He got fired.</span> <span class="en">They got married.</span> <span class="en">My phone got stolen.</span></p>
+    <p>In business writing and official texts the <span class="en">get</span>-passive is not used — only <span class="en">be</span>.</p>
+  </div>
+
+  <h3 style="margin-top:38px;font-size:20px">"It is said that…" — impersonal structures</h3>
+  <div class="prose" style="margin-top:12px">
+    <p>When the doer is "people in general", English has two passive structures, and both are worth knowing:</p>
+    <p><span class="en">It is said that he lives in Paris.</span></p>
+    <p><span class="en">He is said to live in Paris.</span> — the same thing, shorter and more literary.</p>
+    <p>The same works with <span class="en">believe, think, know, report, expect, consider</span>: <span class="en">The company is expected to grow.</span></p>
+  </div>
+</section>
+
+<!-- ===================== PART 6 ===================== -->
+<section class="part" id="p6">
+  <div class="part-head"><span class="part-num">Part 6</span><span class="part-tc">36:00</span></div>
+  <h2>Common mistakes</h2>
+  <p class="part-lede">The eight places where passive sentences actually go wrong. If you remember only this part of the page, your error rate will drop noticeably.</p>
+
+  <div class="grid2">
+    <div class="fq">
+      <div class="q">A passive built from an intransitive verb</div>
+      <div class="a">If the verb takes no object, it has no passive at all.
+      <span class="en" style="color:var(--c-no)">was happened · was appeared · was arrived · was died</span>
+      All impossible. Use plain <span class="en">happened, appeared, arrived, died</span>.</div>
+    </div>
+    <div class="fq">
+      <div class="q">Missing "being" in the present continuous</div>
+      <div class="a"><span class="en" style="color:var(--c-no)">The road is repaired now</span> actually means "the road is in a repaired state".
+      <span class="en" style="color:var(--c-obj)">The road is being repaired now.</span></div>
+    </div>
+    <div class="fq">
+      <div class="q">Second form instead of third</div>
+      <div class="a">The passive always takes <b>V3</b>, never V2. With regular verbs they look identical and the error hides; with irregular ones it shows.
+      <span class="en" style="color:var(--c-no)">was wrote · was took · was gave</span> → <span class="en">was written · was taken · was given</span></div>
+    </div>
+    <div class="fq">
+      <div class="q">do / does / did in a passive question</div>
+      <div class="a">The passive already has its own auxiliary; a second one is not needed.
+      <span class="en" style="color:var(--c-no)">Did the letter was sent?</span> → <span class="en">Was the letter sent?</span></div>
+    </div>
+    <div class="fq">
+      <div class="q">be agreeing with the wrong word</div>
+      <div class="a"><span class="en">be</span> agrees with the <b>new</b> subject, not with the original doer.
+      <span class="en" style="color:var(--c-obj)">The documents were signed.</span> — not <span class="en" style="color:var(--c-no)">was signed</span>, even though one person signed them.</div>
+    </div>
+    <div class="fq">
+      <div class="q">State confused with process</div>
+      <div class="a">Two different sentences, both correct, with different meanings.
+      <span class="en" style="color:var(--c-obj)">The house is built.</span> — it is a built house, that is its state.
+      <span class="en" style="color:var(--c-obj)">The house is being built.</span> — construction is under way.</div>
+    </div>
+    <div class="fq">
+      <div class="q">Dropping "to" after a passive causative</div>
+      <div class="a">Active <span class="en">make</span> takes a bare infinitive, but the passive restores <b>to</b>.
+      <span class="en" style="color:var(--c-no)">He was made go.</span> → <span class="en">He was made to go.</span></div>
+    </div>
+    <div class="fq">
+      <div class="q">Forgetting that some things are always passive</div>
+      <div class="a">A few expressions only exist in the passive.
+      <span class="en" style="color:var(--c-obj)">I was born in 1998.</span> — never <span class="en" style="color:var(--c-no)">I borned</span>.
+      Also <span class="en">be supposed to</span>, <span class="en">be located</span>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PART 7 ===================== -->
+<section class="part" id="p7">
+  <div class="part-head"><span class="part-num">Part 7</span><span class="part-tc">43:00</span></div>
+  <h2>When the passive helps and when it hurts</h2>
+  <p class="part-lede">The passive is a tool, not a decoration. In some school traditions it is treated as a mark of grown-up language; in English the opposite is true — too much passive is considered a stylistic weakness.</p>
+
+  <div class="prose">
+    <p><b>The passive is right</b> when the doer is unknown, unimportant or obvious; in scientific and technical writing where the process matters more than the author; in news and official documents; and when the object is the main character of the paragraph and you do not want to switch away from it.</p>
+    <p><b>The passive gets in the way</b> when the doer is known and matters. Compare: <span class="en">The decision was made to close the office</span> — made by whom is unclear, and the sentence sounds evasive. <span class="en">The board decided to close the office</span> — short and clear.</p>
+    <p><b>A practical rule.</b> In conversation the passive is a small fraction of what people say. If three passives appear in a row in your paragraph, two of them are almost certainly better in the active. English likes an action to have a doer standing at the front.</p>
+  </div>
+
+  <div class="native">
+    <div class="native-h">The Native Mental Trigger</div>
+    <p>Before speaking, the native asks one question: <i>who or what belongs at the FRONT of this sentence — the doer, or the thing it's done to? And do I even know, or care, who did it?</i> If the doer is the natural topic, they stay active. If the receiver is the topic — or the doer is unknown, obvious, or better left unnamed — they flip to passive and let the doer drop, or trail behind <span class="en">by</span>.</p>
+    <div class="native-think"><b>The thought:</b> “The important thing here isn't who did it — it's the thing it happened to. Put that first.”</div>
+
+    <div class="native-sub">The difference, from the inside</div>
+    <div class="diffpair two">
+      <div class="dp" data-a="act"><div class="dp-t">Active — the doer leads</div><div class="s-en">Someone stole my car.</div><div class="dp-th">“The doer goes first — but here it's a vague <span class="en">someone</span>, a weak thing to open with.”</div></div>
+      <div class="dp" data-a="obj"><div class="dp-t">Passive — the receiver leads</div><div class="s-en">My car was stolen.</div><div class="dp-th">“<span class="en">My car</span> is what I'm talking about; the thief is unknown and irrelevant, so I drop them entirely.”</div></div>
+    </div>
+
+    <div class="native-sub">Why a native flips to passive — each with an example</div>
+    <ul class="usex">
+      <li><span class="u">The doer is unknown</span><span class="s-en">My bike <b>was stolen</b> last night.</span></li>
+      <li><span class="u">The doer is obvious (police, people in general)</span><span class="s-en">He <b>was arrested</b> at the airport.</span></li>
+      <li><span class="u">The doer simply doesn't matter</span><span class="s-en">The bridge <b>was built</b> in 1890.</span></li>
+      <li><span class="u">Keep the spotlight on the topic</span><span class="s-en">The patient <b>was examined</b> and then <b>sent</b> home.</span></li>
+      <li><span class="u">Tactfully avoid naming who's at fault</span><span class="s-en">Mistakes <b>were made</b>.</span></li>
+      <li><span class="u">Science / process, not the author</span><span class="s-en">The sample <b>was heated</b> to 90°C.</span></li>
+      <li><span class="u">The doer IS the news → send it to the end with <span class="en">by</span></span><span class="s-en">Hamlet <b>was written by</b> Shakespeare.</span></li>
+    </ul>
+
+    <div class="native-sub">Hard sentences — and the thought behind them</div>
+    <ul class="hardex">
+      <li><div class="s-en">The proposal is being reviewed and will be voted on next week.</div><div class="ht"><b>Native thought:</b> Two passives keep the spotlight on <span class="en">the proposal</span> the whole way through; the reviewers and voters are beside the point.</div></li>
+      <li><div class="s-en">It is widely believed that the deal will collapse.</div><div class="ht"><b>Native thought:</b> I don't want to name who believes it — the impersonal passive lets me report a general opinion with no source attached.</div></li>
+      <li><div class="s-en">You'll be met at the airport and taken to the hotel.</div><div class="ht"><b>Native thought:</b> The listener (<span class="en">you</span>) is the topic; who meets and drives them is unimportant — this is reassurance, not detail.</div></li>
+      <li><div class="s-en">The window must have been left open.</div><div class="ht"><b>Native thought:</b> Passive stacked on a modal — I focus on the window's state; who left it open I don't know, hence <span class="en">must have been</span>.</div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== PART 8 ===================== -->
+<section class="part" id="p8">
+  <div class="part-head"><span class="part-num">Part 8</span><span class="part-tc">46:00</span></div>
+  <h2>Cheat sheet: building a passive in five steps</h2>
+
+  <div class="grid2">
+    <div class="fq"><div class="q">1. Find the object of the active sentence</div><div class="a">The thing that answers "what?" or "whom?". No object means no passive.</div></div>
+    <div class="fq"><div class="q">2. Move it to the front</div><div class="a">It is now the subject, and <span class="en">be</span> will agree with it.</div></div>
+    <div class="fq"><div class="q">3. Identify the tense of the active verb</div><div class="a">That is the tense <span class="en">be</span> goes into — the main verb stops showing tense entirely.</div></div>
+    <div class="fq"><div class="q">4. Put the main verb into the third form</div><div class="a">V3 and only V3, and it never changes again.</div></div>
+    <div class="fq"><div class="q">5. Decide what happens to the doer</div><div class="a">Important — send it to the end behind <b>by</b>. Unimportant, unknown or obvious — drop it entirely. That is normal, not a loss of meaning.</div></div>
+    <div class="fq"><div class="q">The listening test</div><div class="a">Read it aloud. If you hear two forms of <b>be</b> together (<span class="en">be being</span>, <span class="en">been being</span>), that form does not exist — rebuild the sentence or return it to the active.</div></div>
+  </div>
+
+  <div class="prose">
+    <p><b>And the main point.</b> The passive adds no new tense to a sentence — its timeline is identical to the active one. Only the point of view changes: instead of the one who acts, the one acted upon steps forward.</p>
+  </div>
+</section>
+
+<footer>
+  <span>The Passive Turn · 8 working forms, 10 diagrams, 23 sentence pairs</span>
+  <span class="mono">Timecodes are a rough guide for a video version, ≈49 minutes</span>
+</footer>
+
+<script>
+(function(){
+  var C={o:'var(--c-obj)',a:'var(--c-act)',n:'var(--c-now)',i:'var(--ink-2)'};
+  function col(k){return C[k]||C.i;}
+
+  /* ---------------- timeline ---------------- */
+  var AX={x0:60,x1:744,y:110,W:800,H:168};
+  function X(t){return AX.x0+(t/100)*(AX.x1-AX.x0);}
+  function RY(r){return AX.y-(r||0)*34;}
+
+  function W(c,inner){return '<g style="color:'+c+'">'+inner+'</g>';}
+  function label(x,y,txt,size,anchor){
+    var parts=String(txt).split('\n');
+    var out='<text x="'+x+'" y="'+(y-(parts.length-1)*13)+'" text-anchor="'+(anchor||'middle')+'" '+
+      'font-family="Golos Text, sans-serif" font-size="'+(size||12.5)+'" fill="currentColor" '+
+      'style="paint-order:stroke;stroke:var(--tl-bg);stroke-width:4px;stroke-linejoin:round">';
+    for(var i=0;i<parts.length;i++){out+='<tspan x="'+x+'" dy="'+(i===0?0:14)+'">'+parts[i]+'</tspan>';}
+    return out+'</text>';
+  }
+
+  function drawTL(spec){
+    var s='<svg viewBox="0 0 '+AX.W+' '+AX.H+'" role="img" aria-label="'+(spec.alt||'Timeline diagram')+'">';
+    (spec.items||[]).forEach(function(it){
+      if(it.t!=='zone') return;
+      s+='<g style="color:var(--ink-3)">';
+      s+='<rect x="'+X(it.from)+'" y="4" width="'+(X(it.to)-X(it.from))+'" height="'+(AX.H-10)+'" fill="currentColor" opacity="0.07"/>';
+      s+='<text x="'+((X(it.from)+X(it.to))/2)+'" y="'+(AX.H-8)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="2" fill="currentColor" opacity="0.75">'+it.lab+'</text>';
+      s+='</g>';
+    });
+    s+='<g style="color:var(--ink-3)">';
+    s+='<line x1="'+(AX.x0-14)+'" y1="'+AX.y+'" x2="'+(AX.x1+4)+'" y2="'+AX.y+'" stroke="currentColor" stroke-width="1.6" opacity="0.55"/>';
+    s+='<polygon points="'+(AX.x1+14)+','+AX.y+' '+(AX.x1+2)+','+(AX.y-5)+' '+(AX.x1+2)+','+(AX.y+5)+'" fill="currentColor" opacity="0.55"/>';
+    s+='</g>';
+    if(spec.now!==false){
+      var nx=X(spec.now===undefined?50:spec.now);
+      s+='<g style="color:var(--c-now)">';
+      s+='<line x1="'+nx+'" y1="26" x2="'+nx+'" y2="'+(AX.y+16)+'" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>';
+      s+='<text x="'+nx+'" y="18" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="1.6" fill="currentColor">NOW</text>';
+      s+='</g>';
+    }
+    var labs=[];
+    (spec.items||[]).forEach(function(it){
+      if(it.t==='zone') return;
+      var y=RY(it.row);
+      s+='<g style="color:'+col(it.c)+'">';
+      if(it.t==='span'){
+        var x1=X(it.from),x2=X(it.to);
+        s+='<rect x="'+x1+'" y="'+(y-9)+'" width="'+(x2-x1)+'" height="18" rx="9" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8"/>';
+        if(it.lab) labs.push(W(col(it.c),label((x1+x2)/2,y-17,it.lab)));
+      } else if(it.t==='point'){
+        var px=X(it.at);
+        if(it.row) s+='<line x1="'+px+'" y1="'+(y+8)+'" x2="'+px+'" y2="'+(AX.y-3)+'" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 3" opacity="0.6"/>';
+        s+='<circle cx="'+px+'" cy="'+y+'" r="7" fill="currentColor" stroke-width="2" style="stroke:var(--tl-bg)"/>';
+        if(it.lab) labs.push(W(col(it.c),label(px,y-16,it.lab)));
+      } else if(it.t==='dots'){
+        var n=it.n||7,a=X(it.from),b=X(it.to);
+        for(var j=0;j<n;j++){s+='<circle cx="'+(a+(b-a)*(j/(n-1)))+'" cy="'+y+'" r="5" fill="currentColor" opacity="0.85"/>';}
+        if(it.lab) labs.push(W(col(it.c),label((a+b)/2,y-16,it.lab)));
+      } else if(it.t==='flag'){
+        var fx=X(it.at);
+        s+='<line x1="'+fx+'" y1="'+(AX.y-38)+'" x2="'+fx+'" y2="'+(AX.y+12)+'" stroke="currentColor" stroke-width="2.4"/>';
+        s+='<polygon points="'+fx+','+(AX.y-38)+' '+(fx+22)+','+(AX.y-32)+' '+fx+','+(AX.y-26)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(col(it.c),label(fx+2,AX.y-46,it.lab,11.5)));
+        if(it.sub) s+='<text x="'+fx+'" y="'+(AX.y+26)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.sub+'</text>';
+      } else if(it.t==='arrow'){
+        var a1=X(it.from),a2=X(it.to),ay=RY(it.row)-14,mid=(a1+a2)/2;
+        s+='<path d="M'+a1+' '+ay+' Q'+mid+' '+(ay-26)+' '+a2+' '+(ay-2)+'" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="5 4"/>';
+        s+='<polygon points="'+a2+','+(ay+6)+' '+(a2-5)+','+(ay-4)+' '+(a2+5)+','+(ay-4)+'" fill="currentColor"/>';
+        if(it.lab) labs.push(W(col(it.c),label(mid,ay-32,it.lab,11.5)));
+      } else if(it.t==='bracket'){
+        var b1=X(it.from),b2=X(it.to),by=AX.y+20;
+        s+='<path d="M'+b1+' '+(by-6)+' L'+b1+' '+by+' L'+b2+' '+by+' L'+b2+' '+(by-6)+'" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.85"/>';
+        s+='<text x="'+((b1+b2)/2)+'" y="'+(by+15)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">'+it.lab+'</text>';
+      }
+      s+='</g>';
+    });
+    s+=labs.join('');
+    return s+'</svg>';
+  }
+
+  /* ---------------- swap diagram ---------------- */
+  var SW={W:800,x0:100,x1:744,rowH:112,top:64};
+  var CH=8.42;
+  function chunkW(c){
+    var base=String(c.t).length*CH+(c.box===false?18:32);
+    if(c.role) base=Math.max(base,String(c.role).length*6.4+26);
+    return Math.max(c.box===false?52:92,base);
+  }
+
+  function drawSwap(spec){
+    var rows=spec.rows, H=SW.top+ (rows.length-1)*SW.rowH + 60;
+    var s='<svg viewBox="0 0 '+SW.W+' '+H+'" role="img" aria-label="'+(spec.alt||'Voice diagram')+'">';
+    var pos=[];
+
+    rows.forEach(function(row,ri){
+      var cy=SW.top+ri*SW.rowH, ws=row.chunks.map(chunkW);
+      var total=ws.reduce(function(a,b){return a+b;},0)+(row.chunks.length-1)*16;
+      var x=SW.x0, avail=SW.x1-SW.x0;
+      if(total<avail) x=SW.x0;
+      pos[ri]=[];
+      var cursor=x;
+      row.chunks.forEach(function(c,ci){
+        pos[ri][ci]={x:cursor,w:ws[ci],cx:cursor+ws[ci]/2,cy:cy};
+        cursor+=ws[ci]+16;
+      });
+      row._end=cursor-16;
+    });
+
+    // links between rows (drawn beneath the boxes)
+    (spec.links||[]).forEach(function(l){
+      var f=pos[l.from[0]][l.from[1]], t=pos[l.to[0]][l.to[1]];
+      var y1=f.cy+24, y2=t.cy-30, my=(y1+y2)/2;
+      // route the long multi-row link to the right, clear of the middle row
+      var d = (l.route==='right')
+        ? 'M'+f.cx+' '+y1+' C'+(Math.max(f.cx,t.cx)+110)+' '+y1+' '+(Math.max(f.cx,t.cx)+110)+' '+y2+' '+t.cx+' '+y2
+        : 'M'+f.cx+' '+y1+' C'+f.cx+' '+my+' '+t.cx+' '+my+' '+t.cx+' '+y2;
+      s+='<g style="color:'+col(l.c||'i')+'">';
+      s+='<path d="'+d+'" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.85"/>';
+      s+='<polygon points="'+t.cx+','+(y2+7)+' '+(t.cx-5)+','+(y2-3)+' '+(t.cx+5)+','+(y2-3)+'" fill="currentColor" opacity="0.85"/>';
+      s+='</g>';
+    });
+
+    rows.forEach(function(row,ri){
+      var cy=SW.top+ri*SW.rowH;
+      s+='<text x="8" y="'+(cy+4)+'" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.4" fill="var(--ink-3)">'+row.label+'</text>';
+      if(row.arrow){
+        // draw the line in the gaps between boxes so it never crosses the text
+        var last=row.chunks.length-1;
+        s+='<g style="color:var(--ink-3)">';
+        for(var gi=0; gi<last; gi++){
+          var gL=pos[ri][gi].x+pos[ri][gi].w+3, gR=pos[ri][gi+1].x-3;
+          var head=(row.arrow==='right' && gi===last-1) ? 'r' : ((row.arrow==='left' && gi===0) ? 'l' : '');
+          var lineL=(head==='l')?gL+8:gL, lineR=(head==='r')?gR-8:gR;
+          s+='<line x1="'+lineL+'" y1="'+cy+'" x2="'+lineR+'" y2="'+cy+'" stroke="currentColor" stroke-width="1.3" opacity="0.65"/>';
+          if(head==='r') s+='<polygon points="'+gR+','+cy+' '+(gR-9)+','+(cy-4.5)+' '+(gR-9)+','+(cy+4.5)+'" fill="currentColor" opacity="0.65"/>';
+          if(head==='l') s+='<polygon points="'+gL+','+cy+' '+(gL+9)+','+(cy-4.5)+' '+(gL+9)+','+(cy+4.5)+'" fill="currentColor" opacity="0.65"/>';
+        }
+        s+='</g>';
+      }
+      row.chunks.forEach(function(c,ci){
+        var p=pos[ri][ci];
+        s+='<g style="color:'+col(c.c||'i')+'">';
+        if(c.box!==false){
+          s+='<rect x="'+p.x+'" y="'+(cy-23)+'" width="'+p.w+'" height="46" rx="9" fill="currentColor" fill-opacity="0.13" stroke="currentColor" stroke-width="1.7"'+(c.opt?' stroke-dasharray="6 4"':'')+'/>';
+          s+='<text x="'+p.cx+'" y="'+(cy+(c.role?-3:5))+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="currentColor">'+c.t+'</text>';
+          if(c.role) s+='<text x="'+p.cx+'" y="'+(cy+16)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="0.6" fill="currentColor" opacity="0.8">'+c.role+'</text>';
+        } else {
+          s+='<text x="'+p.cx+'" y="'+(cy+5)+'" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="var(--ink)" style="paint-order:stroke;stroke:var(--tl-bg);stroke-width:5px;stroke-linejoin:round">'+c.t+'</text>';
+        }
+        s+='</g>';
+      });
+    });
+    return s+'</svg>';
+  }
+
+  /* ---------------- data ---------------- */
+  var PAST={t:'zone',from:0,to:50,lab:'PAST'}, FUT={t:'zone',from:50,to:100,lab:'FUTURE'};
+
+  var TL={
+    'ps-prs':{alt:'A regular action on the object',items:[PAST,FUT,
+      {t:'dots',from:10,to:90,n:8,c:'o',lab:'done regularly, always'}]},
+    'ps-prc':{alt:'A process on the object now',items:[PAST,FUT,
+      {t:'span',from:32,to:70,c:'o',lab:'being done, not finished'}]},
+    'ps-prp':{alt:'Done, result now',items:[PAST,FUT,
+      {t:'point',at:24,c:'o',lab:'done'},
+      {t:'arrow',from:24,to:50,c:'o',lab:'result now'}]},
+    'ps-pas':{alt:'Done at a specific past moment',items:[PAST,FUT,
+      {t:'point',at:26,c:'o',lab:'done and finished'},
+      {t:'bracket',from:16,to:36,c:'o',lab:'last night · in 1785'}]},
+    'ps-pac':{alt:'A past process on the object',items:[PAST,FUT,
+      {t:'span',from:12,to:42,c:'o',lab:'was being done'},
+      {t:'point',at:30,row:1,c:'a',lab:'...when this happened'}]},
+    'ps-pap':{alt:'Done before another past moment',items:[PAST,FUT,
+      {t:'point',at:14,c:'o',lab:'had been done'},
+      {t:'point',at:40,row:1,c:'a',lab:'the past moment'},
+      {t:'arrow',from:14,to:40,c:'o',lab:'earlier'}]},
+    'ps-fus':{alt:'Will be done in the future',items:[PAST,FUT,
+      {t:'point',at:76,c:'o',lab:'will be done'},
+      {t:'bracket',from:66,to:86,c:'o',lab:'tomorrow · soon'}]},
+    'ps-fup':{alt:'Will be done by the deadline',items:[PAST,FUT,
+      {t:'point',at:66,c:'o',lab:'will be finished'},
+      {t:'flag',at:88,c:'i',lab:'deadline',sub:'by June'},
+      {t:'arrow',from:66,to:88,c:'o',lab:'already done'}]}
+  };
+
+  var SWAPS={
+    'hero':{alt:'How an active sentence becomes passive',
+      rows:[
+        {label:'ACTIVE',arrow:'right',chunks:[
+          {t:'The teacher',role:'doer',c:'a'},
+          {t:'checks',box:false},
+          {t:'the tests',role:'object',c:'o'}
+        ]},
+        {label:'PASSIVE',arrow:'left',chunks:[
+          {t:'The tests',role:'subject',c:'o'},
+          {t:'are checked',box:false},
+          {t:'by the teacher',role:'can be dropped',c:'a',opt:true}
+        ]}
+      ],
+      links:[{from:[0,2],to:[1,0],c:'o'},{from:[0,0],to:[1,2],c:'a'}]},
+
+    'two':{alt:'A verb with two objects gives two passives',
+      rows:[
+        {label:'ACTIVE',chunks:[
+          {t:'They',role:'doer',c:'a'},
+          {t:'gave',box:false},
+          {t:'me',role:'to whom',c:'o'},
+          {t:'a book',role:'what',c:'i'}
+        ]},
+        {label:'PASSIVE 1',chunks:[
+          {t:'I',role:'subject',c:'o'},
+          {t:'was given',box:false},
+          {t:'a book',c:'i'}
+        ]},
+        {label:'PASSIVE 2',chunks:[
+          {t:'A book',role:'subject',c:'i'},
+          {t:'was given',box:false},
+          {t:'to me',c:'o'}
+        ]}
+      ],
+      links:[{from:[0,2],to:[1,0],c:'o'},{from:[0,3],to:[2,0],c:'i',route:'right'}]}
+  };
+
+  document.querySelectorAll('figure.tl[data-tl]').forEach(function(fig){
+    var spec=TL[fig.getAttribute('data-tl')]; if(!spec) return;
+    var cap=fig.querySelector('figcaption');
+    fig.insertAdjacentHTML('afterbegin',drawTL(spec));
+    if(cap) fig.appendChild(cap);
+  });
+  document.querySelectorAll('figure.swap[data-swap]').forEach(function(fig){
+    var spec=SWAPS[fig.getAttribute('data-swap')]; if(!spec) return;
+    var cap=fig.querySelector('figcaption');
+    fig.insertAdjacentHTML('afterbegin',drawSwap(spec));
+    if(cap) fig.appendChild(cap);
+  });
+})();
+</script>
+
+
+</main>
+</div>
+</div>

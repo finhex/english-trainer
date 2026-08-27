@@ -66,6 +66,35 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 
+/* ---------- native-thinking block ---------- */
+.native{margin-top:22px;padding:18px 20px 8px;border:1px solid var(--line);border-left:3px solid var(--c-now);border-radius:12px;background:var(--card);box-shadow:var(--shadow)}
+.native-h{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-now);margin-bottom:9px}
+.native p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:74ch;margin:0}
+.native b,.native strong{color:var(--ink);font-weight:600}
+.native i{font-style:italic}
+.native .en{font-family:"JetBrains Mono",monospace;font-size:.92em;color:var(--ink);font-style:normal}
+.native-think{margin-top:12px;padding:11px 14px;background:var(--card-2);border-radius:9px;font-size:14px;color:var(--ink);line-height:1.5;max-width:74ch}
+.native-think b{color:var(--c-now);font-weight:600}
+.native-sub{font-family:Bitter,Georgia,serif;font-weight:700;font-size:14px;color:var(--ink);margin:18px 0 9px}
+.diffpair{display:grid;gap:10px;margin-bottom:4px}
+@media(min-width:720px){.diffpair.two{grid-template-columns:1fr 1fr}}
+.dp{padding:12px 14px;background:var(--card-2);border-radius:9px;border-top:3px solid var(--line)}
+.dp[data-a=act]{border-top-color:var(--c-act)}
+.dp[data-a=obj]{border-top-color:var(--c-obj)}
+.dp-t{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-2);margin-bottom:6px}
+.dp .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.45}
+.dp-th{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5;font-style:italic}
+.usex{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(170px,42%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+.hardex{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.hardex li{padding:11px 14px;background:var(--card-2);border-radius:9px;border-left:3px solid var(--c-now)}
+.hardex .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.5}
+.hardex .ht{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.hardex .ht b{color:var(--c-now);font-weight:600}
+
 .page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
 .shell{display:block}
 @media (min-width:1080px){.shell{display:grid;grid-template-columns:196px minmax(0,1fr);gap:56px;align-items:start}}
@@ -875,6 +904,37 @@ footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:v
     <p><b>Пассив уместен,</b> когда деятель неизвестен, неважен или очевиден; в научных и технических текстах, где важен процесс, а не автор; в новостях и официальных документах; когда объект — главный герой абзаца и вы не хотите его менять.</p>
     <p><b>Пассив мешает,</b> когда деятель известен и важен. Сравните: <span class="en">The decision was made to close the office</span> — кем сделано, непонятно, и фраза звучит уклончиво. <span class="en">The board decided to close the office</span> — коротко и ясно.</p>
     <p><b>Практическое правило.</b> В разговорной речи пассив занимает малую долю фраз. Если в вашем абзаце подряд идут три пассива — почти наверняка два из них лучше вернуть в актив. Английский любит, когда у действия есть исполнитель и он стоит в начале.</p>
+  </div>
+
+  <div class="native">
+    <div class="native-h">Ментальный триггер носителя</div>
+    <p>Перед тем как заговорить, носитель задаёт один вопрос: <i>кто или что должно стоять В НАЧАЛЕ этого предложения — деятель или то, над чем совершают действие? И знаю ли я вообще, важно ли мне, кто это сделал?</i> Если деятель — естественная тема, остаётся актив. Если тема — получатель действия, или деятель неизвестен, очевиден или его лучше не называть, носитель переходит в пассив и роняет деятеля либо уводит его в конец за <span class="en">by</span>.</p>
+    <div class="native-think"><b>Мысль:</b> «Важно тут не кто это сделал, а то, с чем это случилось. Его — вперёд.»</div>
+
+    <div class="native-sub">Разница — изнутри</div>
+    <div class="diffpair two">
+      <div class="dp" data-a="act"><div class="dp-t">Актив — впереди деятель</div><div class="s-en">Someone stole my car.</div><div class="dp-th">«Деятель идёт первым — но тут это расплывчатое <span class="en">someone</span>, слабое начало.»</div></div>
+      <div class="dp" data-a="obj"><div class="dp-t">Пассив — впереди получатель</div><div class="s-en">My car was stolen.</div><div class="dp-th">«<span class="en">My car</span> — вот о чём я говорю; вор неизвестен и неважен, поэтому я его вовсе опускаю.»</div></div>
+    </div>
+
+    <div class="native-sub">Почему носитель переходит в пассив — каждый случай с примером</div>
+    <ul class="usex">
+      <li><span class="u">Деятель неизвестен</span><span class="s-en">My bike <b>was stolen</b> last night.</span></li>
+      <li><span class="u">Деятель очевиден (полиция, люди вообще)</span><span class="s-en">He <b>was arrested</b> at the airport.</span></li>
+      <li><span class="u">Деятель просто неважен</span><span class="s-en">The bridge <b>was built</b> in 1890.</span></li>
+      <li><span class="u">Держать фокус на теме</span><span class="s-en">The patient <b>was examined</b> and then <b>sent</b> home.</span></li>
+      <li><span class="u">Тактично не называть виноватого</span><span class="s-en">Mistakes <b>were made</b>.</span></li>
+      <li><span class="u">Наука / процесс, а не автор</span><span class="s-en">The sample <b>was heated</b> to 90°C.</span></li>
+      <li><span class="u">Деятель — и есть новость → в конец за <span class="en">by</span></span><span class="s-en">Hamlet <b>was written by</b> Shakespeare.</span></li>
+    </ul>
+
+    <div class="native-sub">Трудные предложения — и мысль за ними</div>
+    <ul class="hardex">
+      <li><div class="s-en">The proposal is being reviewed and will be voted on next week.</div><div class="ht"><b>Мысль носителя:</b> Два пассива держат прожектор на <span class="en">the proposal</span> всю дорогу; кто рассматривает и голосует — не важно.</div></li>
+      <li><div class="s-en">It is widely believed that the deal will collapse.</div><div class="ht"><b>Мысль носителя:</b> Я не хочу называть, кто так считает, — безличный пассив позволяет передать общее мнение без источника.</div></li>
+      <li><div class="s-en">You'll be met at the airport and taken to the hotel.</div><div class="ht"><b>Мысль носителя:</b> Тема — слушатель (<span class="en">you</span>); кто встречает и везёт — неважно; это заверение, а не подробности.</div></li>
+      <li><div class="s-en">The window must have been left open.</div><div class="ht"><b>Мысль носителя:</b> Пассив поверх модального: фокус на состоянии окна; кто оставил его открытым — не знаю, отсюда <span class="en">must have been</span>.</div></li>
+    </ul>
   </div>
 </section>
 
