@@ -1,0 +1,643 @@
+<meta charset="utf-8">
+<title>Устройство английского предложения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3; --card:#FFFFFF; --card-2:#E4EAEE;
+  --ink:#131C25; --ink-2:#47555F; --ink-3:#75838E;
+  --line:#CFD8DE; --line-2:#E2E8EC;
+  --c-s:#2F6DB8; --c-v:#12746A; --c-o:#A6640B; --c-c:#5546B8; --c-a:#A33A5F;
+  --c-now:#C23E2B;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+    --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+    --line:#27353F; --line-2:#1F2C36;
+    --c-s:#6FB0F2; --c-v:#4FC3B3; --c-o:#E8A44A; --c-c:#A798F7; --c-a:#EE85A6;
+    --c-now:#FF7C64;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+  --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+  --line:#27353F; --line-2:#1F2C36;
+  --c-s:#6FB0F2; --c-v:#4FC3B3; --c-o:#E8A44A; --c-c:#A798F7; --c-a:#EE85A6;
+  --c-now:#FF7C64;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Golos Text","Segoe UI",system-ui,sans-serif;font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){.shell{display:grid;grid-template-columns:210px minmax(0,1fr);gap:56px;align-items:start}}
+.rail{display:none}
+@media (min-width:1080px){.rail{display:block;position:sticky;top:0;padding:40px 0;max-height:100vh;overflow-y:auto}}
+.rail-title{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:baseline;text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);border-left:2px solid transparent}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-now)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3)}
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.hero h1{font-size:clamp(34px,6.4vw,64px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:64ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);background:var(--card)}
+.chip.s{color:var(--c-s);border-color:color-mix(in srgb,var(--c-s) 45%,var(--line))}
+.chip.v{color:var(--c-v);border-color:color-mix(in srgb,var(--c-v) 45%,var(--line))}
+.chip.o{color:var(--c-o);border-color:color-mix(in srgb,var(--c-o) 45%,var(--line))}
+.chip.c{color:var(--c-c);border-color:color-mix(in srgb,var(--c-c) 45%,var(--line))}
+.chip.a{color:var(--c-a);border-color:color-mix(in srgb,var(--c-a) 45%,var(--line))}
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-now)}
+.part h2{font-size:clamp(24px,3.6vw,34px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:70ch;color:var(--ink-2)}
+.prose{max-width:72ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.prose h3{color:var(--ink);font-size:19px;margin-top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.rt{font-family:"JetBrains Mono",monospace;font-size:11.5px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.rt.s{color:var(--c-s)} .rt.v{color:var(--c-v)} .rt.o{color:var(--c-o)} .rt.c{color:var(--c-c)} .rt.a{color:var(--c-a)}
+.bd{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.piece{flex:0 1 auto;padding:8px 12px;border-radius:9px;background:var(--card-2);border-top:3px solid var(--ink-3);min-width:0}
+.piece.s{border-top-color:var(--c-s)} .piece.v{border-top-color:var(--c-v)} .piece.o{border-top-color:var(--c-o)} .piece.c{border-top-color:var(--c-c)} .piece.a{border-top-color:var(--c-a)}
+.piece .pl{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;color:var(--ink-3)}
+.piece.s .pl{color:var(--c-s)} .piece.v .pl{color:var(--c-v)} .piece.o .pl{color:var(--c-o)} .piece.c .pl{color:var(--c-c)} .piece.a .pl{color:var(--c-a)}
+.piece .pt{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink)}
+.bd-cap{font-size:13px;color:var(--ink-3);margin-top:6px;max-width:76ch}
+.k{font-weight:600}
+.k.s{color:var(--c-s)} .k.v{color:var(--c-v)} .k.o{color:var(--c-o)} .k.c{color:var(--c-c)} .k.a{color:var(--c-a)}
+.tbl-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+table.tbl{border-collapse:collapse;width:100%;min-width:560px;background:var(--card);font-size:14.5px}
+table.tbl th,table.tbl td{text-align:left;padding:11px 15px;border-top:1px solid var(--line-2);vertical-align:top}
+table.tbl thead th{background:var(--card-2);border-top:0;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+table.tbl td.f{font-family:"JetBrains Mono",monospace;color:var(--ink);white-space:nowrap}
+table.tbl td .en{font-size:13.5px}
+table.tbl tr td:first-child{font-weight:600;color:var(--ink)}
+.sty{display:grid;gap:14px;margin-top:22px}
+@media(min-width:760px){.sty{grid-template-columns:1fr 1fr}}
+.sty-card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c-now);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px}
+.sty-card h4{font-size:16px}
+.sty-card .lab{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3);margin-top:2px}
+.sty-card p{margin-top:8px;font-size:14px;color:var(--ink-2)}
+.sty-card .ex{margin-top:10px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.5;background:var(--card-2);padding:9px 12px;border-radius:8px}
+.note{margin-top:22px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--c-now);border-radius:12px;box-shadow:var(--shadow);padding:16px 20px 8px}
+.note-h{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-now);margin-bottom:9px}
+.note p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:76ch}
+.note b{color:var(--ink);font-weight:600}
+.note-sub{font-family:Bitter,Georgia,serif;font-weight:700;font-size:14px;color:var(--ink);margin:18px 0 9px}
+.usex{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(200px,44%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+.hardex{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.hardex li{padding:11px 14px;background:var(--card-2);border-radius:9px;border-left:3px solid var(--c-now)}
+.hardex .s-en{font-family:"JetBrains Mono",monospace;font-size:13.5px;color:var(--ink);line-height:1.5}
+.hardex .ht{margin-top:6px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.hardex .ht b{color:var(--c-now);font-weight:600}
+footer{margin-top:80px;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--ink-3);font-size:13px}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Содержание">
+  <div class="rail-title">Части</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">0</span><span>Атом предложения</span></a></li>
+    <li><a href="#p1"><span class="tc">1</span><span>Пять ролей</span></a></li>
+    <li><a href="#p2"><span class="tc">2</span><span>Схемы клауз</span></a></li>
+    <li><a href="#p3"><span class="tc">3</span><span>Фразы и клаузы</span></a></li>
+    <li><a href="#p4"><span class="tc">4</span><span>Личные и неличные</span></a></li>
+    <li><a href="#p5"><span class="tc">5</span><span>Главные и придаточные</span></a></li>
+    <li><a href="#p6"><span class="tc">6</span><span>Четыре типа предложений</span></a></li>
+    <li><a href="#p7"><span class="tc">7</span><span>Сочинение</span></a></li>
+    <li><a href="#p8"><span class="tc">8</span><span>Именные придаточные</span></a></li>
+    <li><a href="#p9"><span class="tc">9</span><span>Определительные</span></a></li>
+    <li><a href="#p10"><span class="tc">10</span><span>Обстоятельственные</span></a></li>
+    <li><a href="#p11"><span class="tc">11</span><span>Неличные клаузы</span></a></li>
+    <li><a href="#p12"><span class="tc">12</span><span>Как соединять</span></a></li>
+    <li><a href="#p13"><span class="tc">13</span><span>Самые трудные</span></a></li>
+    <li><a href="#p14"><span class="tc">14</span><span>Пунктуация клауз</span></a></li>
+    <li><a href="#p15"><span class="tc">15</span><span>Форма и функция</span></a></li>
+    <li><a href="#p16"><span class="tc">16</span><span>Собрать и разобрать</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">Устройство предложения · от одной клаузы до самых трудных</div>
+  <h1>Устройство английского предложения</h1>
+  <p class="lede">Любое английское предложение, каким бы длинным оно ни было, собрано из одного небольшого набора: горстки <b>ролей</b> (подлежащее, глагол, дополнение, именная часть, обстоятельство), сложенных в <b>клаузы</b>, соединённых всего двумя приёмами — <b>сочинением</b> (связь равных) и <b>подчинением</b> (вложение одной клаузы в другую). Освойте набор и два приёма — и даже предложение на целый абзац станет читаемым. Здесь — путь от самого короткого предложения к самому трудному, без пропусков.</p>
+  <div class="chips">
+    <span class="chip s">Подлежащее</span>
+    <span class="chip v">Глагол</span>
+    <span class="chip o">Дополнение</span>
+    <span class="chip c">Именная часть</span>
+    <span class="chip a">Обстоятельство</span>
+  </div>
+</header>
+
+<!-- ============ ЧАСТЬ 0 ============ -->
+<section class="part" id="p0">
+  <div class="part-head"><span class="part-num">Часть 0</span></div>
+  <h2>Атом: подлежащее и сказуемое</h2>
+  <p class="part-lede">Наименьшее полное предложение — это две части: <b>подлежащее</b> (о ком или о чём предложение) и <b>сказуемое</b> (что о нём говорится — всегда строится вокруг глагола). Всё остальное на этой странице — рост этих двух частей.</p>
+
+  <div class="bd">
+    <div class="piece s"><span class="pl">Подлежащее</span><span class="pt">Birds</span></div>
+    <div class="piece v"><span class="pl">Сказуемое (глагол)</span><span class="pt">sing.</span></div>
+  </div>
+  <p class="bd-cap">Два слова — одна законченная мысль. Подлежащее называет тему; сказуемое высказывает о ней утверждение.</p>
+
+  <div class="prose">
+    <p><b>Подлежащее — обычно именная группа</b>: существительное со всем, что к нему прицеплено. <span class="en">The old man next door</span> — это одно подлежащее, сколько бы слов в нём ни было. <b>Сказуемое — глагольная группа</b>: глагол плюс всё, что глаголу нужно, чтобы быть законченным.</p>
+    <p><b>Глагол — двигатель.</b> Он решает, что должно стоять дальше: одним глаголам не нужно ничего (<span class="en">sing</span>), другим нужно дополнение (<span class="en">need a key</span>), третьим — описание (<span class="en">seem tired</span>). Это требование — самое полезное, что стоит замечать в любом глаголе; Часть&nbsp;2 превращает его в пять фиксированных схем.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 1 ============ -->
+<section class="part" id="p1">
+  <div class="part-head"><span class="part-num">Часть 1</span></div>
+  <h2>Пять ролей, из которых собрана любая клауза</h2>
+  <p class="part-lede">В английском всего пять грамматических ролей. Поймите, что такое каждая, — и вы разметите любую клаузу на свете.</p>
+
+  <div class="legend">
+    <span class="rt s">S — Подлежащее</span>
+    <span class="rt v">V — Глагол</span>
+    <span class="rt o">O — Дополнение</span>
+    <span class="rt c">C — Именная часть</span>
+    <span class="rt a">A — Обстоятельство</span>
+  </div>
+
+  <div class="prose">
+    <p><b class="k s">Подлежащее (S)</b> — кто или что совершает действие или описывается. Обычно перед глаголом: <span class="en">The engineers approved it.</span></p>
+    <p><b class="k v">Глагол (V)</b> — действие или состояние. Единственная роль, которую не может опустить ни одна клауза.</p>
+    <p><b class="k o">Дополнение (O)</b> — кто или что принимает действие. <b>Прямое дополнение</b> отвечает на «что/кого?» (<span class="en">She wrote <u>a letter</u></span>); <b>косвенное</b> — получатель прямого (<span class="en">She wrote <u>him</u> a letter</span>).</p>
+    <p><b class="k c">Именная часть / предикатив (C)</b> — завершает смысл, <i>описывая</i> подлежащее или дополнение, а не принимая действие. Идёт после глаголов-связок (<span class="en">be, seem, become, look</span>): <span class="en">She is <u>a doctor</u></span> · <span class="en">He looks <u>tired</u></span> · <span class="en">They elected her <u>chair</u></span> (предикатив к дополнению).</p>
+    <p><b class="k a">Обстоятельство (A)</b> — когда, где, зачем, как, как часто. Почти всегда необязательно и подвижно: <span class="en"><u>Yesterday</u> she left <u>quietly</u>.</span></p>
+    <p><b>Ключевое различие — дополнение или предикатив.</b> Дополнение — это <i>другой предмет</i>, не подлежащее (<span class="en">She saw a doctor</span> — два человека); предикатив — <i>тот же</i> предмет, переименованный или описанный (<span class="en">She is a doctor</span> — один человек).</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 2 ============ -->
+<section class="part" id="p2">
+  <div class="part-head"><span class="part-num">Часть 2</span></div>
+  <h2>Схемы клауз: форму задаёт глагол</h2>
+  <p class="part-lede">Сложите пять ролей — и получится всего семь базовых схем клаузы. Какую выбрать, диктует исключительно глагол. Это костяк любого английского предложения.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Схема</th><th>Форма</th><th>Пример</th><th>Тип глагола</th></tr></thead>
+    <tbody>
+      <tr><td>Непереходный</td><td class="f">S + V</td><td><span class="en"><span class="k s">The baby</span> <span class="k v">slept</span>.</span></td><td>ничего не нужно</td></tr>
+      <tr><td>Переходный</td><td class="f">S + V + O</td><td><span class="en"><span class="k s">She</span> <span class="k v">wrote</span> <span class="k o">a letter</span>.</span></td><td>нужно одно дополнение</td></tr>
+      <tr><td>Двупереходный</td><td class="f">S + V + O + O</td><td><span class="en"><span class="k s">He</span> <span class="k v">gave</span> <span class="k o">her</span> <span class="k o">a book</span>.</span></td><td>косвенное + прямое</td></tr>
+      <tr><td>Связочный</td><td class="f">S + V + C</td><td><span class="en"><span class="k s">They</span> <span class="k v">are</span> <span class="k c">happy</span>.</span></td><td>описывает подлежащее</td></tr>
+      <tr><td>Сложнопереходный</td><td class="f">S + V + O + C</td><td><span class="en"><span class="k s">We</span> <span class="k v">painted</span> <span class="k o">the door</span> <span class="k c">red</span>.</span></td><td>описывает дополнение</td></tr>
+      <tr><td>Непереходный + обстоятельство</td><td class="f">S + V + A</td><td><span class="en"><span class="k s">She</span> <span class="k v">lives</span> <span class="k a">in Rome</span>.</span></td><td>нужно обстоятельство места</td></tr>
+      <tr><td>Переходный + обстоятельство</td><td class="f">S + V + O + A</td><td><span class="en"><span class="k s">He</span> <span class="k v">put</span> <span class="k o">the keys</span> <span class="k a">on the table</span>.</span></td><td>дополнение + обязательное обстоятельство</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Почему это важнее любого правила.</b> Глагол несёт свою схему с собой, как форму штекера. <span class="en">put</span> требует дополнение <i>и</i> место (<span class="en">✗ He put the keys</span> — сломано); <span class="en">sleep</span> отказывается от дополнения (<span class="en">✗ She slept the baby</span>); <span class="en">give</span> охотно берёт два. Когда предложение звучит неправильно, причина обычно в схеме глагола.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 3 ============ -->
+<section class="part" id="p3">
+  <div class="part-head"><span class="part-num">Часть 3</span></div>
+  <h2>Фразы и клаузы — главное различие</h2>
+  <p class="part-lede"><b>Фраза</b> — группа слов, работающая как единое целое, но <i>без пары «подлежащее–глагол»</i>. У <b>клаузы</b> есть собственные подлежащее и глагол. Всё в построении предложения сводится к тому, чтобы понимать, что перед вами.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Тип фразы</th><th>Строится вокруг</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>Именная (NP)</td><td class="f">существительного</td><td><span class="en">the tall man in the grey coat</span></td></tr>
+      <tr><td>Глагольная (VP)</td><td class="f">глагола</td><td><span class="en">has been working</span></td></tr>
+      <tr><td>Прилагательная (AdjP)</td><td class="f">прилагательного</td><td><span class="en">very proud of her</span></td></tr>
+      <tr><td>Наречная (AdvP)</td><td class="f">наречия</td><td><span class="en">quite slowly</span></td></tr>
+      <tr><td>Предложная (PP)</td><td class="f">предлога</td><td><span class="en">in the morning</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Проверка.</b> <span class="en">in the morning</span> — фраза, глагола нет. <span class="en">when the sun rose</span> — клауза: есть подлежащее (<span class="en">the sun</span>) и глагол (<span class="en">rose</span>). Обе могут делать одну работу (сказать <i>когда</i>), но только в клаузе внутри спрятано мини-предложение. Растить предложение — значит вставлять клаузы в роли из Части&nbsp;1.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 4 ============ -->
+<section class="part" id="p4">
+  <div class="part-head"><span class="part-num">Часть 4</span></div>
+  <h2>Личные и неличные клаузы</h2>
+  <p class="part-lede">Клаузы делятся на две семьи по своему глаголу. Это деление объясняет половину «трудных» предложений дальше.</p>
+
+  <div class="sty">
+    <div class="sty-card">
+      <h4>Личная (finite) клауза</h4>
+      <div class="lab">глагол в форме времени + реальное подлежащее</div>
+      <p>Глагол помечен временем и согласуется с подлежащим. Личная клауза может быть полным предложением (если она главная).</p>
+      <div class="ex"><span class="k s">She</span> <span class="k v">arrived</span> late. · because <span class="k s">he</span> <span class="k v">was</span> tired</div>
+    </div>
+    <div class="sty-card">
+      <h4>Неличная (non-finite) клауза</h4>
+      <div class="lab">to-infinitive / -ing / -ed · часто без подлежащего</div>
+      <p>Глагол не показывает времени; подлежащее обычно опущено и подразумевается. Сама по себе не стоит — всегда опирается на главную клаузу.</p>
+      <div class="ex">To be honest, … · <span class="k v">Feeling</span> tired, she left. · the report <span class="k v">written</span> last week</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p><b>Зачем это.</b> Неличные клаузы — способ, которым английский сжимает. <span class="en">Because she felt tired, she left</span> (личная) ужимается до <span class="en">Feeling tired, she left</span> (неличная) — тот же смысл, меньше слов. Почти весь «продвинутый» стиль — это личные клаузы, свёрнутые в неличные. Им посвящена Часть&nbsp;11.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 5 ============ -->
+<section class="part" id="p5">
+  <div class="part-head"><span class="part-num">Часть 5</span></div>
+  <h2>Главные и придаточные клаузы</h2>
+  <p class="part-lede">Личная клауза бывает двух видов — и на этом различии держится вся грамматика типов предложений.</p>
+
+  <div class="sty">
+    <div class="sty-card" style="border-top-color:var(--c-v)">
+      <h4 class="k v">Главная (независимая) клауза</h4>
+      <div class="lab">стоит сама по себе как предложение</div>
+      <p>Выражает законченную мысль сама. В каждом грамматически верном предложении есть хотя бы одна.</p>
+      <div class="ex">The train left.</div>
+    </div>
+    <div class="sty-card" style="border-top-color:var(--c-a)">
+      <h4 class="k a">Придаточная (зависимая) клауза</h4>
+      <div class="lab">начинается с подчинителя; сама не стоит</div>
+      <p>Начинается со слова вроде <span class="en">because, when, if, that, which, who</span>, которое <i>прицепляет</i> её к главной клаузе. В одиночку — это обрывок.</p>
+      <div class="ex">✗ because the train left · ✓ We waited because the train left.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p><b>Ловушка обрывка.</b> <span class="en">When the lights went out.</span> кажется предложением — есть подлежащее и глагол, — но начальное <span class="en">when</span> оставляет мысль висеть: <i>и что дальше?</i> Придаточной клаузе всегда нужна главная, чтобы её завершить.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 6 ============ -->
+<section class="part" id="p6">
+  <div class="part-head"><span class="part-num">Часть 6</span></div>
+  <h2>Четыре типа предложений</h2>
+  <p class="part-lede">Сосчитайте клаузы и то, как они соединены, — и любое английское предложение окажется одной из ровно четырёх форм.</p>
+
+  <div class="sty">
+    <div class="sty-card">
+      <h4>Простое</h4>
+      <div class="lab">одна главная клауза</div>
+      <p>Одна главная клауза. Может быть длинным — одно подлежащее, один глагол, много фраз.</p>
+      <div class="ex">The tired old dog slept by the fire all afternoon.</div>
+    </div>
+    <div class="sty-card">
+      <h4>Сложносочинённое</h4>
+      <div class="lab">две+ главные клаузы как равные</div>
+      <p>Главные клаузы, связанные сочинительным союзом (FANBOYS) или точкой с запятой. Ни одна не главнее другой.</p>
+      <div class="ex">She knocked, but no one answered.</div>
+    </div>
+    <div class="sty-card">
+      <h4>Сложноподчинённое</h4>
+      <div class="lab">одна главная + одна+ придаточная</div>
+      <p>Главная клауза с одной или несколькими вложенными придаточными.</p>
+      <div class="ex">She left because the train that she wanted had gone.</div>
+    </div>
+    <div class="sty-card">
+      <h4>Сложное с сочинением и подчинением</h4>
+      <div class="lab">две+ главные + одна+ придаточная</div>
+      <p>Оба приёма сразу — рабочая лошадка настоящего письма.</p>
+      <div class="ex">She left because the train had gone, and she walked home.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p><b>Вся игра в одной строке.</b> Соединить клаузы можно лишь двумя способами: <b class="k v">сочинить</b> их (связать равных — Часть&nbsp;7) или <b class="k a">подчинить</b> одну (вложить её как роль в другую — Части&nbsp;8–10). Любое предложение, вплоть до самого длинного, — это два этих приёма, применённые многократно.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 7 ============ -->
+<section class="part" id="p7">
+  <div class="part-head"><span class="part-num">Часть 7</span></div>
+  <h2>Сочинение: связь равных</h2>
+  <p class="part-lede">Сочинение связывает две единицы <i>одного ранга</i> — две клаузы, два дополнения, два прилагательных. Союзов немного, и их стоит запомнить.</p>
+
+  <div class="prose">
+    <h3>Семь сочинительных союзов — FANBOYS</h3>
+    <p><span class="en"><b>F</b>or</span> (причина), <span class="en"><b>A</b>nd</span> (добавление), <span class="en"><b>N</b>or</span> (отрицательное добавление), <span class="en"><b>B</b>ut</span> (контраст), <span class="en"><b>O</b>r</span> (альтернатива), <span class="en"><b>Y</b>et</span> (контраст), <span class="en"><b>S</b>o</span> (результат). Когда один из них соединяет <i>две полные клаузы</i>, ставьте перед ним запятую: <span class="en">It was late, <b>so</b> we left.</span></p>
+    <h3>Парные (двойные) союзы</h3>
+    <p><span class="en">both … and</span>, <span class="en">either … or</span>, <span class="en">neither … nor</span>, <span class="en">not only … but also</span>, <span class="en">whether … or</span>. Они должны обрамлять <i>параллельные</i> элементы: <span class="en">✗ She not only sings but also she dances</span> → <span class="en">✓ She not only sings but also dances</span>.</p>
+    <h3>Союзные наречия — это не сочинительные союзы</h3>
+    <p><span class="en">however, therefore, moreover, nevertheless, thus</span> кажутся союзами, но это наречия. Двум клаузам вокруг такого слова нужна <b>точка с запятой</b>, а не запятая: <span class="en">It rained; <b>however</b>, we went.</span> Запятая здесь — классическая <i>склейка запятой</i> (Часть&nbsp;14).</p>
+  </div>
+
+  <div class="note">
+    <div class="note-h">Ментальный триггер носителя — сочинить или подчинить?</div>
+    <p>Прежде чем соединить две мысли, носитель спрашивает: <i>это два равных, рядом стоящих факта, или один — главная мысль, а другой — условие, причина или деталь при нём?</i> Равный вес → сочинить через <span class="en">and / but / so</span>. Один служит другому → подчинить через <span class="en">because / although / when / which</span>.</p>
+    <div class="note-sub">Те же два факта, взвешенные по-разному</div>
+    <ul class="usex">
+      <li><span class="u">Сочинение — равные в правах</span><span class="s-en">It was raining, <b>and</b> we stayed in.</span></li>
+      <li><span class="u">Подчинение — дождь лишь причина</span><span class="s-en"><b>Because</b> it was raining, we stayed in.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 8 ============ -->
+<section class="part" id="p8">
+  <div class="part-head"><span class="part-num">Часть 8</span></div>
+  <h2>Придаточная клауза №1 — именные</h2>
+  <p class="part-lede">Придаточная клауза делает одну из трёх работ: работает как <b class="k o">существительное</b>, как <b class="k c">прилагательное</b> или как <b class="k a">наречие</b>. Сначала именная — целая клауза, занимающая место, где мог бы стоять одиночный существительное.</p>
+
+  <div class="prose">
+    <p><b>Именная клауза</b> может быть подлежащим, дополнением или предикативом большей клаузы. Начинается с <span class="en">that</span>, <i>wh-</i>слова (<span class="en">what, who, why, how, where, when</span>) или <span class="en">whether / if</span>.</p>
+  </div>
+
+  <div class="bd">
+    <div class="piece s"><span class="pl">Подлежащее = клауза</span><span class="pt">What he said</span></div>
+    <div class="piece v"><span class="pl">Глагол</span><span class="pt">surprised</span></div>
+    <div class="piece o"><span class="pl">Дополнение</span><span class="pt">everyone.</span></div>
+  </div>
+  <p class="bd-cap">Вся клауза <span class="en">What he said</span> — подлежащее; замените её местоимением <span class="en">it</span> — и каркас держится.</p>
+
+  <div class="prose">
+    <ul class="usex" style="margin-top:6px">
+      <li><span class="u">Дополнение глагола (that-клауза)</span><span class="s-en">I know <b>that</b> she's right.</span></li>
+      <li><span class="u">Дополнение — <span class="en">that</span> часто опускают</span><span class="s-en">I know she's right.</span></li>
+      <li><span class="u">wh-клауза как дополнение</span><span class="s-en">Tell me <b>what</b> you want.</span></li>
+      <li><span class="u">whether / if — вложенный да/нет-вопрос</span><span class="s-en">I wonder <b>whether</b> it's true.</span></li>
+      <li><span class="u">Предикатив после <span class="en">be</span></span><span class="s-en">The problem is <b>that</b> we're late.</span></li>
+      <li><span class="u">После предлога (только wh-/whether)</span><span class="s-en">It depends on <b>what</b> he decides.</span></li>
+    </ul>
+    <p><b>Экстрапозиция — приём с «it».</b> Клауза-подлежащее в начале тяжеловесна, поэтому английский обычно отправляет её в конец, а спереди ставит заполнитель <span class="en">it</span>: <span class="en">That he lied is obvious</span> → <span class="en"><b>It</b> is obvious <b>that</b> he lied.</span> Это <span class="en">it</span> ничего не значит — оно лишь держит место подлежащего.</p>
+    <p><b>Косвенная речь — это именные клаузы.</b> <span class="en">"I'm tired," she said</span> → <span class="en">She said <b>that</b> she was tired.</span> Слова из цитаты становятся <span class="en">that</span>-клаузой-дополнением, а время сдвигается на шаг назад.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 9 ============ -->
+<section class="part" id="p9">
+  <div class="part-head"><span class="part-num">Часть 9</span></div>
+  <h2>Придаточная клауза №2 — определительные (относительные)</h2>
+  <p class="part-lede">Определительная клауза делает работу прилагательного: стоит сразу за существительным и говорит, <i>какое именно</i> оно, или добавляет о нём сведения. Это самый мощный инструмент, чтобы упаковать детали в предложение.</p>
+
+  <div class="bd">
+    <div class="piece o"><span class="pl">Существительное</span><span class="pt">the man</span></div>
+    <div class="piece a"><span class="pl">Определительная клауза (работа прилагательного)</span><span class="pt">who fixed my car</span></div>
+  </div>
+  <p class="bd-cap">Клауза <span class="en">who fixed my car</span> определяет <span class="en">the man</span> точно так же, как это сделало бы прилагательное.</p>
+
+  <div class="prose">
+    <h3>Относительные слова</h3>
+    <p><span class="en">who / whom</span> (люди), <span class="en">which</span> (предметы), <span class="en">that</span> (люди или предметы, только в ограничительных), <span class="en">whose</span> (принадлежность) и относительные наречия <span class="en">where, when, why</span>.</p>
+    <h3>Ограничительные и неограничительные — запятая меняет смысл</h3>
+    <ul class="usex">
+      <li><span class="u">Ограничительная — какое именно, без запятых</span><span class="s-en">The book <b>that</b> I lent you is overdue.</span></li>
+      <li><span class="u">Неограничительная — доп. сведения, запятые, без <span class="en">that</span></span><span class="s-en">This book, <b>which</b> I love, is overdue.</span></li>
+    </ul>
+    <p><b>Почему запятая — не украшение.</b> <span class="en">My brother who lives in Rome</span> (ограничительная) намекает, что братьев несколько, и я про римского. <span class="en">My brother, who lives in Rome,</span> (неограничительная) намекает, что брат один, а Рим — попутное замечание. Пунктуация несёт настоящую информацию.</p>
+    <h3>Опускание относительного слова</h3>
+    <p>Когда относительное слово — <i>дополнение</i> своей клаузы, его можно опустить: <span class="en">the book <b>(that)</b> I lent you</span>. Когда оно — <i>подлежащее</i>, нельзя: <span class="en">the man <b>who</b> fixed my car</span>.</p>
+    <h3>Предлоги в определительных клаузах</h3>
+    <p>Разговорный английский оставляет предлог в конце и опускает местоимение: <span class="en">the house <b>(that)</b> we lived <b>in</b></span>. Формальный тянет его вперёд с <span class="en">which/whom</span>: <span class="en">the house <b>in which</b> we lived</span>.</p>
+    <h3>Свёрнутые определительные клаузы</h3>
+    <p>Определительная клауза часто сворачивается во фразу. <span class="en">the parcel <b>that was</b> left at the door</span> → <span class="en">the parcel <b>left</b> at the door</span> (причастие прош. времени). <span class="en">the man <b>who is</b> waiting</span> → <span class="en">the man <b>waiting</b></span> (-ing). Вот почему длинные именные группы так часто кончаются на <span class="en">-ing</span> или <span class="en">-ed</span> — это определительные клаузы с выжатым <span class="en">who/which + be</span>.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 10 ============ -->
+<section class="part" id="p10">
+  <div class="part-head"><span class="part-num">Часть 10</span></div>
+  <h2>Придаточная клауза №3 — обстоятельственные</h2>
+  <p class="part-lede">Обстоятельственная клауза делает работу наречия для всей главной клаузы: говорит, когда, где, зачем, несмотря на что, при каком условии. Вводится подчинительным союзом и обычно может встать в начало (с запятой) или в конец (без неё).</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Значение</th><th>Союзы</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>Время</td><td class="f">when, while, as, before, after, until, since, as soon as, by the time</td><td><span class="en"><b>As soon as</b> she arrived, we ate.</span></td></tr>
+      <tr><td>Условие</td><td class="f">if, unless, provided (that), as long as, in case</td><td><span class="en">We'll go <b>unless</b> it rains.</span></td></tr>
+      <tr><td>Уступка (контраст)</td><td class="f">although, though, even though, while, whereas</td><td><span class="en"><b>Although</b> he tried, he failed.</span></td></tr>
+      <tr><td>Причина</td><td class="f">because, since, as, seeing that</td><td><span class="en">We stayed <b>because</b> it was late.</span></td></tr>
+      <tr><td>Цель</td><td class="f">so that, in order that, so as to, to</td><td><span class="en">She whispered <b>so that</b> no one would hear.</span></td></tr>
+      <tr><td>Следствие</td><td class="f">so … that, such … that</td><td><span class="en">It was <b>so</b> cold <b>that</b> the pipes froze.</span></td></tr>
+      <tr><td>Образ действия / сравнение</td><td class="f">as, as if, as though, than, the … the</td><td><span class="en">He talks <b>as if</b> he knew everything.</span></td></tr>
+      <tr><td>Место</td><td class="f">where, wherever</td><td><span class="en">Sit <b>wherever</b> you like.</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>В начало или в конец — и запятая.</b> Ставьте обстоятельственную клаузу <i>первой</i> для акцента или зачина и отмечайте стык запятой: <span class="en"><b>When the bell rang,</b> everyone stood.</span> Ставьте <i>последней</i> — и запятая обычно исчезает: <span class="en">Everyone stood <b>when the bell rang</b>.</span></p>
+    <p><b>Условные предложения — это обстоятельственные клаузы условия.</b> Вся система условных (нулевой, первый, второй, третий, смешанные) — это клауза с <span class="en">if</span> плюс главная клауза, где формы глагола сдвинуты, чтобы показать, насколько ситуация реальна или нереальна; временную ось за ними см. на странице о временах.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 11 ============ -->
+<section class="part" id="p11">
+  <div class="part-head"><span class="part-num">Часть 11</span></div>
+  <h2>Неличные и бесглагольные клаузы — как английский сжимает</h2>
+  <p class="part-lede">Это клаузы без глагола в форме времени и обычно без названного подлежащего. Они позволяют свернуть целую клаузу во фразу и встречаются в беглом письме повсюду.</p>
+
+  <div class="prose">
+    <ul class="usex">
+      <li><span class="u">to-инфинитивная клауза (цель и др.)</span><span class="s-en">She stopped <b>to buy</b> milk.</span></li>
+      <li><span class="u">-ing-клауза (одновременность, причина)</span><span class="s-en"><b>Feeling</b> tired, he sat down.</span></li>
+      <li><span class="u">-ed (причастие прош. вр.) — пассивный смысл</span><span class="s-en"><b>Shaken</b> by the news, she left.</span></li>
+      <li><span class="u">бесглагольная клауза (фраза вместо клаузы)</span><span class="s-en"><b>When in doubt,</b> ask.</span></li>
+      <li><span class="u">абсолютная конструкция (со своим подлежащим)</span><span class="s-en"><b>The work finished,</b> we went home.</span></li>
+    </ul>
+    <p><b>Опасность «висячего» причастия.</b> Неличная клауза заимствует пропущенное подлежащее у ближайшего существительного — обычно у подлежащего главной клаузы. Если они не совпадают, предложение говорит нелепость: <span class="en">✗ Walking to school, the rain started.</span> (дождь не шёл пешком) → <span class="en">✓ Walking to school, I got caught in the rain.</span> Всегда проверяйте, что скрытое подлежащее <span class="en">-ing</span>/<span class="en">-ed</span>-клаузы — то, которое вы имеете в виду.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 12 ============ -->
+<section class="part" id="p12">
+  <div class="part-head"><span class="part-num">Часть 12</span></div>
+  <h2>Как соединять и вкладывать: строим настоящее предложение</h2>
+  <p class="part-lede">Длинные предложения — не другая грамматика, а те же клаузы, вложенные и сцепленные. Вот как носитель наращивает предложение и как сохранить его читаемым.</p>
+
+  <div class="prose">
+    <p><b>Начните с хребта</b> — той одной главной клаузы, что несёт мысль:</p>
+  </div>
+  <div class="bd"><div class="piece v"><span class="pl">Главная клауза (хребет)</span><span class="pt">The report was rejected.</span></div></div>
+
+  <div class="prose">
+    <p><b>Навесьте придаточные на её роли</b> — определительную на существительное, обстоятельственную на всё целиком:</p>
+  </div>
+  <div class="bd">
+    <div class="piece o"><span class="pl">сущ. + определительная</span><span class="pt">The report that we submitted</span></div>
+    <div class="piece v"><span class="pl">главный глагол</span><span class="pt">was rejected</span></div>
+    <div class="piece a"><span class="pl">обстоятельственная</span><span class="pt">because it missed the deadline.</span></div>
+  </div>
+
+  <div class="prose">
+    <h3>Соединить два коротких предложения — шесть приёмов</h3>
+    <p>Начнём с двух голых фактов: <span class="en">The car was old.</span> + <span class="en">It broke down.</span> Любой способ их соединить — один приём с этой страницы; выбирайте тот, чью <i>расстановку веса</i> хотите.</p>
+  </div>
+  <ul class="usex">
+    <li><span class="u">Сочинение (следствие) — равный вес</span><span class="s-en">The car was old, <b>so</b> it broke down.</span></li>
+    <li><span class="u">Подчинение (причина) — один служит другому</span><span class="s-en"><b>Because</b> the car was old, it broke down.</span></li>
+    <li><span class="u">Определительная клауза — на существительное</span><span class="s-en">The car, <b>which was</b> old, broke down.</span></li>
+    <li><span class="u">Свёрнутая определительная — убрать <span class="en">which + be</span></span><span class="s-en">The <b>old</b> car broke down.</span></li>
+    <li><span class="u">-ing-причастная клауза — сжать причину</span><span class="s-en"><b>Being</b> old, the car broke down.</span></li>
+    <li><span class="u">Обстоятельство времени — другой стык</span><span class="s-en">The old car finally broke down <b>when</b> it hit the hill.</span></li>
+  </ul>
+
+  <div class="prose">
+    <h3>Три предложения — в одно</h3>
+    <p>Коротко и рублено: <span class="en">The engineer was tired. She had worked all night. She still fixed the bug.</span></p>
+  </div>
+  <ul class="hardex">
+    <li><div class="s-en">Although she was tired, the engineer, who had worked all night, still fixed the bug.</div><div class="ht"><b>Как собрано:</b> контраст становится уступительной клаузой (<span class="en">although she was tired</span>), средний факт — неограничительной определительной на <span class="en">the engineer</span> (<span class="en">who had worked all night</span>), а последний остаётся хребтом (<span class="en">still fixed the bug</span>). Одно сложноподчинённое, три факта, каждому — свой вес.</div></li>
+  </ul>
+
+  <div class="prose">
+    <p><b>Добавьте второй хребет, если мысли равны:</b></p>
+  </div>
+  <ul class="hardex">
+    <li><div class="s-en">The report that we submitted was rejected because it missed the deadline, but the client agreed to a second attempt, which the team is now preparing.</div><div class="ht"><b>Как собрано:</b> две главные клаузы (<span class="en">was rejected</span> · <span class="en">the client agreed</span>), связанные <span class="en">but</span>; каждая несёт придаточные — определительную (<span class="en">that we submitted</span>), обстоятельственную (<span class="en">because it missed…</span>), дополнение цели (<span class="en">to a second attempt</span>) и завершающую определительную (<span class="en">which the team is now preparing</span>). Сложное с сочинением и подчинением, но каждый кусок — единица из Частей 1–10.</div></li>
+  </ul>
+
+  <div class="prose">
+    <h3>Параллелизм — правило, что держит длинные предложения читаемыми</h3>
+    <p>Элементы, соединённые через <span class="en">and / or / but</span>, должны быть в одной грамматической форме. Несовпадение форм — самый частый признак предложения, вышедшего из-под контроля: <span class="en">✗ She likes reading, to swim, and cooked meals</span> → <span class="en">✓ She likes reading, swimming, and cooking.</span></p>
+    <h3>Когда остановиться</h3>
+    <p>Английский терпит глубокое вложение, но читатель удерживает лишь ограниченное. Если предложение заставляет держать в уме незакрытую клаузу через много слов (центральное вложение из Части&nbsp;13), разбейте его надвое. Беглость — не максимальная длина, а размещение главной мысли там, где её найдут.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 13 ============ -->
+<section class="part" id="p13">
+  <div class="part-head"><span class="part-num">Часть 13</span></div>
+  <h2>Самые трудные конструкции — и как их читать</h2>
+  <p class="part-lede">Это конструкции, от которых предложение кажется неприступным. Каждая — лишь обычный набор, переставленный ради акцента, фокуса или экономии. Узнайте форму — и трудность испаряется.</p>
+
+  <div class="prose">
+    <h3>Расщеплённые предложения (cleft) — разбить клаузу, чтобы высветить часть</h3>
+    <ul class="usex">
+      <li><span class="u">it-cleft (высвечивает один элемент)</span><span class="s-en"><b>It was</b> John <b>who</b> broke it. (не кто-то ещё)</span></li>
+      <li><span class="u">wh-cleft / псевдорасщепление</span><span class="s-en"><b>What</b> I need <b>is</b> a holiday.</span></li>
+    </ul>
+    <h3>Экстрапозиция — тяжёлую клаузу отправляют в конец</h3>
+    <p><span class="en">To finish this today is impossible</span> → <span class="en"><b>It</b> is impossible <b>to finish this today</b>.</span> <span class="en">it</span> — пустой заполнитель; настоящее подлежащее ждёт в конце.</p>
+    <h3>Вынос вперёд и инверсия — сдвиг куска в начало ради эффекта</h3>
+    <p>Вытолкните элемент вперёд и при отрицаниях поменяйте местами подлежащее и вспомогательный: <span class="en"><b>Never have</b> I seen such a mess.</span> · <span class="en"><b>Not only did</b> she win, but she also set a record.</span> · <span class="en"><b>Down the hill rolled</b> the barrel.</span></p>
+    <h3>Центральное вложение — клауза внутри клаузы внутри клаузы</h3>
+    <ul class="hardex">
+      <li><div class="s-en">The rumour that the manager the board hired had resigned spread quickly.</div><div class="ht"><b>Как читать:</b> снимайте слоями снаружи. Хребет: <span class="en">The rumour … spread quickly</span>. Внутри: <span class="en">the rumour [that the manager … had resigned]</span>. Ещё внутри: <span class="en">the manager [(that) the board hired]</span>. Три клаузы, вложенные в одну точку, — грамматично, но потому-то писатели такого и избегают.</div></li>
+    </ul>
+    <h3>Предложения-«садовые дорожки» — грамотные, но обманывают разбор</h3>
+    <ul class="hardex">
+      <li><div class="s-en">The horse raced past the barn fell.</div><div class="ht"><b>Обман:</b> <span class="en">raced past the barn</span> кажется главным глаголом, но это свёрнутая определительная — <span class="en">the horse [that was] raced past the barn</span>, — а настоящий глагол <span class="en">fell</span>. Приходится перечитать; в этом и суть.</div></li>
+      <li><div class="s-en">The old man the boats.</div><div class="ht"><b>Обман:</b> <span class="en">man</span> здесь — глагол (укомплектовывать), <span class="en">the old</span> — подлежащее (пожилые): <span class="en">The old [people] man [operate] the boats.</span></div></li>
+    </ul>
+    <h3>Аппозиция — именная группа, переименовывающая другую</h3>
+    <p><span class="en">My neighbour, <b>a retired pilot</b>, flies drones.</span> Средняя фраза — не клауза; она просто переименовывает <span class="en">my neighbour</span>, выделяясь запятыми.</p>
+    <h3>Эллипсис — опустить то, что восстановимо</h3>
+    <p>Английский удаляет повторяющееся: <span class="en">She can sing and he can [sing] too</span> → <span class="en">She can sing and he can too.</span> · <span class="en">I'll help if I can [help].</span> Пропуск понятен из контекста.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 14 ============ -->
+<section class="part" id="p14">
+  <div class="part-head"><span class="part-num">Часть 14</span></div>
+  <h2>Пунктуация клауз — стыки предложения</h2>
+  <p class="part-lede">Знаки препинания отмечают швы между клаузами. Освойте эти пять — и большинство ошибок в предложениях исчезнет.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Знак</th><th>Что соединяет</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>Запятая + FANBOYS</td><td>две главные клаузы</td><td><span class="en">It was late, <b>so</b> we left.</span></td></tr>
+      <tr><td>Точка с запятой</td><td>две связанные главные, без союза</td><td><span class="en">It was late<b>;</b> we left.</span></td></tr>
+      <tr><td>Двоеточие</td><td>клауза, ведущая к пояснению или списку</td><td><span class="en">She had one goal<b>:</b> to finish.</span></td></tr>
+      <tr><td>Запятая (вводная / неограничит.)</td><td>вводная или добавочная клауза</td><td><span class="en"><b>When it rang,</b> he answered.</span></td></tr>
+      <tr><td>Тире</td><td>резкая вставка или добавление</td><td><span class="en">He agreed — reluctantly — to help.</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <h3>Три классические ошибки</h3>
+    <ul class="usex">
+      <li><span class="u">Склейка запятой — две клаузы, только запятая</span><span class="s-en">✗ It was late, we left. → ✓ It was late<b>;</b> we left.</span></li>
+      <li><span class="u">Слипшееся — вообще без знака</span><span class="s-en">✗ It was late we left. → ✓ It was late<b>,</b> so we left.</span></li>
+      <li><span class="u">Обрывок — придаточная в одиночку</span><span class="s-en">✗ Because it was late. → ✓ We left <b>because it was late.</b></span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 15 ============ -->
+<section class="part" id="p15">
+  <div class="part-head"><span class="part-num">Часть 15</span></div>
+  <h2>Форма и функция: четыре назначения предложения</h2>
+  <p class="part-lede">Отдельная ось от структуры: <i>что предложение делает</i>. Форма (как построено) и функция (для чего) обычно совпадают — но не всегда, и именно в этом зазоре живут вежливость и оттенки.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Функция</th><th>Обычная форма</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>Утверждение (повествоват.)</td><td class="f">S + V …</td><td><span class="en">The door is open.</span></td></tr>
+      <tr><td>Вопрос (вопросительное)</td><td class="f">aux + S + V / wh-</td><td><span class="en">Is the door open?</span></td></tr>
+      <tr><td>Команда (повелительное)</td><td class="f">V … (без подлежащего)</td><td><span class="en">Open the door.</span></td></tr>
+      <tr><td>Восклицание (восклицат.)</td><td class="f">What / How …!</td><td><span class="en">What a mess this is!</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="prose">
+    <p><b>Когда форма и функция расходятся.</b> Предложение в форме вопроса может быть просьбой (<span class="en">Could you open the door?</span> = вежливая команда), а утверждение — вопросом по интонации (<span class="en">You're leaving?</span>). Беглость носителя во многом и есть этот зазор — выбор более мягкой <i>формы</i> для прямой <i>функции</i>.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАСТЬ 16 ============ -->
+<section class="part" id="p16">
+  <div class="part-head"><span class="part-num">Часть 16</span></div>
+  <h2>Собрать и проверить любое предложение — алгоритм</h2>
+  <p class="part-lede">Повторяемый порядок действий, чтобы написать ясное предложение и разобрать трудное.</p>
+
+  <div class="prose">
+    <h3>Чтобы собрать</h3>
+    <ul class="usex">
+      <li><span class="u">1. Задайте хребет</span><span class="s-en">Одна главная клауза = мысль. S + V + что нужно глаголу.</span></li>
+      <li><span class="u">2. Навесьте детали клаузами</span><span class="s-en">which/who (определит.) на существительное; because/when/if (обстоят.) на всё.</span></li>
+      <li><span class="u">3. Решите: равные или подчинённые</span><span class="s-en">Равные мысли → and/but/so. Одна служит другой → подчинить.</span></li>
+      <li><span class="u">4. Держите соединённое параллельным</span><span class="s-en">reading, swimming, cooking — не reading, to swim, cooked.</span></li>
+      <li><span class="u">5. Расставьте знаки на швах</span><span class="s-en">запятая+FANBOYS, точка с запятой, вводная запятая; без склеек.</span></li>
+    </ul>
+    <h3>Чтобы разобрать трудное</h3>
+    <ul class="usex">
+      <li><span class="u">1. Найдите главный глагол</span><span class="s-en">Сначала пропустите всё в запятых/скобках — найдите глагол хребта.</span></li>
+      <li><span class="u">2. Назовите его подлежащее</span><span class="s-en">Кто или что делает этот глагол? Эта пара — ядро мысли.</span></li>
+      <li><span class="u">3. Возьмите в скобки каждую придаточную</span><span class="s-en">Отметьте, где начинается и кончается каждая which/that/because/when-клауза.</span></li>
+      <li><span class="u">4. Снимайте слоями снаружи внутрь</span><span class="s-en">Прочтите хребет, затем возвращайте каждую клаузу в её роль.</span></li>
+    </ul>
+    <p><b>Одна мысль на память.</b> «Продвинутых» предложений не бывает — есть лишь пять ролей, две семьи клауз и два приёма их соединения, применённые снова и снова. Любое предложение, что вам встретится, — это тот же набор, переставленный.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Устройство английского предложения · 5 ролей · 7 схем · 3 работы клауз · 2 приёма</span>
+  <span class="mono">Спутник страниц «The English Timeline», «The Passive Turn» и «The Preposition Map»</span>
+</footer>
+
+</main>
+</div>
+</div>
