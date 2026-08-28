@@ -1,0 +1,543 @@
+<meta charset="utf-8">
+<title>The Conjunction Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3; --card:#FFFFFF; --card-2:#E4EAEE;
+  --ink:#131C25; --ink-2:#47555F; --ink-3:#75838E;
+  --line:#CFD8DE; --line-2:#E2E8EC;
+  --c-co:#12746A;   /* coordinating */
+  --c-sub:#2F6DB8;  /* subordinating */
+  --c-cor:#A6640B;  /* correlative */
+  --c-adv:#5546B8;  /* conjunctive adverb */
+  --c-now:#C23E2B;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+    --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+    --line:#27353F; --line-2:#1F2C36;
+    --c-co:#4FC3B3; --c-sub:#6FB0F2; --c-cor:#E8A44A; --c-adv:#A798F7;
+    --c-now:#FF7C64;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+  --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+  --line:#27353F; --line-2:#1F2C36;
+  --c-co:#4FC3B3; --c-sub:#6FB0F2; --c-cor:#E8A44A; --c-adv:#A798F7;
+  --c-now:#FF7C64;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Golos Text","Segoe UI",system-ui,sans-serif;font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){.shell{display:grid;grid-template-columns:212px minmax(0,1fr);gap:56px;align-items:start}}
+.rail{display:none}
+@media (min-width:1080px){.rail{display:block;position:sticky;top:0;padding:40px 0;max-height:100vh;overflow-y:auto}}
+.rail-title{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:baseline;text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);border-left:2px solid transparent}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-now)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3)}
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.hero h1{font-size:clamp(38px,6.4vw,66px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:62ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);background:var(--card)}
+.chip.co{color:var(--c-co);border-color:color-mix(in srgb,var(--c-co) 45%,var(--line))}
+.chip.sub{color:var(--c-sub);border-color:color-mix(in srgb,var(--c-sub) 45%,var(--line))}
+.chip.cor{color:var(--c-cor);border-color:color-mix(in srgb,var(--c-cor) 45%,var(--line))}
+.chip.adv{color:var(--c-adv);border-color:color-mix(in srgb,var(--c-adv) 45%,var(--line))}
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-now)}
+.part h2{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:70ch;color:var(--ink-2)}
+.prose{max-width:72ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.prose h3{color:var(--ink);font-size:19px;margin-top:10px}
+.prose h3 .en{font-size:.88em}
+
+/* word entry card */
+.w{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ink-3);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px;margin-top:16px}
+.w.co{border-left-color:var(--c-co)} .w.sub{border-left-color:var(--c-sub)} .w.cor{border-left-color:var(--c-cor)} .w.adv{border-left-color:var(--c-adv)}
+.w-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.w-word{font-family:"JetBrains Mono",monospace;font-size:17px;font-weight:500;color:var(--ink)}
+.w-rel{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.w p{font-size:14.5px;color:var(--ink-2);line-height:1.6;margin:0}
+.w p+p{margin-top:8px}
+.w p b{color:var(--ink)}
+.w .en{font-size:.9em}
+.ex{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.ex li{padding:8px 12px;background:var(--card-2);border-radius:8px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.5}
+.ex li b{color:var(--c-now)}
+.warn{margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+.warn b{color:var(--c-now)}
+
+.tbl-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+table.tbl{border-collapse:collapse;width:100%;min-width:560px;background:var(--card);font-size:14px}
+table.tbl th,table.tbl td{text-align:left;padding:10px 14px;border-top:1px solid var(--line-2);vertical-align:top}
+table.tbl thead th{background:var(--card-2);border-top:0;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+table.tbl td.f{font-family:"JetBrains Mono",monospace;color:var(--ink)}
+table.tbl tr td:first-child{font-weight:600;color:var(--ink)}
+.usex{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(180px,40%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+footer{margin-top:80px;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--ink-3);font-size:13px}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Contents">
+  <div class="rail-title">Contents</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">0</span><span>What a conjunction is</span></a></li>
+    <li><a href="#p1"><span class="tc">1</span><span>Coordinating (FANBOYS)</span></a></li>
+    <li><a href="#p2"><span class="tc">2</span><span>Correlative pairs</span></a></li>
+    <li><a href="#p3"><span class="tc">3</span><span>Subordinating — overview</span></a></li>
+    <li><a href="#p4"><span class="tc">4</span><span>Time</span></a></li>
+    <li><a href="#p5"><span class="tc">5</span><span>Reason & cause</span></a></li>
+    <li><a href="#p6"><span class="tc">6</span><span>Condition</span></a></li>
+    <li><a href="#p7"><span class="tc">7</span><span>Concession & contrast</span></a></li>
+    <li><a href="#p8"><span class="tc">8</span><span>Purpose & result</span></a></li>
+    <li><a href="#p9"><span class="tc">9</span><span>Manner, comparison, place</span></a></li>
+    <li><a href="#p10"><span class="tc">10</span><span>The overloaded words</span></a></li>
+    <li><a href="#p11"><span class="tc">11</span><span>Conjunctive adverbs</span></a></li>
+    <li><a href="#p12"><span class="tc">12</span><span>Punctuation</span></a></li>
+    <li><a href="#p13"><span class="tc">13</span><span>Common mistakes</span></a></li>
+    <li><a href="#p14"><span class="tc">14</span><span>Full reference</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">Every joining word · deep usage &amp; examples</div>
+  <h1>The Conjunction Handbook</h1>
+  <p class="lede">A conjunction is a joining word — but "joining" hides three completely different mechanisms. <b>Coordinating</b> conjunctions link equals; <b>correlative</b> ones work in pairs; <b>subordinating</b> ones hook a dependent clause onto a main one. This handbook takes every conjunction in English one at a time — what it joins, the relationship it signals, its register, and the errors it causes — with an example for each.</p>
+  <div class="chips">
+    <span class="chip co">Coordinating — join equals</span>
+    <span class="chip cor">Correlative — in pairs</span>
+    <span class="chip sub">Subordinating — embed a clause</span>
+    <span class="chip adv">Conjunctive adverbs — the look-alikes</span>
+  </div>
+</header>
+
+<!-- 0 -->
+<section class="part" id="p0">
+  <div class="part-head"><span class="part-num">Part 0</span></div>
+  <h2>What a conjunction actually is</h2>
+  <p class="part-lede">A conjunction joins words, phrases, or clauses. But there are three real kinds — plus two families that look like conjunctions and aren't. Knowing which kind you're using decides both the grammar and the punctuation.</p>
+  <div class="prose">
+    <p><b class="mono" style="color:var(--c-co)">Coordinating</b> — joins two units of <i>equal rank</i>: two words, two phrases, or two independent clauses (<span class="en">bread <b>and</b> butter</span>; <span class="en">I called, <b>but</b> no one answered</span>). Seven of them: <b>FANBOYS</b>.</p>
+    <p><b class="mono" style="color:var(--c-cor)">Correlative</b> — a coordinating idea split into <i>two parts</i> that bracket the joined items (<span class="en"><b>both</b> tea <b>and</b> coffee</span>; <span class="en"><b>either</b> now <b>or</b> never</span>).</p>
+    <p><b class="mono" style="color:var(--c-sub)">Subordinating</b> — hooks a <i>dependent</i> clause onto a main one, creating an unequal relationship (<span class="en">We left <b>because</b> it was late</span>). The dependent clause cannot stand alone.</p>
+    <p><b>The asymmetry test</b> tells coordinating from subordinating: delete one side. Delete a coordinated half and the other is still a whole sentence (<span class="en">I'm tired ~~and I want to sleep~~</span> → <span class="en">I'm tired.</span>). Delete the main clause of a subordinate pair and what's left dangles (<span class="en">~~I stayed~~ because I was tired</span> → <span class="en">✗ because I was tired</span>).</p>
+    <p><b>The two look-alikes.</b> <b class="mono" style="color:var(--c-adv)">Conjunctive adverbs</b> (<span class="en">however, therefore, moreover</span>) <i>feel</i> like conjunctions but are adverbs — they need a full stop or semicolon, not a comma (Part&nbsp;11). And a <b>preposition</b> (<span class="en">despite, because of</span>) takes a <i>noun</i>, never a clause — which is why it's <span class="en">although it rained</span> (conjunction + clause) but <span class="en">despite the rain</span> (preposition + noun).</p>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="part" id="p1">
+  <div class="part-head"><span class="part-num">Part 1</span></div>
+  <h2>Coordinating conjunctions — the seven (FANBOYS)</h2>
+  <p class="part-lede">They join equals. When one links two <i>full clauses</i>, put a comma before it; when it links two words or phrases, no comma. Every coordinated pair must be grammatically <b>parallel</b>.</p>
+
+  <div class="w co"><div class="w-h"><span class="w-word">and</span><span class="w-rel">addition</span></div>
+    <p>The plain "plus". Beyond simple addition it also signals <b>sequence</b> (one thing then the next), <b>result / consequence</b> (do this <i>and</i> that follows), and <b>commentary</b>. It demands parallel items and, in a list of three or more, an optional Oxford comma before the final <span class="en">and</span>.</p>
+    <ul class="ex">
+      <li>bread <b>and</b> butter (addition)</li>
+      <li>He came in <b>and</b> sat down. (sequence)</li>
+      <li>Touch it <b>and</b> you'll get burned. (result — like a hidden "if")</li>
+      <li>red, white<b>,</b> <b>and</b> blue (Oxford comma optional)</li>
+    </ul>
+    <div class="warn"><b>Note:</b> <span class="en">try and</span> = <span class="en">try to</span> (informal); <span class="en">go and see</span> is idiomatic. Starting a sentence with <span class="en">And</span> is fine for effect in modern usage.</div>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">but</span><span class="w-rel">contrast / exception</span></div>
+    <p>Signals that what follows runs <b>against expectation</b>. It also means <b>except</b> (<span class="en">everyone but me</span>), forms the correction frame <span class="en">not X but Y</span>, and appears in <span class="en">but for</span> (= if it weren't for).</p>
+    <ul class="ex">
+      <li>poor <b>but</b> happy (contrast)</li>
+      <li>I tried, <b>but</b> it failed. (clause contrast — comma before)</li>
+      <li>Everyone <b>but</b> me left. (= except)</li>
+      <li>It was not luck <b>but</b> skill. (not X but Y)</li>
+      <li><b>But for</b> your help, I'd have failed. (= if not for)</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">or</span><span class="w-rel">alternative</span></div>
+    <p>Offers an <b>alternative</b> or a <b>choice</b>; after an imperative it becomes a <b>warning</b> (= otherwise). It can be inclusive ("either or both") or exclusive ("one, not both") — context decides. Pairs with <span class="en">either</span>.</p>
+    <ul class="ex">
+      <li>tea <b>or</b> coffee? (choice)</li>
+      <li>Hurry, <b>or</b> we'll miss it. (= otherwise)</li>
+      <li>coffee, tea<b>,</b> <b>or</b> juice (list)</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">nor</span><span class="w-rel">negative addition</span></div>
+    <p>Adds a <b>second negative</b>. After it, the clause <b>inverts</b> (auxiliary before subject), like a question. Usually follows a negative clause or pairs with <span class="en">neither</span>.</p>
+    <ul class="ex">
+      <li>I don't smoke, <b>nor does</b> she. (inversion)</li>
+      <li>He didn't call, <b>nor did</b> he write.</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">for</span><span class="w-rel">reason (literary)</span></div>
+    <p>A formal / literary coordinator meaning <b>because / seeing that</b>. It joins two clauses as equals and always comes second, after a comma. Distinct from the preposition <span class="en">for</span> (purpose, benefit).</p>
+    <ul class="ex">
+      <li>He was glad, <b>for</b> the sun had come out.</li>
+      <li>We must act now, <b>for</b> time is short.</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">yet</span><span class="w-rel">contrast (emphatic)</span></div>
+    <p>Like <span class="en">but</span>, but sharper — it stresses that the second fact is <b>surprising</b> given the first. Also functions as an adverb ("still / up to now").</p>
+    <ul class="ex">
+      <li>simple <b>yet</b> effective</li>
+      <li>She's strict <b>yet</b> fair.</li>
+      <li>It's hard, <b>yet</b> not impossible.</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">so</span><span class="w-rel">result</span></div>
+    <p>Introduces a <b>result / consequence</b> of the previous clause. Keep it apart from the subordinator <span class="en">so that</span> (purpose) and the degree frame <span class="en">so … that</span> (result-degree).</p>
+    <ul class="ex">
+      <li>It was late, <b>so</b> we left. (result)</li>
+      <li>vs <b>so that</b>: She left early <b>so that</b> she'd catch the train. (purpose)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="part" id="p2">
+  <div class="part-head"><span class="part-num">Part 2</span></div>
+  <h2>Correlative conjunctions — the pairs</h2>
+  <p class="part-lede">These work in two parts that bracket the joined items. The iron rule is <b>parallelism</b>: whatever grammatical form follows the first half must follow the second.</p>
+
+  <div class="w cor"><div class="w-h"><span class="w-word">both … and</span><span class="w-rel">double addition</span></div>
+    <p>Emphasises that <b>two</b> things are true. Takes a plural verb.</p>
+    <ul class="ex"><li><b>Both</b> the book <b>and</b> the film <b>are</b> good.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">either … or</span><span class="w-rel">choice of two</span></div>
+    <p>One of two alternatives. The verb agrees with the <b>nearer</b> subject.</p>
+    <ul class="ex"><li><b>Either</b> the manager <b>or</b> the staff <b>are</b> lying.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">neither … nor</span><span class="w-rel">double negative</span></div>
+    <p>Not one and not the other. Already negative — don't add another <span class="en">not</span>. Verb agrees with the nearer subject.</p>
+    <ul class="ex"><li><b>Neither</b> he <b>nor</b> she <b>knows</b>.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">not only … but also</span><span class="w-rel">emphatic addition</span></div>
+    <p>Adds a second, often more striking, fact. Fronting <span class="en">not only</span> triggers inversion.</p>
+    <ul class="ex"><li>She's <b>not only</b> clever <b>but also</b> kind.</li><li><b>Not only did</b> she win, <b>but</b> she set a record. (fronted → inversion)</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">whether … or</span><span class="w-rel">alternatives</span></div>
+    <p>Presents two possibilities, often "regardless which". Note <span class="en">whether … or not</span>.</p>
+    <ul class="ex"><li>I don't know <b>whether</b> to laugh <b>or</b> cry.</li><li>We'll go <b>whether</b> it rains <b>or not</b>.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">as … as</span><span class="w-rel">equality</span></div>
+    <p>States two things are equal on some scale; negated as <span class="en">not as/so … as</span>.</p>
+    <ul class="ex"><li>She's <b>as</b> tall <b>as</b> her brother.</li><li>It's <b>not as</b> cold <b>as</b> yesterday.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">no sooner … than · hardly / scarcely … when</span><span class="w-rel">immediate sequence</span></div>
+    <p>One event immediately follows another in the past. Fronting forces inversion and the past perfect.</p>
+    <ul class="ex"><li><b>No sooner had</b> he sat down <b>than</b> the phone rang.</li><li><b>Hardly had</b> we left <b>when</b> it started to rain.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">so … that · such … that</span><span class="w-rel">result of a degree</span></div>
+    <p><span class="en">so + adjective/adverb + that</span>; <span class="en">such + (a) + noun + that</span>. Both express a result that follows from an extreme degree.</p>
+    <ul class="ex"><li>It was <b>so</b> cold <b>that</b> the pipes froze.</li><li>It was <b>such</b> a cold night <b>that</b> the pipes froze.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">the … the</span><span class="w-rel">proportional change</span></div>
+    <p>Two quantities changing together. Comma between the halves.</p>
+    <ul class="ex"><li><b>The</b> harder you try, <b>the</b> luckier you get.</li></ul>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="part" id="p3">
+  <div class="part-head"><span class="part-num">Part 3</span></div>
+  <h2>Subordinating conjunctions — how they work</h2>
+  <p class="part-lede">A subordinator opens a dependent clause and states its relationship to the main clause: <b>time, reason, condition, concession, purpose, result, manner, place</b>. The clause it makes can go first (with a comma) or last (usually none). Parts 4–9 take each relationship in turn.</p>
+  <div class="prose">
+    <p><b>The mechanism is simple</b> — <span class="en">subordinator + subject + verb</span>, hooked onto a main clause. The difficulty is the <i>vocabulary</i>: several high-frequency subordinators do two unrelated jobs (<span class="en">since, as, while</span>), and English gives no formal signal for which is meant — Part&nbsp;10 disambiguates them.</p>
+    <p><b>Position &amp; comma.</b> Front the subordinate clause for emphasis or scene-setting and mark the join with a comma (<span class="en"><b>When the bell rang,</b> everyone stood</span>); put it last and the comma usually disappears (<span class="en">Everyone stood <b>when the bell rang</b></span>).</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="part" id="p4">
+  <div class="part-head"><span class="part-num">Part 4</span></div>
+  <h2>Subordinators of time</h2>
+  <p class="part-lede">They locate one event relative to another. The golden rule: <b>no future tense inside a time clause</b> — use the present even for future meaning.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">when</span><span class="w-rel">at the time that</span></div>
+    <p>The general time link. No future in the clause: <span class="en">when I arrive</span>, not <span class="en">✗ when I will arrive</span>.</p>
+    <ul class="ex"><li>I'll call you <b>when</b> I <b>arrive</b>.</li><li><b>When</b> I was young, we walked to school.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">while · as</span><span class="w-rel">during / simultaneous</span></div>
+    <p>Two things happening at once. <span class="en">while</span> can also mark contrast (Part&nbsp;7); <span class="en">as</span> also marks parallel change and reason (Part&nbsp;10).</p>
+    <ul class="ex"><li><b>While</b> she read, I cooked.</li><li><b>As</b> I was leaving, the phone rang.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">before · after</span><span class="w-rel">sequence</span></div>
+    <p>Order two events. With <span class="en">after</span>, a perfect tense can stress "finished first".</p>
+    <ul class="ex"><li>Wash your hands <b>before</b> you eat.</li><li>We left <b>after</b> we <b>had</b> eaten.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">until · till</span><span class="w-rel">up to the point that</span></div>
+    <p>Marks the end-point of an action. <span class="en">till</span> is the informal spelling.</p>
+    <ul class="ex"><li>Wait <b>until</b> the light turns green.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">since</span><span class="w-rel">from a past point</span></div>
+    <p>Time meaning: from a starting point up to now — pairs with the present perfect. (Also = reason, Part&nbsp;5/10.)</p>
+    <ul class="ex"><li>I've known her <b>since</b> we <b>were</b> children.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">as soon as · once · the moment · by the time · whenever · now that</span><span class="w-rel">time, refined</span></div>
+    <p><span class="en">as soon as / the moment</span> = immediately when; <span class="en">once</span> = as soon as / after; <span class="en">by the time</span> = not later than (often + perfect); <span class="en">whenever</span> = every time; <span class="en">now that</span> = time + reason ("given that … now").</p>
+    <ul class="ex"><li>Call me <b>as soon as</b> you land.</li><li><b>Once</b> you finish, you can go.</li><li><b>By the time</b> we arrived, it <b>had</b> ended.</li><li><b>Whenever</b> it rains, the roof leaks.</li><li><b>Now that</b> you're here, let's start.</li></ul>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="part" id="p5">
+  <div class="part-head"><span class="part-num">Part 5</span></div>
+  <h2>Subordinators of reason &amp; cause</h2>
+  <p class="part-lede">They answer <span class="en">why?</span>. The choice among them is about <i>how</i> you present the reason — as new information or as already known.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">because</span><span class="w-rel">the reason, focal</span></div>
+    <p>Presents the reason as the <b>new, main point</b>; usually comes second; can be the whole answer to <span class="en">why?</span>. To attach to a noun, it becomes <span class="en">because of</span>.</p>
+    <ul class="ex"><li>We stayed <b>because</b> it was late.</li><li>Cancelled <b>because of</b> the rain. (+ noun)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">since · as</span><span class="w-rel">the reason, known</span></div>
+    <p>Present the reason as <b>already known / background</b>; often come first. Both are ambiguous (<span class="en">since</span> = time, <span class="en">as</span> = time/manner), so avoid where a sentence could be misread.</p>
+    <ul class="ex"><li><b>Since</b> you're here, help me.</li><li><b>As</b> it's late, let's stop.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">for · seeing (that) · in that · inasmuch as</span><span class="w-rel">reason, formal/literary</span></div>
+    <p><span class="en">for</span> = literary "because" (coordinator); <span class="en">seeing that</span> = "given that" (informal); <span class="en">in that</span> = "in the respect that" (formal); <span class="en">inasmuch as</span> = "to the extent that" (very formal).</p>
+    <ul class="ex"><li>He smiled, <b>for</b> he had won.</li><li><b>Seeing that</b> it's late, we'll stop.</li><li>It's odd <b>in that</b> no one noticed.</li></ul>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="part" id="p6">
+  <div class="part-head"><span class="part-num">Part 6</span></div>
+  <h2>Subordinators of condition</h2>
+  <p class="part-lede">They set up a situation the main clause depends on. Rule: <b>no <span class="en">will</span> in the condition clause</b> of a real future condition.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">if</span><span class="w-rel">condition</span></div>
+    <p>The core conditional word (zero / first / second / third). Distinct from <span class="en">whether</span> (a choice / embedded yes-no question).</p>
+    <ul class="ex"><li><b>If</b> it rains, we'll stay in.</li><li><b>If</b> I had time, I'd help. (unreal)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">unless</span><span class="w-rel">= if not (single exception)</span></div>
+    <p>Names the one condition that would prevent the main clause. Not always interchangeable with <span class="en">if not</span>.</p>
+    <ul class="ex"><li>I won't go <b>unless</b> you come.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">provided (that) · providing · as long as · so long as · on condition that</span><span class="w-rel">strong stipulation</span></div>
+    <p>= "only if this requirement is met". More emphatic than plain <span class="en">if</span>.</p>
+    <ul class="ex"><li>You can go, <b>provided that</b> you finish.</li><li>I'll help <b>as long as</b> you're honest.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">in case · supposing · given (that) · assuming (that)</span><span class="w-rel">precaution / hypothesis</span></div>
+    <p><span class="en">in case</span> = as a precaution (not a condition): <span class="en">Take a key in case I'm out</span> = whether or not you need it. <span class="en">supposing / assuming</span> open a hypothesis; <span class="en">given that</span> = "since it's a fact that".</p>
+    <ul class="ex"><li>Take an umbrella <b>in case</b> it rains.</li><li><b>Supposing</b> he says no, what then?</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">even if</span><span class="w-rel">condition + concession</span></div>
+    <p>= "whether or not / regardless". Hypothetical (contrast with <span class="en">even though</span>, a real fact — Part&nbsp;7).</p>
+    <ul class="ex"><li>I'll go <b>even if</b> it rains.</li></ul>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="part" id="p7">
+  <div class="part-head"><span class="part-num">Part 7</span></div>
+  <h2>Subordinators of concession &amp; contrast</h2>
+  <p class="part-lede">Concession grants a point that makes the main clause surprising; contrast simply sets two facts side by side. The words overlap.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">although · though</span><span class="w-rel">concession</span></div>
+    <p>Introduce a fact that makes the main clause unexpected. <span class="en">although</span> is neutral / slightly formal; <span class="en">though</span> is the everyday equivalent and can also end a clause as an adverb.</p>
+    <ul class="ex"><li><b>Although</b> he tried, he failed.</li><li>It's hard. I'll try, <b>though</b>. (end-position, informal)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">even though</span><span class="w-rel">strong concession (real)</span></div>
+    <p>Emphasises a genuinely surprising, <b>real</b> fact. Contrast with <span class="en">even if</span> (hypothetical).</p>
+    <ul class="ex"><li><b>Even though</b> it was pouring, we went.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">while · whereas · whilst</span><span class="w-rel">direct contrast</span></div>
+    <p>Set two clauses against each other. <span class="en">whereas</span> is the pure-contrast word; <span class="en">while</span> doubles as time; <span class="en">whilst</span> is British/formal.</p>
+    <ul class="ex"><li>She's calm, <b>whereas</b> he panics.</li><li><b>While</b> some agree, others don't.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">much as · granted (that) · notwithstanding that</span><span class="w-rel">concession, formal</span></div>
+    <p><span class="en">much as</span> = "although … a lot" (<span class="en">Much as I like it, I can't buy it</span>); <span class="en">granted that</span> concedes before objecting; <span class="en">notwithstanding that</span> = "despite the fact that" (very formal).</p>
+    <ul class="ex"><li><b>Much as</b> I'd love to, I can't.</li></ul>
+  </div>
+  <div class="warn" style="margin-top:16px"><b>Preposition, not conjunction:</b> <span class="en">despite</span> and <span class="en">in spite of</span> mean the same but take a <i>noun</i>: <span class="en">✗ despite it rained</span> → <span class="en">despite the rain</span> / <span class="en">despite the fact that it rained</span>.</div>
+</section>
+
+<!-- 8 -->
+<section class="part" id="p8">
+  <div class="part-head"><span class="part-num">Part 8</span></div>
+  <h2>Subordinators of purpose &amp; result</h2>
+  <p class="part-lede">Purpose looks <i>forward</i> to an intended aim; result looks <i>back</i> at what actually happened. They are easy to confuse because both can use <span class="en">so</span>.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">so that · in order that</span><span class="w-rel">purpose (finite)</span></div>
+    <p>Introduce an <b>aim</b>, with a modal matching the tense: present/future takes <span class="en">can/will</span>; past takes <span class="en">could/would</span>. <span class="en">in order that</span> is more formal.</p>
+    <ul class="ex"><li>I'll write it down <b>so that</b> I <b>won't</b> forget.</li><li>She spoke slowly <b>so that</b> everyone <b>could</b> follow.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">lest · for fear that · in case</span><span class="w-rel">negative purpose</span></div>
+    <p>= "so that … not / to avoid". <span class="en">lest</span> is formal/archaic and takes the subjunctive or <span class="en">should</span>.</p>
+    <ul class="ex"><li>He whispered <b>lest</b> he <b>be</b> heard.</li><li>Write it down <b>in case</b> you forget.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">so … that · such … that</span><span class="w-rel">result of a degree</span></div>
+    <p>Express the <b>effect</b> of an extreme degree — the actual outcome, not an aim.</p>
+    <ul class="ex"><li>He was <b>so</b> tired <b>that</b> he fell asleep standing up.</li><li>It was <b>such</b> a mess <b>that</b> we gave up.</li></ul>
+  </div>
+  <div class="warn" style="margin-top:16px"><b>Purpose vs result in one pair:</b> <span class="en">She saved money <b>so that</b> she could travel</span> (purpose — the aim) vs <span class="en">She saved <b>so</b> much <b>that</b> she could travel</span> (result — the effect).</div>
+</section>
+
+<!-- 9 -->
+<section class="part" id="p9">
+  <div class="part-head"><span class="part-num">Part 9</span></div>
+  <h2>Subordinators of manner, comparison &amp; place</h2>
+  <p class="part-lede">Smaller groups, but each has a trap.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">as · the way</span><span class="w-rel">manner</span></div>
+    <p>= "in the manner that". <span class="en">the way</span> is the everyday equivalent. (Use <span class="en">as</span>, not <span class="en">like</span>, before a clause: <span class="en">Do <b>as</b> I say</span>, not <span class="en">✗ like I say</span> in careful English.)</p>
+    <ul class="ex"><li>Do it <b>as</b> I showed you.</li><li>Leave it <b>the way</b> it was.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">as if · as though</span><span class="w-rel">unreal comparison</span></div>
+    <p>Introduce an imagined comparison; take an <b>unreal past</b> when hypothetical.</p>
+    <ul class="ex"><li>He talks <b>as if</b> he <b>knew</b> everything. (he doesn't)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">than</span><span class="w-rel">comparison</span></div>
+    <p>Joins the second half of a comparison; the clause after it is trimmed by ellipsis (<span class="en">taller than I [am]</span> → <span class="en">than me</span> informally).</p>
+    <ul class="ex"><li>He earns more <b>than</b> she does.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">where · wherever</span><span class="w-rel">place</span></div>
+    <p>Locate the main clause in space. <span class="en">wherever</span> = "no matter where / any place".</p>
+    <ul class="ex"><li>Stay <b>where</b> you are.</li><li>Sit <b>wherever</b> you like.</li></ul>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="part" id="p10">
+  <div class="part-head"><span class="part-num">Part 10</span></div>
+  <h2>The overloaded words — one spelling, several jobs</h2>
+  <p class="part-lede">A handful of conjunctions each do two or more unrelated jobs, and English gives no signal for which. These cause most misreadings — here is how to tell them apart.</p>
+  <div class="prose">
+    <h3><span class="en">as</span> — five jobs</h3>
+    <p>Reason (<span class="en">As it's late, let's stop</span>), time / simultaneity (<span class="en">As I left, it rang</span>), manner (<span class="en">Do as I say</span>), comparison (<span class="en">as white as snow</span>), and role — where it is actually a <i>preposition</i> + noun (<span class="en">She works as a nurse</span> = she is one; contrast <span class="en">like a nurse</span> = resembling). Because reason and time share the word, avoid <span class="en">as</span> where either reading fits.</p>
+    <h3><span class="en">since</span> — time or reason</h3>
+    <p>Time = from a past point up to now (<span class="en">I've known her since 2010</span> — takes the present perfect); reason = a known cause (<span class="en">Since you're here, help me</span>). <span class="en">ever since</span> forces the time reading; <span class="en">given that</span> forces the reason reading.</p>
+    <h3><span class="en">while</span> — time or contrast</h3>
+    <p>Time = during (<span class="en">While she read, I cooked</span>); contrast = whereas (<span class="en">While some agree, others don't</span>). Position and meaning usually make it clear.</p>
+    <h3><span class="en">for</span> — conjunction or preposition</h3>
+    <p>Conjunction = reason, literary (<span class="en">He was glad, for the sun shone</span>); preposition = purpose / benefit / duration, + noun (<span class="en">a gift for you · for two hours</span>).</p>
+    <h3><span class="en">that</span> — four grammars</h3>
+    <p>Complementiser (<span class="en">I know that it works</span> — droppable), relative pronoun (<span class="en">the book that I read __</span> — has a gap), demonstrative (<span class="en">that book</span>), and the result frame (<span class="en">so cold that…</span>). The gap test separates the first two: a relative clause is missing a noun; a complementiser clause is complete.</p>
+    <h3><span class="en">if</span> — condition or embedded question</h3>
+    <p>Condition (<span class="en">Call me if you're late</span>) vs an embedded yes-no question, where it equals <span class="en">whether</span> (<span class="en">I asked if it was true</span>). Only <span class="en">whether</span> can be a subject, follow a preposition, or precede <span class="en">to</span>.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="part" id="p11">
+  <div class="part-head"><span class="part-num">Part 11</span></div>
+  <h2>Conjunctive adverbs — the false conjunctions</h2>
+  <p class="part-lede">These signal the same relationships (contrast, cause, addition) but are <b>adverbs</b>, not conjunctions. That single fact changes the punctuation: they cannot join two clauses with a comma.</p>
+  <div class="prose">
+    <p><b>The list, by relationship:</b> addition — <span class="en">also, moreover, furthermore, in addition, besides</span>; contrast — <span class="en">however, nevertheless, nonetheless, still, instead, on the other hand</span>; result — <span class="en">therefore, thus, hence, consequently, accordingly</span>; sequence — <span class="en">then, meanwhile, finally, subsequently</span>; example — <span class="en">for example, for instance, namely</span>; emphasis — <span class="en">indeed, in fact</span>.</p>
+    <p><b>The punctuation rule.</b> Two clauses around a conjunctive adverb need a <b>full stop or a semicolon</b>, not a comma. A comma there is the classic <i>comma splice</i>.</p>
+    <ul class="ex">
+      <li>✗ It rained, however we went. <span style="color:var(--ink-3)">(comma splice)</span></li>
+      <li>✓ It rained<b>;</b> however, we went.</li>
+      <li>✓ It rained. However, we went.</li>
+      <li>✓ It rained, <b>but</b> we went. <span style="color:var(--ink-3)">(a real coordinator — comma is fine)</span></li>
+    </ul>
+    <p>They are also <b>mobile</b>: a conjunctive adverb can sit at the front, in the middle, or at the end of its clause (<span class="en">We went, however.</span> / <span class="en">We, however, went.</span>) — a real conjunction is locked at the join.</p>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="part" id="p12">
+  <div class="part-head"><span class="part-num">Part 12</span></div>
+  <h2>Punctuation with conjunctions</h2>
+  <p class="part-lede">Once you know the type, the punctuation is mechanical.</p>
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Situation</th><th>Rule</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Coordinator + two clauses</td><td>comma before it</td><td class="f">It was late, so we left.</td></tr>
+      <tr><td>Coordinator + two words/phrases</td><td>no comma</td><td class="f">bread and butter</td></tr>
+      <tr><td>Subordinate clause first</td><td>comma after it</td><td class="f">When it rang, he answered.</td></tr>
+      <tr><td>Subordinate clause last</td><td>usually no comma</td><td class="f">He answered when it rang.</td></tr>
+      <tr><td>Conjunctive adverb between clauses</td><td>semicolon / full stop before</td><td class="f">It rained; however, we went.</td></tr>
+      <tr><td>List of three or more</td><td>Oxford comma optional</td><td class="f">red, white(,) and blue</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="part" id="p13">
+  <div class="part-head"><span class="part-num">Part 13</span></div>
+  <h2>Common mistakes</h2>
+  <p class="part-lede">Nearly all of them come from mixing up the four types, or from the conjunction-vs-preposition line.</p>
+  <ul class="usex">
+    <li><span class="u">Comma splice with a conjunctive adverb</span><span class="s-en">✗ I was late, however I came. → ✓ …late; <b>however</b>, I came.</span></li>
+    <li><span class="u">Preposition used as a conjunction</span><span class="s-en">✗ despite it rained → ✓ <b>although</b> it rained / <b>despite</b> the rain</span></li>
+    <li><span class="u"><span class="en">because of</span> vs <span class="en">because</span></span><span class="s-en">✗ because the rain → ✓ <b>because of</b> the rain / <b>because</b> it rained</span></li>
+    <li><span class="u">Double negative with <span class="en">neither…nor</span></span><span class="s-en">✗ I don't like neither. → ✓ I like <b>neither</b>.</span></li>
+    <li><span class="u">Broken parallelism in a correlative</span><span class="s-en">✗ not only sings but also she dances → ✓ not only <b>sings</b> but also <b>dances</b></span></li>
+    <li><span class="u"><span class="en">will</span> inside an <span class="en">if</span>/time clause</span><span class="s-en">✗ if it will rain → ✓ <b>if</b> it rains</span></li>
+    <li><span class="u"><span class="en">if</span> where <span class="en">whether</span> is needed</span><span class="s-en">✗ depends on if → ✓ depends on <b>whether</b></span></li>
+    <li><span class="u">Fragment — a subordinate clause alone</span><span class="s-en">✗ Because it was late. → ✓ We left <b>because it was late.</b></span></li>
+    <li><span class="u"><span class="en">like</span> for <span class="en">as</span> before a clause</span><span class="s-en">✗ like I said → ✓ <b>as</b> I said (careful English)</span></li>
+    <li><span class="u">Missing inversion after fronted <span class="en">nor</span>/negative</span><span class="s-en">✗ nor she does → ✓ <b>nor does</b> she</span></li>
+  </ul>
+</section>
+
+<!-- 14 -->
+<section class="part" id="p14">
+  <div class="part-head"><span class="part-num">Part 14</span></div>
+  <h2>Full reference — every conjunction at a glance</h2>
+  <p class="part-lede">The complete inventory, sorted so you can find any joining word fast.</p>
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Type / relation</th><th>Words</th></tr></thead>
+    <tbody>
+      <tr><td>Coordinating (FANBOYS)</td><td class="f">for, and, nor, but, or, yet, so</td></tr>
+      <tr><td>Correlative pairs</td><td class="f">both…and · either…or · neither…nor · not only…but also · whether…or · as…as · so…as · no sooner…than · hardly/scarcely…when · such…that · so…that · the…the</td></tr>
+      <tr><td>Sub — time</td><td class="f">when, while, before, after, until, till, since, as, as soon as, once, whenever, by the time, now that, the moment, every time</td></tr>
+      <tr><td>Sub — reason</td><td class="f">because, since, as, for, seeing that, now that, in that, inasmuch as</td></tr>
+      <tr><td>Sub — condition</td><td class="f">if, unless, provided (that), providing, as long as, so long as, in case, whether, supposing, given (that), assuming (that), on condition that, even if</td></tr>
+      <tr><td>Sub — concession / contrast</td><td class="f">although, though, even though, even if, while, whereas, whilst, much as, granted that, notwithstanding that</td></tr>
+      <tr><td>Sub — purpose</td><td class="f">so that, in order that, lest, for fear that, in case</td></tr>
+      <tr><td>Sub — result</td><td class="f">so … that, such … that</td></tr>
+      <tr><td>Sub — manner / comparison</td><td class="f">as, as if, as though, than, the way, according as</td></tr>
+      <tr><td>Sub — place</td><td class="f">where, wherever, everywhere, anywhere</td></tr>
+      <tr><td>Conjunctive adverbs (NOT conjunctions)</td><td class="f">however, therefore, moreover, furthermore, nevertheless, nonetheless, thus, hence, consequently, meanwhile, otherwise, instead, besides, still, then</td></tr>
+      <tr><td>Prepositions doing a similar job (+ noun)</td><td class="f">because of, in spite of, despite, instead of, due to, owing to, thanks to, on account of, in case of, apart from, as well as, rather than</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="prose">
+    <p><b>The one rule to leave with.</b> Decide the <i>type</i> before the word: a <b>coordinator</b> joins equals (comma before, with clauses); a <b>subordinator</b> opens a dependent clause (comma only when it comes first); a <b>conjunctive adverb</b> links separate sentences (semicolon or full stop before it); a <b>connecting preposition</b> takes a noun, never a clause. Get the type right and both the grammar and the punctuation fall into place.</p>
+  </div>
+</section>
+
+<footer>
+  <span>The Conjunction Handbook · 7 coordinators · ~12 correlative pairs · 8 subordinate relations</span>
+  <span class="mono">A companion to The Sentence Blueprint, The English Timeline &amp; The Preposition Map</span>
+</footer>
+
+</main>
+</div>
+</div>
