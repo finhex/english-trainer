@@ -1,0 +1,645 @@
+<meta charset="utf-8">
+<title>Справочник по союзам</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#EDF0F3; --card:#FFFFFF; --card-2:#E4EAEE;
+  --ink:#131C25; --ink-2:#47555F; --ink-3:#75838E;
+  --line:#CFD8DE; --line-2:#E2E8EC;
+  --c-co:#12746A; --c-sub:#2F6DB8; --c-cor:#A6640B; --c-adv:#5546B8;
+  --c-now:#C23E2B;
+  --shadow:0 1px 2px rgba(19,28,37,.05), 0 10px 28px -16px rgba(19,28,37,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+    --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+    --line:#27353F; --line-2:#1F2C36;
+    --c-co:#4FC3B3; --c-sub:#6FB0F2; --c-cor:#E8A44A; --c-adv:#A798F7;
+    --c-now:#FF7C64;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161D; --card:#15202A; --card-2:#1C2A35;
+  --ink:#E7EDF2; --ink-2:#A8B7C2; --ink-3:#7A8A96;
+  --line:#27353F; --line-2:#1F2C36;
+  --c-co:#4FC3B3; --c-sub:#6FB0F2; --c-cor:#E8A44A; --c-adv:#A798F7;
+  --c-now:#FF7C64;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Golos Text","Segoe UI",system-ui,sans-serif;font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:Bitter,Georgia,serif;font-weight:700;text-wrap:balance;margin:0;line-height:1.18}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--c-now);outline-offset:3px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.en{font-family:"JetBrains Mono",monospace;font-size:.94em;color:var(--ink)}
+.page{max-width:1220px;margin:0 auto;padding:0 22px 96px}
+.shell{display:block}
+@media (min-width:1080px){.shell{display:grid;grid-template-columns:212px minmax(0,1fr);gap:56px;align-items:start}}
+.rail{display:none}
+@media (min-width:1080px){.rail{display:block;position:sticky;top:0;padding:40px 0;max-height:100vh;overflow-y:auto}}
+.rail-title{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:baseline;text-decoration:none;padding:6px 8px;border-radius:6px;font-size:13.5px;color:var(--ink-2);border-left:2px solid transparent}
+.rail a:hover{background:var(--card);color:var(--ink);border-left-color:var(--c-now)}
+.rail .tc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-3)}
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.hero h1{font-size:clamp(34px,6.4vw,60px);letter-spacing:-.02em;margin:14px 0 0}
+.hero .lede{margin-top:20px;max-width:64ch;font-size:18px;color:var(--ink-2)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);background:var(--card)}
+.chip.co{color:var(--c-co);border-color:color-mix(in srgb,var(--c-co) 45%,var(--line))}
+.chip.sub{color:var(--c-sub);border-color:color-mix(in srgb,var(--c-sub) 45%,var(--line))}
+.chip.cor{color:var(--c-cor);border-color:color-mix(in srgb,var(--c-cor) 45%,var(--line))}
+.chip.adv{color:var(--c-adv);border-color:color-mix(in srgb,var(--c-adv) 45%,var(--line))}
+.part{padding:64px 0 0;scroll-margin-top:24px}
+.part-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.part-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c-now)}
+.part h2{font-size:clamp(24px,3.6vw,34px);letter-spacing:-.015em}
+.part-lede{margin-top:14px;max-width:72ch;color:var(--ink-2)}
+.prose{max-width:74ch;display:flex;flex-direction:column;gap:14px;margin-top:22px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink);font-weight:600}
+.prose h3{color:var(--ink);font-size:19px;margin-top:10px}
+.prose h3 .en{font-size:.88em}
+.w{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ink-3);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px;margin-top:16px}
+.w.co{border-left-color:var(--c-co)} .w.sub{border-left-color:var(--c-sub)} .w.cor{border-left-color:var(--c-cor)} .w.adv{border-left-color:var(--c-adv)}
+.w-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.w-word{font-family:"JetBrains Mono",monospace;font-size:17px;font-weight:500;color:var(--ink)}
+.w-rel{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.w p{font-size:14.5px;color:var(--ink-2);line-height:1.6;margin:0}
+.w p+p{margin-top:8px}
+.w p b{color:var(--ink)}
+.w .en{font-size:.9em}
+.ex{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.ex li{padding:8px 12px;background:var(--card-2);border-radius:8px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.5}
+.ex li b{color:var(--c-now)}
+.warn{margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+.warn b{color:var(--c-now)}
+.tbl-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+table.tbl{border-collapse:collapse;width:100%;min-width:560px;background:var(--card);font-size:14px}
+table.tbl th,table.tbl td{text-align:left;padding:10px 14px;border-top:1px solid var(--line-2);vertical-align:top}
+table.tbl thead th{background:var(--card-2);border-top:0;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+table.tbl td.f{font-family:"JetBrains Mono",monospace;color:var(--ink)}
+table.tbl tr td:first-child{font-weight:600;color:var(--ink)}
+.usex{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:7px}
+.usex li{display:grid;gap:3px;padding:9px 12px;background:var(--card-2);border-radius:8px}
+@media(min-width:640px){.usex li{grid-template-columns:minmax(180px,40%) 1fr;align-items:baseline;column-gap:14px}}
+.usex .u{font-size:13.5px;color:var(--ink-2)}
+.usex .s-en{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);line-height:1.45}
+footer{margin-top:80px;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--ink-3);font-size:13px}
+</style>
+
+<div class="page">
+<div class="shell">
+
+<nav class="rail" aria-label="Содержание">
+  <div class="rail-title">Содержание</div>
+  <ol>
+    <li><a href="#p0"><span class="tc">0</span><span>Что такое союз</span></a></li>
+    <li><a href="#p1"><span class="tc">1</span><span>Сочинительные (FANBOYS)</span></a></li>
+    <li><a href="#p2"><span class="tc">2</span><span>Парные союзы</span></a></li>
+    <li><a href="#p3"><span class="tc">3</span><span>Подчинительные — обзор</span></a></li>
+    <li><a href="#p4"><span class="tc">4</span><span>Время</span></a></li>
+    <li><a href="#p5"><span class="tc">5</span><span>Причина</span></a></li>
+    <li><a href="#p6"><span class="tc">6</span><span>Условие</span></a></li>
+    <li><a href="#p7"><span class="tc">7</span><span>Уступка и контраст</span></a></li>
+    <li><a href="#p8"><span class="tc">8</span><span>Цель и следствие</span></a></li>
+    <li><a href="#p9"><span class="tc">9</span><span>Образ, сравнение, место</span></a></li>
+    <li><a href="#p10"><span class="tc">10</span><span>Самые трудные слова</span></a></li>
+    <li><a href="#p11"><span class="tc">11</span><span>Связующие наречия</span></a></li>
+    <li><a href="#p12"><span class="tc">12</span><span>Пунктуация</span></a></li>
+    <li><a href="#p13"><span class="tc">13</span><span>Частые ошибки</span></a></li>
+    <li><a href="#p14"><span class="tc">14</span><span>Полный справочник</span></a></li>
+    <li><a href="#p15"><span class="tc">15</span><span>Рамки It is said that</span></a></li>
+    <li><a href="#p16"><span class="tc">16</span><span>Правила по каждому слову</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">Каждое соединяющее слово · глубокое употребление и примеры</div>
+  <h1>Справочник по союзам</h1>
+  <p class="lede">Союз — соединяющее слово, но за «соединением» прячутся три совершенно разных механизма. <b>Сочинительные</b> связывают равных; <b>парные</b> работают вдвоём; <b>подчинительные</b> прицепляют зависимую клаузу к главной. Этот справочник берёт каждый союз английского по очереди — что он соединяет, какое отношение обозначает, регистр и ошибки — с примером для каждого.</p>
+  <div class="chips">
+    <span class="chip co">Сочинительные — равных</span>
+    <span class="chip cor">Парные — вдвоём</span>
+    <span class="chip sub">Подчинительные — вкладывают клаузу</span>
+    <span class="chip adv">Связующие наречия — двойники</span>
+  </div>
+</header>
+
+<!-- 0 -->
+<section class="part" id="p0">
+  <div class="part-head"><span class="part-num">Часть 0</span></div>
+  <h2>Что такое союз на самом деле</h2>
+  <p class="part-lede">Союз соединяет слова, фразы или клаузы. Но настоящих видов три — плюс два семейства, которые похожи на союзы, но ими не являются. Понимание вида решает и грамматику, и пунктуацию.</p>
+  <div class="prose">
+    <p><b class="mono" style="color:var(--c-co)">Сочинительные</b> — соединяют две единицы <i>равного ранга</i>: два слова, две фразы или две главные клаузы (<span class="en">bread <b>and</b> butter</span>; <span class="en">I called, <b>but</b> no one answered</span>). Их семь: <b>FANBOYS</b>.</p>
+    <p><b class="mono" style="color:var(--c-cor)">Парные (двойные)</b> — сочинительная идея, разбитая на <i>две части</i>, обрамляющие соединяемое (<span class="en"><b>both</b> tea <b>and</b> coffee</span>; <span class="en"><b>either</b> now <b>or</b> never</span>).</p>
+    <p><b class="mono" style="color:var(--c-sub)">Подчинительные</b> — прицепляют <i>зависимую</i> клаузу к главной, создавая неравное отношение (<span class="en">We left <b>because</b> it was late</span>). Зависимая клауза сама не стоит.</p>
+    <p><b>Тест на асимметрию</b> отличает сочинительный от подчинительного: удалите одну сторону. Удалите сочинённую половину — другая всё ещё целое предложение (<span class="en">I'm tired ~~and I want to sleep~~</span> → <span class="en">I'm tired.</span>). Удалите главную клаузу подчинительной пары — остаток повисает (<span class="en">~~I stayed~~ because I was tired</span> → <span class="en">✗ because I was tired</span>).</p>
+    <p><b>Два двойника.</b> <b class="mono" style="color:var(--c-adv)">Связующие наречия</b> (<span class="en">however, therefore, moreover</span>) <i>ощущаются</i> союзами, но это наречия — им нужна точка или точка с запятой, а не запятая (Часть&nbsp;11). А <b>предлог</b> (<span class="en">despite, because of</span>) берёт <i>существительное</i>, никогда не клаузу — поэтому <span class="en">although it rained</span> (союз + клауза), но <span class="en">despite the rain</span> (предлог + существительное).</p>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="part" id="p1">
+  <div class="part-head"><span class="part-num">Часть 1</span></div>
+  <h2>Сочинительные союзы — семь (FANBOYS)</h2>
+  <p class="part-lede">Они соединяют равных. Когда один связывает две <i>полные клаузы</i>, ставьте перед ним запятую; когда он связывает два слова или фразы — запятой нет. Любая сочинённая пара должна быть грамматически <b>параллельной</b>.</p>
+
+  <div class="w co"><div class="w-h"><span class="w-word">and</span><span class="w-rel">добавление</span></div>
+    <p>Простое «плюс». Кроме добавления обозначает <b>последовательность</b> (одно, потом другое), <b>результат / следствие</b> (сделай это — и вот следствие) и <b>комментарий</b>. Требует параллельных элементов, а в списке из трёх и более — необязательную «оксфордскую» запятую перед финальным <span class="en">and</span>.</p>
+    <ul class="ex">
+      <li>bread <b>and</b> butter (добавление)</li>
+      <li>He came in <b>and</b> sat down. (последовательность)</li>
+      <li>Touch it <b>and</b> you'll get burned. (результат — скрытое «if»)</li>
+      <li>red, white<b>,</b> <b>and</b> blue (оксфордская запятая — по желанию)</li>
+    </ul>
+    <div class="warn"><b>Заметка:</b> <span class="en">try and</span> = <span class="en">try to</span> (разг.); <span class="en">go and see</span> идиоматично. Начинать предложение с <span class="en">And</span> для эффекта — нормально в современном узусе.</div>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">but</span><span class="w-rel">контраст / исключение</span></div>
+    <p>Сигнал, что следующее идёт <b>против ожидания</b>. Ещё значит <b>кроме</b> (<span class="en">everyone but me</span>), образует рамку исправления <span class="en">not X but Y</span> и входит в <span class="en">but for</span> (= если бы не).</p>
+    <ul class="ex">
+      <li>poor <b>but</b> happy (контраст)</li>
+      <li>I tried, <b>but</b> it failed. (контраст клауз — запятая перед)</li>
+      <li>Everyone <b>but</b> me left. (= кроме)</li>
+      <li>It was not luck <b>but</b> skill. (not X but Y)</li>
+      <li><b>But for</b> your help, I'd have failed. (= если бы не)</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">or</span><span class="w-rel">альтернатива</span></div>
+    <p>Предлагает <b>альтернативу</b> или <b>выбор</b>; после повелительного — <b>предупреждение</b> (= иначе). Может быть включающим («одно или оба») или исключающим («одно, не оба») — решает контекст. Пара с <span class="en">either</span>.</p>
+    <ul class="ex">
+      <li>tea <b>or</b> coffee? (выбор)</li>
+      <li>Hurry, <b>or</b> we'll miss it. (= иначе)</li>
+      <li>coffee, tea<b>,</b> <b>or</b> juice (список)</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">nor</span><span class="w-rel">отрицательное добавление</span></div>
+    <p>Добавляет <b>второе отрицание</b>. После него клауза <b>инвертируется</b> (вспомогательный перед подлежащим), как в вопросе. Обычно следует за отрицательной клаузой или в паре с <span class="en">neither</span>.</p>
+    <ul class="ex">
+      <li>I don't smoke, <b>nor does</b> she. (инверсия)</li>
+      <li>He didn't call, <b>nor did</b> he write.</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">for</span><span class="w-rel">причина (книжн.)</span></div>
+    <p>Формальный/литературный сочинительный союз, значит <b>because / seeing that</b>. Соединяет две клаузы как равных и всегда идёт вторым, после запятой. Отличается от предлога <span class="en">for</span> (цель, польза).</p>
+    <ul class="ex">
+      <li>He was glad, <b>for</b> the sun had come out.</li>
+      <li>We must act now, <b>for</b> time is short.</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">yet</span><span class="w-rel">контраст (усиленный)</span></div>
+    <p>Как <span class="en">but</span>, но резче — подчёркивает, что второй факт <b>неожидан</b> при первом. Также работает как наречие («всё ещё / до сих пор»).</p>
+    <ul class="ex">
+      <li>simple <b>yet</b> effective</li>
+      <li>She's strict <b>yet</b> fair.</li>
+      <li>It's hard, <b>yet</b> not impossible.</li>
+    </ul>
+  </div>
+
+  <div class="w co"><div class="w-h"><span class="w-word">so</span><span class="w-rel">результат</span></div>
+    <p>Вводит <b>результат / следствие</b> предыдущей клаузы. Держите его отдельно от подчинительного <span class="en">so that</span> (цель) и рамки степени <span class="en">so … that</span> (следствие-степень).</p>
+    <ul class="ex">
+      <li>It was late, <b>so</b> we left. (результат)</li>
+      <li>ср. <b>so that</b>: She left early <b>so that</b> she'd catch the train. (цель)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="part" id="p2">
+  <div class="part-head"><span class="part-num">Часть 2</span></div>
+  <h2>Парные союзы — работают вдвоём</h2>
+  <p class="part-lede">Они состоят из двух частей, обрамляющих соединяемое. Железное правило — <b>параллелизм</b>: какая грамматическая форма идёт после первой части, такая же должна идти после второй.</p>
+
+  <div class="w cor"><div class="w-h"><span class="w-word">both … and</span><span class="w-rel">двойное добавление</span></div>
+    <p>Подчёркивает, что <b>оба</b> верны. Берёт глагол во множественном.</p>
+    <ul class="ex"><li><b>Both</b> the book <b>and</b> the film <b>are</b> good.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">either … or</span><span class="w-rel">выбор из двух</span></div>
+    <p>Одно из двух. Глагол согласуется с <b>ближайшим</b> подлежащим.</p>
+    <ul class="ex"><li><b>Either</b> the manager <b>or</b> the staff <b>are</b> lying.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">neither … nor</span><span class="w-rel">двойное отрицание</span></div>
+    <p>Ни то, ни другое. Уже отрицательно — не добавляйте ещё <span class="en">not</span>. Глагол — по ближайшему подлежащему.</p>
+    <ul class="ex"><li><b>Neither</b> he <b>nor</b> she <b>knows</b>.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">not only … but also</span><span class="w-rel">усиленное добавление</span></div>
+    <p>Добавляет второй, часто более яркий факт. Вынос <span class="en">not only</span> вперёд вызывает инверсию.</p>
+    <ul class="ex"><li>She's <b>not only</b> clever <b>but also</b> kind.</li><li><b>Not only did</b> she win, <b>but</b> she set a record. (вынос → инверсия)</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">whether … or</span><span class="w-rel">альтернативы</span></div>
+    <p>Две возможности, часто «неважно какая». Форма <span class="en">whether … or not</span>.</p>
+    <ul class="ex"><li>I don't know <b>whether</b> to laugh <b>or</b> cry.</li><li>We'll go <b>whether</b> it rains <b>or not</b>.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">as … as</span><span class="w-rel">равенство</span></div>
+    <p>Две вещи равны по некой шкале; отрицается как <span class="en">not as/so … as</span>.</p>
+    <ul class="ex"><li>She's <b>as</b> tall <b>as</b> her brother.</li><li>It's <b>not as</b> cold <b>as</b> yesterday.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">no sooner … than · hardly / scarcely … when</span><span class="w-rel">немедленная последовательность</span></div>
+    <p>Одно событие сразу за другим в прошлом. Вынос вперёд требует инверсии и past perfect.</p>
+    <ul class="ex"><li><b>No sooner had</b> he sat down <b>than</b> the phone rang.</li><li><b>Hardly had</b> we left <b>when</b> it started to rain.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">so … that · such … that</span><span class="w-rel">следствие степени</span></div>
+    <p><span class="en">so + прил./нареч. + that</span>; <span class="en">such + (a) + сущ. + that</span>. Оба выражают следствие крайней степени.</p>
+    <ul class="ex"><li>It was <b>so</b> cold <b>that</b> the pipes froze.</li><li>It was <b>such</b> a cold night <b>that</b> the pipes froze.</li></ul>
+  </div>
+  <div class="w cor"><div class="w-h"><span class="w-word">the … the</span><span class="w-rel">пропорциональное изменение</span></div>
+    <p>Две величины меняются вместе. Запятая между половинами.</p>
+    <ul class="ex"><li><b>The</b> harder you try, <b>the</b> luckier you get.</li></ul>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="part" id="p3">
+  <div class="part-head"><span class="part-num">Часть 3</span></div>
+  <h2>Подчинительные союзы — как они работают</h2>
+  <p class="part-lede">Подчинительный открывает зависимую клаузу и задаёт её отношение к главной: <b>время, причина, условие, уступка, цель, следствие, образ действия, место</b>. Клауза может идти первой (с запятой) или последней (обычно без). Части 4–9 берут каждое отношение по очереди.</p>
+  <div class="prose">
+    <p><b>Механизм прост</b> — <span class="en">подчинитель + подлежащее + глагол</span>, прицеплено к главной клаузе. Трудность — <i>лексика</i>: несколько частотных подчинителей делают две несвязанные работы (<span class="en">since, as, while</span>), и английский не даёт сигнала, какая из них — Часть&nbsp;10 их разводит.</p>
+    <p><b>Позиция и запятая.</b> Выносите придаточную вперёд для акцента или зачина и отмечайте стык запятой (<span class="en"><b>When the bell rang,</b> everyone stood</span>); ставьте её последней — и запятая обычно исчезает (<span class="en">Everyone stood <b>when the bell rang</b></span>).</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="part" id="p4">
+  <div class="part-head"><span class="part-num">Часть 4</span></div>
+  <h2>Подчинители времени</h2>
+  <p class="part-lede">Они располагают одно событие относительно другого. Золотое правило: <b>внутри клаузы времени нет будущего</b> — берите настоящее даже для будущего смысла.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">when</span><span class="w-rel">в тот момент, когда</span></div>
+    <p>Общая связка времени. В клаузе нет будущего: <span class="en">when I arrive</span>, а не <span class="en">✗ when I will arrive</span>.</p>
+    <ul class="ex"><li>I'll call you <b>when</b> I <b>arrive</b>.</li><li><b>When</b> I was young, we walked to school.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">while · as</span><span class="w-rel">пока / одновременно</span></div>
+    <p>Два действия одновременно. <span class="en">while</span> ещё может отмечать контраст (Часть&nbsp;7); <span class="en">as</span> ещё — параллельное изменение и причину (Часть&nbsp;10).</p>
+    <ul class="ex"><li><b>While</b> she read, I cooked.</li><li><b>As</b> I was leaving, the phone rang.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">before · after</span><span class="w-rel">последовательность</span></div>
+    <p>Упорядочивают два события. С <span class="en">after</span> перфект может подчеркнуть «сначала завершено».</p>
+    <ul class="ex"><li>Wash your hands <b>before</b> you eat.</li><li>We left <b>after</b> we <b>had</b> eaten.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">until · till</span><span class="w-rel">до момента, пока</span></div>
+    <p>Отмечает конечную точку действия. <span class="en">till</span> — разговорное написание.</p>
+    <ul class="ex"><li>Wait <b>until</b> the light turns green.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">since</span><span class="w-rel">с прошлой точки</span></div>
+    <p>Значение времени: от точки начала до сейчас — берёт present perfect. (Ещё = причина, Часть&nbsp;5/10.)</p>
+    <ul class="ex"><li>I've known her <b>since</b> we <b>were</b> children.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">as soon as · once · the moment · by the time · whenever · now that</span><span class="w-rel">время, уточнённо</span></div>
+    <p><span class="en">as soon as / the moment</span> = сразу как; <span class="en">once</span> = как только / после; <span class="en">by the time</span> = не позднее чем (часто + перфект); <span class="en">whenever</span> = всякий раз; <span class="en">now that</span> = время + причина («раз уж теперь»).</p>
+    <ul class="ex"><li>Call me <b>as soon as</b> you land.</li><li><b>Once</b> you finish, you can go.</li><li><b>By the time</b> we arrived, it <b>had</b> ended.</li><li><b>Whenever</b> it rains, the roof leaks.</li><li><b>Now that</b> you're here, let's start.</li></ul>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="part" id="p5">
+  <div class="part-head"><span class="part-num">Часть 5</span></div>
+  <h2>Подчинители причины</h2>
+  <p class="part-lede">Они отвечают на <span class="en">why?</span>. Выбор между ними — о том, <i>как</i> вы подаёте причину: как новую информацию или как уже известную.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">because</span><span class="w-rel">причина, фокусная</span></div>
+    <p>Подаёт причину как <b>новую, главную мысль</b>; обычно идёт второй; может быть целым ответом на <span class="en">why?</span>. Чтобы присоединить к существительному, становится <span class="en">because of</span>.</p>
+    <ul class="ex"><li>We stayed <b>because</b> it was late.</li><li>Cancelled <b>because of</b> the rain. (+ сущ.)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">since · as</span><span class="w-rel">причина, известная</span></div>
+    <p>Подают причину как <b>уже известную / фоновую</b>; часто идут первыми. Оба многозначны (<span class="en">since</span> = время, <span class="en">as</span> = время/образ), поэтому избегайте там, где возможно неверное прочтение.</p>
+    <ul class="ex"><li><b>Since</b> you're here, help me.</li><li><b>As</b> it's late, let's stop.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">for · seeing (that) · in that · inasmuch as</span><span class="w-rel">причина, формально/книжн.</span></div>
+    <p><span class="en">for</span> = книжное «because» (сочинительный); <span class="en">seeing that</span> = «раз уж» (разг.); <span class="en">in that</span> = «в том отношении, что» (формально); <span class="en">inasmuch as</span> = «в той мере, что» (очень формально).</p>
+    <ul class="ex"><li>He smiled, <b>for</b> he had won.</li><li><b>Seeing that</b> it's late, we'll stop.</li><li>It's odd <b>in that</b> no one noticed.</li></ul>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="part" id="p6">
+  <div class="part-head"><span class="part-num">Часть 6</span></div>
+  <h2>Подчинители условия</h2>
+  <p class="part-lede">Задают ситуацию, от которой зависит главная клауза. Правило: <b>никакого <span class="en">will</span> в клаузе условия</b> реального будущего.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">if</span><span class="w-rel">условие</span></div>
+    <p>Ключевое условное слово (нулевой / первый / второй / третий). Отличается от <span class="en">whether</span> (выбор / вложенный да-нет вопрос).</p>
+    <ul class="ex"><li><b>If</b> it rains, we'll stay in.</li><li><b>If</b> I had time, I'd help. (нереальное)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">unless</span><span class="w-rel">= if not (единств. исключение)</span></div>
+    <p>Называет единственное условие, которое помешало бы главной клаузе. Не всегда взаимозаменяемо с <span class="en">if not</span>.</p>
+    <ul class="ex"><li>I won't go <b>unless</b> you come.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">provided (that) · providing · as long as · so long as · on condition that</span><span class="w-rel">жёсткое условие</span></div>
+    <p>= «только если это требование выполнено». Эмфатичнее простого <span class="en">if</span>.</p>
+    <ul class="ex"><li>You can go, <b>provided that</b> you finish.</li><li>I'll help <b>as long as</b> you're honest.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">in case · supposing · given (that) · assuming (that)</span><span class="w-rel">предосторожность / гипотеза</span></div>
+    <p><span class="en">in case</span> = на всякий случай (не условие): <span class="en">Take a key in case I'm out</span> = понадобится или нет. <span class="en">supposing / assuming</span> открывают гипотезу; <span class="en">given that</span> = «раз это факт, что».</p>
+    <ul class="ex"><li>Take an umbrella <b>in case</b> it rains.</li><li><b>Supposing</b> he says no, what then?</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">even if</span><span class="w-rel">условие + уступка</span></div>
+    <p>= «неважно / в любом случае». Гипотетично (в отличие от <span class="en">even though</span> — реального факта, Часть&nbsp;7).</p>
+    <ul class="ex"><li>I'll go <b>even if</b> it rains.</li></ul>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="part" id="p7">
+  <div class="part-head"><span class="part-num">Часть 7</span></div>
+  <h2>Подчинители уступки и контраста</h2>
+  <p class="part-lede">Уступка уступает пункт, делающий главную клаузу неожиданной; контраст просто ставит два факта рядом. Слова пересекаются.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">although · though</span><span class="w-rel">уступка</span></div>
+    <p>Вводят факт, делающий главную клаузу неожиданной. <span class="en">although</span> нейтрально / чуть формально; <span class="en">though</span> — повседневный аналог, может ещё завершать клаузу как наречие.</p>
+    <ul class="ex"><li><b>Although</b> he tried, he failed.</li><li>It's hard. I'll try, <b>though</b>. (в конце, разг.)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">even though</span><span class="w-rel">сильная уступка (реальная)</span></div>
+    <p>Подчёркивает по-настоящему удивительный, <b>реальный</b> факт. В отличие от <span class="en">even if</span> (гипотеза).</p>
+    <ul class="ex"><li><b>Even though</b> it was pouring, we went.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">while · whereas · whilst</span><span class="w-rel">прямой контраст</span></div>
+    <p>Противопоставляют две клаузы. <span class="en">whereas</span> — чисто контрастное слово; <span class="en">while</span> совмещает со временем; <span class="en">whilst</span> — британское/формальное.</p>
+    <ul class="ex"><li>She's calm, <b>whereas</b> he panics.</li><li><b>While</b> some agree, others don't.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">much as · granted (that) · notwithstanding that</span><span class="w-rel">уступка, формально</span></div>
+    <p><span class="en">much as</span> = «хотя … и очень» (<span class="en">Much as I like it, I can't buy it</span>); <span class="en">granted that</span> уступает перед возражением; <span class="en">notwithstanding that</span> = «несмотря на то, что» (очень формально).</p>
+    <ul class="ex"><li><b>Much as</b> I'd love to, I can't.</li></ul>
+  </div>
+  <div class="warn" style="margin-top:16px"><b>Предлог, не союз:</b> <span class="en">despite</span> и <span class="en">in spite of</span> значат то же, но берут <i>существительное</i>: <span class="en">✗ despite it rained</span> → <span class="en">despite the rain</span> / <span class="en">despite the fact that it rained</span>.</div>
+</section>
+
+<!-- 8 -->
+<section class="part" id="p8">
+  <div class="part-head"><span class="part-num">Часть 8</span></div>
+  <h2>Подчинители цели и следствия</h2>
+  <p class="part-lede">Цель смотрит <i>вперёд</i> на намерение; следствие — <i>назад</i> на то, что случилось. Их легко спутать, ведь оба могут использовать <span class="en">so</span>.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">so that · in order that</span><span class="w-rel">цель (личная)</span></div>
+    <p>Вводят <b>намерение</b>, с модальным по времени: настоящее/будущее берёт <span class="en">can/will</span>; прошлое — <span class="en">could/would</span>. <span class="en">in order that</span> формальнее.</p>
+    <ul class="ex"><li>I'll write it down <b>so that</b> I <b>won't</b> forget.</li><li>She spoke slowly <b>so that</b> everyone <b>could</b> follow.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">lest · for fear that · in case</span><span class="w-rel">отрицательная цель</span></div>
+    <p>= «чтобы … не / во избежание». <span class="en">lest</span> формально/архаично и берёт сослагательное или <span class="en">should</span>.</p>
+    <ul class="ex"><li>He whispered <b>lest</b> he <b>be</b> heard.</li><li>Write it down <b>in case</b> you forget.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">so … that · such … that</span><span class="w-rel">следствие степени</span></div>
+    <p>Выражают <b>эффект</b> крайней степени — реальный исход, а не намерение.</p>
+    <ul class="ex"><li>He was <b>so</b> tired <b>that</b> he fell asleep standing up.</li><li>It was <b>such</b> a mess <b>that</b> we gave up.</li></ul>
+  </div>
+  <div class="warn" style="margin-top:16px"><b>Цель vs следствие в одной паре:</b> <span class="en">She saved money <b>so that</b> she could travel</span> (цель — намерение) vs <span class="en">She saved <b>so</b> much <b>that</b> she could travel</span> (следствие — эффект).</div>
+</section>
+
+<!-- 9 -->
+<section class="part" id="p9">
+  <div class="part-head"><span class="part-num">Часть 9</span></div>
+  <h2>Подчинители образа действия, сравнения и места</h2>
+  <p class="part-lede">Группы меньше, но у каждой своя ловушка.</p>
+  <div class="w sub"><div class="w-h"><span class="w-word">as · the way</span><span class="w-rel">образ действия</span></div>
+    <p>= «так, как». <span class="en">the way</span> — повседневный аналог. (Перед клаузой берите <span class="en">as</span>, а не <span class="en">like</span>: <span class="en">Do <b>as</b> I say</span>, не <span class="en">✗ like I say</span> в аккуратном английском.)</p>
+    <ul class="ex"><li>Do it <b>as</b> I showed you.</li><li>Leave it <b>the way</b> it was.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">as if · as though</span><span class="w-rel">нереальное сравнение</span></div>
+    <p>Вводят воображаемое сравнение; берут <b>нереальное прошлое</b>, когда оно гипотетично.</p>
+    <ul class="ex"><li>He talks <b>as if</b> he <b>knew</b> everything. (не знает)</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">than</span><span class="w-rel">сравнение</span></div>
+    <p>Соединяет вторую половину сравнения; клауза после урезана эллипсисом (<span class="en">taller than I [am]</span> → <span class="en">than me</span> разговорно).</p>
+    <ul class="ex"><li>He earns more <b>than</b> she does.</li></ul>
+  </div>
+  <div class="w sub"><div class="w-h"><span class="w-word">where · wherever</span><span class="w-rel">место</span></div>
+    <p>Располагают главную клаузу в пространстве. <span class="en">wherever</span> = «неважно где / в любом месте».</p>
+    <ul class="ex"><li>Stay <b>where</b> you are.</li><li>Sit <b>wherever</b> you like.</li></ul>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="part" id="p10">
+  <div class="part-head"><span class="part-num">Часть 10</span></div>
+  <h2>Самые трудные союзы — подробно</h2>
+  <p class="part-lede">Горстка слов несёт бо́льшую часть структурной работы английского — и каждое делает несколько несвязанных работ без сигнала, какая именно. Им нужна полная статья: все значения, конструкции, регистр и ошибки.</p>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">that</span><span class="w-rel">самое сложное слово грамматики</span></div>
+    <p>У <span class="en">that</span> четыре грамматические жизни, и только <b>союзная</b> имеет несколько подправил. Как <b>вводитель клаузы (комплементайзер)</b> оно вводит <i>содержательную клаузу</i> — целую клаузу в роли существительного — и своего значения не несёт; это чистый маркер «здесь начинается клауза».</p>
+    <p><b>Когда можно опустить.</b> В неформальной позиции <i>дополнения</i> после частого глагола речи <span class="en">that</span> необязательно: <span class="en">I think (that) it works · She said (that) she'd come</span>.</p>
+    <p><b>Когда нужно оставить.</b> (1) Когда клауза — <b>подлежащее</b>: <span class="en"><b>That</b> he lied is obvious</span>. (2) После <b>существительного</b> (аппозитивная содержательная клауза): <span class="en">the fact <b>that</b> he lied · the idea <b>that</b> time is money · the claim <b>that</b> it's safe</span>. (3) После многих <b>прилагательных</b> в аккуратном письме: <span class="en">aware <b>that</b>, confident <b>that</b>, afraid <b>that</b></span>. (4) Когда между глаголом и клаузой есть слова. (5) Всегда, когда опущение размыло бы начало клаузы.</p>
+    <p><b>Все слоты that-клаузы:</b> подлежащее (<span class="en">That she agreed surprised me</span>), дополнение (<span class="en">I know that…</span>), предикатив (<span class="en">The trouble is that we're late</span>), аппозиция (<span class="en">the fact that…</span>) и отложенное подлежащее с предваряющим <span class="en">it</span> (<span class="en">It's clear that he lied</span>). После глаголов и прилагательных <b>требования/важности</b> глагол клаузы идёт в сослагательное: <span class="en">I insist that he <b>be</b> told</span>.</p>
+    <p><b>Три другие жизни</b> (для контраста): относительное местоимение с <i>пропуском</i>, только ограничительное (<span class="en">the book <b>that</b> I read __</span>); рамка следствия (<span class="en">so cold <b>that</b> · such a mess <b>that</b></span>); и указательное, вовсе не союз (<span class="en"><b>that</b> book · I want <b>that</b></span>). Фиксированные союзные рамки на нём: <span class="en">so that</span> (цель), <span class="en">now that</span> (причина + время), <span class="en">in that</span> (формальное «because»), <span class="en">seeing that</span>, <span class="en">given that</span>.</p>
+    <ul class="ex">
+      <li>комплементайзер (опустить): I hope <b>(that)</b> you're well.</li>
+      <li>комплементайзер (оставить — подлежащее): <b>That</b> it failed shocked no one.</li>
+      <li>после существительного: the news <b>that</b> he'd resigned spread fast.</li>
+      <li>относительное (пропуск): the car <b>that</b> she bought __</li>
+      <li>следствие: I was <b>so</b> tired <b>that</b> I slept for ten hours.</li>
+    </ul>
+    <div class="warn"><b>Тест на пропуск</b> отличает комплементайзер от относительного: в относительной клаузе не хватает существительного (<span class="en">that I read __</span>); содержательная клауза полна (<span class="en">that he lied</span>). Есть пропуск → относительное; полно → комплементайзер.</div>
+  </div>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">because</span><span class="w-rel">причина, полностью</span></div>
+    <p>Основной союз причины, ответ на <span class="en">why?</span>. Подаёт причину как <b>новую, фокусную</b> информацию — поэтому <span class="en">because</span>-клауза обычно идёт <i>второй</i> и может быть целым ответом на вопрос (<span class="en">Why? — Because I said so</span>). Присоединяется к <b>полной клаузе</b> (<span class="en">because + подлежащее + глагол</span>).</p>
+    <p><b>because vs because of.</b> Чтобы подать причину как <i>существительное</i>, перейдите на двухсловный предлог <span class="en">because of</span>: <span class="en">✗ because the rain</span> → <span class="en">because of the rain</span> / <span class="en">because it rained</span>.</p>
+    <p><b>because vs since / as / for.</b> <span class="en">because</span> выдвигает причину как суть; <span class="en">since / as</span> подают её как уже известный фон (и многозначны со временем); <span class="en">for</span> — книжный сочинительный. Только <span class="en">because</span> может быть единственным ответом на <span class="en">why?</span>.</p>
+    <p><b>Начинать предложение с <span class="en">Because</span></b> совершенно верно, когда дальше идёт главная клауза: <span class="en"><b>Because</b> it was late, we left.</span> Это <i>фрагмент</i> лишь когда стоит одиноко без главной клаузы. И избегайте избыточного <span class="en">the reason is <b>because</b>…</span> — пишите <span class="en">the reason is <b>that</b>…</span>.</p>
+    <p><b>Область действия.</b> <span class="en">I didn't leave <b>because</b> I was angry</span> имеет два смысла: «я не ушёл, и причина — гнев» или «я ушёл, но не из-за гнева». В речи снимает интонация или запятая; на письме перестройте.</p>
+    <p><b>Полезные рамки и регистр.</b> <span class="en">just because … doesn't mean …</span> (<span class="en">Just because it's legal doesn't mean it's right</span>); шутливое интернет-употребление <span class="en">because + существительное</span> (<span class="en">because science</span>) нестандартно и игриво.</p>
+    <ul class="ex">
+      <li>фокусная причина: We cancelled <b>because</b> the road was flooded.</li>
+      <li>+ сущ.: We cancelled <b>because of</b> the flood.</li>
+      <li>в начале (нормально): <b>Because</b> she'd trained hard, she won.</li>
+      <li>рамка: <b>Just because</b> you can <b>doesn't mean</b> you should.</li>
+    </ul>
+  </div>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">as</span><span class="w-rel">пять работ</span></div>
+    <p>Самый перегруженный соединитель. <b>Причина</b> (<span class="en">As it's late, let's stop</span>), <b>время / одновременность</b> (<span class="en">As I left, it rang</span>), <b>параллельное изменение</b> (<span class="en">As the sun rose, the fog lifted</span>), <b>образ действия</b> (<span class="en">Do as I say</span>) и <b>сравнение</b> (<span class="en">as white as snow</span>). Шестое употребление — на самом деле <i>предлог</i>: <b>роль/качество</b> + существительное (<span class="en">She works <b>as</b> a nurse</span> = она <i>и есть</i> медсестра; ср. <span class="en">like a nurse</span> = похоже). Поскольку причину и время делит одно слово, избегайте <span class="en">as</span> там, где подходят оба чтения; <span class="en">as</span> перед клаузой — ещё и аккуратная альтернатива разговорному <span class="en">like</span>.</p>
+  </div>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">since</span><span class="w-rel">время или причина</span></div>
+    <p>Две несвязанные работы. <b>Время</b> = от прошлой точки до сейчас, тянет present perfect (<span class="en">I've known her <b>since</b> 2010</span>). <b>Причина</b> = известная, часто первой (<span class="en"><b>Since</b> you're here, help me</span>). Легко построить двусмысленную фразу (<span class="en">Since you mentioned it, I've been worried</span> — время или причина?). Форсируйте одно чтение через <span class="en">ever since</span> (время) или <span class="en">given that</span> (причина); present perfect склоняет к времени, но не гарантирует.</p>
+  </div>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">while · whilst</span><span class="w-rel">время или контраст</span></div>
+    <p><b>Время</b> = пока, одновременно (<span class="en">While she read, I cooked</span>); <b>контраст</b> = whereas (<span class="en">While some agree, others don't</span>). <span class="en">whilst</span> — британское/формальное написание, скорее контрастное. Вынесенное вперёд <span class="en">While…</span> чаще контраст; в середине — чаще время.</p>
+  </div>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">if · whether</span><span class="w-rel">условие vs альтернатива</span></div>
+    <p><span class="en">if</span> задаёт <b>условие</b> (вся система условных), с ключевым правилом <b>никакого <span class="en">will</span> в if-клаузе</b> реального будущего (<span class="en">if it <b>rains</b></span>). <span class="en">whether</span> подаёт <b>выбор между вариантами</b> или вложенный да-нет вопрос. Пересекаются только как дополнение глагола (<span class="en">I asked <b>if/whether</b> it was true</span>). Везде ещё работает только <span class="en">whether</span> — как подлежащее, после предлога и перед <span class="en">to</span> (<span class="en">whether or not to go</span>). Рядом: <span class="en">even if</span> (уступка), <span class="en">as if</span> (нереальное сравнение), <span class="en">if only</span> (желание).</p>
+  </div>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">though · although · even though</span><span class="w-rel">уступка, в сравнении</span></div>
+    <p>Все уступают пункт, делающий главную клаузу неожиданной. <span class="en">although</span> нейтрально / чуть формально; <span class="en">though</span> — повседневный близнец и, уникально, может завершать клаузу как запоздалое наречие (<span class="en">It's hard. I'll try, <b>though</b>.</span>); <span class="en">even though</span> подчёркивает по-настоящему удивительный <b>реальный</b> факт. Держите <span class="en">even though</span> (реальное) отдельно от <span class="en">even if</span> (гипотеза). И помните уступительную пару-<i>предлог</i> <span class="en">despite / in spite of</span> — берёт существительное, не клаузу.</p>
+  </div>
+
+  <div class="w sub"><div class="w-h"><span class="w-word">for · than</span><span class="w-rel">два «полставки» союза</span></div>
+    <p><span class="en">for</span> — сочинительный союз <b>причины</b> только в литературном стиле (<span class="en">He smiled, <b>for</b> he had won</span>); везде ещё — предлог (+ сущ.). <span class="en">than</span> соединяет вторую половину <b>сравнения</b>, и клауза после урезана эллипсисом, отчего оно колеблется между союзом (<span class="en">taller than I <b>am</b></span>) и предлогом (<span class="en">taller than <b>me</b></span>) в зависимости от того, сколько клаузы вы оставляете.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="part" id="p11">
+  <div class="part-head"><span class="part-num">Часть 11</span></div>
+  <h2>Связующие наречия — ложные союзы</h2>
+  <p class="part-lede">Они обозначают те же отношения (контраст, причина, добавление), но это <b>наречия</b>, а не союзы. Один этот факт меняет пунктуацию: они не могут соединить две клаузы запятой.</p>
+  <div class="prose">
+    <p><b>Список по отношениям:</b> добавление — <span class="en">also, moreover, furthermore, in addition, besides</span>; контраст — <span class="en">however, nevertheless, nonetheless, still, instead, on the other hand</span>; следствие — <span class="en">therefore, thus, hence, consequently, accordingly</span>; последовательность — <span class="en">then, meanwhile, finally, subsequently</span>; пример — <span class="en">for example, for instance, namely</span>; акцент — <span class="en">indeed, in fact</span>.</p>
+    <p><b>Правило пунктуации.</b> Двум клаузам вокруг связующего наречия нужна <b>точка или точка с запятой</b>, а не запятая. Запятая там — классическая <i>склейка запятой</i>.</p>
+    <ul class="ex">
+      <li>✗ It rained, however we went. <span style="color:var(--ink-3)">(склейка запятой)</span></li>
+      <li>✓ It rained<b>;</b> however, we went.</li>
+      <li>✓ It rained. However, we went.</li>
+      <li>✓ It rained, <b>but</b> we went. <span style="color:var(--ink-3)">(настоящий сочинительный — запятая уместна)</span></li>
+    </ul>
+    <p>Они ещё и <b>подвижны</b>: связующее наречие может стоять в начале, середине или конце клаузы (<span class="en">We went, however.</span> / <span class="en">We, however, went.</span>) — настоящий союз заперт на стыке.</p>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="part" id="p12">
+  <div class="part-head"><span class="part-num">Часть 12</span></div>
+  <h2>Пунктуация с союзами</h2>
+  <p class="part-lede">Как только вы знаете тип, пунктуация механична.</p>
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Ситуация</th><th>Правило</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>Сочинительный + две клаузы</td><td>запятая перед ним</td><td class="f">It was late, so we left.</td></tr>
+      <tr><td>Сочинительный + два слова/фразы</td><td>без запятой</td><td class="f">bread and butter</td></tr>
+      <tr><td>Придаточная сначала</td><td>запятая после неё</td><td class="f">When it rang, he answered.</td></tr>
+      <tr><td>Придаточная в конце</td><td>обычно без запятой</td><td class="f">He answered when it rang.</td></tr>
+      <tr><td>Связующее наречие между клаузами</td><td>точка / точка с запятой перед</td><td class="f">It rained; however, we went.</td></tr>
+      <tr><td>Список из трёх и более</td><td>оксфордская запятая по желанию</td><td class="f">red, white(,) and blue</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="part" id="p13">
+  <div class="part-head"><span class="part-num">Часть 13</span></div>
+  <h2>Частые ошибки</h2>
+  <p class="part-lede">Почти все — от путаницы четырёх типов или от линии «союз или предлог».</p>
+  <ul class="usex">
+    <li><span class="u">Склейка запятой со связующим наречием</span><span class="s-en">✗ I was late, however I came. → ✓ …late; <b>however</b>, I came.</span></li>
+    <li><span class="u">Предлог в роли союза</span><span class="s-en">✗ despite it rained → ✓ <b>although</b> it rained / <b>despite</b> the rain</span></li>
+    <li><span class="u"><span class="en">because of</span> vs <span class="en">because</span></span><span class="s-en">✗ because the rain → ✓ <b>because of</b> the rain / <b>because</b> it rained</span></li>
+    <li><span class="u">Двойное отрицание с <span class="en">neither…nor</span></span><span class="s-en">✗ I don't like neither. → ✓ I like <b>neither</b>.</span></li>
+    <li><span class="u">Нарушенный параллелизм в парном союзе</span><span class="s-en">✗ not only sings but also she dances → ✓ not only <b>sings</b> but also <b>dances</b></span></li>
+    <li><span class="u"><span class="en">will</span> внутри <span class="en">if</span>/клаузы времени</span><span class="s-en">✗ if it will rain → ✓ <b>if</b> it rains</span></li>
+    <li><span class="u"><span class="en">if</span> там, где нужно <span class="en">whether</span></span><span class="s-en">✗ depends on if → ✓ depends on <b>whether</b></span></li>
+    <li><span class="u">Фрагмент — придаточная в одиночку</span><span class="s-en">✗ Because it was late. → ✓ We left <b>because it was late.</b></span></li>
+    <li><span class="u"><span class="en">like</span> вместо <span class="en">as</span> перед клаузой</span><span class="s-en">✗ like I said → ✓ <b>as</b> I said (аккуратный англ.)</span></li>
+    <li><span class="u">Нет инверсии после вынесенного <span class="en">nor</span>/отрицания</span><span class="s-en">✗ nor she does → ✓ <b>nor does</b> she</span></li>
+  </ul>
+</section>
+
+<!-- 14 -->
+<section class="part" id="p14">
+  <div class="part-head"><span class="part-num">Часть 14</span></div>
+  <h2>Полный справочник — все союзы разом</h2>
+  <p class="part-lede">Полный список, отсортированный так, чтобы быстро найти любое соединяющее слово.</p>
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Тип / отношение</th><th>Слова</th></tr></thead>
+    <tbody>
+      <tr><td>Сочинительные (FANBOYS)</td><td class="f">for, and, nor, but, or, yet, so</td></tr>
+      <tr><td>Парные союзы</td><td class="f">both…and · either…or · neither…nor · not only…but also · whether…or · as…as · so…as · as many…as · no sooner…than · hardly/scarcely…when · such…that · so…that · the…the · rather…than · just as…so · if…then</td></tr>
+      <tr><td>Подч. — время</td><td class="f">when, while, before, after, until, till, since, as, as soon as, once, whenever, by the time, now that, the moment, every time</td></tr>
+      <tr><td>Подч. — причина</td><td class="f">because, since, as, for, seeing that, now that, in that, inasmuch as</td></tr>
+      <tr><td>Подч. — условие</td><td class="f">if, unless, provided (that), providing, as long as, so long as, in case, whether, supposing, given (that), assuming (that), on condition that, even if</td></tr>
+      <tr><td>Подч. — уступка / контраст</td><td class="f">although, though, even though, even if, while, whereas, whilst, much as, granted that, notwithstanding that</td></tr>
+      <tr><td>Подч. — цель</td><td class="f">so that, in order that, lest, for fear that, in case</td></tr>
+      <tr><td>Подч. — следствие</td><td class="f">so … that, such … that</td></tr>
+      <tr><td>Подч. — образ / сравнение</td><td class="f">as, as if, as though, than, the way, according as, as far as, as much as, just as</td></tr>
+      <tr><td>Подч. — место</td><td class="f">where, wherever, everywhere, anywhere</td></tr>
+      <tr><td>Связующие наречия (НЕ союзы)</td><td class="f">however, therefore, moreover, furthermore, nevertheless, nonetheless, thus, hence, consequently, meanwhile, otherwise, instead, besides, still, then</td></tr>
+      <tr><td>Предлоги той же роли (+ сущ.)</td><td class="f">because of, in spite of, despite, instead of, due to, owing to, thanks to, on account of, in case of, apart from, as well as, rather than</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="prose">
+    <p><b>Некоторые слова — и предлог, и союз</b> — одно написание берёт существительное в одном предложении и клаузу в другом: <span class="en">after, before, until, since, as</span>. <span class="en">He left <b>after</b> the fight</span> (предлог + сущ.) vs <span class="en">He left <b>after</b> they fought</span> (союз + клауза). Что следует — существительное или подлежащее-плюс-глагол — то и говорит, какая роль.</p>
+    <p><b>Одно правило на вынос.</b> Определите <i>тип</i> до слова: <b>сочинительный</b> соединяет равных (запятая перед, с клаузами); <b>подчинительный</b> открывает зависимую клаузу (запятая только когда он идёт первым); <b>связующее наречие</b> связывает отдельные предложения (точка или точка с запятой перед); <b>связующий предлог</b> берёт существительное, не клаузу. Верный тип — и грамматика, и пунктуация складываются сами.</p>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="part" id="p15">
+  <div class="part-head"><span class="part-num">Часть 15</span></div>
+  <h2>Рамки репортивного пассива — <span class="en">It is said that…</span></h2>
+  <p class="part-lede">Особая конструкция на <span class="en">that</span>-клаузе: она позволяет подать нечто как <b>общепринятое</b>, не ручаясь лично. Именно поэтому она насыщает новости и академическое хеджирование — и потому входит в полный разбор <span class="en">that</span>.</p>
+  <div class="prose">
+    <h3>Две структуры, один смысл</h3>
+    <ul class="usex">
+      <li><span class="u">Структура 1 — <span class="en">It + be + V3 + that-клауза</span></span><span class="s-en"><b>It is said that</b> he is rich. · <b>It was reported that</b> the minister resigned.</span></li>
+      <li><span class="u">Структура 2 — <span class="en">Подлежащее + be + V3 + to-инфинитив</span></span><span class="s-en">He <b>is said to be</b> rich. · The minister <b>is reported to have resigned</b>.</span></li>
+    </ul>
+    <p>Обе безлично сообщают тот же факт. Структура&nbsp;1 сохраняет клаузу целиком после <span class="en">that</span>; структура&nbsp;2 поднимает подлежащее вперёд, а остальное превращает в инфинитив.</p>
+    <h3>Время в структуре 2 — его несёт инфинитив</h3>
+    <p>У инфинитива нет времени, поэтому английский сигналит <i>когда</i> его формой: простой инфинитив = то же время, что и репортаж; перфектный = раньше.</p>
+  </div>
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Отношение времени</th><th>Форма инфинитива</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td>То же время, что и репортаж</td><td class="f">to + база</td><td class="f">He is said <b>to be</b> rich.</td></tr>
+      <tr><td>Раньше репортажа</td><td class="f">to have + V3</td><td class="f">He is said <b>to have been</b> rich.</td></tr>
+      <tr><td>В процессе сейчас</td><td class="f">to be + -ing</td><td class="f">He is said <b>to be working</b> abroad.</td></tr>
+      <tr><td>В процессе, раньше</td><td class="f">to have been + -ing</td><td class="f">He is said <b>to have been working</b> there for years.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="prose">
+    <h3>Глаголы, подходящие для конструкции</h3>
+    <p><span class="en">say, think, believe, know, report, consider, claim, expect, suppose, allege, understand, feel, hold, presume, assume, estimate, fear, hope, argue, maintain, acknowledge, declare, prove, recommend, agree</span>.</p>
+    <p><b>Какую структуру выбрать.</b> Структура&nbsp;2 звучит естественнее с повседневными глаголами (<span class="en">say, think, believe, report, expect, understand</span>); структура&nbsp;1 — по умолчанию для глаголов эмоциональной оценки (<span class="en">fear, hope</span>) и официальных формулировок (<span class="en">It is recommended that… · It has been agreed that…</span>). После глаголов требования/рекомендации структура&nbsp;1 берёт <b>сослагательное</b>: <span class="en">It is recommended that he <b>be</b> present.</span></p>
+    <ul class="ex">
+      <li>It is believed <b>that</b> the painting is genuine. → The painting is believed <b>to be</b> genuine.</li>
+      <li>She is alleged <b>to have</b> stolen the money.</li>
+      <li>The bridge is estimated <b>to have cost</b> millions.</li>
+      <li>It is feared <b>that</b> the hikers may not survive. (структура 1 естественнее с <span class="en">fear</span>)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="part" id="p16">
+  <div class="part-head"><span class="part-num">Часть 16</span></div>
+  <h2>Какие грамматические правила управляют каждым словом</h2>
+  <p class="part-lede">Самые трудные слова трудны тем, что на них действуют <i>несколько</i> правил сразу. Эта карта перечисляет для каждого все правила — чтобы видеть картину целиком и знать, что ничего не упущено.</p>
+
+  <div class="tbl-wrap">
+  <table class="tbl">
+    <thead><tr><th>Слово</th><th>Все правила, что им управляют</th></tr></thead>
+    <tbody>
+      <tr><td>that</td><td>комплементайзер (именная/содержательная клауза) · опускается или обязателен · относительное местоимение (с пропуском, только ограничит.) · <span class="en">so/such … that</span> (следствие) · <span class="en">so that</span> (цель) · косвенная речь + сдвиг времён · сослагательное (<span class="en">insist that he be</span>) · репортивный пассив (<span class="en">It is said that…</span>) · расщепление (<span class="en">It was X that…</span>) · аппозиция (<span class="en">the fact that…</span>) · указательное (не союз)</td></tr>
+      <tr><td>because</td><td>подчинитель причины (фокусный) · <span class="en">because of</span> + сущ. · vs <span class="en">since/as/for</span> · вынос вперёд и запятая · правило фрагмента · <span class="en">the reason is that</span> (не <span class="en">is because</span>) · область отрицания</td></tr>
+      <tr><td>what</td><td>вопросительное местоимение · именная (wh-)клауза · свободное относительное (= «то, что») · вложенное wh = порядок утверждения · порядок в вопросе · восклицание (<span class="en">What a…!</span>) · расщепление (<span class="en">What I need is…</span>) · никогда не относительное после существительного</td></tr>
+      <tr><td>if / whether</td><td>условие (лестница условных) · нет <span class="en">will</span> в if-клаузе · <span class="en">if</span> vs <span class="en">whether</span> (условие vs выбор) · вложенный да-нет вопрос · косвенный да-нет (<span class="en">asked if/whether</span>) · <span class="en">even if / as if / if only</span></td></tr>
+      <tr><td>as</td><td>причина · время/одновременность · параллельное изменение · образ действия · сравнение (<span class="en">as…as</span>) · роль (предлог + сущ.) · <span class="en">as</span> vs <span class="en">like</span> перед клаузой · снятие двусмысленности</td></tr>
+      <tr><td>since</td><td>время (от прошлой точки, + present perfect) · причина (известная) · снятие двусмысленности (<span class="en">ever since</span> / <span class="en">given that</span>)</td></tr>
+      <tr><td>and / but / so</td><td>сочинение + параллелизм · правило запятой перед клаузой · <span class="en">and</span> = последовательность/результат · <span class="en">but</span> = кроме / <span class="en">but for</span> / <span class="en">not X but Y</span> · <span class="en">so</span> vs <span class="en">so that</span> vs <span class="en">so … that</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="prose">
+    <p><b>Как пользоваться картой.</b> Когда одно из этих слов вас затрудняет, сначала спросите, <i>какое правило в игре</i> — это <span class="en">that</span> комплементайзер или относительное? это <span class="en">since</span> время или причина? это <span class="en">as</span> причина или образ? Назвав правило, вы выходите на нужный раздел выше и на его полный разбор в «Устройстве английского предложения» (клаузы, согласование, вопросы, сослагательное) и «The English Timeline» (косвенная речь, условные).</p>
+  </div>
+</section>
+
+<footer>
+  <span>Справочник по союзам · 7 сочинительных · ~12 парных · 8 подчинительных отношений</span>
+  <span class="mono">Спутник «Устройства английского предложения», «The English Timeline» и «The Preposition Map»</span>
+</footer>
+
+</main>
+</div>
+</div>
