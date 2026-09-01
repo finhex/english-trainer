@@ -22,15 +22,24 @@ class _WordListScreenState extends State<WordListScreen> {
   String _query = '';
   int _filter = 1; // 0 = all (known last), 1 = to-learn only, 2 = known only
 
+  // the level's full word list, sorted once and reused — sorting 16k words on
+  // every rebuild was the source of the scroll/redraw freeze.
+  List<Word>? _allCache;
+  List<Word> _allSorted(VocabRepository vocab) {
+    if (_allCache != null) return _allCache!;
+    final list = widget.level == null
+        ? List<Word>.from(vocab.words)
+        : vocab.wordsForLevel(widget.level!);
+    list.sort((a, b) => a.word.compareTo(b.word));
+    return _allCache = list;
+  }
+
   @override
   Widget build(BuildContext context) {
     final vocab = context.read<VocabRepository>();
     final store = context.watch<WordsStore>();
     final lang = context.watch<LocaleStore>().lang;
-    final all = (widget.level == null
-        ? List<Word>.from(vocab.words)
-        : vocab.wordsForLevel(widget.level!))
-      ..sort((a, b) => a.word.compareTo(b.word));
+    final all = _allSorted(vocab);
 
     bool known(Word w) => store.isKnown(w.word);
     // filter set: to-learn (unknown) / known / all
