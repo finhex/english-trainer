@@ -165,46 +165,75 @@ class _WordListScreenState extends State<WordListScreen> {
           Expanded(
             child: words.isEmpty
                 ? Center(child: Text(tr(lang, 'no_words')))
-                : ListView.separated(
+                : ListView.builder(
                     padding: const EdgeInsets.only(bottom: 88),
                     itemCount: words.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    // fixed row height → Flutter never re-measures items while
+                    // scrolling, so jumping deep into 16k words stays smooth.
+                    itemExtent: 62,
                     itemBuilder: (context, i) {
                       final w = words[i];
                       final isKnown = store.isKnown(w.word);
-                      return ListTile(
-                        leading: SizedBox(
-                          width: 46,
-                          child: Text('${i + 1}',
-                              maxLines: 1,
-                              softWrap: false,
-                              overflow: TextOverflow.visible,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                  color: Theme.of(context).hintColor,
-                                  fontSize: 12)),
-                        ),
-                        title: Text(w.word,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w600)),
-                        subtitle: (lang == 'ru' && w.ru.isNotEmpty)
-                            ? Text(
-                                w.ruLine,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary),
-                              )
-                            : Text(w.pos.join(' · ')),
-                        trailing: isKnown
-                            ? const Icon(Icons.check_circle,
-                                color: Color(0xFF3CA84B))
-                            : const Icon(Icons.chevron_right),
+                      final hint = Theme.of(context).hintColor;
+                      final showRu = lang == 'ru' && w.ru.isNotEmpty;
+                      return InkWell(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => WordDetailScreen(word: w),
+                          ),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .5),
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 42,
+                                child: Text('${i + 1}',
+                                    maxLines: 1,
+                                    softWrap: false,
+                                    overflow: TextOverflow.visible,
+                                    textAlign: TextAlign.right,
+                                    style:
+                                        TextStyle(color: hint, fontSize: 12)),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(w.word,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15.5)),
+                                    Text(showRu ? w.ruLine : w.pos.join(' · '),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            color: showRu
+                                                ? Theme.of(context)
+                                                    .colorScheme
+                                                    .primary
+                                                : hint)),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              isKnown
+                                  ? const Icon(Icons.check_circle,
+                                      color: Color(0xFF3CA84B), size: 20)
+                                  : Icon(Icons.chevron_right, color: hint),
+                            ],
                           ),
                         ),
                       );
