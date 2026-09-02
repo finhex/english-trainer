@@ -663,6 +663,32 @@ class _RichEntry extends StatelessWidget {
           ),
           const SizedBox(height: 18),
         ],
+        // 0.5) ALL FreeDict Russian meanings (complete set, as on freedict.com)
+        Builder(builder: (context) {
+          final all = context.read<VocabRepository>().freedictRuFor(word);
+          if (all.isEmpty) return const SizedBox.shrink();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              label('all_meanings'),
+              const SizedBox(height: 6),
+              Wrap(spacing: 8, runSpacing: 6, children: [
+                for (final t in all)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 11, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: scheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(t,
+                        style: TextStyle(
+                            color: scheme.onSecondaryContainer, fontSize: 13)),
+                  ),
+              ]),
+              const SizedBox(height: 18),
+            ],
+          );
+        }),
         // 1) word forms (moved above the meanings, per request)
         if (formItems.isNotEmpty) ...[
           label('word_forms'),

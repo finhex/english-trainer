@@ -14,13 +14,18 @@ class VocabRepository {
   final Map<String, dynamic> full; // word -> rich entry (ipa/forms/etymology/senses)
   final List<String> top3000; // the ~3000 most frequent words (freq order)
   final Map<String, List<String>> pairings; // word -> common collocations
+  final Map<String, List<String>> freedictRu; // word -> ALL FreeDict Russian
   VocabRepository(this.words, this.levelNames, this.exampleRu,
       this.definitionRu, this.ipa, this.irregular, this.full, this.top3000,
-      this.pairings);
+      this.pairings, this.freedictRu);
 
   /// Frequency-ranked common collocations for a word (e.g. spot -> "parking
   /// spot", "sweet spot"), empty if none.
   List<String> pairingsFor(String word) => pairings[word] ?? const [];
+
+  /// The complete set of FreeDict Russian translations for a word (as on
+  /// freedict.com), empty if the word isn't in the FreeDict dictionary.
+  List<String> freedictRuFor(String word) => freedictRu[word] ?? const [];
 
   /// The subset of [words] that are in the 3000-most-common list.
   List<Word> get top3000Words {
@@ -84,8 +89,9 @@ class VocabRepository {
       top3000 = (json.decode(raw) as List).cast<String>();
     } catch (_) {}
     final pairings = await _loadListMap('assets/pairings.json');
+    final freedictRu = await _loadListMap('assets/freedict_ru.json');
     return VocabRepository(words, names, exampleRu, definitionRu, ipa,
-        irregular, full, top3000, pairings);
+        irregular, full, top3000, pairings, freedictRu);
   }
 
   static Future<Map<String, String>> _loadMap(String asset) async {
