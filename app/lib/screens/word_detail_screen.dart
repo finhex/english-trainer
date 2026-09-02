@@ -54,6 +54,10 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
   late Word _word;
   late bool _includeKnown; // toggle: include learned words in the rotation
 
+  // Which dictionary the meanings come from. Default WordNet; remembered across
+  // words for the rest of the session.
+  static String _srcChoice = 'wordnet'; // 'wordnet' | 'freedict'
+
   @override
   void initState() {
     super.initState();
@@ -323,44 +327,93 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
           Builder(builder: (context) {
             final full = context.read<VocabRepository>().fullFor(w.word);
             final richSenses = (full?['senses'] as List?) ?? const [];
-            if (richSenses.isNotEmpty) {
-              return _RichEntry(
-                  word: w.word, full: full!, lang: lang, tts: _tts);
-            }
-            // fallback: WordNet senses (words not covered by the rich source)
-            if (w.senses.isEmpty && w.simple.isEmpty) {
+            final hasRich = richSenses.isNotEmpty;
+            final hasWordNet = w.senses.isNotEmpty;
+            // dictionary chooser — only when both sources exist for this word
+            final chooser = (hasRich && (hasWordNet || w.simple.isNotEmpty))
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 14),
+                    child: Row(
+                      children: [
+                        Text('${tr(lang, 'dictionary')}:  ',
+                            style: TextStyle(
+                                color: Theme.of(context).hintColor,
+                                fontSize: 13)),
+                        Expanded(
+                          child: SegmentedButton<String>(
+                            showSelectedIcon: false,
+                            style: const ButtonStyle(
+                                visualDensity: VisualDensity.compact),
+                            segments: [
+                              ButtonSegment(
+                                  value: 'wordnet',
+                                  label: Text(tr(lang, 'src_wordnet'))),
+                              ButtonSegment(
+                                  value: 'freedict',
+                                  label: Text(tr(lang, 'src_freedict'))),
+                            ],
+                            selected: {_srcChoice},
+                            onSelectionChanged: (s) =>
+                                setState(() => _srcChoice = s.first),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink();
+
+            // Which source to actually render (fall back if the chosen one is
+            // missing for this word).
+            final showRich = hasRich &&
+                (_srcChoice == 'freedict' || !hasWordNet);
+
+            if (!hasRich && !hasWordNet && w.simple.isEmpty) {
               return Text(tr(lang, 'no_definition'));
             }
+
+            final Widget meanings = showRich
+                ? _RichEntry(word: w.word, full: full!, lang: lang, tts: _tts)
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (hasWordNet)
+                        Text(tr(lang, 'dictionary_meanings'),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                    color: Theme.of(context).hintColor)),
+                      const SizedBox(height: 6),
+                      for (final entry in byPos.entries) ...[
+                        Text(_posLabel(lang, entry.key),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    color: _posColor(entry.key),
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic)),
+                        const SizedBox(height: 6),
+                        for (var i = 0; i < entry.value.length; i++)
+                          _SenseTile(
+                              index: i + 1,
+                              sense: entry.value[i],
+                              lang: lang,
+                              ruExample: context
+                                  .read<VocabRepository>()
+                                  .ruExample(entry.value[i].example),
+                              ruDefinition: context
+                                  .read<VocabRepository>()
+                                  .ruDefinition(entry.value[i].definition),
+                              tts: _tts),
+                        const SizedBox(height: 14),
+                      ],
+                    ],
+                  );
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (w.senses.isNotEmpty)
-                  Text(tr(lang, 'dictionary_meanings'),
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: Theme.of(context).hintColor)),
-                const SizedBox(height: 6),
-                for (final entry in byPos.entries) ...[
-                  Text(_posLabel(lang, entry.key),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: _posColor(entry.key),
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic)),
-                  const SizedBox(height: 6),
-                  for (var i = 0; i < entry.value.length; i++)
-                    _SenseTile(
-                        index: i + 1,
-                        sense: entry.value[i],
-                        lang: lang,
-                        ruExample: context
-                            .read<VocabRepository>()
-                            .ruExample(entry.value[i].example),
-                        ruDefinition: context
-                            .read<VocabRepository>()
-                            .ruDefinition(entry.value[i].definition),
-                        tts: _tts),
-                  const SizedBox(height: 14),
-                ],
-              ],
+              children: [chooser, meanings],
             );
           }),
         ],
