@@ -508,38 +508,23 @@ class _RichEntry extends StatelessWidget {
         if (forms[e.key] != null && (forms[e.key] as String).isNotEmpty)
           MapEntry(e.value, forms[e.key] as String)
     ];
+    // synonyms aggregated across senses into one list (as on the site)
+    final allSyn = <String>[];
+    for (final s in senses) {
+      for (final sy in (((s as Map)['synonyms'] as List?) ?? const [])) {
+        final t = (sy as String).trim();
+        if (t.isNotEmpty && !allSyn.contains(t)) allSyn.add(t);
+      }
+    }
+
+    Widget label(String key) => Text(tr(lang, key),
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: hint));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (formItems.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 14),
-            child: Wrap(spacing: 8, runSpacing: 6, children: [
-              for (final it in formItems)
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: scheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Text.rich(TextSpan(children: [
-                    TextSpan(
-                        text: '${it.key}: ',
-                        style: TextStyle(color: hint, fontSize: 12)),
-                    TextSpan(
-                        text: it.value,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 13)),
-                  ])),
-                ),
-            ]),
-          ),
-        Text(tr(lang, 'dictionary_meanings'),
-            style: Theme.of(context)
-                .textTheme
-                .labelMedium
-                ?.copyWith(color: hint)),
+        // 1) definitions grouped by part of speech (with examples + Russian)
+        label('dictionary_meanings'),
         const SizedBox(height: 6),
         for (final entry in byPos.entries) ...[
           Text(_posLabel(lang, entry.key),
@@ -552,19 +537,59 @@ class _RichEntry extends StatelessWidget {
             _sense(context, i + 1, entry.value[i], scheme, hint),
           const SizedBox(height: 14),
         ],
+        // 2) word forms
+        if (formItems.isNotEmpty) ...[
+          label('word_forms'),
+          const SizedBox(height: 6),
+          Wrap(spacing: 8, runSpacing: 6, children: [
+            for (final it in formItems)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                    color: scheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Text.rich(TextSpan(children: [
+                  TextSpan(
+                      text: '${it.key}: ',
+                      style: TextStyle(color: hint, fontSize: 12)),
+                  TextSpan(
+                      text: it.value,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 13)),
+                ])),
+              ),
+          ]),
+          const SizedBox(height: 16),
+        ],
+        // 3) etymology
         if (ety.isNotEmpty) ...[
-          Text(tr(lang, 'etymology'),
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(color: hint)),
+          label('etymology'),
           const SizedBox(height: 4),
           Text(ety,
               style: TextStyle(
                   color: scheme.onSurface.withValues(alpha: .72),
                   fontSize: 13.5,
                   height: 1.4)),
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
+        ],
+        // 4) synonyms — one list at the bottom
+        if (allSyn.isNotEmpty) ...[
+          label('synonyms'),
+          const SizedBox(height: 6),
+          Wrap(spacing: 8, runSpacing: 6, children: [
+            for (final sy in allSyn.take(18))
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 11, vertical: 4),
+                decoration: BoxDecoration(
+                    color: scheme.secondaryContainer,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(sy,
+                    style: TextStyle(
+                        color: scheme.onSecondaryContainer, fontSize: 13)),
+              ),
+          ]),
         ],
       ],
     );
@@ -575,7 +600,6 @@ class _RichEntry extends StatelessWidget {
     final def = (s['def'] as String?) ?? '';
     final ru = ((s['ru'] as List?) ?? const []).cast<String>();
     final ex = ((s['examples'] as List?) ?? const []).cast<String>();
-    final syn = ((s['synonyms'] as List?) ?? const []).cast<String>();
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -609,17 +633,6 @@ class _RichEntry extends StatelessWidget {
                 InkWell(
                     onTap: () => tts.speak(e),
                     child: Icon(Icons.volume_up, size: 16, color: hint)),
-              ]),
-            ),
-          if (syn.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(left: 18, top: 6),
-              child: Wrap(spacing: 8, runSpacing: 2, crossAxisAlignment: WrapCrossAlignment.center, children: [
-                Text('${tr(lang, 'synonyms')}: ',
-                    style: TextStyle(color: hint, fontSize: 12.5)),
-                for (final sy in syn)
-                  Text(sy,
-                      style: TextStyle(color: scheme.primary, fontSize: 12.5)),
               ]),
             ),
         ],
