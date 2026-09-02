@@ -37,6 +37,7 @@ flutter:
     - assets/content.json
     - assets/parts_ru.json
     - assets/words.json
+    - assets/word_ru.json
     - assets/examples_ru.json
     - assets/definitions_ru.json
     - assets/ipa.json

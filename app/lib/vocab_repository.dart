@@ -17,7 +17,18 @@ class VocabRepository {
   static Future<VocabRepository> load() async {
     final raw = await rootBundle.loadString('assets/words.json');
     final data = json.decode(raw) as Map<String, dynamic>;
-    final words = (data['words'] as List)
+    // word-level Russian overlay (separate file; overrides the inline `ru` so
+    // translations can be corrected/rebuilt without touching words.json).
+    final wordRu = await _loadListMap('assets/word_ru.json');
+    final wlist = data['words'] as List;
+    if (wordRu.isNotEmpty) {
+      for (final e in wlist) {
+        final m = e as Map<String, dynamic>;
+        final o = wordRu[m['word']];
+        if (o != null) m['ru'] = o;
+      }
+    }
+    final words = wlist
         .map((e) => Word.fromJson(e as Map<String, dynamic>))
         .toList();
     final names = <int, String>{};
@@ -50,6 +61,16 @@ class VocabRepository {
       final raw = await rootBundle.loadString(asset);
       return (json.decode(raw) as Map<String, dynamic>)
           .map((k, v) => MapEntry(k, v as String));
+    } catch (_) {
+      return {};
+    }
+  }
+
+  static Future<Map<String, List<String>>> _loadListMap(String asset) async {
+    try {
+      final raw = await rootBundle.loadString(asset);
+      return (json.decode(raw) as Map<String, dynamic>)
+          .map((k, v) => MapEntry(k, (v as List).cast<String>()));
     } catch (_) {
       return {};
     }
