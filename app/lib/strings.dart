@@ -103,6 +103,9 @@ const Map<String, Map<String, String>> _s = {
   'learned': {'en': 'learned', 'ru': 'выучено'},
   'in_simple_words': {'en': 'In simple words', 'ru': 'Простыми словами'},
   'dictionary_meanings': {'en': 'Dictionary meanings', 'ru': 'Значения из словаря'},
+  'etymology': {'en': 'Etymology', 'ru': 'Этимология'},
+  'synonyms': {'en': 'Synonyms', 'ru': 'Синонимы'},
+  'word_forms': {'en': 'Word forms', 'ru': 'Формы слова'},
   'no_definition': {
     'en': 'No offline definition available for this word yet.',
     'ru': 'Для этого слова пока нет офлайн-определения.'

@@ -320,37 +320,48 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
             const SizedBox(height: 18),
           ],
 
-          if (w.senses.isNotEmpty)
-            Text(tr(lang, 'dictionary_meanings'),
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: Theme.of(context).hintColor)),
-          const SizedBox(height: 6),
-          if (w.senses.isEmpty && w.simple.isEmpty)
-            Text(tr(lang, 'no_definition'))
-          else
-            for (final entry in byPos.entries) ...[
-              Text(_posLabel(lang, entry.key),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: _posColor(entry.key),
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic)),
-              const SizedBox(height: 6),
-              for (var i = 0; i < entry.value.length; i++)
-                _SenseTile(
-                    index: i + 1,
-                    sense: entry.value[i],
-                    lang: lang,
-                    ruExample: context
-                        .read<VocabRepository>()
-                        .ruExample(entry.value[i].example),
-                    ruDefinition: context
-                        .read<VocabRepository>()
-                        .ruDefinition(entry.value[i].definition),
-                    tts: _tts),
-              const SizedBox(height: 14),
-            ],
+          Builder(builder: (context) {
+            final full = context.read<VocabRepository>().fullFor(w.word);
+            final richSenses = (full?['senses'] as List?) ?? const [];
+            if (richSenses.isNotEmpty) {
+              return _RichEntry(full: full!, lang: lang, tts: _tts);
+            }
+            // fallback: WordNet senses (words not covered by the rich source)
+            if (w.senses.isEmpty && w.simple.isEmpty) {
+              return Text(tr(lang, 'no_definition'));
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (w.senses.isNotEmpty)
+                  Text(tr(lang, 'dictionary_meanings'),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).hintColor)),
+                const SizedBox(height: 6),
+                for (final entry in byPos.entries) ...[
+                  Text(_posLabel(lang, entry.key),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: _posColor(entry.key),
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic)),
+                  const SizedBox(height: 6),
+                  for (var i = 0; i < entry.value.length; i++)
+                    _SenseTile(
+                        index: i + 1,
+                        sense: entry.value[i],
+                        lang: lang,
+                        ruExample: context
+                            .read<VocabRepository>()
+                            .ruExample(entry.value[i].example),
+                        ruDefinition: context
+                            .read<VocabRepository>()
+                            .ruDefinition(entry.value[i].definition),
+                        tts: _tts),
+                  const SizedBox(height: 14),
+                ],
+              ],
+            );
+          }),
         ],
       ),
       bottomNavigationBar: SafeArea(
@@ -451,6 +462,165 @@ class _SenseTile extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Rich dictionary entry (FreeDict/Wiktionary): word forms, senses grouped by
+/// part of speech with English definition, Russian translation, examples and
+/// synonyms, plus etymology.
+class _RichEntry extends StatelessWidget {
+  final Map<String, dynamic> full;
+  final String lang;
+  final TtsService tts;
+  const _RichEntry(
+      {required this.full, required this.lang, required this.tts});
+
+  static const _formLabels = {
+    'plural': 'plural',
+    'past': 'past',
+    'past participle': 'past part.',
+    'present_3s': '3rd person',
+    'gerund': '-ing',
+    'comparative': 'comparative',
+    'superlative': 'superlative',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final hint = Theme.of(context).hintColor;
+    final senses = (full['senses'] as List).cast<dynamic>();
+    final forms = (full['forms'] as Map?) ?? const {};
+    final ety = ((full['etymology'] as String?) ?? '').trim();
+
+    final byPos = <String, List<Map<String, dynamic>>>{};
+    for (final s in senses) {
+      final m = (s as Map).cast<String, dynamic>();
+      byPos.putIfAbsent((m['pos'] as String?) ?? '', () => []).add(m);
+    }
+
+    final formItems = [
+      for (final e in _formLabels.entries)
+        if (forms[e.key] != null && (forms[e.key] as String).isNotEmpty)
+          MapEntry(e.value, forms[e.key] as String)
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (formItems.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 14),
+            child: Wrap(spacing: 8, runSpacing: 6, children: [
+              for (final it in formItems)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: scheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Text.rich(TextSpan(children: [
+                    TextSpan(
+                        text: '${it.key}: ',
+                        style: TextStyle(color: hint, fontSize: 12)),
+                    TextSpan(
+                        text: it.value,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 13)),
+                  ])),
+                ),
+            ]),
+          ),
+        Text(tr(lang, 'dictionary_meanings'),
+            style: Theme.of(context)
+                .textTheme
+                .labelMedium
+                ?.copyWith(color: hint)),
+        const SizedBox(height: 6),
+        for (final entry in byPos.entries) ...[
+          Text(_posLabel(lang, entry.key),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: _posColor(entry.key),
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic)),
+          const SizedBox(height: 6),
+          for (var i = 0; i < entry.value.length; i++)
+            _sense(context, i + 1, entry.value[i], scheme, hint),
+          const SizedBox(height: 14),
+        ],
+        if (ety.isNotEmpty) ...[
+          Text(tr(lang, 'etymology'),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: hint)),
+          const SizedBox(height: 4),
+          Text(ety,
+              style: TextStyle(
+                  color: scheme.onSurface.withValues(alpha: .72),
+                  fontSize: 13.5,
+                  height: 1.4)),
+          const SizedBox(height: 10),
+        ],
+      ],
+    );
+  }
+
+  Widget _sense(BuildContext context, int idx, Map<String, dynamic> s,
+      ColorScheme scheme, Color hint) {
+    final def = (s['def'] as String?) ?? '';
+    final ru = ((s['ru'] as List?) ?? const []).cast<String>();
+    final ex = ((s['examples'] as List?) ?? const []).cast<String>();
+    final syn = ((s['synonyms'] as List?) ?? const []).cast<String>();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (def.isNotEmpty)
+            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('$idx. ',
+                  style: TextStyle(color: hint, fontWeight: FontWeight.w600)),
+              Expanded(
+                  child: Text(def,
+                      style: const TextStyle(fontSize: 15.5, height: 1.35))),
+            ]),
+          if (ru.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(left: 18, top: 2),
+              child: Text(ru.join(', '),
+                  style: TextStyle(
+                      color: scheme.primary, fontWeight: FontWeight.w600)),
+            ),
+          for (final e in ex)
+            Padding(
+              padding: const EdgeInsets.only(left: 18, top: 4),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Expanded(
+                    child: Text('“$e”',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: scheme.onSurface.withValues(alpha: .8),
+                            fontSize: 14))),
+                InkWell(
+                    onTap: () => tts.speak(e),
+                    child: Icon(Icons.volume_up, size: 16, color: hint)),
+              ]),
+            ),
+          if (syn.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(left: 18, top: 6),
+              child: Wrap(spacing: 8, runSpacing: 2, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                Text('${tr(lang, 'synonyms')}: ',
+                    style: TextStyle(color: hint, fontSize: 12.5)),
+                for (final sy in syn)
+                  Text(sy,
+                      style: TextStyle(color: scheme.primary, fontSize: 12.5)),
+              ]),
             ),
         ],
       ),

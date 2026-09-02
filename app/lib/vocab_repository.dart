@@ -11,8 +11,14 @@ class VocabRepository {
   final Map<String, String> definitionRu; // english definition -> russian
   final Map<String, Map<String, String>> ipa; // word -> {uk, us} IPA
   final Map<String, List<String>> irregular; // base verb -> [v1, v2, v3]
+  final Map<String, dynamic> full; // word -> rich entry (ipa/forms/etymology/senses)
   VocabRepository(this.words, this.levelNames, this.exampleRu,
-      this.definitionRu, this.ipa, this.irregular);
+      this.definitionRu, this.ipa, this.irregular, this.full);
+
+  /// Rich FreeDict/Wiktionary entry for a word (senses with examples, synonyms,
+  /// forms, etymology), or null if not covered.
+  Map<String, dynamic>? fullFor(String word) =>
+      full[word] as Map<String, dynamic>?;
 
   static Future<VocabRepository> load() async {
     final raw = await rootBundle.loadString('assets/words.json');
@@ -52,8 +58,13 @@ class VocabRepository {
       irregular = (json.decode(raw) as Map<String, dynamic>).map(
           (k, v) => MapEntry(k, (v as List).cast<String>()));
     } catch (_) {}
+    var full = <String, dynamic>{};
+    try {
+      final raw = await rootBundle.loadString('assets/word_full.json');
+      full = json.decode(raw) as Map<String, dynamic>;
+    } catch (_) {}
     return VocabRepository(
-        words, names, exampleRu, definitionRu, ipa, irregular);
+        words, names, exampleRu, definitionRu, ipa, irregular, full);
   }
 
   static Future<Map<String, String>> _loadMap(String asset) async {
