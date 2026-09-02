@@ -324,7 +324,8 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
             final full = context.read<VocabRepository>().fullFor(w.word);
             final richSenses = (full?['senses'] as List?) ?? const [];
             if (richSenses.isNotEmpty) {
-              return _RichEntry(full: full!, lang: lang, tts: _tts);
+              return _RichEntry(
+                  word: w.word, full: full!, lang: lang, tts: _tts);
             }
             // fallback: WordNet senses (words not covered by the rich source)
             if (w.senses.isEmpty && w.simple.isEmpty) {
@@ -473,11 +474,58 @@ class _SenseTile extends StatelessWidget {
 /// part of speech with English definition, Russian translation, examples and
 /// synonyms, plus etymology.
 class _RichEntry extends StatelessWidget {
+  final String word;
   final Map<String, dynamic> full;
   final String lang;
   final TtsService tts;
   const _RichEntry(
-      {required this.full, required this.lang, required this.tts});
+      {required this.word,
+      required this.full,
+      required this.lang,
+      required this.tts});
+
+  /// The headword plus its inflected forms, lower-cased, for highlighting the
+  /// target word inside example sentences (as the reference site does).
+  Set<String> _targets() {
+    final t = <String>{word.toLowerCase()};
+    final forms = (full['forms'] as Map?) ?? const {};
+    for (final v in forms.values) {
+      if (v is String && v.trim().isNotEmpty) t.add(v.toLowerCase());
+    }
+    // common regular inflections so "spot" also lights up "spots"/"spotting"
+    final w = word.toLowerCase();
+    t.addAll([
+      '${w}s',
+      '${w}es',
+      '${w}ed',
+      '${w}ing',
+      if (w.endsWith('e')) '${w.substring(0, w.length - 1)}ing',
+    ]);
+    return t;
+  }
+
+  /// Renders [text] as italic, bolding any whole-word occurrence of a target.
+  Widget _highlight(String text, Set<String> targets, ColorScheme scheme) {
+    final spans = <TextSpan>[];
+    final re = RegExp(r"[A-Za-z']+|[^A-Za-z']+");
+    for (final m in re.allMatches(text)) {
+      final tok = m.group(0)!;
+      final hit = targets.contains(tok.toLowerCase());
+      spans.add(TextSpan(
+          text: tok,
+          style: hit
+              ? TextStyle(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w700,
+                  color: scheme.primary)
+              : null));
+    }
+    return Text.rich(TextSpan(children: spans),
+        style: TextStyle(
+            fontStyle: FontStyle.italic,
+            color: scheme.onSurface.withValues(alpha: .8),
+            fontSize: 14));
+  }
 
   static const _formLabels = {
     'plural': 'plural',
@@ -520,24 +568,49 @@ class _RichEntry extends StatelessWidget {
     Widget label(String key) => Text(tr(lang, key),
         style: Theme.of(context).textTheme.labelMedium?.copyWith(color: hint));
 
+    final targets = _targets();
+    // summary line: the first sense, shown as a highlighted callout at the top
+    final firstPos = byPos.keys.isNotEmpty ? byPos.keys.first : '';
+    final firstDef = byPos.isNotEmpty ? (byPos.values.first.first['def'] as String? ?? '') : '';
+    final firstEx = byPos.isNotEmpty
+        ? (((byPos.values.first.first['examples'] as List?) ?? const []).cast<String>())
+        : const <String>[];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // 1) definitions grouped by part of speech (with examples + Russian)
-        label('dictionary_meanings'),
-        const SizedBox(height: 6),
-        for (final entry in byPos.entries) ...[
-          Text(_posLabel(lang, entry.key),
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: _posColor(entry.key),
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic)),
-          const SizedBox(height: 6),
-          for (var i = 0; i < entry.value.length; i++)
-            _sense(context, i + 1, entry.value[i], scheme, hint),
-          const SizedBox(height: 14),
+        // 0) top callout — headword (pos) means <first sense>. Example: …
+        if (firstDef.isNotEmpty) ...[
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: scheme.primaryContainer.withValues(alpha: .5),
+              borderRadius: BorderRadius.circular(12),
+              border: Border(left: BorderSide(color: scheme.primary, width: 3)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text.rich(TextSpan(children: [
+                  TextSpan(
+                      text: word,
+                      style: const TextStyle(fontWeight: FontWeight.w700)),
+                  if (firstPos.isNotEmpty)
+                    TextSpan(
+                        text: '  (${_posLabel(lang, firstPos)})',
+                        style: TextStyle(color: hint, fontStyle: FontStyle.italic)),
+                  TextSpan(text: ' — $firstDef'),
+                ]), style: const TextStyle(fontSize: 15, height: 1.4)),
+                if (firstEx.isNotEmpty) ...[
+                  const SizedBox(height: 6),
+                  _highlight('“${firstEx.first}”', targets, scheme),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 18),
         ],
-        // 2) word forms
+        // 1) word forms (moved above the meanings, per request)
         if (formItems.isNotEmpty) ...[
           label('word_forms'),
           const SizedBox(height: 6),
@@ -562,18 +635,7 @@ class _RichEntry extends StatelessWidget {
           ]),
           const SizedBox(height: 16),
         ],
-        // 3) etymology
-        if (ety.isNotEmpty) ...[
-          label('etymology'),
-          const SizedBox(height: 4),
-          Text(ety,
-              style: TextStyle(
-                  color: scheme.onSurface.withValues(alpha: .72),
-                  fontSize: 13.5,
-                  height: 1.4)),
-          const SizedBox(height: 16),
-        ],
-        // 4) synonyms — one list at the bottom
+        // 2) synonyms — one list, also above the meanings
         if (allSyn.isNotEmpty) ...[
           label('synonyms'),
           const SizedBox(height: 6),
@@ -590,13 +652,38 @@ class _RichEntry extends StatelessWidget {
                         color: scheme.onSecondaryContainer, fontSize: 13)),
               ),
           ]),
+          const SizedBox(height: 18),
+        ],
+        // 3) definitions grouped by part of speech (with examples + Russian)
+        label('dictionary_meanings'),
+        const SizedBox(height: 6),
+        for (final entry in byPos.entries) ...[
+          Text(_posLabel(lang, entry.key),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: _posColor(entry.key),
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic)),
+          const SizedBox(height: 6),
+          for (var i = 0; i < entry.value.length; i++)
+            _sense(context, i + 1, entry.value[i], scheme, hint, targets),
+          const SizedBox(height: 14),
+        ],
+        // 4) etymology at the end
+        if (ety.isNotEmpty) ...[
+          label('etymology'),
+          const SizedBox(height: 4),
+          Text(ety,
+              style: TextStyle(
+                  color: scheme.onSurface.withValues(alpha: .72),
+                  fontSize: 13.5,
+                  height: 1.4)),
         ],
       ],
     );
   }
 
   Widget _sense(BuildContext context, int idx, Map<String, dynamic> s,
-      ColorScheme scheme, Color hint) {
+      ColorScheme scheme, Color hint, Set<String> targets) {
     final def = (s['def'] as String?) ?? '';
     final ru = ((s['ru'] as List?) ?? const []).cast<String>();
     final ex = ((s['examples'] as List?) ?? const []).cast<String>();
@@ -624,12 +711,7 @@ class _RichEntry extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 18, top: 4),
               child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Expanded(
-                    child: Text('“$e”',
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: scheme.onSurface.withValues(alpha: .8),
-                            fontSize: 14))),
+                Expanded(child: _highlight('“$e”', targets, scheme)),
                 InkWell(
                     onTap: () => tts.speak(e),
                     child: Icon(Icons.volume_up, size: 16, color: hint)),
