@@ -59,13 +59,18 @@ class _WordListScreenState extends State<WordListScreen> {
               w.word.contains(q) ||
               w.ru.any((t) => t.toLowerCase().contains(q)))
           .toList();
-      // rank matches: exact > starts-with > contains > matched-via-Russian, and
-      // (within a rank) unknown before known — so "ally" shows "ally" first.
+      // rank matches so the best hit surfaces first, for English *and* Russian
+      // queries: exact English > English starts-with > exact Russian > Russian
+      // starts-with > English contains > Russian contains. Without the Russian
+      // tiers, searching "время" buried "time" under an alphabetical list.
       int rank(Word w) {
         if (w.word == q) return 0;
         if (w.word.startsWith(q)) return 1;
-        if (w.word.contains(q)) return 2;
-        return 3;
+        final ru = w.ru.map((t) => t.toLowerCase()).toList();
+        if (ru.any((t) => t == q)) return 2;
+        if (ru.any((t) => t.startsWith(q))) return 3;
+        if (w.word.contains(q)) return 4;
+        return 5; // matched somewhere inside a Russian translation
       }
 
       words.sort((a, b) {
