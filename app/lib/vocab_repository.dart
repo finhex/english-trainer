@@ -12,8 +12,17 @@ class VocabRepository {
   final Map<String, Map<String, String>> ipa; // word -> {uk, us} IPA
   final Map<String, List<String>> irregular; // base verb -> [v1, v2, v3]
   final Map<String, dynamic> full; // word -> rich entry (ipa/forms/etymology/senses)
+  final List<String> top3000; // the ~3000 most frequent words (freq order)
   VocabRepository(this.words, this.levelNames, this.exampleRu,
-      this.definitionRu, this.ipa, this.irregular, this.full);
+      this.definitionRu, this.ipa, this.irregular, this.full, this.top3000);
+
+  /// The subset of [words] that are in the 3000-most-common list.
+  List<Word> get top3000Words {
+    final rank = {for (var i = 0; i < top3000.length; i++) top3000[i]: i};
+    final list = words.where((w) => rank.containsKey(w.word)).toList();
+    list.sort((a, b) => rank[a.word]!.compareTo(rank[b.word]!));
+    return list;
+  }
 
   /// Rich FreeDict/Wiktionary entry for a word (senses with examples, synonyms,
   /// forms, etymology), or null if not covered.
@@ -63,8 +72,13 @@ class VocabRepository {
       final raw = await rootBundle.loadString('assets/word_full.json');
       full = json.decode(raw) as Map<String, dynamic>;
     } catch (_) {}
-    return VocabRepository(
-        words, names, exampleRu, definitionRu, ipa, irregular, full);
+    var top3000 = <String>[];
+    try {
+      final raw = await rootBundle.loadString('assets/top3000.json');
+      top3000 = (json.decode(raw) as List).cast<String>();
+    } catch (_) {}
+    return VocabRepository(words, names, exampleRu, definitionRu, ipa,
+        irregular, full, top3000);
   }
 
   static Future<Map<String, String>> _loadMap(String asset) async {

@@ -35,6 +35,22 @@ class WordsScreen extends StatelessWidget {
                 ),
               ),
             ),
+          // the 3000 most common words — the core everyday vocabulary
+          if (vocab.top3000.isNotEmpty)
+            _LevelCard(
+              name: tr(lang, 'top3000'),
+              learnedLabel: tr(lang, 'learned'),
+              total: vocab.top3000Words.length,
+              known: store.knownCount(vocab.top3000Words.map((w) => w.word)),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => WordListScreen(
+                    subset: vocab.top3000Words,
+                    title: tr(lang, 'top3000'),
+                  ),
+                ),
+              ),
+            ),
           // every word across all levels, at the very end
           _LevelCard(
             name: tr(lang, 'all_words'),

@@ -13,7 +13,9 @@ import 'word_detail_screen.dart';
 /// random-word button (which skips words you already know).
 class WordListScreen extends StatefulWidget {
   final int? level; // null => all words across every level
-  const WordListScreen({super.key, this.level});
+  final List<Word>? subset; // non-null => restrict to this set (e.g. top 3000)
+  final String? title; // custom app-bar title (used with [subset])
+  const WordListScreen({super.key, this.level, this.subset, this.title});
   @override
   State<WordListScreen> createState() => _WordListScreenState();
 }
@@ -27,9 +29,11 @@ class _WordListScreenState extends State<WordListScreen> {
   List<Word>? _allCache;
   List<Word> _allSorted(VocabRepository vocab) {
     if (_allCache != null) return _allCache!;
-    final list = widget.level == null
-        ? List<Word>.from(vocab.words)
-        : vocab.wordsForLevel(widget.level!);
+    final list = widget.subset != null
+        ? List<Word>.from(widget.subset!)
+        : widget.level == null
+            ? List<Word>.from(vocab.words)
+            : vocab.wordsForLevel(widget.level!);
     list.sort((a, b) => a.word.compareTo(b.word));
     return _allCache = list;
   }
@@ -89,9 +93,10 @@ class _WordListScreenState extends State<WordListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.level == null
-            ? tr(lang, 'all_words')
-            : (vocab.levelNames[widget.level] ?? 'Words')),
+        title: Text(widget.title ??
+            (widget.level == null
+                ? tr(lang, 'all_words')
+                : (vocab.levelNames[widget.level] ?? 'Words'))),
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.casino_outlined),

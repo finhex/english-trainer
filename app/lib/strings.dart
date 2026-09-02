@@ -96,6 +96,11 @@ const Map<String, Map<String, String>> _s = {
   'search_book': {'en': 'Search the book', 'ru': 'Поиск по книге'},
   'random_word': {'en': 'Random word', 'ru': 'Случайное слово'},
   'all_words': {'en': 'All words', 'ru': 'Все слова'},
+  'top3000': {'en': '3000 most common', 'ru': '3000 самых частых'},
+  'top3000_sub': {
+    'en': 'The core everyday vocabulary',
+    'ru': 'Основная повседневная лексика'
+  },
   'text_size': {'en': 'Text size', 'ru': 'Размер текста'},
   'next_word': {'en': 'Next word', 'ru': 'Следующее'},
   'mark_known': {'en': 'Mark as known', 'ru': 'Отметить выученным'},
