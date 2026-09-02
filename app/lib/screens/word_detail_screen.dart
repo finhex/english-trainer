@@ -721,7 +721,7 @@ class _RichEntry extends StatelessWidget {
             _sense(context, i + 1, entry.value[i], scheme, hint, targets),
           const SizedBox(height: 14),
         ],
-        // 4) etymology at the end
+        // 4) etymology
         if (ety.isNotEmpty) ...[
           label('etymology'),
           const SizedBox(height: 4),
@@ -730,7 +730,31 @@ class _RichEntry extends StatelessWidget {
                   color: scheme.onSurface.withValues(alpha: .72),
                   fontSize: 13.5,
                   height: 1.4)),
+          const SizedBox(height: 16),
         ],
+        // 5) common pairings (frequency-ranked collocations) at the end
+        Builder(builder: (context) {
+          final pairs = context.read<VocabRepository>().pairingsFor(word);
+          if (pairs.isEmpty) return const SizedBox.shrink();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              label('common_pairings'),
+              const SizedBox(height: 6),
+              Wrap(spacing: 8, runSpacing: 6, children: [
+                for (final p in pairs)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 11, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: scheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: _highlight(p, targets, scheme),
+                  ),
+              ]),
+            ],
+          );
+        }),
       ],
     );
   }

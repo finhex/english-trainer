@@ -114,6 +114,7 @@ const Map<String, Map<String, String>> _s = {
   'etymology': {'en': 'Etymology', 'ru': 'Этимология'},
   'synonyms': {'en': 'Synonyms', 'ru': 'Синонимы'},
   'word_forms': {'en': 'Word forms', 'ru': 'Формы слова'},
+  'common_pairings': {'en': 'Common pairings', 'ru': 'Частые сочетания'},
   'no_definition': {
     'en': 'No offline definition available for this word yet.',
     'ru': 'Для этого слова пока нет офлайн-определения.'
