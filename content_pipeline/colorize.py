@@ -124,6 +124,30 @@ def _highlight(block, hl):
     return block
 
 
+# The tense label is set vertically, one letter per <br/>, so the cell needs
+# almost no width - but an auto-layout table hands it whatever is left over and
+# it ends up as wide as a content column. width:1% is the standard way to say
+# "shrink to fit" in such a table.
+_LABEL_CELL = re.compile(
+    r'(<td)([^>]*)(>\s*(?:<small>\s*)?(?:<span[^>]*>\s*)?'
+    r'[A-Za-zА-Яа-яЁё](?:\s*<br\s*/?>\s*[A-Za-zА-Яа-яЁё]){2,})',
+    re.I)
+
+
+def _shrink_labels(block):
+    def repl(m):
+        head, attrs, tail = m.group(1), m.group(2), m.group(3)
+        if "width" in attrs.lower():
+            return m.group(0)
+        st = re.search(r'style\s*=\s*"([^"]*)"', attrs, re.I)
+        if st:
+            attrs = attrs.replace(st.group(0), f'style="{st.group(1)};width: 1%"')
+        else:
+            attrs = attrs + ' style="width: 1%"'
+        return f"{head}{attrs}{tail}"
+    return _LABEL_CELL.sub(repl, block)
+
+
 def colorize(html, dark):
     """Paint the conjugation boxes the way lesson 1's are painted."""
     pal = PAL[dark]
@@ -134,6 +158,7 @@ def colorize(html, dark):
         end = _span_end(html, m.start())
         block = html[m.start():end]
         block = _highlight(_paint_text(block, pal["red"]), pal["hl"])
+        block = _shrink_labels(block)
         out.append(html[pos:m.start()])
         out.append(block)
         pos = end
