@@ -149,12 +149,29 @@ class _PracticeTile extends StatelessWidget {
 /// The pieces arrive pre-split: the course's app stores them that way because
 /// the HTML renderer silently gives up and shows nothing once a single
 /// document passes roughly 10 KB. Stacking the pieces keeps each one under it.
-class _CourseHtml extends StatelessWidget {
+class _CourseHtml extends StatefulWidget {
   final Lesson lesson;
   final List<PracticeConfig> practices;
   final String lang;
   const _CourseHtml(
       {required this.lesson, required this.practices, required this.lang});
+
+  @override
+  State<_CourseHtml> createState() => _CourseHtmlState();
+}
+
+class _CourseHtmlState extends State<_CourseHtml> {
+  final _scroll = ScrollController();
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  Lesson get lesson => widget.lesson;
+  List<PracticeConfig> get practices => widget.practices;
+  String get lang => widget.lang;
 
   @override
   Widget build(BuildContext context) {
@@ -174,51 +191,58 @@ class _CourseHtml extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
           child: Card(
             margin: EdgeInsets.zero,
-            child: ListView.builder(
-              padding: const EdgeInsets.all(22),
-              // the lesson text, then its practices at the end
-              itemCount: parts.length + (practices.isEmpty ? 0 : 1),
-              itemBuilder: (context, i) {
-                if (i < parts.length) {
-                  return HtmlWidget(parts[i],
-                      textStyle: theme.textTheme.bodyMedium);
-                }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 20),
-                    const Divider(height: 1),
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4, bottom: 8),
-                      child: Text(tr(lang, 'practice'),
-                          style: theme.textTheme.titleMedium),
-                    ),
-                    for (final p in practices)
-                      Card(
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        child: ListTile(
-                          leading: Icon(iconFor(p.icon),
-                              color: theme.colorScheme.primary),
-                          title: Text(practiceLabel(lang, p.type)),
-                          subtitle: Text(
-                              '${progress.isPracticeCompleted(lesson.id, p.type) ? lesson.goalFor(p.type) : progress.practiceProgress(lesson.id, p.type)}'
-                              ' / ${lesson.goalFor(p.type)}'),
-                          trailing:
-                              progress.isPracticeCompleted(lesson.id, p.type)
-                                  ? const Icon(Icons.check_circle,
-                                      color: Color(0xFF3CA84B))
-                                  : const Icon(Icons.chevron_right),
-                          onTap: () =>
-                              Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => PracticeScreen(
-                                lessonId: lesson.id, type: p.type),
-                          )),
-                        ),
+            // its own controller and bar, so dragging the bar tracks the
+            // pointer instead of jumping - the way the book reads
+            child: Scrollbar(
+              controller: _scroll,
+              thumbVisibility: true,
+              child: ListView.builder(
+                controller: _scroll,
+                padding: const EdgeInsets.all(22),
+                // the lesson text, then its practices at the end
+                itemCount: parts.length + (practices.isEmpty ? 0 : 1),
+                itemBuilder: (context, i) {
+                  if (i < parts.length) {
+                    return HtmlWidget(parts[i],
+                        textStyle: theme.textTheme.bodyMedium);
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
+                      const Divider(height: 1),
+                      const SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, bottom: 8),
+                        child: Text(tr(lang, 'practice'),
+                            style: theme.textTheme.titleMedium),
                       ),
-                  ],
-                );
-              },
+                      for (final p in practices)
+                        Card(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          child: ListTile(
+                            leading: Icon(iconFor(p.icon),
+                                color: theme.colorScheme.primary),
+                            title: Text(practiceLabel(lang, p.type)),
+                            subtitle: Text(
+                                '${progress.isPracticeCompleted(lesson.id, p.type) ? lesson.goalFor(p.type) : progress.practiceProgress(lesson.id, p.type)}'
+                                ' / ${lesson.goalFor(p.type)}'),
+                            trailing:
+                                progress.isPracticeCompleted(lesson.id, p.type)
+                                    ? const Icon(Icons.check_circle,
+                                        color: Color(0xFF3CA84B))
+                                    : const Icon(Icons.chevron_right),
+                            onTap: () =>
+                                Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => PracticeScreen(
+                                  lessonId: lesson.id, type: p.type),
+                            )),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
