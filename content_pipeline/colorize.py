@@ -237,7 +237,6 @@ def colorize(html, dark):
         end = _span_end(html, m.start())
         block = html[m.start():end]
         block = _highlight(_paint_text(block, pal["red"]), pal["hl"])
-        block = _drop_label_column(block)
         out.append(html[pos:m.start()])
         out.append(block)
         pos = end
