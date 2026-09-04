@@ -159,7 +159,8 @@ class _CourseHtml extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final parts = lesson.htmlFor(theme.brightness == Brightness.dark);
+    final parts =
+        lesson.htmlFor(theme.brightness == Brightness.dark, lang: lang);
     final progress = context.watch<ProgressStore>();
     // the course's own app puts the whole explanation in a Card with 22px of
     // padding — same wrapper here so the tables sit where they do there
