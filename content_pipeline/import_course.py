@@ -127,6 +127,7 @@ class MdParser(HTMLParser):
         self.row = None
         self.cell = None
         self.table_rows = None
+        self.table_has_th = False
         self.color_stack = []
         self.block_color = []
 
@@ -184,10 +185,13 @@ class MdParser(HTMLParser):
             self.in_a = a.get("href", ""); self.a_text = []
         elif tag == "table":
             self.table_rows = []
+            self.table_has_th = False
         elif tag == "tr":
             self.row = []
         elif tag in ("td", "th"):
             self.cell = []
+            if tag == "th":
+                self.table_has_th = True
         elif tag == "blockquote":
             self._nl(2); self.out.append("> ")
 
@@ -240,9 +244,12 @@ class MdParser(HTMLParser):
             self.row = None
         elif tag == "table":
             rows, self.table_rows = self.table_rows or [], None
+            rows = [r for r in rows if any(c.strip() for c in r)]
             if rows:
                 self._nl(2)
                 width = max(len(r) for r in rows)
+                if not self.table_has_th:
+                    rows = [[""] * width] + rows
                 rows = [r + [""] * (width - len(r)) for r in rows]
                 self.out.append("| " + " | ".join(rows[0]) + " |\n")
                 self.out.append("|" + "|".join([" --- "] * width) + "|\n")
@@ -263,6 +270,7 @@ class MdParser(HTMLParser):
 
     def markdown(self):
         md = "".join(self.out)
+        md = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", md)
         for mk in (BLUE, GRAY, RED, GREEN):          # drop empty marks
             md = re.sub(re.escape(mk) + r"\s*" + re.escape(mk), "", md)
         md = re.sub(r"[ \t]+\n", "\n", md)

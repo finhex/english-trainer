@@ -305,10 +305,16 @@ class _MdTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (rows.isEmpty) return const SizedBox.shrink();
-    final cols = rows.fold<int>(0, (m, r) => r.length > m ? r.length : m);
+    // A table whose first row is blank has no real header (the course's
+    // tables are all data) — drop it and style every row as a data row.
+    final headless = rows.first.every((c) => c.trim().isEmpty);
+    final body = headless ? rows.sublist(1) : rows;
+    if (body.isEmpty) return const SizedBox.shrink();
+    final cols = body.fold<int>(0, (m, r) => r.length > m ? r.length : m);
     final border = TableBorder.all(color: scheme.outlineVariant, width: 0.7);
     final children = [
-      for (var i = 0; i < rows.length; i++) _row(rows[i], i == 0, cols)
+      for (var i = 0; i < body.length; i++)
+        _row(body[i], !headless && i == 0, cols)
     ];
 
     // Decide by AVAILABLE width, not column count: if every column can get at

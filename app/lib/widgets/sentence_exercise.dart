@@ -142,26 +142,42 @@ class _SentenceExerciseState extends State<SentenceExercise> {
           ],
         ),
         const Spacer(),
-        // choices for the current position, pinned above the button
-        if (!_finished) ...[
-          const Divider(height: 1),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                for (final word in item.rows[_step])
-                  _Tile(
-                    label: word,
-                    onTap: () => setState(() => _chosen.add(word)),
-                  ),
-              ],
+        // every position still to fill, in sentence order — one row each, the
+        // way the original stacks them (picking from a row removes it)
+        if (!_finished)
+          Flexible(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Divider(height: 1),
+                  for (var r = _step; r < item.rows.length; r++) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: [
+                          for (final word in item.rows[r])
+                            _Tile(
+                              label: word,
+                              // only the next position can be filled, so the
+                              // sentence is built in order
+                              dimmed: r != _step,
+                              onTap: r == _step
+                                  ? () => setState(() => _chosen.add(word))
+                                  : null,
+                            ),
+                        ],
+                      ),
+                    ),
+                    const Divider(height: 1),
+                  ],
+                ],
+              ),
             ),
           ),
-          const Divider(height: 1),
-        ],
         const SizedBox(height: 12),
         FilledButton(
           onPressed: _chosen.isEmpty ? null : _check,
@@ -174,23 +190,27 @@ class _SentenceExerciseState extends State<SentenceExercise> {
 
 class _Tile extends StatelessWidget {
   final String label;
-  final VoidCallback onTap;
-  const _Tile({required this.label, required this.onTap});
+  final VoidCallback? onTap;
+  final bool dimmed; // a later position — visible, but not yet selectable
+  const _Tile({required this.label, this.onTap, this.dimmed = false});
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Material(
-      color: scheme.surfaceContainerHighest,
-      borderRadius: BorderRadius.circular(10),
-      elevation: 1,
-      child: InkWell(
+    return Opacity(
+      opacity: dimmed ? 0.45 : 1,
+      child: Material(
+        color: scheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(10),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-          child: Text(label,
-              style: TextStyle(fontSize: 15, color: scheme.onSurface)),
+        elevation: dimmed ? 0 : 1,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+            child: Text(label,
+                style: TextStyle(fontSize: 15, color: scheme.onSurface)),
+          ),
         ),
       ),
     );
