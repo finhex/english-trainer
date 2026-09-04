@@ -184,12 +184,14 @@ class _CourseHtmlState extends State<_CourseHtml> {
     // measured, so dragging the bar jumps when the pieces differ wildly in
     // height. A SingleChildScrollView lays them all out and knows its real
     // height, so the thumb tracks the pointer - the way the book scrolls.
+    // keep the last lines clear of the Android system nav bar (3 buttons)
+    final bottomInset = MediaQuery.of(context).padding.bottom;
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 940),
+        constraints: const BoxConstraints(maxWidth: 1600),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          padding: EdgeInsets.fromLTRB(10, 6, 10, 10 + bottomInset),
           child: Card(
             margin: EdgeInsets.zero,
             child: Scrollbar(
@@ -197,12 +199,18 @@ class _CourseHtmlState extends State<_CourseHtml> {
               thumbVisibility: true,
               child: SingleChildScrollView(
                 controller: _scroll,
-                padding: const EdgeInsets.all(22),
+                padding: EdgeInsets.fromLTRB(18, 18, 18, 28 + bottomInset),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     for (final part in parts)
-                      HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
+                      for (final seg in _splitTables(part))
+                        seg.isTable
+                            ? _WideTable(
+                                html: seg.html,
+                                textStyle: theme.textTheme.bodyMedium)
+                            : HtmlWidget(seg.html,
+                                textStyle: theme.textTheme.bodyMedium),
                     if (practices.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       const Divider(height: 1),
@@ -242,6 +250,116 @@ class _CourseHtmlState extends State<_CourseHtml> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// One piece of a lesson: a table, or ordinary flowing content.
+class _Seg {
+  final String html;
+  final bool isTable;
+  const _Seg(this.html, this.isTable);
+}
+
+/// Splits lesson HTML into table and non-table pieces, matching each <table>
+/// to its own closing tag so a nested conjugation box stays whole.
+List<_Seg> _splitTables(String html) {
+  final segs = <_Seg>[];
+  final tag = RegExp(r'<(/?)table\b[^>]*>', caseSensitive: false);
+  var pos = 0;
+  while (true) {
+    final open = tag.firstMatch(html.substring(pos));
+    if (open == null || open.group(1) == '/') break;
+    final start = pos + open.start;
+    if (start > pos) segs.add(_Seg(html.substring(pos, start), false));
+    var depth = 0;
+    var end = html.length;
+    for (final m in tag.allMatches(html, start)) {
+      if (m.group(1) == '/') {
+        depth--;
+        if (depth == 0) {
+          end = m.end;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    segs.add(_Seg(html.substring(start, end), true));
+    pos = end;
+  }
+  if (pos < html.length) segs.add(_Seg(html.substring(pos), false));
+  return segs.where((s) => s.html.trim().isNotEmpty).toList();
+}
+
+/// A table that scrolls sideways, with its own bar underneath, when the view is
+/// too narrow to hold it. Given enough room it just fills the width as before.
+class _WideTable extends StatefulWidget {
+  final String html;
+  final TextStyle? textStyle;
+  const _WideTable({required this.html, this.textStyle});
+
+  @override
+  State<_WideTable> createState() => _WideTableState();
+}
+
+class _WideTableState extends State<_WideTable> {
+  final _bar = ScrollController();
+
+  @override
+  void dispose() {
+    _bar.dispose();
+    super.dispose();
+  }
+
+  /// Room this table wants: the renderer squeezes columns until words break,
+  /// and a conjugation box nests a table per panel, so those need more.
+  double _wanted(String html) {
+    var cols = 0;
+    for (final row
+        in RegExp(r'<tr\b[^>]*>(.*?)</tr>', caseSensitive: false, dotAll: true)
+            .allMatches(html)) {
+      final n = RegExp(r'<t[dh]\b', caseSensitive: false)
+          .allMatches(row.group(1) ?? '')
+          .length;
+      if (n > cols) cols = n;
+    }
+    if (cols == 0) return 0;
+    final nested =
+        RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
+    return cols * (nested ? 265.0 : 190.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, c) {
+        final want = _wanted(widget.html);
+        final avail = c.maxWidth;
+        // A table that fits is rendered exactly as before - no scroll
+        // furniture, nothing forcing its width. Only one too wide for the view
+        // gets a scroll view, with its bar underneath.
+        if (!avail.isFinite || want <= avail) {
+          return HtmlWidget(widget.html, textStyle: widget.textStyle);
+        }
+        return Padding(
+          padding: const EdgeInsets.only(top: 2, bottom: 6),
+          child: Scrollbar(
+            controller: _bar,
+            thumbVisibility: true,
+            child: SingleChildScrollView(
+              controller: _bar,
+              scrollDirection: Axis.horizontal,
+              // room under the table for the bar, so it never covers a row
+              padding: const EdgeInsets.only(bottom: 14),
+              child: SizedBox(
+                width: want,
+                child: HtmlWidget(widget.html, textStyle: widget.textStyle),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

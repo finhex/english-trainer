@@ -428,7 +428,10 @@ def main():
     max_id = max((l.get("id") or 0) for l in lessons)
 
     added = total = 0
-    for i, gid in enumerate(sorted(grammar), start=1):
+    # the course ships a leftover "Тестовый УРОК" - not a lesson, drop it
+    ids = [g for g in sorted(grammar)
+           if "тестов" not in (grammar[g][0] or "").lower()]
+    for i, gid in enumerate(ids, start=1):
         title, subtitle, html, html_dark = grammar[gid]
         md = lesson_to_md(html)
         # \u0000 is the course's page separator: the pieces are stacked back
