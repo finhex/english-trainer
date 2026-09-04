@@ -261,28 +261,6 @@ List<_Seg> _splitTables(String html) {
   return segs.where((s) => s.html.trim().isNotEmpty).toList();
 }
 
-/// Keeps table cells on one line.
-///
-/// The renderer, given a width, shrinks the columns until the words inside
-/// them break ("goin g"). Telling the cells not to wrap makes the table take
-/// the width it actually needs, which the surrounding scroll view can carry.
-String _noWrap(String html) => html.replaceAllMapped(
-      RegExp(r'<(t[dh])\b([^>]*)>', caseSensitive: false),
-      (m) {
-        final tag = m.group(1)!;
-        var attrs = m.group(2)!;
-        final style = RegExp(r'style\s*=\s*"([^"]*)"', caseSensitive: false)
-            .firstMatch(attrs);
-        if (style != null) {
-          attrs = attrs.replaceRange(style.start, style.end,
-              'style="${style.group(1)};white-space:nowrap"');
-        } else {
-          attrs = '$attrs style="white-space:nowrap"';
-        }
-        return '<$tag$attrs>';
-      },
-    );
-
 /// A lesson table, scrolled sideways with an always-visible bar — the same way
 /// the book's wide tables behave.
 class _ScrollableTable extends StatefulWidget {
@@ -319,8 +297,7 @@ class _ScrollableTableState extends State<_ScrollableTable> {
           // than guessing a width and having the renderer squeeze the columns.
           child: SizedBox(
             width: _tableWidth(widget.html),
-            child:
-                HtmlWidget(_noWrap(widget.html), textStyle: widget.textStyle),
+            child: HtmlWidget(widget.html, textStyle: widget.textStyle),
           ),
         ),
       ),
@@ -328,39 +305,25 @@ class _ScrollableTableState extends State<_ScrollableTable> {
   }
 }
 
-/// Width a lesson table needs, estimated from what is actually in its cells.
+/// Width a lesson table needs.
 ///
-/// The renderer has no shrink-to-fit: given a width it squeezes the columns
-/// until the words inside them break, and given an IntrinsicWidth it renders
-/// nothing at all. So measure the longest line in each column and add it up.
+/// The renderer has no shrink-to-fit: given too little width it squeezes the
+/// columns until words break, and it has no intrinsic sizing to ask. A
+/// conjugation box also nests a table per panel, so its outer column count
+/// understates the room the text needs - hence the wider share for those.
 double _tableWidth(String html) {
-  final widest = <int, int>{};
+  var cols = 0;
   for (final row
       in RegExp(r'<tr\b[^>]*>(.*?)</tr>', caseSensitive: false, dotAll: true)
           .allMatches(html)) {
-    var col = 0;
-    for (final cell in RegExp(r'<t[dh]\b[^>]*>(.*?)</t[dh]>',
-            caseSensitive: false, dotAll: true)
-        .allMatches(row.group(1) ?? '')) {
-      // cells stack their words, so the width is the longest single line
-      final text = (cell.group(1) ?? '')
-          .replaceAll(
-              RegExp(r'<(br|/div|/p)[^>]*>', caseSensitive: false), '\n')
-          .replaceAll(RegExp(r'<[^>]+>'), '');
-      var longest = 0;
-      for (final line in text.split('\n')) {
-        final n = line.trim().length;
-        if (n > longest) longest = n;
-      }
-      final prev = widest[col] ?? 0;
-      widest[col] = longest > prev ? longest : prev;
-      col++;
-    }
+    final n = RegExp(r'<t[dh]\b', caseSensitive: false)
+        .allMatches(row.group(1) ?? '')
+        .length;
+    if (n > cols) cols = n;
   }
-  if (widest.isEmpty) return 560;
-  var total = 0.0;
-  for (final chars in widest.values) {
-    total += chars * 8.2 + 26; // character width + cell padding
-  }
-  return total.clamp(320.0, 1600.0);
+  if (cols == 0) return 560;
+  final nested =
+      RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
+  final w = cols * (nested ? 265.0 : 190.0);
+  return w.clamp(360.0, 1500.0);
 }
