@@ -164,7 +164,17 @@ class _CourseHtml extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       children: [
         for (final part in parts)
-          HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
+          for (final seg in _splitTables(part))
+            // a wide conjugation table must scroll rather than be cut off;
+            // the prose around it keeps wrapping normally
+            seg.isTable
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: HtmlWidget(seg.html,
+                        textStyle: theme.textTheme.bodyMedium),
+                  )
+                : HtmlWidget(seg.html, textStyle: theme.textTheme.bodyMedium),
         if (practices.isNotEmpty) ...[
           const SizedBox(height: 20),
           const Divider(height: 1),
@@ -196,4 +206,44 @@ class _CourseHtml extends StatelessWidget {
       ],
     );
   }
+}
+
+
+/// One piece of a lesson: either a table (scrolled sideways) or ordinary flow.
+class _Seg {
+  final String html;
+  final bool isTable;
+  const _Seg(this.html, this.isTable);
+}
+
+/// Splits lesson HTML into table and non-table segments, matching <table>
+/// openings to their own closing tag so nested tables stay in one piece.
+List<_Seg> _splitTables(String html) {
+  final segs = <_Seg>[];
+  final tag = RegExp(r'<(/?)table\b[^>]*>', caseSensitive: false);
+  var pos = 0;
+  while (true) {
+    final open = tag.firstMatch(html.substring(pos));
+    if (open == null || open.group(1) == '/') break;
+    final start = pos + open.start;
+    if (start > pos) segs.add(_Seg(html.substring(pos, start), false));
+    // walk to the matching close
+    var depth = 0;
+    var end = html.length;
+    for (final m in tag.allMatches(html, start)) {
+      if (m.group(1) == '/') {
+        depth--;
+        if (depth == 0) {
+          end = m.end;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    segs.add(_Seg(html.substring(start, end), true));
+    pos = end;
+  }
+  if (pos < html.length) segs.add(_Seg(html.substring(pos), false));
+  return segs.where((s) => s.html.trim().isNotEmpty).toList();
 }
