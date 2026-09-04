@@ -15,9 +15,12 @@ Two things are reproduced from the original app rather than simplified:
     the HTML -> markdown conversion as ==highlight== spans, which our markdown
     renderer paints in the accent color.
 """
-import json, random, re, sqlite3
+import json, random, re, sqlite3, sys
 from html.parser import HTMLParser
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from colorize import colorize  # noqa: E402
 
 SRC_DB = "/home/konako/Documents/Claude/eng1stApp/desktop/assets/content.db"
 CONTENT = Path("/home/konako/Documents/Claude/_git-backups/apps/words/app/assets/content.json")
@@ -430,12 +433,12 @@ def main():
         md = lesson_to_md(html)
         # \u0000 is the course's page separator: the pieces are stacked back
         # together on screen (its renderer blanks out past ~10 KB per document)
-        parts_light = join_split_tables(
+        parts_light = [colorize(x, False) for x in join_split_tables(
             [merge_adjacent_tables(strip_youtube(x))
-             for x in (html or "").split("\u0000") if x.strip()])
-        parts_dark = join_split_tables(
+             for x in (html or "").split("\u0000") if x.strip()])]
+        parts_dark = [colorize(x, True) for x in join_split_tables(
             [merge_adjacent_tables(strip_youtube(x))
-             for x in (html_dark or "").split("\u0000") if x.strip()])
+             for x in (html_dark or "").split("\u0000") if x.strip()])]
         items = drills.get(gid, [])
         if not md.strip() and not items:
             continue
