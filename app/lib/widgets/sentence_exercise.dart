@@ -151,7 +151,12 @@ class _SentenceExerciseState extends State<SentenceExercise> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Divider(height: 1),
-                  for (var r = _step; r < item.rows.length; r++) ...[
+                  // only two positions are on screen at a time: the one being
+                  // filled and a preview of the next. The window slides as
+                  // each is picked, so the sentence still builds in order.
+                  for (var r = _step;
+                      r < item.rows.length && r < _step + 2;
+                      r++) ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Wrap(
