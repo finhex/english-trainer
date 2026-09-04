@@ -324,9 +324,20 @@ class _WideTable extends StatelessWidget {
       builder: (context, c) {
         final want = _wanted(html);
         final avail = c.maxWidth;
-        // a table that fits renders exactly as before, with no scroll furniture
-        if (!avail.isFinite || want <= avail) {
+        if (want <= 0 || !avail.isFinite) {
           return HtmlWidget(html, textStyle: textStyle);
+        }
+        // A table keeps its OWN width: on a wide page it should stay the size
+        // it needs, left-aligned, rather than stretching until its cells are
+        // mostly empty space.
+        if (want <= avail) {
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: SizedBox(
+              width: want,
+              child: HtmlWidget(html, textStyle: textStyle),
+            ),
+          );
         }
         return Padding(
           padding: const EdgeInsets.only(top: 2, bottom: 6),
