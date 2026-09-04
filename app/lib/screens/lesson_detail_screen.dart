@@ -189,9 +189,9 @@ class _CourseHtmlState extends State<_CourseHtml> {
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1600),
+        constraints: const BoxConstraints(maxWidth: 940),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 6, 10, 10 + bottomInset),
+          padding: EdgeInsets.fromLTRB(24, 8, 24, 24 + bottomInset),
           child: Card(
             margin: EdgeInsets.zero,
             child: Scrollbar(
@@ -199,7 +199,7 @@ class _CourseHtmlState extends State<_CourseHtml> {
               thumbVisibility: true,
               child: SingleChildScrollView(
                 controller: _scroll,
-                padding: EdgeInsets.fromLTRB(18, 18, 18, 28 + bottomInset),
+                padding: EdgeInsets.fromLTRB(22, 22, 22, 28 + bottomInset),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
