@@ -180,9 +180,10 @@ class _CourseHtmlState extends State<_CourseHtml> {
         lesson.htmlFor(theme.brightness == Brightness.dark, lang: lang);
     final progress = context.watch<ProgressStore>();
 
-    // The course's own theory page: the body is centred and capped, and the
-    // pre-split pieces scroll inside ONE Card, built lazily. Rendering every
-    // piece eagerly made long lessons jerk while scrolling.
+    // A ListView.builder only ESTIMATES its extent from the items it has
+    // measured, so dragging the bar jumps when the pieces differ wildly in
+    // height. A SingleChildScrollView lays them all out and knows its real
+    // height, so the thumb tracks the pointer - the way the book scrolls.
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
@@ -191,24 +192,18 @@ class _CourseHtmlState extends State<_CourseHtml> {
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
           child: Card(
             margin: EdgeInsets.zero,
-            // its own controller and bar, so dragging the bar tracks the
-            // pointer instead of jumping - the way the book reads
             child: Scrollbar(
               controller: _scroll,
               thumbVisibility: true,
-              child: ListView.builder(
+              child: SingleChildScrollView(
                 controller: _scroll,
                 padding: const EdgeInsets.all(22),
-                // the lesson text, then its practices at the end
-                itemCount: parts.length + (practices.isEmpty ? 0 : 1),
-                itemBuilder: (context, i) {
-                  if (i < parts.length) {
-                    return HtmlWidget(parts[i],
-                        textStyle: theme.textTheme.bodyMedium);
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (final part in parts)
+                      HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
+                    if (practices.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       const Divider(height: 1),
                       const SizedBox(height: 12),
@@ -240,8 +235,8 @@ class _CourseHtmlState extends State<_CourseHtml> {
                           ),
                         ),
                     ],
-                  );
-                },
+                  ],
+                ),
               ),
             ),
           ),
