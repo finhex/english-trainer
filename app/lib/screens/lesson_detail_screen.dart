@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import '../app_config.dart';
 import '../content_repository.dart';
 import '../locale_store.dart';
 import '../markdown_style.dart';
+import '../models.dart';
 import '../progress_store.dart';
 import '../strings.dart';
 import 'practice_screen.dart';
@@ -45,8 +47,12 @@ class LessonDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      // reading + practices in one smooth scroll (shared with guides)
-      body: ReadingView(
+      // The imported course renders from its ORIGINAL HTML with the same
+      // widget its own app uses, so the lessons look exactly as they do there.
+      body: lesson.htmlFor(Theme.of(context).brightness == Brightness.dark)
+              .isNotEmpty
+          ? _CourseHtml(lesson: lesson, practices: practices, lang: lang)
+          : ReadingView(
         title: lesson.topicFor(lang),
         // a course lesson already says "Урок N" in the app bar and again as the
         // first heading of its own text — no chip and no meta line as well
@@ -133,6 +139,61 @@ class _PracticeTile extends StatelessWidget {
                     color: scheme.primary),
         onTap: onTap,
       ),
+    );
+  }
+}
+
+/// A course lesson, drawn from its own HTML.
+///
+/// The pieces arrive pre-split: the course's app stores them that way because
+/// the HTML renderer silently gives up and shows nothing once a single
+/// document passes roughly 10 KB. Stacking the pieces keeps each one under it.
+class _CourseHtml extends StatelessWidget {
+  final Lesson lesson;
+  final List<PracticeConfig> practices;
+  final String lang;
+  const _CourseHtml(
+      {required this.lesson, required this.practices, required this.lang});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final parts = lesson.htmlFor(theme.brightness == Brightness.dark);
+    final progress = context.watch<ProgressStore>();
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+      children: [
+        for (final part in parts)
+          HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
+        if (practices.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          const Divider(height: 1),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            child: Text(tr(lang, 'practice'),
+                style: theme.textTheme.titleMedium),
+          ),
+          for (final p in practices)
+            Card(
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              child: ListTile(
+                leading: Icon(iconFor(p.icon), color: theme.colorScheme.primary),
+                title: Text(practiceLabel(lang, p.type)),
+                subtitle: Text(
+                    '${progress.isPracticeCompleted(lesson.id, p.type) ? lesson.goalFor(p.type) : progress.practiceProgress(lesson.id, p.type)}'
+                    ' / ${lesson.goalFor(p.type)}'),
+                trailing: progress.isPracticeCompleted(lesson.id, p.type)
+                    ? const Icon(Icons.check_circle, color: Color(0xFF3CA84B))
+                    : const Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) =>
+                      PracticeScreen(lessonId: lesson.id, type: p.type),
+                )),
+              ),
+            ),
+        ],
+      ],
     );
   }
 }

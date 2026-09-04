@@ -326,8 +326,9 @@ def lesson_to_md(html):
 
 def main():
     db = sqlite3.connect(SRC_DB)
-    grammar = {r[0]: (r[1], r[2], r[3])
-               for r in db.execute("select id,title,subtitle,html_light from grammar")}
+    grammar = {r[0]: (r[1], r[2], r[3], r[4])
+               for r in db.execute(
+                   "select id,title,subtitle,html_light,html_dark from grammar")}
 
     # per-lesson templates ("call; calls; called") and a flat word bank
     templates, bank = {}, {}
@@ -370,8 +371,12 @@ def main():
 
     added = total = 0
     for i, gid in enumerate(sorted(grammar), start=1):
-        title, subtitle, html = grammar[gid]
+        title, subtitle, html, html_dark = grammar[gid]
         md = lesson_to_md(html)
+        # \u0000 is the course's page separator: the pieces are stacked back
+        # together on screen (its renderer blanks out past ~10 KB per document)
+        parts_light = [x for x in (html or "").split("\u0000") if x.strip()]
+        parts_dark = [x for x in (html_dark or "").split("\u0000") if x.strip()]
         items = drills.get(gid, [])
         if not md.strip() and not items:
             continue
@@ -383,6 +388,8 @@ def main():
             "titleRu": title,
             "grammarMd": md,
             "grammarMdRu": md,
+            "htmlLight": parts_light,
+            "htmlDark": parts_dark or parts_light,
             "uniqueSentences": len(items),
             "level": 1,
             "levelName": f"Урок {i}",

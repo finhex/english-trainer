@@ -88,6 +88,11 @@ class Lesson {
   final String levelName;
   final String section; // 'grammar' | 'other' | 'course'
   final int? courseNo; // 1..33 for imported course lessons (not the global ord)
+  /// The imported course keeps its ORIGINAL HTML, pre-split into the pieces
+  /// its own app stacks on screen (one variant per theme). Course lessons are
+  /// rendered from these so they look exactly as they do there.
+  final List<String> htmlLight;
+  final List<String> htmlDark;
   final String titleRu; // Russian chapter title ('' if none)
   final String grammarMdRu; // Russian grammar explanation ('' if none)
   final Map<String, LessonPractice> practices; // per-practice goal/pos/items
@@ -103,6 +108,8 @@ class Lesson {
     required this.levelName,
     required this.section,
     this.courseNo,
+    this.htmlLight = const [],
+    this.htmlDark = const [],
     required this.titleRu,
     required this.grammarMdRu,
     required this.practices,
@@ -128,6 +135,11 @@ class Lesson {
   String grammarFor(String lang) =>
       lang == 'ru' && grammarMdRu.isNotEmpty ? grammarMdRu : grammarMd;
 
+  /// The original HTML pieces for the current theme ([] when this lesson has
+  /// none and should be rendered from markdown).
+  List<String> htmlFor(bool dark) =>
+      dark ? (htmlDark.isNotEmpty ? htmlDark : htmlLight) : htmlLight;
+
   /// The number to show for this lesson (course lessons number 1..33).
   int get displayNo => courseNo ?? ord;
 
@@ -145,6 +157,8 @@ class Lesson {
         levelName: (j['levelName'] as String?) ?? '',
         section: (j['section'] as String?) ?? 'grammar',
         courseNo: j['courseNo'] as int?,
+        htmlLight: ((j['htmlLight'] as List?) ?? const []).cast<String>(),
+        htmlDark: ((j['htmlDark'] as List?) ?? const []).cast<String>(),
         titleRu: (j['titleRu'] as String?) ?? '',
         grammarMdRu: (j['grammarMdRu'] as String?) ?? '',
         practices: ((j['practices'] as Map<String, dynamic>?) ?? const {}).map(
