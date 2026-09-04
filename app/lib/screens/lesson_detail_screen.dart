@@ -162,8 +162,9 @@ class _CourseHtml extends StatelessWidget {
     final parts =
         lesson.htmlFor(theme.brightness == Brightness.dark, lang: lang);
     final progress = context.watch<ProgressStore>();
-    // the course's own app puts the whole explanation in a Card with 22px of
-    // padding — same wrapper here so the tables sit where they do there
+
+    // The course's own app renders each piece with HtmlWidget inside a padded
+    // Card and nothing else — no splitting, no width of our own. Same here.
     return ListView(
       padding: const EdgeInsets.all(12),
       children: [
@@ -175,23 +176,13 @@ class _CourseHtml extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 for (final part in parts)
-                  for (final seg in _splitTables(part))
-                    // a wide conjugation table must scroll rather than be cut off;
-                    // the prose around it keeps wrapping normally
-                    seg.isTable
-                        ? _ScrollableTable(
-                            html: seg.html,
-                            textStyle: theme.textTheme.bodyMedium)
-                        : HtmlWidget(seg.html,
-                            textStyle: theme.textTheme.bodyMedium),
+                  HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
               ],
             ),
           ),
         ),
         if (practices.isNotEmpty) ...[
-          const SizedBox(height: 20),
-          const Divider(height: 1),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 8),
             child:
@@ -220,112 +211,4 @@ class _CourseHtml extends StatelessWidget {
       ],
     );
   }
-}
-
-/// One piece of a lesson: either a table (scrolled sideways) or ordinary flow.
-class _Seg {
-  final String html;
-  final bool isTable;
-  const _Seg(this.html, this.isTable);
-}
-
-/// Splits lesson HTML into table and non-table segments, matching <table>
-/// openings to their own closing tag so nested tables stay in one piece.
-List<_Seg> _splitTables(String html) {
-  final segs = <_Seg>[];
-  final tag = RegExp(r'<(/?)table\b[^>]*>', caseSensitive: false);
-  var pos = 0;
-  while (true) {
-    final open = tag.firstMatch(html.substring(pos));
-    if (open == null || open.group(1) == '/') break;
-    final start = pos + open.start;
-    if (start > pos) segs.add(_Seg(html.substring(pos, start), false));
-    // walk to the matching close
-    var depth = 0;
-    var end = html.length;
-    for (final m in tag.allMatches(html, start)) {
-      if (m.group(1) == '/') {
-        depth--;
-        if (depth == 0) {
-          end = m.end;
-          break;
-        }
-      } else {
-        depth++;
-      }
-    }
-    segs.add(_Seg(html.substring(start, end), true));
-    pos = end;
-  }
-  if (pos < html.length) segs.add(_Seg(html.substring(pos), false));
-  return segs.where((s) => s.html.trim().isNotEmpty).toList();
-}
-
-/// A lesson table, scrolled sideways with an always-visible bar — the same way
-/// the book's wide tables behave.
-class _ScrollableTable extends StatefulWidget {
-  final String html;
-  final TextStyle? textStyle;
-  const _ScrollableTable({required this.html, this.textStyle});
-
-  @override
-  State<_ScrollableTable> createState() => _ScrollableTableState();
-}
-
-class _ScrollableTableState extends State<_ScrollableTable> {
-  final _controller = ScrollController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 2, bottom: 4),
-      child: Scrollbar(
-        controller: _controller,
-        thumbVisibility: true,
-        child: SingleChildScrollView(
-          controller: _controller,
-          scrollDirection: Axis.horizontal,
-          // the bar is drawn at the bottom of the viewport, so leave room for
-          // it under the table - with no padding it sits on top of the cells
-          padding: const EdgeInsets.only(bottom: 14),
-          // An HTML table shrinks to fit and never breaks a word: keep the
-          // cells on one line and let the table take its natural width, rather
-          // than guessing a width and having the renderer squeeze the columns.
-          child: SizedBox(
-            width: _tableWidth(widget.html),
-            child: HtmlWidget(widget.html, textStyle: widget.textStyle),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Width a lesson table needs.
-///
-/// The renderer has no shrink-to-fit: given too little width it squeezes the
-/// columns until words break, and it has no intrinsic sizing to ask. A
-/// conjugation box also nests a table per panel, so its outer column count
-/// understates the room the text needs - hence the wider share for those.
-double _tableWidth(String html) {
-  var cols = 0;
-  for (final row
-      in RegExp(r'<tr\b[^>]*>(.*?)</tr>', caseSensitive: false, dotAll: true)
-          .allMatches(html)) {
-    final n = RegExp(r'<t[dh]\b', caseSensitive: false)
-        .allMatches(row.group(1) ?? '')
-        .length;
-    if (n > cols) cols = n;
-  }
-  if (cols == 0) return 560;
-  final nested =
-      RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
-  final w = cols * (nested ? 265.0 : 190.0);
-  return w.clamp(360.0, 1500.0);
 }
