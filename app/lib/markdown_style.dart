@@ -295,7 +295,11 @@ class _MdTable extends StatelessWidget {
       children: [
         for (final c in padded)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+            // the conjugation box hugs its content, so its columns need a
+            // little more air between them
+            padding: stackItems
+                ? const EdgeInsets.fromLTRB(14, 6, 22, 6)
+                : const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
             // the course stacks interchangeable words (I / you / we / they)
             // down a cell; markdown can't hold a newline in one, so the
             // importer joins them with " · " and they are split back here
@@ -322,20 +326,25 @@ class _MdTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (rows.isEmpty) return const SizedBox.shrink();
-    // A table whose first row is blank has no real header (the course's
-    // tables are all data) — drop it and style every row as a data row.
-    final headless = rows.first.every((c) => c.trim().isEmpty);
+    // A table whose first row is blank has no real header — drop it and style
+    // every row as a data row. The importer additionally marks the course's
+    // conjugation boxes (all cells border:none in the source) with a sentinel,
+    // so those render as a borderless card while ruled tables keep their lines.
+    final firstCell = rows.first.isEmpty ? '' : rows.first.first.trim();
+    final isCard = firstCell == '~card~';
+    final headless =
+        isCard || rows.first.every((c) => c.trim().isEmpty);
     final body = headless ? rows.sublist(1) : rows;
     if (body.isEmpty) return const SizedBox.shrink();
     final cols = body.fold<int>(0, (m, r) => r.length > m ? r.length : m);
     // A headless table is a course conjugation box: the original draws it as
     // ONE tinted, bordered card with no lines between the cells.
-    final border = headless
+    final border = isCard
         ? const TableBorder()
         : TableBorder.all(color: scheme.outlineVariant, width: 0.7);
     final children = [
       for (var i = 0; i < body.length; i++)
-        _row(body[i], !headless && i == 0, cols, stackItems: headless)
+        _row(body[i], !headless && i == 0, cols, stackItems: isCard)
     ];
 
     // Decide by AVAILABLE width, not column count: if every column can get at
@@ -344,7 +353,7 @@ class _MdTable extends StatelessWidget {
     // squishing a many-column table to one word per line).
     const minCol = 150.0;
     // the course's conjugation box: one tinted, softly bordered card
-    Widget card(Widget child) => headless
+    Widget card(Widget child) => isCard
         ? Container(
             decoration: BoxDecoration(
               color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
@@ -360,6 +369,22 @@ class _MdTable extends StatelessWidget {
         final avail = constraints.maxWidth.isFinite
             ? constraints.maxWidth
             : MediaQuery.of(context).size.width;
+        // The course's conjugation box is an HTML table with no width, so it
+        // shrinks to fit its content — columns sized to their text, the whole
+        // box only as wide as it needs, left-aligned in the flow.
+        if (isCard) {
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: IntrinsicWidth(
+              child: card(Table(
+                defaultColumnWidth: const IntrinsicColumnWidth(),
+                border: border,
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: children,
+              )),
+            ),
+          );
+        }
         if (cols * minCol <= avail) {
           // A table stretched across a 1900px desktop window gives absurdly
           // wide cells, so cap the TABLE (the prose around it stays full width).
@@ -637,11 +662,12 @@ class ReadingView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             fontSize: 12)),
                   ),
-                Text(meta,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: scheme.primary)),
+                if (meta.isNotEmpty)
+                  Text(meta,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: scheme.primary)),
               ],
             ),
             const SizedBox(height: 14),

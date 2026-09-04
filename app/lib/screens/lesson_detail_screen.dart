@@ -48,9 +48,12 @@ class LessonDetailScreen extends StatelessWidget {
       // reading + practices in one smooth scroll (shared with guides)
       body: ReadingView(
         title: lesson.topicFor(lang),
-        levelName: lesson.levelName,
-        meta:
-            lesson.courseNo != null ? '${tr(lang, 'lesson')} ${lesson.displayNo}' : '${tr(lang, 'lesson')} ${lesson.ord}  ·  ${tr(lang, 'chapter')} ${lesson.id}',
+        // a course lesson already says "Урок N" in the app bar and again as the
+        // first heading of its own text — no chip and no meta line as well
+        levelName: lesson.courseNo != null ? '' : lesson.levelName,
+        meta: lesson.courseNo != null
+            ? ''
+            : '${tr(lang, 'lesson')} ${lesson.ord}  ·  ${tr(lang, 'chapter')} ${lesson.id}',
         markdown: lesson.grammarFor(lang),
         trailing: [
           if (practices.isNotEmpty) ...[

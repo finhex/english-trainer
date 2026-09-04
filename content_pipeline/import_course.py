@@ -43,6 +43,7 @@ def _color_mark(style):
     return BLUE
 
 
+CARD_MARK = "~card~"   # header sentinel: render as a borderless card
 BLOCK_COLOR_TAGS = {"div", "p", "td", "th", "li", "blockquote"}
 # markdown line prefixes that must stay outside the color marker
 _PREFIX = re.compile(r"^(\s*(?:[-*+]\s+|\d+\.\s+|#{1,6}\s+|>\s*)?)(.*)$")
@@ -128,6 +129,8 @@ class MdParser(HTMLParser):
         self.cell = None
         self.table_rows = None
         self.table_has_th = False
+        self.cells_plain = 0
+        self.cells_ruled = 0
         self.color_stack = []
         self.block_color = []
 
@@ -186,12 +189,21 @@ class MdParser(HTMLParser):
         elif tag == "table":
             self.table_rows = []
             self.table_has_th = False
+            self.cells_plain = 0
+            self.cells_ruled = 0
         elif tag == "tr":
             self.row = []
         elif tag in ("td", "th"):
             self.cell = []
             if tag == "th":
                 self.table_has_th = True
+            st = (a.get("style") or "").lower()
+            m = re.search(r"border:\s*([^;\"]+)", st)
+            if m:
+                if m.group(1).strip() == "none":
+                    self.cells_plain += 1
+                else:
+                    self.cells_ruled += 1
         elif tag == "blockquote":
             self._nl(2); self.out.append("> ")
 
@@ -249,7 +261,12 @@ class MdParser(HTMLParser):
                 self._nl(2)
                 width = max(len(r) for r in rows)
                 if not self.table_has_th:
-                    rows = [[""] * width] + rows
+                    head = [""] * width
+                    # a box whose cells are all border:none is the course's
+                    # conjugation card, not a ruled grid
+                    if self.cells_plain and not self.cells_ruled:
+                        head[0] = CARD_MARK
+                    rows = [head] + rows
                 rows = [r + [""] * (width - len(r)) for r in rows]
                 self.out.append("| " + " | ".join(rows[0]) + " |\n")
                 self.out.append("|" + "|".join([" --- "] * width) + "|\n")
@@ -275,6 +292,11 @@ class MdParser(HTMLParser):
     def markdown(self):
         md = "".join(self.out)
         md = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", md)
+        # the course points at its YouTube videos; the app is offline, so drop
+        # those lines (and any bare link left behind)
+        md = "\n".join(
+            ln for ln in md.split("\n")
+            if "youtu" not in ln.lower() and "видео" not in ln.lower())
         for mk in (BLUE, GRAY, RED, GREEN):          # drop empty marks
             md = re.sub(re.escape(mk) + r"\s*" + re.escape(mk), "", md)
         md = re.sub(r"[ \t]+\n", "\n", md)
