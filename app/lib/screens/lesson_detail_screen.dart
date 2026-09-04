@@ -49,51 +49,52 @@ class LessonDetailScreen extends StatelessWidget {
       ),
       // The imported course renders from its ORIGINAL HTML with the same
       // widget its own app uses, so the lessons look exactly as they do there.
-      body: lesson.htmlFor(Theme.of(context).brightness == Brightness.dark)
+      body: lesson
+              .htmlFor(Theme.of(context).brightness == Brightness.dark)
               .isNotEmpty
           ? _CourseHtml(lesson: lesson, practices: practices, lang: lang)
           : ReadingView(
-        title: lesson.topicFor(lang),
-        // a course lesson already says "Урок N" in the app bar and again as the
-        // first heading of its own text — no chip and no meta line as well
-        levelName: lesson.courseNo != null ? '' : lesson.levelName,
-        meta: lesson.courseNo != null
-            ? ''
-            : '${tr(lang, 'lesson')} ${lesson.ord}  ·  ${tr(lang, 'chapter')} ${lesson.id}',
-        markdown: lesson.grammarFor(lang),
-        trailing: [
-          if (practices.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            const Divider(height: 1),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.only(left: 4, bottom: 8),
-              child: Text(tr(lang, 'practice'),
-                  style: Theme.of(context).textTheme.titleMedium),
+              title: lesson.topicFor(lang),
+              // a course lesson already says "Урок N" in the app bar and again as the
+              // first heading of its own text — no chip and no meta line as well
+              levelName: lesson.courseNo != null ? '' : lesson.levelName,
+              meta: lesson.courseNo != null
+                  ? ''
+                  : '${tr(lang, 'lesson')} ${lesson.ord}  ·  ${tr(lang, 'chapter')} ${lesson.id}',
+              markdown: lesson.grammarFor(lang),
+              trailing: [
+                if (practices.isNotEmpty) ...[
+                  const SizedBox(height: 20),
+                  const Divider(height: 1),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, bottom: 8),
+                    child: Text(tr(lang, 'practice'),
+                        style: Theme.of(context).textTheme.titleMedium),
+                  ),
+                  for (final p in practices)
+                    _PracticeTile(
+                      config: p,
+                      lang: lang,
+                      goal: lesson.goalFor(p.type),
+                      done: progress.isPracticeCompleted(lesson.id, p.type),
+                      inProgress: progress.practiceProgress(lesson.id, p.type),
+                      locked: !practiceUnlocked,
+                      onTap: practiceUnlocked
+                          ? () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => PracticeScreen(
+                                      lessonId: lesson.id, type: p.type),
+                                ),
+                              )
+                          : () => ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(tr(lang, 'finish_previous'))),
+                              ),
+                    ),
+                ],
+              ],
             ),
-            for (final p in practices)
-              _PracticeTile(
-                config: p,
-                lang: lang,
-                goal: lesson.goalFor(p.type),
-                done: progress.isPracticeCompleted(lesson.id, p.type),
-                inProgress: progress.practiceProgress(lesson.id, p.type),
-                locked: !practiceUnlocked,
-                onTap: practiceUnlocked
-                    ? () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => PracticeScreen(
-                                lessonId: lesson.id, type: p.type),
-                          ),
-                        )
-                    : () => ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(tr(lang, 'finish_previous'))),
-                        ),
-              ),
-          ],
-        ],
-      ),
     );
   }
 }
@@ -160,35 +161,50 @@ class _CourseHtml extends StatelessWidget {
     final theme = Theme.of(context);
     final parts = lesson.htmlFor(theme.brightness == Brightness.dark);
     final progress = context.watch<ProgressStore>();
+    // the course's own app puts the whole explanation in a Card with 22px of
+    // padding — same wrapper here so the tables sit where they do there
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+      padding: const EdgeInsets.all(12),
       children: [
-        for (final part in parts)
-          for (final seg in _splitTables(part))
-            // a wide conjugation table must scroll rather than be cut off;
-            // the prose around it keeps wrapping normally
-            seg.isTable
-                ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: HtmlWidget(seg.html,
-                        textStyle: theme.textTheme.bodyMedium),
-                  )
-                : HtmlWidget(seg.html, textStyle: theme.textTheme.bodyMedium),
+        Card(
+          margin: EdgeInsets.zero,
+          child: Padding(
+            padding: const EdgeInsets.all(22),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final part in parts)
+                  for (final seg in _splitTables(part))
+                    // a wide conjugation table must scroll rather than be cut off;
+                    // the prose around it keeps wrapping normally
+                    seg.isTable
+                        ? SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.only(bottom: 6),
+                            child: HtmlWidget(seg.html,
+                                textStyle: theme.textTheme.bodyMedium),
+                          )
+                        : HtmlWidget(seg.html,
+                            textStyle: theme.textTheme.bodyMedium),
+              ],
+            ),
+          ),
+        ),
         if (practices.isNotEmpty) ...[
           const SizedBox(height: 20),
           const Divider(height: 1),
           const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 8),
-            child: Text(tr(lang, 'practice'),
-                style: theme.textTheme.titleMedium),
+            child:
+                Text(tr(lang, 'practice'), style: theme.textTheme.titleMedium),
           ),
           for (final p in practices)
             Card(
               margin: const EdgeInsets.symmetric(vertical: 4),
               child: ListTile(
-                leading: Icon(iconFor(p.icon), color: theme.colorScheme.primary),
+                leading:
+                    Icon(iconFor(p.icon), color: theme.colorScheme.primary),
                 title: Text(practiceLabel(lang, p.type)),
                 subtitle: Text(
                     '${progress.isPracticeCompleted(lesson.id, p.type) ? lesson.goalFor(p.type) : progress.practiceProgress(lesson.id, p.type)}'
@@ -207,7 +223,6 @@ class _CourseHtml extends StatelessWidget {
     );
   }
 }
-
 
 /// One piece of a lesson: either a table (scrolled sideways) or ordinary flow.
 class _Seg {
