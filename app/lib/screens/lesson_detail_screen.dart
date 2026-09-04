@@ -284,14 +284,16 @@ class _ScrollableTableState extends State<_ScrollableTable> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 2, bottom: 10),
+      padding: const EdgeInsets.only(top: 2, bottom: 4),
       child: Scrollbar(
         controller: _controller,
         thumbVisibility: true,
         child: SingleChildScrollView(
           controller: _controller,
           scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.zero,
+          // the bar is drawn at the bottom of the viewport, so leave room for
+          // it under the table - with no padding it sits on top of the cells
+          padding: const EdgeInsets.only(bottom: 14),
           // An HTML table shrinks to fit and never breaks a word: keep the
           // cells on one line and let the table take its natural width, rather
           // than guessing a width and having the renderer squeeze the columns.
