@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'app_theme.dart';
 import 'content_repository.dart';
 import 'locale_store.dart';
 import 'progress_store.dart';
@@ -77,16 +78,8 @@ class EnglishTrainerApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          theme: ThemeData(
-            colorSchemeSeed: const Color(0xFF2F80ED),
-            brightness: Brightness.light,
-            useMaterial3: true,
-          ),
-          darkTheme: ThemeData(
-            colorSchemeSeed: const Color(0xFF2F80ED),
-            brightness: Brightness.dark,
-            useMaterial3: true,
-          ),
+          theme: buildAppTheme(Brightness.light),
+          darkTheme: buildAppTheme(Brightness.dark),
           themeMode: context.watch<ThemeStore>().mode,
           // apply the chosen text-size mode to the whole app
           builder: (context, child) {
