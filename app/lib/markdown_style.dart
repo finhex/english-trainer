@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -119,6 +121,7 @@ List<Widget> buildMarkdownBlocks(BuildContext context, String src,
     if (trimmed.startsWith('```') || trimmed.startsWith('~~~')) {
       flush();
       final marker = trimmed.substring(0, 3);
+      final info = trimmed.substring(3).trim();
       final code = <String>[];
       i++;
       while (i < lines.length && !lines[i].trimLeft().startsWith(marker)) {
@@ -126,6 +129,17 @@ List<Widget> buildMarkdownBlocks(BuildContext context, String src,
         i++;
       }
       if (i < lines.length) i++; // skip the closing fence
+      // the course's conjugation box travels as structured data, not a table
+      if (info == 'conj') {
+        try {
+          final data =
+              json.decode(code.join('\n')) as Map<String, dynamic>;
+          out.add(ConjBox(data: data));
+          continue;
+        } catch (_) {
+          // fall through and show it as a code block
+        }
+      }
       out.add(_CodeBlock(text: code.join('\n'), scheme: scheme));
       continue;
     }
@@ -712,4 +726,157 @@ MarkdownStyleSheet appMarkdownStyle(BuildContext context) {
       borderRadius: BorderRadius.circular(6),
     ),
   );
+}
+
+/// The course's conjugation box: one bordered card holding side-by-side
+/// PANELS, each a small grid of `aux | pronouns | verb`, with the panel being
+/// taught highlighted. Markdown tables cannot express that nesting, so the
+/// importer ships the box as structured data and it is drawn here.
+class ConjBox extends StatelessWidget {
+  final Map<String, dynamic> data;
+  const ConjBox({super.key, required this.data});
+
+  static const _blue = Color(0xFF87C9FF); // the original's border
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final panels = (data['panels'] as List?) ?? const [];
+    if (panels.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: _blue),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (var p = 0; p < panels.length; p++)
+                  _panel(context, (panels[p] as Map).cast<String, dynamic>(),
+                      scheme, dark,
+                      last: p == panels.length - 1),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _panel(BuildContext context, Map<String, dynamic> panel,
+      ColorScheme scheme, bool dark,
+      {required bool last}) {
+    final hl = panel['hl'] == true;
+    final rows = (panel['rows'] as List?) ?? const [];
+    return Container(
+      decoration: BoxDecoration(
+        color: hl
+            ? (dark
+                ? scheme.primary.withValues(alpha: 0.22)
+                : const Color(0xFFBCE1FF))
+            : (dark
+                ? scheme.surfaceContainerHighest.withValues(alpha: 0.35)
+                : const Color(0xFFEEEEEE)),
+        border: last ? null : const Border(right: BorderSide(color: _blue)),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final r in rows)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final c in (r as List))
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: _cell(
+                          context, (c as Map).cast<String, dynamic>(), scheme),
+                    ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _cell(
+      BuildContext context, Map<String, dynamic> cell, ColorScheme scheme) {
+    final base = TextStyle(fontSize: 14, height: 1.35, color: scheme.onSurface);
+    final items = (cell['items'] as List?)?.cast<String>();
+    if (items != null) {
+      // the interchangeable pronouns, stacked small and italic
+      final style = base.copyWith(
+          fontSize: 12.5,
+          fontStyle: FontStyle.italic,
+          color: Theme.of(context).hintColor);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [for (final it in items) Text(it, style: style)],
+      );
+    }
+    return Text.rich(markedSpans((cell['text'] as String?) ?? '', base, context));
+  }
+}
+
+/// Inline markdown with our colored marks, as a span (shared by the tables and
+/// the conjugation box).
+InlineSpan markedSpans(String text, TextStyle base, BuildContext context) {
+  final spans = <InlineSpan>[];
+  final re = RegExp(r'==(.+?)==|%%(.+?)%%|!!(.+?)!!|\+\+(.+?)\+\+'
+      r'|\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`|_(.+?)_');
+  var last = 0;
+  for (final m in re.allMatches(text)) {
+    if (m.start > last) {
+      spans.add(TextSpan(text: text.substring(last, m.start), style: base));
+    }
+    if (m.group(1) != null) {
+      spans.add(TextSpan(
+          text: m.group(1),
+          style: base.copyWith(color: markColor(context, 'mark_blue'))));
+    } else if (m.group(2) != null) {
+      spans.add(TextSpan(
+          text: m.group(2),
+          style: base.copyWith(color: markColor(context, 'mark_gray'))));
+    } else if (m.group(3) != null) {
+      spans.add(TextSpan(
+          text: m.group(3),
+          style: base.copyWith(color: markColor(context, 'mark_red'))));
+    } else if (m.group(4) != null) {
+      spans.add(TextSpan(
+          text: m.group(4),
+          style: base.copyWith(color: markColor(context, 'mark_green'))));
+    } else if (m.group(5) != null) {
+      spans.add(TextSpan(
+          text: m.group(5), style: base.copyWith(fontWeight: FontWeight.bold)));
+    } else if (m.group(6) != null) {
+      spans.add(TextSpan(
+          text: m.group(6), style: base.copyWith(fontStyle: FontStyle.italic)));
+    } else if (m.group(7) != null) {
+      spans.add(TextSpan(
+          text: m.group(7), style: base.copyWith(fontFamily: 'monospace')));
+    } else if (m.group(8) != null) {
+      spans.add(TextSpan(
+          text: m.group(8), style: base.copyWith(fontStyle: FontStyle.italic)));
+    }
+    last = m.end;
+  }
+  if (last < text.length) {
+    spans.add(TextSpan(text: text.substring(last), style: base));
+  }
+  return TextSpan(children: spans);
 }

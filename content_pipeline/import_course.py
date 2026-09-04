@@ -313,6 +313,17 @@ def html_to_md(html):
     return p.markdown()
 
 
+def lesson_to_md(html):
+    """Lesson markdown with the conjugation boxes kept as ```conj blocks."""
+    rest, boxes = extract_conj_boxes(html or "")
+    md = html_to_md(rest)
+    for k, box in enumerate(boxes):
+        md = md.replace(
+            f"@@CONJ{k}@@",
+            "```conj\n" + json.dumps(box, ensure_ascii=False) + "\n```")
+    return md
+
+
 def main():
     db = sqlite3.connect(SRC_DB)
     grammar = {r[0]: (r[1], r[2], r[3])
@@ -360,7 +371,7 @@ def main():
     added = total = 0
     for i, gid in enumerate(sorted(grammar), start=1):
         title, subtitle, html = grammar[gid]
-        md = html_to_md(html)
+        md = lesson_to_md(html)
         items = drills.get(gid, [])
         if not md.strip() and not items:
             continue
@@ -397,6 +408,122 @@ def main():
     print(f"practice items imported: {total}")
     print(f"content.json now: {len(lessons)} lessons, "
           f"{CONTENT.stat().st_size / 1048576:.1f} MB")
+
+
+
+
+# --------------------------------------------------------------------------
+# Conjugation boxes
+#
+# `<table class="main">` is the course's conjugation box: one bordered card
+# holding side-by-side PANELS, each a nested table of `aux | pronouns | verb`,
+# with the panel being taught highlighted (#BCE1FF). Markdown tables cannot
+# express that, so the box is extracted as structured data and rendered by a
+# dedicated widget in the app.
+# --------------------------------------------------------------------------
+_TAG_RE = re.compile(r"<(/?)(\w+)[^>]*?(/?)>", re.I)
+
+
+def _balanced(html, start):
+    """End index (exclusive) of the <table> opened at `start`."""
+    depth = 0
+    for m in _TAG_RE.finditer(html, start):
+        if m.group(2).lower() != "table":
+            continue
+        if m.group(1):
+            depth -= 1
+            if depth == 0:
+                return m.end()
+        elif not m.group(3):
+            depth += 1
+    return len(html)
+
+
+def _cells_of_row(row_html):
+    """Top-level <td>/<th> of one <tr>, as (attrs, inner-html) pairs.
+
+    The attributes must come from the SAME pass as the cells: a plain
+    findall also matches the <td>s of nested tables and misaligns them.
+    """
+    out, depth = [], 0
+    start, attrs = None, ""
+    for m in re.finditer(r"<(/?)(t[dh]|table)([^>]*)>", row_html, re.I):
+        tag, closing = m.group(2).lower(), bool(m.group(1))
+        if tag == "table":
+            depth += -1 if closing else 1
+        elif tag in ("td", "th") and depth == 0:
+            if not closing:
+                start, attrs = m.end(), m.group(3)
+            elif start is not None:
+                out.append((attrs, row_html[start:m.start()]))
+                start = None
+    return out
+
+
+def _top_rows(table_html):
+    """The <tr> blocks belonging to this table, not to a nested one."""
+    inner = table_html[table_html.find(">") + 1:]
+    rows, depth, start = [], 0, None
+    for m in re.finditer(r"<(/?)(tr|table)[^>]*>", inner, re.I):
+        tag, closing = m.group(2).lower(), bool(m.group(1))
+        if tag == "table":
+            depth += -1 if closing else 1
+        elif tag == "tr" and depth == 0:
+            if not closing:
+                start = m.end()
+            elif start is not None:
+                rows.append(inner[start:m.start()])
+                start = None
+    return rows
+
+
+def _cell_data(cell_html):
+    """A cell is either stacked items (<div>s) or a single markdown string."""
+    divs = re.findall(r"<div[^>]*>(.*?)</div>", cell_html, re.S | re.I)
+    if len(divs) > 1:
+        return {"items": [html_to_md(d).strip() for d in divs]}
+    return {"text": html_to_md(cell_html).strip()}
+
+
+def parse_conj_box(html):
+    """-> {'panels': [{'hl': bool, 'rows': [[cell, ...], ...]}, ...]}"""
+    panels = []
+    outer_rows = _top_rows(html)
+    if not outer_rows:
+        return None
+    for attrs, cell in _cells_of_row(outer_rows[0]):
+        a = attrs.lower()
+        hl = "bce1ff" in a or "current" in a
+        inner = re.search(r"<table[^>]*>", cell, re.I)
+        rows = []
+        if inner:
+            end = _balanced(cell, inner.start())
+            for r in _top_rows(cell[inner.start():end]):
+                cs = [_cell_data(c) for _, c in _cells_of_row(r)]
+                if any((c.get("text") or c.get("items")) for c in cs):
+                    rows.append(cs)
+        else:
+            rows.append([_cell_data(cell)])
+        if rows:
+            panels.append({"hl": hl, "rows": rows})
+    return {"panels": panels} if panels else None
+
+
+def extract_conj_boxes(html):
+    """Replace each conjugation box with a placeholder; return (html, boxes)."""
+    boxes, out, pos = [], [], 0
+    for m in re.finditer(r'<table[^>]*class="main"[^>]*>', html, re.I):
+        if m.start() < pos:
+            continue
+        end = _balanced(html, m.start())
+        box = parse_conj_box(html[m.start():end])
+        out.append(html[pos:m.start()])
+        if box:
+            out.append(f"\n@@CONJ{len(boxes)}@@\n")
+            boxes.append(box)
+        pos = end
+    out.append(html[pos:])
+    return "".join(out), boxes
 
 
 if __name__ == "__main__":
