@@ -52,8 +52,7 @@ List<bool> markTiles(List<List<String>> slots, List<String> chosen) {
 class SentenceExercise extends StatefulWidget {
   final PracticeItem item;
   final String lang;
-  final void Function(bool correct, String given, List<String> tiles)
-      onResult;
+  final void Function(bool correct, String given, List<String> tiles) onResult;
   const SentenceExercise(
       {super.key,
       required this.item,
@@ -65,23 +64,34 @@ class SentenceExercise extends StatefulWidget {
 }
 
 class _SentenceExerciseState extends State<SentenceExercise> {
-  // one pick per position (null = still to fill), so the answer keeps the
-  // sentence order however the rows were filled
+  // Which row each position was filled from (null = still to fill), and the
+  // words in the order they were actually TAPPED. Keeping the tap order
+  // matters: assembling the answer in row order instead would quietly move a
+  // word into its right place, so a wrong order could never be marked wrong.
   late final List<String?> _picked =
       List<String?>.filled(widget.item.rows.length, null);
+  final List<int> _sequence = []; // row indices, in the order they were picked
 
-  List<String> get _chosen => [
-        for (final p in _picked)
-          if (p != null && p.isNotEmpty) p
-      ];
+  List<String> get _chosen => [for (final r in _sequence) _picked[r] ?? ''];
 
-  /// The positions still to fill, earliest first — only the first two are shown.
+  /// The positions still to fill, earliest first - only the first two show.
   List<int> get _openRows => [
         for (var r = 0; r < _picked.length; r++)
           if (_picked[r] == null) r
       ];
 
   bool get _finished => _openRows.isEmpty;
+
+  void _pick(int row, String word) => setState(() {
+        if (_picked[row] == null) _sequence.add(row);
+        _picked[row] = word;
+      });
+
+  /// Take back the tile at [i] in the assembled answer.
+  void _unpick(int i) => setState(() {
+        final row = _sequence.removeAt(i);
+        _picked[row] = null;
+      });
 
   static String _norm(String s) =>
       s.toLowerCase().replaceAll(RegExp(r"[^a-zа-яё0-9'\s]"), '').trim();
@@ -146,12 +156,11 @@ class _SentenceExerciseState extends State<SentenceExercise> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for (var r = 0; r < _picked.length; r++)
-              if (_picked[r] != null)
-                _Tile(
-                  label: _picked[r]!,
-                  onTap: () => setState(() => _picked[r] = null),
-                ),
+            for (var i = 0; i < _sequence.length; i++)
+              _Tile(
+                label: _picked[_sequence[i]] ?? '',
+                onTap: () => _unpick(i),
+              ),
           ],
         ),
         const Spacer(),
@@ -177,7 +186,7 @@ class _SentenceExerciseState extends State<SentenceExercise> {
                           for (final word in item.rows[r])
                             _Tile(
                               label: word,
-                              onTap: () => setState(() => _picked[r] = word),
+                              onTap: () => _pick(r, word),
                             ),
                         ],
                       ),
