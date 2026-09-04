@@ -67,35 +67,60 @@ def _paint_text(block, red):
 
 
 def _highlight(block, hl):
-    """Tint the second content panel of each row, as lesson 1 does with one."""
+    """Tint the Statement panel of the OUTER table.
+
+    A conjugation box nests a table inside every panel, so matching <tr>/<td>
+    anywhere paints the inner cells instead - which shows up as blue rectangles
+    behind single words. Only cells at depth 1 of the outer table are panels.
+    """
     if re.search(r'class="current"', block, re.I) or hl in block:
         return block
-    rows = list(re.finditer(r'<tr\b[^>]*>(.*?)</tr>', block, re.I | re.S))
+
+    depth = 0
+    row_start = None
+    rows = []                      # (start, end) of each depth-1 <tr>
+    for m in re.finditer(r'<(/?)(table|tr)\b[^>]*>', block, re.I):
+        tag, closing = m.group(2).lower(), bool(m.group(1))
+        if tag == "table":
+            depth += -1 if closing else 1
+        elif tag == "tr" and depth == 1:
+            if not closing:
+                row_start = m.end()
+            elif row_start is not None:
+                rows.append((row_start, m.start()))
+                row_start = None
+
     edits = []
-    for row in rows:
-        body, base = row.group(1), row.start(1)
-        depth, cells = 0, []
+    for a, b in rows:
+        body = block[a:b]
+        d, cells = 0, []
         for m in re.finditer(r'<(/?)(td|table)\b([^>]*)>', body, re.I):
             tag, closing = m.group(2).lower(), bool(m.group(1))
             if tag == "table":
-                depth += -1 if closing else 1
-            elif tag == "td" and depth == 0 and not closing:
+                d += -1 if closing else 1
+            elif tag == "td" and d == 0 and not closing:
                 cells.append(m)
         if len(cells) < 3:
             continue
-        cell = cells[1]                      # the Statement panel
+        cell = cells[1]            # the Statement panel
         attrs = cell.group(3)
         if "background" in attrs.lower():
             continue
+        # Only a real PANEL is tinted. Some boxes are flat (aux | pronouns |
+        # verb straight in the row); tinting a cell there paints a rectangle
+        # behind a single word instead of a column, so leave those alone.
+        nxt = cells[2].start() if len(cells) > 2 else b - a
+        if "<table" not in body[cell.end():nxt].lower():
+            continue
         st = re.search(r'style\s*=\s*"([^"]*)"', attrs, re.I)
         if st:
-            new_attrs = attrs.replace(st.group(0),
-                                      f'style="{st.group(1)};background: {hl}"')
+            new_attrs = attrs.replace(
+                st.group(0), f'style="{st.group(1)};background: {hl}"')
         else:
             new_attrs = attrs + f' style="background: {hl}"'
-        edits.append((base + cell.start(3), base + cell.end(3), new_attrs))
-    for a, b, new in reversed(edits):
-        block = block[:a] + new + block[b:]
+        edits.append((a + cell.start(3), a + cell.end(3), new_attrs))
+    for x, y, new in reversed(edits):
+        block = block[:x] + new + block[y:]
     return block
 
 

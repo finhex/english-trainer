@@ -457,7 +457,7 @@ def main():
             "levelName": f"Урок {i}",
             "courseNo": i,
             "section": "course",
-            "practices": ({"sentence": {"goal": min(70, len(items)),
+            "practices": ({"sentence": {"goal": 70,
                                         "items": items}} if items else {}),
         }
         if subtitle:
