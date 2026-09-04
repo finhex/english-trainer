@@ -204,7 +204,13 @@ class _CourseHtmlState extends State<_CourseHtml> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     for (final part in parts)
-                      HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
+                      for (final seg in _splitTables(part))
+                        seg.isTable
+                            ? _TableScroll(
+                                html: seg.html,
+                                textStyle: theme.textTheme.bodyMedium)
+                            : HtmlWidget(seg.html,
+                                textStyle: theme.textTheme.bodyMedium),
                     if (practices.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       const Divider(height: 1),
@@ -244,6 +250,99 @@ class _CourseHtmlState extends State<_CourseHtml> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// One piece of a lesson: a table, or ordinary flowing content.
+class _Seg {
+  final String html;
+  final bool isTable;
+  const _Seg(this.html, this.isTable);
+}
+
+/// Splits lesson HTML into table and non-table pieces, matching each <table> to
+/// its own closing tag so a nested conjugation box stays in one piece.
+List<_Seg> _splitTables(String html) {
+  final segs = <_Seg>[];
+  final tag = RegExp(r'<(/?)table\b[^>]*>', caseSensitive: false);
+  var pos = 0;
+  while (true) {
+    final open = tag.firstMatch(html.substring(pos));
+    if (open == null || open.group(1) == '/') break;
+    final start = pos + open.start;
+    if (start > pos) segs.add(_Seg(html.substring(pos, start), false));
+    var depth = 0;
+    var end = html.length;
+    for (final m in tag.allMatches(html, start)) {
+      if (m.group(1) == '/') {
+        depth--;
+        if (depth == 0) {
+          end = m.end;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    segs.add(_Seg(html.substring(start, end), true));
+    pos = end;
+  }
+  if (pos < html.length) segs.add(_Seg(html.substring(pos), false));
+  return segs.where((s) => s.html.trim().isNotEmpty).toList();
+}
+
+/// A lesson table.
+///
+/// On a screen with room it is left completely alone - no box around it, so it
+/// keeps the width it chooses. Only when the view is too narrow to lay it out
+/// at all (a phone, where the columns collapse until words break into single
+/// letters) is it given the room it needs and scrolled, with a grey bar under
+/// it.
+class _TableScroll extends StatelessWidget {
+  final String html;
+  final TextStyle? textStyle;
+  const _TableScroll({required this.html, this.textStyle});
+
+  (int, bool) _shape(String html) {
+    var cols = 0;
+    for (final row
+        in RegExp(r'<tr\b[^>]*>(.*?)</tr>', caseSensitive: false, dotAll: true)
+            .allMatches(html)) {
+      final n = RegExp(r'<t[dh]\b', caseSensitive: false)
+          .allMatches(row.group(1) ?? '')
+          .length;
+      if (n > cols) cols = n;
+    }
+    final nested =
+        RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
+    return (cols, nested);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, c) {
+        final avail = c.maxWidth;
+        final (cols, nested) = _shape(html);
+        if (!avail.isFinite || cols == 0) {
+          return HtmlWidget(html, textStyle: textStyle);
+        }
+        // the width below which the columns stop being readable
+        final floor = cols * (nested ? 150.0 : 110.0);
+        if (avail >= floor) {
+          return HtmlWidget(html, textStyle: textStyle);
+        }
+        final width = cols * (nested ? 265.0 : 190.0);
+        return HScroll(
+          forceVisible: true,
+          thumbColor: Theme.of(context).colorScheme.outline,
+          child: SizedBox(
+            width: width,
+            child: HtmlWidget(html, textStyle: textStyle),
+          ),
+        );
+      },
     );
   }
 }
