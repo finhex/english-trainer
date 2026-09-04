@@ -7,9 +7,11 @@ import '../locale_store.dart';
 import '../models.dart';
 import '../progress_store.dart';
 import '../strings.dart';
+import '../widgets/page_width.dart';
 import '../tts_service.dart';
 import '../widgets/word_order_exercise.dart';
 import '../widgets/gap_fill_exercise.dart';
+import '../widgets/sentence_exercise.dart';
 
 /// The practice engine for ONE practice mode (word_order OR gap_fill).
 ///
@@ -141,13 +143,18 @@ class _PracticeScreenState extends State<PracticeScreen> {
     final lang = _lang;
     return Scaffold(
       appBar: AppBar(
+        // two-line title needs the extra height, or the subtitle is clipped
+        toolbarHeight: 68,
         title: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(_lesson.topicFor(lang),
                 maxLines: 1, overflow: TextOverflow.ellipsis),
             Text(
                 '${tr(lang, 'lesson')} ${_lesson.ord} · $_label',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
@@ -156,28 +163,32 @@ class _PracticeScreenState extends State<PracticeScreen> {
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(28),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: LinearProgressIndicator(
-                    value: _correct / _goal,
-                    minHeight: 8,
-                    borderRadius: BorderRadius.circular(4),
+          child: PageWidth(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: LinearProgressIndicator(
+                      value: _correct / _goal,
+                      minHeight: 8,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Text('$_correct / $_goal'),
-              ],
+                  const SizedBox(width: 12),
+                  Text('$_correct / $_goal'),
+                ],
+              ),
             ),
           ),
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: _showingFeedback ? _feedback() : _exercise(),
+        child: PageWidth(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: _showingFeedback ? _feedback() : _exercise(),
+          ),
         ),
       ),
     );
@@ -187,6 +198,9 @@ class _PracticeScreenState extends State<PracticeScreen> {
     final item = _item;
     final key = ValueKey('${_pos}_${_correct}_${item.answer}');
     switch (item.type) {
+      case 'sentence':
+        return SentenceExercise(
+            key: key, item: item, lang: _lang, onResult: _onResult);
       case 'gap_fill':
       case 'word_type':
         return GapFillExercise(

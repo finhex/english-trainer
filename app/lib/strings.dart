@@ -4,16 +4,16 @@ library;
 
 const Map<String, Map<String, String>> _s = {
   // navigation
-  'nav_lessons': {'en': 'Lessons', 'ru': 'Уроки'},
+  'nav_lessons': {'en': 'Grammar', 'ru': 'Грамматика'},
   'nav_vocab': {'en': 'Vocabulary', 'ru': 'Слова'},
   'nav_guides': {'en': 'Guides', 'ru': 'Справочник'},
-  'nav_course': {'en': 'Course', 'ru': 'Курс'},
+  'nav_course': {'en': 'Lessons', 'ru': 'Уроки'},
   'course_lessons': {'en': 'lessons', 'ru': 'уроков'},
   'course_exercises': {'en': 'exercises', 'ru': 'упражнений'},
   'nav_settings': {'en': 'Settings', 'ru': 'Настройки'},
 
   // lessons list
-  'lessons': {'en': 'Lessons', 'ru': 'Уроки'},
+  'lessons': {'en': 'Grammar', 'ru': 'Грамматика'},
   'practice_completed': {'en': 'Practice completed', 'ru': 'Практика пройдена'},
   'practice_unlocked': {'en': 'Practice unlocked', 'ru': 'Практика открыта'},
   'grammar_readable_locked': {
@@ -27,6 +27,11 @@ const Map<String, Map<String, String>> _s = {
   // practices
   'practice': {'en': 'Practice', 'ru': 'Практика'},
   'p_word_order': {'en': 'Build the sentence', 'ru': 'Соберите предложение'},
+  'p_sentence': {'en': 'Build the phrase', 'ru': 'Соберите фразу'},
+  'p_sentence_sub': {
+    'en': 'Pick the right word for each position',
+    'ru': 'Выберите нужное слово для каждой позиции'
+  },
   'p_gap_fill': {'en': 'Fill the gap', 'ru': 'Заполните пропуск'},
   'p_word_type': {'en': 'Word types', 'ru': 'Части речи'},
   'p_word_order_sub': {

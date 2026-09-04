@@ -29,7 +29,7 @@ class CourseScreen extends StatelessWidget {
     }
 
     final totalItems =
-        lessons.fold<int>(0, (int s, l) => s + l.itemsOfType('word_order').length);
+        lessons.fold<int>(0, (int s, l) => s + l.itemsOfType('sentence').length);
 
     return Scaffold(
       appBar: AppBar(title: Text(tr(lang, 'nav_course'))),
@@ -50,9 +50,9 @@ class CourseScreen extends StatelessWidget {
           }
           final idx = i - 1;
           final lesson = lessons[idx];
-          final prevId = idx > 0 ? lessons[idx - 1].id : null;
-          final unlocked = idx == 0 ||
-              (prevId != null && progress.lessonHasAnyCompleted(prevId));
+          // The imported course lessons stand alone (each drills its own
+          // grammar point), so they're all open — no sequential gating.
+          const unlocked = true;
           final done = progress.lessonHasAnyCompleted(lesson.id);
           return _CourseTile(
             lesson: lesson,
@@ -85,7 +85,7 @@ class _CourseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final hint = Theme.of(context).hintColor;
-    final count = lesson.itemsOfType('word_order').length;
+    final count = lesson.itemsOfType('sentence').length;
     return ListTile(
       leading: CircleAvatar(
         backgroundColor:

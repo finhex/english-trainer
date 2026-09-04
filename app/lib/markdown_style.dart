@@ -1,14 +1,47 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'widgets/page_width.dart';
 import 'package:markdown/markdown.dart' as md;
 
 /// Builders for `Markdown`/`MarkdownBody`. Fenced/indented CODE BLOCKS get our
 /// own horizontal scroll + always-visible bottom scrollbar (keeps ASCII-tree
 /// alignment); inline `code` falls through to the default styling.
 Map<String, MarkdownElementBuilder> markdownBuilders(BuildContext context) {
-  return {'code': _CodeBlockBuilder(Theme.of(context).colorScheme)};
+  final scheme = Theme.of(context).colorScheme;
+  return {
+    'code': _CodeBlockBuilder(scheme),
+    'mark': _MarkBuilder(scheme),
+  };
 }
+
+/// `==text==` → an inline "mark". The imported course colors its Russian
+/// glosses (blue in the original); markdown has no color, so the importer
+/// keeps them as marks and they are painted in the accent color here.
+class _MarkSyntax extends md.InlineSyntax {
+  _MarkSyntax() : super(r'==([^=]+)==');
+  @override
+  bool onMatch(md.InlineParser parser, Match match) {
+    parser.addNode(md.Element.text('mark', match[1]!));
+    return true;
+  }
+}
+
+class _MarkBuilder extends MarkdownElementBuilder {
+  final ColorScheme scheme;
+  _MarkBuilder(this.scheme);
+  @override
+  Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) =>
+      Text(element.textContent,
+          style: (preferredStyle ?? const TextStyle())
+              .copyWith(color: scheme.primary, fontWeight: FontWeight.w500));
+}
+
+/// GitHub-flavored markdown plus our `==mark==` inline syntax.
+md.ExtensionSet get appExtensionSet => md.ExtensionSet(
+      md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+      [...md.ExtensionSet.gitHubFlavored.inlineSyntaxes, _MarkSyntax()],
+    );
 
 /// Render a lesson body as a list of widgets, pulling every GitHub-style pipe
 /// TABLE out into our own adaptive table widget (which flutter_markdown can't
@@ -33,6 +66,7 @@ List<Widget> buildMarkdownBlocks(BuildContext context, String src,
           data: buf.join('\n'),
           styleSheet: style,
           builders: builders,
+          extensionSet: appExtensionSet,
           selectable: false));
       buf.clear();
     }
@@ -471,7 +505,10 @@ class ReadingView extends StatelessWidget {
       child: SingleChildScrollView(
         primary: true,
         padding: EdgeInsets.fromLTRB(16, 16, 16, 24 + bottomInset),
-        child: Column(
+        // cap the reading column on desktop: full-width text lines and tables
+        // are unreadable in a 1900px window
+        child: PageWidth(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(title,
@@ -513,6 +550,7 @@ class ReadingView extends StatelessWidget {
                 anchor: anchor, anchorKey: anchorKey),
             ...trailing,
           ],
+          ),
         ),
       ),
     );

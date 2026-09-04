@@ -4,11 +4,20 @@
 library;
 
 class PracticeItem {
-  final String type; // 'word_order' | 'gap_fill' | 'word_type'
+  final String type; // 'word_order' | 'gap_fill' | 'word_type' | 'sentence'
   final String prompt;
   final String answer;
   final List<String> tokens; // correct tiles, in order (word_order)
   final List<String> distractors; // extra wrong tiles / MCQ options
+
+  /// 'sentence' only — the accepted alternatives for each position, in order
+  /// (a slot that also accepts being left out contains an empty string).
+  final List<List<String>> slots;
+
+  /// 'sentence' only — the choices offered for each position, in slot order.
+  /// The course presents a row of interchangeable words per position rather
+  /// than one shuffled pile.
+  final List<List<String>> rows;
 
   PracticeItem({
     required this.type,
@@ -16,7 +25,13 @@ class PracticeItem {
     required this.answer,
     required this.tokens,
     required this.distractors,
+    this.slots = const [],
+    this.rows = const [],
   });
+
+  static List<List<String>> _grid(dynamic v) => ((v as List?) ?? const [])
+      .map((e) => ((e as List?) ?? const []).cast<String>())
+      .toList();
 
   factory PracticeItem.fromJson(String type, Map<String, dynamic> j) =>
       PracticeItem(
@@ -24,7 +39,9 @@ class PracticeItem {
         prompt: (j['prompt'] as String?) ?? '',
         answer: j['answer'] as String,
         tokens: ((j['tokens'] as List?) ?? const []).cast<String>(),
-        distractors: (j['distractors'] as List).cast<String>(),
+        distractors: ((j['distractors'] as List?) ?? const []).cast<String>(),
+        slots: _grid(j['slots']),
+        rows: _grid(j['rows']),
       );
 }
 

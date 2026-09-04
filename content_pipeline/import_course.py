@@ -3,37 +3,98 @@
 Import the 1st-English course (grammar explanations + build-the-sentence drills)
 from eng1stApp's content.db into our app's content.json as section 'course'.
 
-Explanations are converted from the original HTML to **markdown** (our app
-renders markdown, not HTML).
+Two things are reproduced from the original app rather than simplified:
+
+  * The exercise is a SERIES OF CHOICES, not a word search. For each slot the
+    original finds the lesson template the answer belongs to — a group of
+    interchangeable words such as `my; your; his; her; our; their` — and offers
+    a few of that group as one row. Rows appear in slot order. That layout is
+    pre-built here (see build_rows, a port of the original's sentence.dart).
+
+  * The colored glosses in the lesson text (blue Russian translations) survive
+    the HTML -> markdown conversion as ==highlight== spans, which our markdown
+    renderer paints in the accent color.
 """
-import json, re, sqlite3, sys
+import json, random, re, sqlite3
 from html.parser import HTMLParser
-from html import unescape
 from pathlib import Path
 
 SRC_DB = "/home/konako/Documents/Claude/eng1stApp/desktop/assets/content.db"
 CONTENT = Path("/home/konako/Documents/Claude/_git-backups/apps/words/app/assets/content.json")
 
-BLOCK = {"p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li",
-         "table", "tr", "blockquote"}
+PER_ROW = 4
 
 
+def normalise(tile):
+    return re.sub(r"[^a-zа-яё0-9'\s]", "", (tile or "").lower()).strip()
+
+
+def build_rows(slots, templates, bank=(), decoys=(), per_row=PER_ROW, seed=0):
+    """Port of the original buildRows: one row of choices per slot."""
+    rnd = random.Random(seed or (len(slots) * 31 + len(templates)))
+
+    def template_for(word):
+        want = normalise(word)
+        for group in templates:
+            for option in group:
+                if normalise(option) == want:
+                    return group
+        return None
+
+    rows = []
+    for slot in slots:
+        answer = next((o for o in slot if o), "")
+        if not answer:
+            continue
+        group = template_for(answer)
+        required = [o for o in slot if o]
+        seen = {normalise(o) for o in required}
+        source = group if group is not None else list(bank)
+        extras = []
+        for word in source:
+            n = normalise(word)
+            if n not in seen:
+                seen.add(n)
+                extras.append(word)
+        rnd.shuffle(extras)
+        room = max(0, min(per_row - len(required), per_row))
+        row = required + extras[:room]
+        rnd.shuffle(row)
+        rows.append(row)
+
+    # decoys sit at a position and are offered like any other choice
+    for at, word in decoys:
+        seen = {normalise(word)}
+        group = template_for(word)
+        extras = []
+        for other in (group if group is not None else list(bank)):
+            n = normalise(other)
+            if n not in seen:
+                seen.add(n)
+                extras.append(other)
+        rnd.shuffle(extras)
+        row = [word] + extras[:per_row - 1]
+        rnd.shuffle(row)
+        rows.insert(max(0, min(at, len(rows))), row)
+    return rows
+
+
+# --------------------------------------------------------------------------
+# HTML -> Markdown
+# --------------------------------------------------------------------------
 class MdParser(HTMLParser):
-    """Minimal HTML -> Markdown for these lesson pages."""
-
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.out = []
-        self.list_stack = []   # 'ul' | 'ol'
-        self.oli = []          # counters for ol
+        self.list_stack = []
+        self.oli = []
         self.in_a = None
         self.a_text = []
-        self.row = None        # current table row cells
+        self.row = None
         self.cell = None
         self.table_rows = None
-        self.emphasis = 0
+        self.color_depth = 0
 
-    # -- helpers -------------------------------------------------------
     def _emit(self, s):
         if self.cell is not None:
             self.cell.append(s)
@@ -43,26 +104,27 @@ class MdParser(HTMLParser):
             self.out.append(s)
 
     def _nl(self, n=1):
-        # collapse trailing newlines to at most n
         while self.out and self.out[-1] == "\n":
             self.out.pop()
         self.out.append("\n" * n)
 
-    # -- tags ----------------------------------------------------------
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
-            self._nl(2)
-            self.out.append("#" * min(int(tag[1]) + 1, 6) + " ")
+            self._nl(2); self.out.append("#" * min(int(tag[1]) + 1, 6) + " ")
         elif tag == "p":
             self._nl(2)
         elif tag == "br":
             self._emit("  \n")
         elif tag in ("strong", "b"):
-            self.emphasis += 1
             self._emit("**")
         elif tag in ("em", "i"):
             self._emit("*")
+        elif tag == "span":
+            # the course colors its Russian glosses; keep them as ==marks==
+            if "color" in (a.get("style") or ""):
+                self.color_depth += 1
+                self._emit("==")
         elif tag == "ul":
             self.list_stack.append("ul"); self._nl(2)
         elif tag == "ol":
@@ -76,8 +138,7 @@ class MdParser(HTMLParser):
             else:
                 self.out.append("  " * depth + "- ")
         elif tag == "a":
-            self.in_a = a.get("href", "")
-            self.a_text = []
+            self.in_a = a.get("href", ""); self.a_text = []
         elif tag == "table":
             self.table_rows = []
         elif tag == "tr":
@@ -93,24 +154,22 @@ class MdParser(HTMLParser):
         elif tag == "p":
             self._nl(2)
         elif tag in ("strong", "b"):
-            if self.emphasis:
-                self.emphasis -= 1
-                self._emit("**")
+            self._emit("**")
         elif tag in ("em", "i"):
             self._emit("*")
+        elif tag == "span":
+            if self.color_depth:
+                self.color_depth -= 1
+                self._emit("==")
         elif tag in ("ul", "ol"):
             if self.list_stack:
                 k = self.list_stack.pop()
                 if k == "ol" and self.oli:
                     self.oli.pop()
             self._nl(2)
-        elif tag == "li":
-            pass
         elif tag == "a":
             text = "".join(self.a_text).strip()
-            href = self.in_a
-            self.in_a = None
-            self.a_text = []
+            href, self.in_a, self.a_text = self.in_a, None, []
             if text:
                 self._emit(f"[{text}]({href})" if href else text)
         elif tag in ("td", "th"):
@@ -122,8 +181,7 @@ class MdParser(HTMLParser):
                 self.table_rows.append(self.row)
             self.row = None
         elif tag == "table":
-            rows = self.table_rows or []
-            self.table_rows = None
+            rows, self.table_rows = self.table_rows or [], None
             if rows:
                 self._nl(2)
                 width = max(len(r) for r in rows)
@@ -137,11 +195,9 @@ class MdParser(HTMLParser):
     def handle_data(self, data):
         if not data:
             return
-        # keep single spaces, drop newlines that HTML treats as whitespace
         text = re.sub(r"\s+", " ", data)
         if text.strip() == "" and (not self.out or self.out[-1].endswith("\n")):
             return
-        # don't start a fresh line with a stray space (e.g. right after <br/>)
         tail = (self.cell or self.a_text or self.out)
         if tail and str(tail[-1]).endswith("\n"):
             text = text.lstrip()
@@ -149,9 +205,10 @@ class MdParser(HTMLParser):
 
     def markdown(self):
         md = "".join(self.out)
+        md = re.sub(r"==\s*==", "", md)             # empty marks
         md = re.sub(r"[ \t]+\n", "\n", md)
         md = re.sub(r"\n{3,}", "\n\n", md)
-        md = re.sub(r"\*\*\s*\*\*", "", md)          # empty bold
+        md = re.sub(r"\*\*\s*\*\*", "", md)
         md = re.sub(r"[ \t]{2,}", " ", md)
         return md.strip() + "\n"
 
@@ -168,38 +225,46 @@ def main():
     grammar = {r[0]: (r[1], r[2], r[3])
                for r in db.execute("select id,title,subtitle,html_light from grammar")}
 
-    # drills grouped by lesson
+    # per-lesson templates ("call; calls; called") and a flat word bank
+    templates, bank = {}, {}
+    for lesson, value in db.execute("select lesson,value from lesson_dict order by lesson,ord"):
+        group = [w.strip() for w in (value or "").split(";") if w.strip()]
+        if not group:
+            continue
+        templates.setdefault(lesson, []).append(group)
+        bank.setdefault(lesson, []).extend(group)
+
     drills = {}
-    for lesson, eng, answer, slots, decoys, ru, form in db.execute(
-            "select lesson,eng,answer,slots,decoys,ru,form from drills order by lesson,ord"):
+    for lesson, answer, slots, decoys, ru in db.execute(
+            "select lesson,answer,slots,decoys,ru from drills order by lesson,ord"):
         try:
-            sl = json.loads(slots)
+            sl = [s for s in json.loads(slots) if isinstance(s, list)]
         except Exception:
             continue
-        # tiles: first accepted alternative of each slot (always solvable)
-        tokens = [alts[0] for alts in sl if isinstance(alts, list) and alts]
-        if not tokens:
+        if not sl:
             continue
         try:
-            dec = json.loads(decoys) or []
+            dec = [(int(a), str(w)) for a, w in (json.loads(decoys) or [])]
         except Exception:
             dec = []
+        rows = build_rows(sl, templates.get(lesson, []), bank.get(lesson, []),
+                          dec, seed=abs(hash((lesson, answer))) % 100000)
+        if not rows:
+            continue
         drills.setdefault(lesson, []).append({
-            "prompt": ru.strip(),
-            "answer": (answer or eng).strip(),
-            "tokens": tokens,
-            "distractors": [d for d in dec if isinstance(d, str)][:4],
+            "prompt": (ru or "").strip(),
+            "answer": (answer or "").strip(),
+            "slots": sl,
+            "rows": rows,
+            "tokens": [s[0] for s in sl if s and s[0]],
         })
 
     data = json.loads(CONTENT.read_text())
-    lessons = data["lessons"]
-    # drop any previous import so re-running is safe
-    lessons = [l for l in lessons if l.get("section") != "course"]
+    lessons = [l for l in data["lessons"] if l.get("section") != "course"]
     max_ord = max((l.get("ord") or 0) for l in lessons)
     max_id = max((l.get("id") or 0) for l in lessons)
 
-    added = 0
-    total_items = 0
+    added = total = 0
     for i, gid in enumerate(sorted(grammar), start=1):
         title, subtitle, html = grammar[gid]
         md = html_to_md(html)
@@ -213,26 +278,32 @@ def main():
             "title": title,
             "titleRu": title,
             "grammarMd": md,
-            "grammarMdRu": md,          # the course is taught in Russian
+            "grammarMdRu": md,
             "uniqueSentences": len(items),
             "level": 1,
             "levelName": f"Урок {i}",
+            "courseNo": i,
             "section": "course",
-            "practices": ({"word_order": {"goal": min(20, max(5, len(items) // 10)),
-                                          "items": items}} if items else {}),
+            "practices": ({"sentence": {"goal": min(70, len(items)),
+                                        "items": items}} if items else {}),
         }
         if subtitle:
             lesson["subtitle"] = subtitle
         lessons.append(lesson)
         added += 1
-        total_items += len(items)
+        total += len(items)
 
+    # register the practice type so the app labels it like the original
+    data.setdefault("config", {}).setdefault("practices", {})["sentence"] = {
+        "label": "Build the phrase", "order": 0, "icon": "reorder",
+        "subtitle": "Pick the right word for each position",
+    }
     data["lessons"] = lessons
     CONTENT.write_text(json.dumps(data, ensure_ascii=False))
-    size = CONTENT.stat().st_size / 1048576
     print(f"course lessons added: {added}")
-    print(f"practice items imported: {total_items}")
-    print(f"content.json now: {len(lessons)} lessons, {size:.1f} MB")
+    print(f"practice items imported: {total}")
+    print(f"content.json now: {len(lessons)} lessons, "
+          f"{CONTENT.stat().st_size / 1048576:.1f} MB")
 
 
 if __name__ == "__main__":
