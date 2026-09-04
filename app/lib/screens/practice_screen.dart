@@ -45,6 +45,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
   bool _showingFeedback = false;
   bool _lastWasCorrect = false;
   String _userAnswer = '';
+  List<String> _userTiles = const [];
 
   late final int _goal;
   late final String _rawPos; // English POS key ('noun'…) for word_type
@@ -200,7 +201,13 @@ class _PracticeScreenState extends State<PracticeScreen> {
     switch (item.type) {
       case 'sentence':
         return SentenceExercise(
-            key: key, item: item, lang: _lang, onResult: _onResult);
+            key: key,
+            item: item,
+            lang: _lang,
+            onResult: (correct, given, tiles) {
+              _userTiles = tiles;
+              _onResult(correct, given);
+            });
       case 'gap_fill':
       case 'word_type':
         return GapFillExercise(
@@ -265,12 +272,20 @@ class _PracticeScreenState extends State<PracticeScreen> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 16),
-        // Always show what the learner answered.
-        _AnswerRow(
-          label: tr(lang, 'your_answer'),
-          text: _userAnswer.isEmpty ? '—' : _userAnswer,
-          good: ok,
-        ),
+        // What the learner answered. For the course exercise each placed tile
+        // is marked right or wrong, the way the original highlights a checked
+        // answer rather than only passing or failing it.
+        if (_item.type == 'sentence' && _userTiles.isNotEmpty)
+          _MarkedTiles(
+              label: tr(lang, 'your_answer'),
+              tiles: _userTiles,
+              marks: markTiles(_item.slots, _userTiles))
+        else
+          _AnswerRow(
+            label: tr(lang, 'your_answer'),
+            text: _userAnswer.isEmpty ? '—' : _userAnswer,
+            good: ok,
+          ),
         if (!ok) ...[
           const SizedBox(height: 12),
           _AnswerRow(
@@ -321,6 +336,52 @@ class _AnswerRow extends StatelessWidget {
                       .titleMedium
                       ?.copyWith(color: color, fontWeight: FontWeight.w600)),
             ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+
+/// The learner's placed tiles, each colored by whether it fits the sentence.
+class _MarkedTiles extends StatelessWidget {
+  final String label;
+  final List<String> tiles;
+  final List<bool> marks;
+  const _MarkedTiles(
+      {required this.label, required this.tiles, required this.marks});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: TextStyle(
+                fontSize: 12.5, color: Theme.of(context).hintColor)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (var i = 0; i < tiles.length; i++)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: (i < marks.length && marks[i] ? kGood : kBad)
+                      .withValues(alpha: 0.15),
+                  border: Border.all(
+                      color: i < marks.length && marks[i] ? kGood : kBad),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(tiles[i],
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: i < marks.length && marks[i] ? kGood : kBad)),
+              ),
           ],
         ),
       ],

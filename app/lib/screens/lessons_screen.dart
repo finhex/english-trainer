@@ -80,21 +80,22 @@ class _LessonTile extends StatelessWidget {
     final value = goal == 0 ? 0.0 : (current / goal).clamp(0.0, 1.0);
     return ListTile(
       contentPadding: const EdgeInsets.fromLTRB(16, 8, 12, 8),
+      // a big numbered square, like the course's own lesson list
       leading: Container(
-        width: 44,
-        height: 44,
+        width: 60,
+        height: 60,
         decoration: BoxDecoration(
           color: done ? const Color(0xFF3CA84B) : scheme.primary,
           borderRadius: BorderRadius.circular(8),
         ),
         alignment: Alignment.center,
         child: done
-            ? Icon(Icons.check, color: scheme.onPrimary)
+            ? Icon(Icons.check, color: scheme.onPrimary, size: 30)
             : Text('$number',
                 style: TextStyle(
                     color: scheme.onPrimary,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                    fontSize: 26)),
       ),
       title: Text(lesson.topicFor(lang),
           maxLines: 2,

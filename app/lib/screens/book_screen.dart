@@ -5,7 +5,10 @@ import '../content_repository.dart';
 import '../locale_store.dart';
 import '../markdown_style.dart';
 import '../models.dart';
+import '../app_config.dart';
+import '../progress_store.dart';
 import '../strings.dart';
+import 'practice_screen.dart';
 
 // numbered subsection ("### 15.1 Title", "#### 15.1.1 Title")
 final _subRe = RegExp(r'^#{2,4}\s+(\d+\.\d+(?:\.\d+)*)\s+(.*)$', multiLine: true);
@@ -324,6 +327,9 @@ class _ChapterReaderScreenState extends State<ChapterReaderScreen> {
         markdown: ch.grammarFor(lang),
         anchor: _anchor,
         anchorKey: _anchor != null ? _anchorKey : null,
+        // the book chapters keep their own practices (fill the gap, word
+        // types, build the sentence) — they are not listed under Lessons
+        trailing: _chapterPractices(context, ch, lang),
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
@@ -351,4 +357,43 @@ class _ChapterReaderScreenState extends State<ChapterReaderScreen> {
       ),
     );
   }
+}
+
+/// The practices a book chapter offers, rendered under its text so the
+/// gap-fill / word-type drills stay reachable from the Book.
+List<Widget> _chapterPractices(BuildContext context, Lesson ch, String lang) {
+  final repo = context.read<ContentRepository>();
+  final progress = context.watch<ProgressStore>();
+  final practices = repo.config.orderedPractices
+      .where((p) => ch.itemsOfType(p.type).isNotEmpty)
+      .toList();
+  if (practices.isEmpty) return const [];
+  final scheme = Theme.of(context).colorScheme;
+  return [
+    const SizedBox(height: 20),
+    const Divider(height: 1),
+    const SizedBox(height: 12),
+    Padding(
+      padding: const EdgeInsets.only(left: 4, bottom: 6),
+      child: Text(tr(lang, 'practice'),
+          style: Theme.of(context).textTheme.titleMedium),
+    ),
+    for (final p in practices)
+      Card(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        child: ListTile(
+          leading: Icon(iconFor(p.icon), color: scheme.primary),
+          title: Text(practiceLabel(lang, p.type)),
+          subtitle: Text(
+              '${progress.isPracticeCompleted(ch.id, p.type) ? ch.goalFor(p.type) : progress.practiceProgress(ch.id, p.type)}'
+              ' / ${ch.goalFor(p.type)}'),
+          trailing: progress.isPracticeCompleted(ch.id, p.type)
+              ? const Icon(Icons.check_circle, color: Color(0xFF3CA84B))
+              : const Icon(Icons.chevron_right),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => PracticeScreen(lessonId: ch.id, type: p.type),
+          )),
+        ),
+      ),
+  ];
 }

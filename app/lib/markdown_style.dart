@@ -10,36 +10,70 @@ Map<String, MarkdownElementBuilder> markdownBuilders(BuildContext context) {
   final scheme = Theme.of(context).colorScheme;
   return {
     'code': _CodeBlockBuilder(scheme),
-    'mark': _MarkBuilder(scheme),
+    for (final e in kMarks.entries)
+      e.value.tag: _MarkBuilder(markColor(context, e.value.tag)),
   };
 }
 
-/// `==text==` → an inline "mark". The imported course colors its Russian
-/// glosses (blue in the original); markdown has no color, so the importer
-/// keeps them as marks and they are painted in the accent color here.
+/// The imported course colors its text — blue glosses, gray notes, red
+/// warnings, green. Markdown has no color, so the importer keeps each as its
+/// own marker and they are painted here.
+class MarkSpec {
+  final String open; // the markdown marker, e.g. '=='
+  final String tag; // the element tag, e.g. 'mark_blue'
+  const MarkSpec(this.open, this.tag);
+}
+
+const Map<String, MarkSpec> kMarks = {
+  'blue': MarkSpec('==', 'mark_blue'),
+  'gray': MarkSpec('%%', 'mark_gray'),
+  'red': MarkSpec('!!', 'mark_red'),
+  'green': MarkSpec('++', 'mark_green'),
+};
+
+/// Theme-aware color for a mark tag (readable in light and dark).
+Color markColor(BuildContext context, String tag) {
+  final dark = Theme.of(context).brightness == Brightness.dark;
+  switch (tag) {
+    case 'mark_gray':
+      return Theme.of(context).hintColor;
+    case 'mark_red':
+      return dark ? const Color(0xFFFF6B6B) : const Color(0xFFD32F2F);
+    case 'mark_green':
+      return dark ? const Color(0xFF62D07A) : const Color(0xFF2E7D32);
+    default:
+      return Theme.of(context).colorScheme.primary;
+  }
+}
+
 class _MarkSyntax extends md.InlineSyntax {
-  _MarkSyntax() : super(r'==([^=]+)==');
+  final String tag;
+  _MarkSyntax(String marker, this.tag)
+      : super('${RegExp.escape(marker)}(.+?)${RegExp.escape(marker)}');
   @override
   bool onMatch(md.InlineParser parser, Match match) {
-    parser.addNode(md.Element.text('mark', match[1]!));
+    parser.addNode(md.Element.text(tag, match[1]!));
     return true;
   }
 }
 
 class _MarkBuilder extends MarkdownElementBuilder {
-  final ColorScheme scheme;
-  _MarkBuilder(this.scheme);
+  final Color color;
+  _MarkBuilder(this.color);
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) =>
       Text(element.textContent,
           style: (preferredStyle ?? const TextStyle())
-              .copyWith(color: scheme.primary, fontWeight: FontWeight.w500));
+              .copyWith(color: color, fontWeight: FontWeight.w500));
 }
 
-/// GitHub-flavored markdown plus our `==mark==` inline syntax.
+/// GitHub-flavored markdown plus our colored-mark inline syntaxes.
 md.ExtensionSet get appExtensionSet => md.ExtensionSet(
       md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-      [...md.ExtensionSet.gitHubFlavored.inlineSyntaxes, _MarkSyntax()],
+      [
+        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+        for (final m in kMarks.values) _MarkSyntax(m.open, m.tag),
+      ],
     );
 
 /// Render a lesson body as a list of widgets, pulling every GitHub-style pipe
@@ -196,32 +230,46 @@ class _MdTable extends StatelessWidget {
   // minimal inline markdown → styled spans (bold / italic / code)
   InlineSpan _inline(String text, TextStyle base) {
     final spans = <InlineSpan>[];
-    final re =
-        RegExp(r'==(.+?)==|\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`|_(.+?)_');
+    final re = RegExp(r'==(.+?)==|%%(.+?)%%|!!(.+?)!!|\+\+(.+?)\+\+'
+        r'|\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`|_(.+?)_');
     var last = 0;
     for (final m in re.allMatches(text)) {
       if (m.start > last) {
         spans.add(TextSpan(text: text.substring(last, m.start), style: base));
       }
+      // the course's colored text, in cells too
       if (m.group(1) != null) {
-        // ==mark== — the course's colored glosses, in cells too
         spans.add(TextSpan(
             text: m.group(1),
             style: base.copyWith(
                 color: scheme.primary, fontWeight: FontWeight.w500)));
       } else if (m.group(2) != null) {
         spans.add(TextSpan(
-            text: m.group(2), style: base.copyWith(fontWeight: FontWeight.bold)));
+            text: m.group(2),
+            style: base.copyWith(color: scheme.onSurfaceVariant)));
       } else if (m.group(3) != null) {
         spans.add(TextSpan(
             text: m.group(3),
-            style: base.copyWith(fontStyle: FontStyle.italic)));
+            style: base.copyWith(
+                color: const Color(0xFFD32F2F), fontWeight: FontWeight.w500)));
       } else if (m.group(4) != null) {
         spans.add(TextSpan(
-            text: m.group(4), style: base.copyWith(fontFamily: 'monospace')));
+            text: m.group(4),
+            style: base.copyWith(
+                color: const Color(0xFF2E7D32), fontWeight: FontWeight.w500)));
       } else if (m.group(5) != null) {
         spans.add(TextSpan(
-            text: m.group(5),
+            text: m.group(5), style: base.copyWith(fontWeight: FontWeight.bold)));
+      } else if (m.group(6) != null) {
+        spans.add(TextSpan(
+            text: m.group(6),
+            style: base.copyWith(fontStyle: FontStyle.italic)));
+      } else if (m.group(7) != null) {
+        spans.add(TextSpan(
+            text: m.group(7), style: base.copyWith(fontFamily: 'monospace')));
+      } else if (m.group(8) != null) {
+        spans.add(TextSpan(
+            text: m.group(8),
             style: base.copyWith(fontStyle: FontStyle.italic)));
       }
       last = m.end;

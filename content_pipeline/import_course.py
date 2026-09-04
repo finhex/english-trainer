@@ -24,6 +24,40 @@ CONTENT = Path("/home/konako/Documents/Claude/_git-backups/apps/words/app/assets
 
 PER_ROW = 4
 
+# the four colors the course uses -> our markdown markers
+BLUE, GRAY, RED, GREEN = "==", "%%", "!!", "++"
+
+
+def _color_mark(style):
+    st = (style or "").lower()
+    if "color" not in st:
+        return ""
+    if "005bd8" in st:
+        return BLUE
+    if "gray" in st or "grey" in st or "#808080" in st:
+        return GRAY
+    if "f00000" in st or "red" in st:
+        return RED
+    if "green" in st:
+        return GREEN
+    return BLUE
+
+
+BLOCK_COLOR_TAGS = {"div", "p", "td", "th", "li", "blockquote"}
+# markdown line prefixes that must stay outside the color marker
+_PREFIX = re.compile(r"^(\s*(?:[-*+]\s+|\d+\.\s+|#{1,6}\s+|>\s*)?)(.*)$")
+
+
+def _wrap_lines(segment, mark):
+    """Wrap each non-empty line of a colored block in the marker."""
+    out = []
+    for line in segment.split("\n"):
+        m = _PREFIX.match(line)
+        prefix, body = m.group(1), m.group(2)
+        body = body.strip()
+        out.append(f"{prefix}{mark}{body}{mark}" if body else line)
+    return "\n".join(out)
+
 
 def normalise(tile):
     return re.sub(r"[^a-zа-яё0-9'\s]", "", (tile or "").lower()).strip()
@@ -93,7 +127,8 @@ class MdParser(HTMLParser):
         self.row = None
         self.cell = None
         self.table_rows = None
-        self.color_depth = 0
+        self.color_stack = []
+        self.block_color = []
 
     def _emit(self, s):
         if self.cell is not None:
@@ -110,6 +145,19 @@ class MdParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        # the course colors its text — blue glosses, gray notes, red warnings,
+        # green. Markdown has no color, so each keeps its own marker and the
+        # app paints them. Colors sit on <span>, <ru>, <div> and <td> alike.
+        mark = _color_mark(a.get("style") or "")
+        if tag in BLOCK_COLOR_TAGS:
+            # push for EVERY block tag so nesting pops the right entry.
+            # Inside a table cell the text goes to the cell buffer, not out.
+            buf = self.cell if self.cell is not None else self.out
+            self.block_color.append((mark, len(buf), self.cell is not None))
+            mark = ""            # applied per line when the block closes
+        elif mark:
+            self._emit(mark)
+        self.color_stack.append((tag, mark))
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
             self._nl(2); self.out.append("#" * min(int(tag[1]) + 1, 6) + " ")
         elif tag == "p":
@@ -120,11 +168,6 @@ class MdParser(HTMLParser):
             self._emit("**")
         elif tag in ("em", "i"):
             self._emit("*")
-        elif tag == "span":
-            # the course colors its Russian glosses; keep them as ==marks==
-            if "color" in (a.get("style") or ""):
-                self.color_depth += 1
-                self._emit("==")
         elif tag == "ul":
             self.list_stack.append("ul"); self._nl(2)
         elif tag == "ol":
@@ -149,6 +192,23 @@ class MdParser(HTMLParser):
             self._nl(2); self.out.append("> ")
 
     def handle_endtag(self, tag):
+        for k in range(len(self.color_stack) - 1, -1, -1):
+            if self.color_stack[k][0] == tag:
+                _, mk = self.color_stack.pop(k)
+                if mk:
+                    self._emit(mk)
+                break
+        if tag in BLOCK_COLOR_TAGS and self.block_color:
+            mk, at, in_cell = self.block_color.pop()
+            buf = self.cell if (in_cell and self.cell is not None) else self.out
+            if at <= len(buf):
+                seg = "".join(buf[at:])
+                if mk and seg.strip():
+                    del buf[at:]
+                    buf.append(_wrap_lines(seg, mk))
+                # stacked <div>s inside a cell would run together
+                if in_cell and tag == "div" and seg.strip():
+                    buf.append(" · ")
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
             self._nl(2)
         elif tag == "p":
@@ -157,10 +217,6 @@ class MdParser(HTMLParser):
             self._emit("**")
         elif tag in ("em", "i"):
             self._emit("*")
-        elif tag == "span":
-            if self.color_depth:
-                self.color_depth -= 1
-                self._emit("==")
         elif tag in ("ul", "ol"):
             if self.list_stack:
                 k = self.list_stack.pop()
@@ -174,7 +230,9 @@ class MdParser(HTMLParser):
                 self._emit(f"[{text}]({href})" if href else text)
         elif tag in ("td", "th"):
             if self.row is not None and self.cell is not None:
-                self.row.append(" ".join("".join(self.cell).split()))
+                txt = " ".join("".join(self.cell).split())
+                txt = re.sub(r"(?:\s*·\s*)+$", "", txt).strip()
+                self.row.append(txt)
             self.cell = None
         elif tag == "tr":
             if self.table_rows is not None and self.row:
@@ -205,7 +263,8 @@ class MdParser(HTMLParser):
 
     def markdown(self):
         md = "".join(self.out)
-        md = re.sub(r"==\s*==", "", md)             # empty marks
+        for mk in (BLUE, GRAY, RED, GREEN):          # drop empty marks
+            md = re.sub(re.escape(mk) + r"\s*" + re.escape(mk), "", md)
         md = re.sub(r"[ \t]+\n", "\n", md)
         md = re.sub(r"\n{3,}", "\n\n", md)
         md = re.sub(r"\*\*\s*\*\*", "", md)

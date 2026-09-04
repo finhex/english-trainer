@@ -62,7 +62,6 @@ class LessonHomeScreen extends StatelessWidget {
               goal: lesson.goalFor(p.type),
               current: progress.practiceProgress(lesson.id, p.type),
               done: progress.isPracticeCompleted(lesson.id, p.type),
-              count: lesson.itemsOfType(p.type).length,
               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) =>
                     PracticeScreen(lessonId: lesson.id, type: p.type),
@@ -131,7 +130,6 @@ class _PracticeCard extends StatelessWidget {
   final int goal;
   final int current;
   final bool done;
-  final int count;
   final VoidCallback onTap;
   const _PracticeCard({
     required this.config,
@@ -139,7 +137,6 @@ class _PracticeCard extends StatelessWidget {
     required this.goal,
     required this.current,
     required this.done,
-    required this.count,
     required this.onTap,
   });
 
@@ -170,11 +167,6 @@ class _PracticeCard extends StatelessWidget {
                                 .textTheme
                                 .titleMedium
                                 ?.copyWith(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 3),
-                        Text('$count ${tr(lang, 'course_exercises')}',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Theme.of(context).hintColor)),
                       ],
                     ),
                   ),
