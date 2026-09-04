@@ -214,6 +214,7 @@ class _CourseHtmlState extends State<_CourseHtml> {
                         seg.isTable
                             ? _TableScroll(
                                 html: seg.html,
+                                centered: seg.centered,
                                 textStyle: theme.textTheme.bodyMedium)
                             : HtmlWidget(seg.html,
                                 textStyle: theme.textTheme.bodyMedium),
@@ -264,7 +265,12 @@ class _CourseHtmlState extends State<_CourseHtml> {
 class _Seg {
   final String html;
   final bool isTable;
-  const _Seg(this.html, this.isTable);
+
+  /// Whether the source wrapped this table in <center>. It does that for the
+  /// conjugation boxes only; the plain word tables are meant to sit at the
+  /// left margin, where the lesson text is.
+  final bool centered;
+  const _Seg(this.html, this.isTable, {this.centered = false});
 }
 
 /// Splits lesson HTML into table and non-table pieces, matching each <table> to
@@ -291,7 +297,8 @@ List<_Seg> _splitTables(String html) {
         depth++;
       }
     }
-    segs.add(_Seg(html.substring(start, end), true));
+    segs.add(_Seg(html.substring(start, end), true,
+        centered: html.substring(0, start).trimRight().endsWith('<center>')));
     pos = end;
   }
   if (pos < html.length) segs.add(_Seg(html.substring(pos), false));
@@ -308,7 +315,9 @@ List<_Seg> _splitTables(String html) {
 class _TableScroll extends StatelessWidget {
   final String html;
   final TextStyle? textStyle;
-  const _TableScroll({required this.html, this.textStyle});
+  final bool centered;
+  const _TableScroll(
+      {required this.html, this.textStyle, this.centered = false});
 
   (int, bool) _shape(String html) {
     var cols = 0;
@@ -337,10 +346,10 @@ class _TableScroll extends StatelessWidget {
         // the width below which the columns stop being readable
         final floor = cols * (nested ? 150.0 : 110.0);
         if (avail >= floor) {
-          // the source wraps every conjugation box in <center>, which the
-          // renderer ignores; centre it here so a table narrower than the
-          // column sits in the middle rather than against the left edge
-          return Center(child: HtmlWidget(html, textStyle: textStyle));
+          // the renderer ignores <center>, so a box the source centres is
+          // centred here; a plain table keeps the left margin it was written at
+          final table = HtmlWidget(html, textStyle: textStyle);
+          return centered ? Center(child: table) : table;
         }
         // The renderer splits a table's width evenly between its columns and
         // ignores width hints, so the narrow tense-label column still takes a

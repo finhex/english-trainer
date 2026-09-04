@@ -25,6 +25,20 @@ from colorize import colorize  # noqa: E402
 SRC_DB = "/home/konako/Documents/Claude/eng1stApp/desktop/assets/content.db"
 CONTENT = Path("/home/konako/Documents/Claude/_git-backups/apps/words/app/assets/content.json")
 
+# Four lesson pages separate words with </br> - a closing tag for an element
+# that has no closing form. The HTML parser that produced content.db drops it,
+# which glued the words together ("house office room" -> "houseofficeroom").
+# These pages are re-extracted from the original with </br> read as <br/>;
+# every other lesson comes out byte-identical to the database, so only the
+# broken four are carried here.
+HTML_FIX = Path(__file__).parent / "course_html_fix.json"
+
+# The course ends every lesson with a note about the original app: its hint
+# button, its Telegram channel, its Google Play feedback. None of that exists
+# here, so the block is dropped from all four language/theme variants.
+APP_NOTE = re.compile(
+    r"<p[^>]*>\s*<b>К сведению!</b>\s*</p>.*\Z", re.S)
+
 PER_ROW = 4
 
 # the four colors the course uses -> our markdown markers
@@ -382,7 +396,17 @@ def lesson_to_md(html):
     return md
 
 
+def strip_app_note(html):
+    """Drops the trailing note about the original app's own features."""
+    if not html:
+        return html
+    out = APP_NOTE.sub("", html)
+    # the note sat in its own page; leave no empty piece behind
+    return "\u0000".join(p for p in out.split("\u0000") if p.strip())
+
+
 def main():
+    html_fix = json.loads(HTML_FIX.read_text()) if HTML_FIX.exists() else {}
     db = sqlite3.connect(SRC_DB)
     grammar = {r[0]: (r[1], r[2], r[3], r[4])
                for r in db.execute(
@@ -433,6 +457,11 @@ def main():
            if "тестов" not in (grammar[g][0] or "").lower()]
     for i, gid in enumerate(ids, start=1):
         title, subtitle, html, html_dark = grammar[gid]
+        repaired = html_fix.get(str(gid))
+        if repaired:
+            html, html_dark = repaired["light"], repaired["dark"]
+        html = strip_app_note(html)
+        html_dark = strip_app_note(html_dark)
         md = lesson_to_md(html)
         # \u0000 is the course's page separator: the pieces are stacked back
         # together on screen (its renderer blanks out past ~10 KB per document)
