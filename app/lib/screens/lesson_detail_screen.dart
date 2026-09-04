@@ -163,52 +163,60 @@ class _CourseHtml extends StatelessWidget {
         lesson.htmlFor(theme.brightness == Brightness.dark, lang: lang);
     final progress = context.watch<ProgressStore>();
 
-    // The course's own app renders each piece with HtmlWidget inside a padded
-    // Card and nothing else — no splitting, no width of our own. Same here.
-    return ListView(
-      padding: const EdgeInsets.all(12),
-      children: [
-        Card(
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.all(22),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (final part in parts)
-                  HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
-              ],
-            ),
-          ),
-        ),
-        if (practices.isNotEmpty) ...[
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
-            child:
-                Text(tr(lang, 'practice'), style: theme.textTheme.titleMedium),
-          ),
-          for (final p in practices)
+    // The course's own theory page: the body is centred and capped (940px),
+    // padded, and each pre-split piece is rendered by HtmlWidget inside one
+    // Card. Rendering at full window width is what made its tables misbehave.
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 940),
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          children: [
             Card(
-              margin: const EdgeInsets.symmetric(vertical: 4),
-              child: ListTile(
-                leading:
-                    Icon(iconFor(p.icon), color: theme.colorScheme.primary),
-                title: Text(practiceLabel(lang, p.type)),
-                subtitle: Text(
-                    '${progress.isPracticeCompleted(lesson.id, p.type) ? lesson.goalFor(p.type) : progress.practiceProgress(lesson.id, p.type)}'
-                    ' / ${lesson.goalFor(p.type)}'),
-                trailing: progress.isPracticeCompleted(lesson.id, p.type)
-                    ? const Icon(Icons.check_circle, color: Color(0xFF3CA84B))
-                    : const Icon(Icons.chevron_right),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) =>
-                      PracticeScreen(lessonId: lesson.id, type: p.type),
-                )),
+              margin: EdgeInsets.zero,
+              child: Padding(
+                padding: const EdgeInsets.all(22),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (final part in parts)
+                      HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
+                  ],
+                ),
               ),
             ),
-        ],
-      ],
+            if (practices.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 4, bottom: 8),
+                child: Text(tr(lang, 'practice'),
+                    style: theme.textTheme.titleMedium),
+              ),
+              for (final p in practices)
+                Card(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  child: ListTile(
+                    leading:
+                        Icon(iconFor(p.icon), color: theme.colorScheme.primary),
+                    title: Text(practiceLabel(lang, p.type)),
+                    subtitle: Text(
+                        '${progress.isPracticeCompleted(lesson.id, p.type) ? lesson.goalFor(p.type) : progress.practiceProgress(lesson.id, p.type)}'
+                        ' / ${lesson.goalFor(p.type)}'),
+                    trailing: progress.isPracticeCompleted(lesson.id, p.type)
+                        ? const Icon(Icons.check_circle,
+                            color: Color(0xFF3CA84B))
+                        : const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) =>
+                          PracticeScreen(lessonId: lesson.id, type: p.type),
+                    )),
+                  ),
+                ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }
