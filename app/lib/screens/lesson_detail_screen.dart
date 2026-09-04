@@ -180,28 +180,23 @@ class _CourseHtml extends StatelessWidget {
                     seg.isTable
                         ? LayoutBuilder(
                             builder: (context, c) {
-                              // Given only the window width the renderer
-                              // squeezes the columns until words break
-                              // mid-word ("lov e?"). Give the table room and
-                              // let it scroll instead.
-                              // An HTML table with no width shrinks to fit,
-                              // so don't stretch it across the window; give
-                              // each column a readable share and scroll when
-                              // that is wider than the view.
+                              // The source tables carry no width: they shrink
+                              // to fit and sit centred. Laying one out at the
+                              // window width stretches it; at a narrow width
+                              // the renderer breaks words inside the cells.
                               final want = _tableWidth(seg.html);
-                              final w = c.maxWidth.isFinite && c.maxWidth < want
-                                  ? want
-                                  : (c.maxWidth.isFinite
-                                      ? (want < c.maxWidth ? want : c.maxWidth)
-                                      : want);
+                              final table = SizedBox(
+                                width: want,
+                                child: HtmlWidget(seg.html,
+                                    textStyle: theme.textTheme.bodyMedium),
+                              );
+                              if (c.maxWidth.isFinite && want <= c.maxWidth) {
+                                return Center(child: table);
+                              }
                               return SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 padding: const EdgeInsets.only(bottom: 8),
-                                child: SizedBox(
-                                  width: w,
-                                  child: HtmlWidget(seg.html,
-                                      textStyle: theme.textTheme.bodyMedium),
-                                ),
+                                child: table,
                               );
                             },
                           )
