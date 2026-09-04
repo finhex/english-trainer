@@ -178,28 +178,9 @@ class _CourseHtml extends StatelessWidget {
                     // a wide conjugation table must scroll rather than be cut off;
                     // the prose around it keeps wrapping normally
                     seg.isTable
-                        ? LayoutBuilder(
-                            builder: (context, c) {
-                              // The source tables carry no width: they shrink
-                              // to fit and sit centred. Laying one out at the
-                              // window width stretches it; at a narrow width
-                              // the renderer breaks words inside the cells.
-                              final want = _tableWidth(seg.html);
-                              final table = SizedBox(
-                                width: want,
-                                child: HtmlWidget(seg.html,
-                                    textStyle: theme.textTheme.bodyMedium),
-                              );
-                              if (c.maxWidth.isFinite && want <= c.maxWidth) {
-                                return Center(child: table);
-                              }
-                              return SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: table,
-                              );
-                            },
-                          )
+                        ? _ScrollableTable(
+                            html: seg.html,
+                            textStyle: theme.textTheme.bodyMedium)
                         : HtmlWidget(seg.html,
                             textStyle: theme.textTheme.bodyMedium),
               ],
@@ -297,7 +278,49 @@ double _tableWidth(String html) {
   // A conjugation box holds a nested table per panel (aux | pronouns | verb),
   // so its outer column count badly understates the room the text needs —
   // counting only those breaks words inside the cells ("lov e?").
-  final nested = RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
+  final nested =
+      RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
   final w = cols * (nested ? 265.0 : 190.0);
   return w.clamp(360.0, 1500.0);
+}
+
+/// A lesson table, scrolled sideways with an always-visible bar — the same way
+/// the book's wide tables behave.
+class _ScrollableTable extends StatefulWidget {
+  final String html;
+  final TextStyle? textStyle;
+  const _ScrollableTable({required this.html, this.textStyle});
+
+  @override
+  State<_ScrollableTable> createState() => _ScrollableTableState();
+}
+
+class _ScrollableTableState extends State<_ScrollableTable> {
+  final _controller = ScrollController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Scrollbar(
+        controller: _controller,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: _controller,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.only(bottom: 12),
+          child: SizedBox(
+            width: _tableWidth(widget.html),
+            child: HtmlWidget(widget.html, textStyle: widget.textStyle),
+          ),
+        ),
+      ),
+    );
+  }
 }
