@@ -184,9 +184,16 @@ class _CourseHtml extends StatelessWidget {
                               // squeezes the columns until words break
                               // mid-word ("lov e?"). Give the table room and
                               // let it scroll instead.
-                              final w = c.maxWidth.isFinite && c.maxWidth > 820
-                                  ? c.maxWidth
-                                  : 820.0;
+                              // An HTML table with no width shrinks to fit,
+                              // so don't stretch it across the window; give
+                              // each column a readable share and scroll when
+                              // that is wider than the view.
+                              final want = _tableWidth(seg.html);
+                              final w = c.maxWidth.isFinite && c.maxWidth < want
+                                  ? want
+                                  : (c.maxWidth.isFinite
+                                      ? (want < c.maxWidth ? want : c.maxWidth)
+                                      : want);
                               return SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 padding: const EdgeInsets.only(bottom: 8),
@@ -275,4 +282,23 @@ List<_Seg> _splitTables(String html) {
   }
   if (pos < html.length) segs.add(_Seg(html.substring(pos), false));
   return segs.where((s) => s.html.trim().isNotEmpty).toList();
+}
+
+/// A sensible width for a lesson table: its widest row's column count times a
+/// readable column share. The source tables carry no width, so laying them out
+/// at the window width stretches them and at a narrow width collapses the
+/// words inside the cells.
+double _tableWidth(String html) {
+  var cols = 0;
+  for (final row
+      in RegExp(r'<tr\b[^>]*>(.*?)</tr>', caseSensitive: false, dotAll: true)
+          .allMatches(html)) {
+    final n = RegExp(r'<t[dh]\b', caseSensitive: false)
+        .allMatches(row.group(1) ?? '')
+        .length;
+    if (n > cols) cols = n;
+  }
+  if (cols == 0) return 560;
+  final w = cols * 190.0;
+  return w.clamp(360.0, 1200.0);
 }
