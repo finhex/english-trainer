@@ -294,6 +294,10 @@ double _tableWidth(String html) {
     if (n > cols) cols = n;
   }
   if (cols == 0) return 560;
-  final w = cols * 190.0;
-  return w.clamp(360.0, 1200.0);
+  // A conjugation box holds a nested table per panel (aux | pronouns | verb),
+  // so its outer column count badly understates the room the text needs —
+  // counting only those breaks words inside the cells ("lov e?").
+  final nested = RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
+  final w = cols * (nested ? 265.0 : 190.0);
+  return w.clamp(360.0, 1500.0);
 }
