@@ -292,25 +292,13 @@ List<_Seg> _splitTables(String html) {
   return segs.where((s) => s.html.trim().isNotEmpty).toList();
 }
 
-/// A table that scrolls sideways, with its own bar underneath, when the view is
-/// too narrow to hold it. Given enough room it just fills the width as before.
-class _WideTable extends StatefulWidget {
+/// A table too wide for the view, scrolled sideways with the same bar the book
+/// uses: drawn UNDER the table as its own widget, not painted over the last
+/// row the way an overlay Scrollbar is.
+class _WideTable extends StatelessWidget {
   final String html;
   final TextStyle? textStyle;
   const _WideTable({required this.html, this.textStyle});
-
-  @override
-  State<_WideTable> createState() => _WideTableState();
-}
-
-class _WideTableState extends State<_WideTable> {
-  final _bar = ScrollController();
-
-  @override
-  void dispose() {
-    _bar.dispose();
-    super.dispose();
-  }
 
   /// Room this table wants: the renderer squeezes columns until words break,
   /// and a conjugation box nests a table per panel, so those need more.
@@ -334,28 +322,19 @@ class _WideTableState extends State<_WideTable> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, c) {
-        final want = _wanted(widget.html);
+        final want = _wanted(html);
         final avail = c.maxWidth;
-        // A table that fits is rendered exactly as before - no scroll
-        // furniture, nothing forcing its width. Only one too wide for the view
-        // gets a scroll view, with its bar underneath.
+        // a table that fits renders exactly as before, with no scroll furniture
         if (!avail.isFinite || want <= avail) {
-          return HtmlWidget(widget.html, textStyle: widget.textStyle);
+          return HtmlWidget(html, textStyle: textStyle);
         }
         return Padding(
           padding: const EdgeInsets.only(top: 2, bottom: 6),
-          child: Scrollbar(
-            controller: _bar,
-            thumbVisibility: true,
-            child: SingleChildScrollView(
-              controller: _bar,
-              scrollDirection: Axis.horizontal,
-              // room under the table for the bar, so it never covers a row
-              padding: const EdgeInsets.only(bottom: 14),
-              child: SizedBox(
-                width: want,
-                child: HtmlWidget(widget.html, textStyle: widget.textStyle),
-              ),
+          child: HScroll(
+            forceVisible: true,
+            child: SizedBox(
+              width: want,
+              child: HtmlWidget(html, textStyle: textStyle),
             ),
           ),
         );

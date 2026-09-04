@@ -132,8 +132,7 @@ List<Widget> buildMarkdownBlocks(BuildContext context, String src,
       // the course's conjugation box travels as structured data, not a table
       if (info == 'conj') {
         try {
-          final data =
-              json.decode(code.join('\n')) as Map<String, dynamic>;
+          final data = json.decode(code.join('\n')) as Map<String, dynamic>;
           out.add(ConjBox(data: data));
           continue;
         } catch (_) {
@@ -170,7 +169,9 @@ List<Widget> buildMarkdownBlocks(BuildContext context, String src,
 
 bool _isTableSeparator(String s) {
   final t = s.trim();
-  return t.contains('|') && t.contains('-') && RegExp(r'^[\s:|-]+$').hasMatch(t);
+  return t.contains('|') &&
+      t.contains('-') &&
+      RegExp(r'^[\s:|-]+$').hasMatch(t);
 }
 
 List<List<String>> _parseTable(List<String> block) {
@@ -212,7 +213,7 @@ class _CodeBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: _HScroll(
+      child: HScroll(
         // grey wraps only the code (the scroll bar sits below, outside it)
         decoration: BoxDecoration(
           color: scheme.surfaceContainerHighest,
@@ -273,7 +274,8 @@ class _MdTable extends StatelessWidget {
                 color: const Color(0xFF2E7D32), fontWeight: FontWeight.w500)));
       } else if (m.group(5) != null) {
         spans.add(TextSpan(
-            text: m.group(5), style: base.copyWith(fontWeight: FontWeight.bold)));
+            text: m.group(5),
+            style: base.copyWith(fontWeight: FontWeight.bold)));
       } else if (m.group(6) != null) {
         spans.add(TextSpan(
             text: m.group(6),
@@ -326,8 +328,7 @@ class _MdTable extends StatelessWidget {
                         Text.rich(_inline(
                             part.trim(),
                             base.copyWith(
-                                fontSize: 12.5,
-                                fontStyle: FontStyle.italic))),
+                                fontSize: 12.5, fontStyle: FontStyle.italic))),
                     ],
                   )
                 : Text.rich(_inline(c, base),
@@ -346,8 +347,7 @@ class _MdTable extends StatelessWidget {
     // so those render as a borderless card while ruled tables keep their lines.
     final firstCell = rows.first.isEmpty ? '' : rows.first.first.trim();
     final isCard = firstCell == '~card~';
-    final headless =
-        isCard || rows.first.every((c) => c.trim().isEmpty);
+    final headless = isCard || rows.first.every((c) => c.trim().isEmpty);
     final body = headless ? rows.sublist(1) : rows;
     if (body.isEmpty) return const SizedBox.shrink();
     final cols = body.fold<int>(0, (m, r) => r.length > m ? r.length : m);
@@ -418,7 +418,7 @@ class _MdTable extends StatelessWidget {
             ),
           );
         }
-        return _HScroll(
+        return HScroll(
           forceVisible: true, // this branch is only used when it overflows
           padding: const EdgeInsets.only(bottom: 14),
           child: card(Table(
@@ -437,21 +437,22 @@ class _MdTable extends StatelessWidget {
 /// (only shown when the content overflows). A plain overlay Scrollbar paints
 /// over the last row and mis-positions when the block is taller than the screen
 /// — an under-bar sits cleanly below the table/code and tracks the position.
-class _HScroll extends StatefulWidget {
+class HScroll extends StatefulWidget {
   final Widget child;
   final EdgeInsets padding;
   final bool forceVisible; // caller knows the content overflows (wide table)
   final BoxDecoration? decoration; // wraps ONLY the scroll area (bar stays out)
-  const _HScroll(
-      {required this.child,
+  const HScroll(
+      {super.key,
+      required this.child,
       this.padding = EdgeInsets.zero,
       this.forceVisible = false,
       this.decoration});
   @override
-  State<_HScroll> createState() => _HScrollState();
+  State<HScroll> createState() => HScrollState();
 }
 
-class _HScrollState extends State<_HScroll> {
+class HScrollState extends State<HScroll> {
   final ScrollController _c = ScrollController();
   bool _scrollable = false;
   double _frac = 0; // 0..1 scroll position
@@ -552,7 +553,8 @@ class _HScrollState extends State<_HScroll> {
                 void jumpToThumbLeft(double thumbLeft) {
                   if (!_c.hasClients) return;
                   final max = _c.position.maxScrollExtent;
-                  final f = denom > 0 ? (thumbLeft / denom).clamp(0.0, 1.0) : 0.0;
+                  final f =
+                      denom > 0 ? (thumbLeft / denom).clamp(0.0, 1.0) : 0.0;
                   _c.jumpTo(f * max);
                 }
 
@@ -582,8 +584,8 @@ class _HScrollState extends State<_HScroll> {
                             child: Container(
                               height: 5,
                               decoration: BoxDecoration(
-                                color:
-                                    scheme.outlineVariant.withValues(alpha: 0.5),
+                                color: scheme.outlineVariant
+                                    .withValues(alpha: 0.5),
                                 borderRadius: BorderRadius.circular(3),
                               ),
                             ),
@@ -712,8 +714,8 @@ MarkdownStyleSheet appMarkdownStyle(BuildContext context) {
       borderRadius: BorderRadius.circular(8),
       border: Border(left: BorderSide(color: scheme.primary, width: 4)),
     ),
-    blockquote: TextStyle(
-        color: scheme.onPrimaryContainer, fontSize: 15, height: 1.35),
+    blockquote:
+        TextStyle(color: scheme.onPrimaryContainer, fontSize: 15, height: 1.35),
     code: TextStyle(
       backgroundColor: scheme.surfaceContainerHighest,
       color: scheme.onSurface,
@@ -829,7 +831,8 @@ class ConjBox extends StatelessWidget {
         children: [for (final it in items) Text(it, style: style)],
       );
     }
-    return Text.rich(markedSpans((cell['text'] as String?) ?? '', base, context));
+    return Text.rich(
+        markedSpans((cell['text'] as String?) ?? '', base, context));
   }
 }
 
