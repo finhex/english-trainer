@@ -442,9 +442,11 @@ class HScroll extends StatefulWidget {
   final EdgeInsets padding;
   final bool forceVisible; // caller knows the content overflows (wide table)
   final BoxDecoration? decoration; // wraps ONLY the scroll area (bar stays out)
+  final Color? thumbColor; // defaults to the accent colour
   const HScroll(
       {super.key,
       required this.child,
+      this.thumbColor,
       this.padding = EdgeInsets.zero,
       this.forceVisible = false,
       this.decoration});
@@ -597,7 +599,7 @@ class HScrollState extends State<HScroll> {
                               width: thumbW,
                               height: 8,
                               decoration: BoxDecoration(
-                                color: scheme.primary,
+                                color: widget.thumbColor ?? scheme.primary,
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),

@@ -189,9 +189,9 @@ class _CourseHtmlState extends State<_CourseHtml> {
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 940),
+        constraints: const BoxConstraints(maxWidth: 1200),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(24, 8, 24, 24 + bottomInset),
+          padding: EdgeInsets.fromLTRB(14, 8, 14, 14 + bottomInset),
           child: Card(
             margin: EdgeInsets.zero,
             child: Scrollbar(
@@ -199,7 +199,7 @@ class _CourseHtmlState extends State<_CourseHtml> {
               thumbVisibility: true,
               child: SingleChildScrollView(
                 controller: _scroll,
-                padding: EdgeInsets.fromLTRB(22, 22, 22, 28 + bottomInset),
+                padding: EdgeInsets.fromLTRB(15, 18, 15, 28 + bottomInset),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -324,25 +324,19 @@ class _WideTable extends StatelessWidget {
       builder: (context, c) {
         final want = _wanted(html);
         final avail = c.maxWidth;
-        if (want <= 0 || !avail.isFinite) {
+        // With room to lay out, the table simply fills the column - forcing a
+        // guessed width left empty gaps in the cells and put a bar under a
+        // table that did not need one.
+        // Enough room: the table just fills the column, as it did when it
+        // simply sat in the container - no forced width, no bar.
+        if (want <= 0 || !avail.isFinite || want <= avail) {
           return HtmlWidget(html, textStyle: textStyle);
-        }
-        // A table keeps its OWN width: on a wide page it should stay the size
-        // it needs, left-aligned, rather than stretching until its cells are
-        // mostly empty space.
-        if (want <= avail) {
-          return Align(
-            alignment: Alignment.centerLeft,
-            child: SizedBox(
-              width: want,
-              child: HtmlWidget(html, textStyle: textStyle),
-            ),
-          );
         }
         return Padding(
           padding: const EdgeInsets.only(top: 2, bottom: 6),
           child: HScroll(
             forceVisible: true,
+            thumbColor: Theme.of(context).colorScheme.outline,
             child: SizedBox(
               width: want,
               child: HtmlWidget(html, textStyle: textStyle),
