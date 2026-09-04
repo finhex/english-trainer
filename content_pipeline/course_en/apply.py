@@ -72,7 +72,7 @@ def main():
         for src, dst in (("htmlLight", "htmlEnLight"),
                          ("htmlDark", "htmlEnDark")):
             parts = lesson.get(src) or []
-            lesson[dst] = [fix_vertical(translate_html(p, table))
+            lesson[dst] = [translate_html(fix_vertical(p), table)
                            for p in parts]
         # The title lives in its own field, not in the HTML. Keep the Russian
         # in titleRu and put the English in title, so the app shows each in the

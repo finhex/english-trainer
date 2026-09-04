@@ -281,7 +281,7 @@ double _tableWidth(String html) {
   // counting only those breaks words inside the cells ("lov e?").
   final nested =
       RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
-  final w = cols * (nested ? 265.0 : 190.0);
+  final w = cols * (nested ? 205.0 : 175.0);
   return w.clamp(360.0, 1500.0);
 }
 
@@ -308,14 +308,14 @@ class _ScrollableTableState extends State<_ScrollableTable> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Scrollbar(
         controller: _controller,
         thumbVisibility: true,
         child: SingleChildScrollView(
           controller: _controller,
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: 6),
           child: SizedBox(
             width: _tableWidth(widget.html),
             child: HtmlWidget(widget.html, textStyle: widget.textStyle),
