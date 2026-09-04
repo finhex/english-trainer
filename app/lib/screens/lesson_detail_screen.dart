@@ -178,11 +178,25 @@ class _CourseHtml extends StatelessWidget {
                     // a wide conjugation table must scroll rather than be cut off;
                     // the prose around it keeps wrapping normally
                     seg.isTable
-                        ? SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.only(bottom: 6),
-                            child: HtmlWidget(seg.html,
-                                textStyle: theme.textTheme.bodyMedium),
+                        ? LayoutBuilder(
+                            builder: (context, c) {
+                              // Given only the window width the renderer
+                              // squeezes the columns until words break
+                              // mid-word ("lov e?"). Give the table room and
+                              // let it scroll instead.
+                              final w = c.maxWidth.isFinite && c.maxWidth > 820
+                                  ? c.maxWidth
+                                  : 820.0;
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: SizedBox(
+                                  width: w,
+                                  child: HtmlWidget(seg.html,
+                                      textStyle: theme.textTheme.bodyMedium),
+                                ),
+                              );
+                            },
                           )
                         : HtmlWidget(seg.html,
                             textStyle: theme.textTheme.bodyMedium),
