@@ -327,12 +327,18 @@ class _TableScroll extends StatelessWidget {
           return HtmlWidget(html, textStyle: textStyle);
         }
         final want = _wanted(html);
-        final width = want > avail ? want : avail; // never narrower than now
+        // A table that fits is left completely alone - any box around it makes
+        // it stretch to the full column, which is what widened it before.
+        if (want <= avail) {
+          return HtmlWidget(html, textStyle: textStyle);
+        }
+        // Too wide for the view: give it the room it needs and scroll, with the
+        // grey bar under the table.
         return HScroll(
           forceVisible: true,
           thumbColor: Theme.of(context).colorScheme.outline,
           child: SizedBox(
-            width: width,
+            width: want,
             child: HtmlWidget(html, textStyle: textStyle),
           ),
         );
