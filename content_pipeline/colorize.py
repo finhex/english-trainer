@@ -140,10 +140,14 @@ def _shrink_labels(block):
         if "width" in attrs.lower():
             return m.group(0)
         st = re.search(r'style\s*=\s*"([^"]*)"', attrs, re.I)
+        # text-align sits on the outer table in the source and the renderer does
+        # not inherit it down, so the stacked letters hug the left edge of their
+        # cell. Centre them on the cell itself, across and down.
+        extra = "width: 1%;text-align: center;vertical-align: middle"
         if st:
-            attrs = attrs.replace(st.group(0), f'style="{st.group(1)};width: 1%"')
+            attrs = attrs.replace(st.group(0), f'style="{st.group(1)};{extra}"')
         else:
-            attrs = attrs + ' style="width: 1%"'
+            attrs = attrs + f' style="{extra}"'
         # the CSS width is ignored by the renderer; the legacy attribute is
         # what it actually reads for a table cell
         attrs = attrs + ' width="1"'
