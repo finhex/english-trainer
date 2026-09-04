@@ -6,10 +6,12 @@ import '../locale_store.dart';
 import '../models.dart';
 import '../progress_store.dart';
 import '../strings.dart';
-import '../widgets/lesson_menu.dart';
+import 'lesson_home_screen.dart';
 
-/// The lesson list, ordered beginner → advanced and grouped by CEFR level,
-/// with lock badges (matches the reference app).
+/// The lesson list: the course lessons, numbered 1..N, each showing how far
+/// its practice has got. Tapping one opens the read-or-practice screen.
+///
+/// The grammar-book chapters are not listed here — they are the Book tab.
 class LessonsScreen extends StatelessWidget {
   const LessonsScreen({super.key});
 
@@ -18,72 +20,38 @@ class LessonsScreen extends StatelessWidget {
     final content = context.read<ContentRepository>();
     final progress = context.watch<ProgressStore>();
     final lang = context.watch<LocaleStore>().lang;
-    final lessons = content.grammarLessons;
-    final course = content.courseLessons;
-
-    // Flatten into a list of rows: a header precedes the first lesson of a level.
-    final rows = <Widget>[];
-    // the imported 1st-English course sits at the top, in its own block —
-    // its lessons stand alone, so none of them are locked
-    if (course.isNotEmpty) {
-      rows.add(_LevelHeader(name: tr(lang, 'course_header')));
-      for (var i = 0; i < course.length; i++) {
-        rows.add(_LessonTile(
-          lesson: course[i],
-          unlocked: true,
-          done: progress.lessonHasAnyCompleted(course[i].id),
-          lang: lang,
-          number: i + 1,
-        ));
-      }
-      rows.add(_LevelHeader(name: tr(lang, 'grammar_header')));
-    }
-    int? lastLevel;
-    for (var i = 0; i < lessons.length; i++) {
-      final lesson = lessons[i];
-      if (lesson.level != lastLevel) {
-        rows.add(_LevelHeader(name: lesson.levelName));
-        lastLevel = lesson.level;
-      }
-      final prevId = i > 0 ? lessons[i - 1].id : null;
-      final unlocked =
-          progress.practiceUnlocked(ord: lesson.ord, prevLessonId: prevId);
-      final done = progress.lessonHasAnyCompleted(lesson.id);
-      rows.add(_LessonTile(
-        lesson: lesson,
-        unlocked: unlocked,
-        done: done,
-        lang: lang,
-      ));
-    }
+    final lessons = content.courseLessons.isNotEmpty
+        ? content.courseLessons
+        : content.grammarLessons;
 
     return Scaffold(
       appBar: AppBar(title: Text(tr(lang, 'lessons'))),
-      body: ListView(
+      body: ListView.builder(
         padding: const EdgeInsets.only(bottom: 16),
-        children: rows,
-      ),
-    );
-  }
-}
-
-class _LevelHeader extends StatelessWidget {
-  final String name;
-  const _LevelHeader({required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      width: double.infinity,
-      color: scheme.surfaceContainerHighest,
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
-      child: Text(
-        name,
-        style: Theme.of(context)
-            .textTheme
-            .titleSmall
-            ?.copyWith(color: scheme.primary, fontWeight: FontWeight.bold),
+        itemCount: lessons.length,
+        itemBuilder: (context, i) {
+          final lesson = lessons[i];
+          // total progress across the lesson's practices
+          var goal = 0, current = 0;
+          var allDone = true;
+          for (final p in content.config.orderedPractices) {
+            if (lesson.itemsOfType(p.type).isEmpty) continue;
+            goal += lesson.goalFor(p.type);
+            final done = progress.isPracticeCompleted(lesson.id, p.type);
+            current += done
+                ? lesson.goalFor(p.type)
+                : progress.practiceProgress(lesson.id, p.type);
+            if (!done) allDone = false;
+          }
+          return _LessonTile(
+            lesson: lesson,
+            number: i + 1,
+            goal: goal,
+            current: current,
+            done: goal > 0 && allDone,
+            lang: lang,
+          );
+        },
       ),
     );
   }
@@ -91,71 +59,70 @@ class _LevelHeader extends StatelessWidget {
 
 class _LessonTile extends StatelessWidget {
   final Lesson lesson;
-  final bool unlocked;
+  final int number;
+  final int goal;
+  final int current;
   final bool done;
   final String lang;
-  final int? number; // course lessons number 1..33, not their global ord
-  const _LessonTile(
-      {required this.lesson,
-      required this.unlocked,
-      required this.done,
-      required this.lang,
-      this.number});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: _OrderBadge(order: number ?? lesson.ord, locked: !unlocked),
-      title: Text(lesson.topicFor(lang),
-          maxLines: 2, overflow: TextOverflow.ellipsis),
-      subtitle: Text(done
-          ? tr(lang, 'practice_completed')
-          : (unlocked
-              ? tr(lang, 'practice_unlocked')
-              : tr(lang, 'grammar_readable_locked'))),
-      trailing: done
-          ? const Icon(Icons.check_circle, color: Color(0xFF3CA84B))
-          : const Icon(Icons.chevron_right),
-      // ask read-or-practice first, with each practice's progress
-      onTap: () => showLessonMenu(context,
-          lesson: lesson, unlocked: unlocked, lang: lang),
-    );
-  }
-}
-
-class _OrderBadge extends StatelessWidget {
-  final int order;
-  final bool locked;
-  const _OrderBadge({required this.order, required this.locked});
+  const _LessonTile({
+    required this.lesson,
+    required this.number,
+    required this.goal,
+    required this.current,
+    required this.done,
+    required this.lang,
+  });
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return SizedBox(
-      width: 44,
-      height: 44,
-      child: Stack(
+    final hint = Theme.of(context).hintColor;
+    final value = goal == 0 ? 0.0 : (current / goal).clamp(0.0, 1.0);
+    return ListTile(
+      contentPadding: const EdgeInsets.fromLTRB(16, 8, 12, 8),
+      leading: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: done ? const Color(0xFF3CA84B) : scheme.primary,
+          borderRadius: BorderRadius.circular(8),
+        ),
         alignment: Alignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: scheme.primary,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            alignment: Alignment.center,
-            child: Text('$order',
+        child: done
+            ? Icon(Icons.check, color: scheme.onPrimary)
+            : Text('$number',
                 style: TextStyle(
                     color: scheme.onPrimary,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
-          ),
-          if (locked)
-            Positioned(
-              right: 2,
-              bottom: 2,
-              child: Icon(Icons.lock, size: 14, color: scheme.onPrimary),
+      ),
+      title: Text(lesson.topicFor(lang),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontWeight: FontWeight.w600)),
+      // progress is visible in the list, before opening the lesson
+      subtitle: goal == 0
+          ? null
+          : Padding(
+              padding: const EdgeInsets.only(top: 6, right: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(value: value, minHeight: 6),
+                  ),
+                  const SizedBox(height: 4),
+                  Text('$current / $goal',
+                      style: TextStyle(fontSize: 12, color: hint)),
+                ],
+              ),
             ),
-        ],
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => LessonHomeScreen(lessonId: lesson.id),
+        ),
       ),
     );
   }

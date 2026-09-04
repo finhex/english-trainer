@@ -7,9 +7,11 @@ const Map<String, Map<String, String>> _s = {
   'nav_lessons': {'en': 'Lessons', 'ru': 'Уроки'},
   'nav_vocab': {'en': 'Vocabulary', 'ru': 'Слова'},
   'nav_guides': {'en': 'Guides', 'ru': 'Справочник'},
-  'course_header': {'en': '1st English course', 'ru': 'Курс 1st English'},
-  'grammar_header': {'en': 'Grammar book', 'ru': 'Учебник грамматики'},
   'read_lesson': {'en': 'Read the lesson', 'ru': 'Читать урок'},
+  'read_lesson_sub': {
+    'en': 'The grammar explanation with examples',
+    'ru': 'Объяснение грамматики с примерами'
+  },
   'course_lessons': {'en': 'lessons', 'ru': 'уроков'},
   'course_exercises': {'en': 'exercises', 'ru': 'упражнений'},
   'nav_settings': {'en': 'Settings', 'ru': 'Настройки'},
