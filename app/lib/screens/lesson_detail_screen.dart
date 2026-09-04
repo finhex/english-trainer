@@ -186,12 +186,17 @@ class _CourseHtmlState extends State<_CourseHtml> {
     // height, so the thumb tracks the pointer - the way the book scrolls.
     // keep the last lines clear of the Android system nav bar (3 buttons)
     final bottomInset = MediaQuery.of(context).padding.bottom;
+    // on a phone the desktop gutters would eat most of the width, so shrink
+    // them: the lesson should use the screen it has
+    final narrow = MediaQuery.of(context).size.width < 640;
+    final gutter = narrow ? 4.0 : 24.0;
+    final inner = narrow ? 8.0 : 22.0;
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 940),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(24, 8, 24, 24 + bottomInset),
+          padding: EdgeInsets.fromLTRB(gutter, 8, gutter, gutter + bottomInset),
           child: Card(
             margin: EdgeInsets.zero,
             child: Scrollbar(
@@ -199,7 +204,8 @@ class _CourseHtmlState extends State<_CourseHtml> {
               thumbVisibility: true,
               child: SingleChildScrollView(
                 controller: _scroll,
-                padding: EdgeInsets.fromLTRB(22, 22, 22, 22 + bottomInset),
+                padding: EdgeInsets.fromLTRB(
+                    inner, inner, inner, inner + bottomInset),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -331,9 +337,15 @@ class _TableScroll extends StatelessWidget {
         // the width below which the columns stop being readable
         final floor = cols * (nested ? 150.0 : 110.0);
         if (avail >= floor) {
-          return HtmlWidget(html, textStyle: textStyle);
+          // the source wraps every conjugation box in <center>, which the
+          // renderer ignores; centre it here so a table narrower than the
+          // column sits in the middle rather than against the left edge
+          return Center(child: HtmlWidget(html, textStyle: textStyle));
         }
-        final width = cols * (nested ? 265.0 : 190.0);
+        // The renderer splits a table's width evenly between its columns and
+        // ignores width hints, so the narrow tense-label column still takes a
+        // full share. Keep the total tight so scrolling stays short.
+        final width = cols * (nested ? 200.0 : 150.0);
         return HScroll(
           forceVisible: true,
           thumbColor: Theme.of(context).colorScheme.outline,

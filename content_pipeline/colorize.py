@@ -144,6 +144,9 @@ def _shrink_labels(block):
             attrs = attrs.replace(st.group(0), f'style="{st.group(1)};width: 1%"')
         else:
             attrs = attrs + ' style="width: 1%"'
+        # the CSS width is ignored by the renderer; the legacy attribute is
+        # what it actually reads for a table cell
+        attrs = attrs + ' width="1"'
         return f"{head}{attrs}{tail}"
     return _LABEL_CELL.sub(repl, block)
 
