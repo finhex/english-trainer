@@ -155,6 +155,78 @@ def _shrink_labels(block):
     return _LABEL_CELL.sub(repl, block)
 
 
+_VERTICAL = re.compile(
+    r'[A-Za-zА-Яа-яЁё](?:\s*<br\s*/?>\s*[A-Za-zА-Яа-яЁё]){2,}')
+
+
+def _cells_at_depth0(body):
+    """Top-level <td> spans of a row, as (open_match, start, end)."""
+    out, depth, cur = [], 0, None
+    for m in re.finditer(r'<(/?)(td|table)\b([^>]*)>', body, re.I):
+        tag, closing = m.group(2).lower(), bool(m.group(1))
+        if tag == "table":
+            depth += -1 if closing else 1
+        elif tag == "td" and depth == 0:
+            if not closing:
+                cur = m
+            elif cur is not None:
+                out.append((cur, cur.start(), m.end()))
+                cur = None
+    return out
+
+
+def _drop_label_column(block):
+    """Remove the vertical tense-label column, keeping the word.
+
+    The renderer splits a table's width evenly between its columns and ignores
+    width, text-align and vertical-align on a cell, so a column holding six
+    stacked letters takes the same share as one holding a whole phrase - dead
+    space that cannot be styled away. Drop the column and put the tense name at
+    the top of the row instead.
+    """
+    depth, row_start, rows = 0, None, []
+    for m in re.finditer(r'<(/?)(table|tr)\b[^>]*>', block, re.I):
+        tag, closing = m.group(2).lower(), bool(m.group(1))
+        if tag == "table":
+            depth += -1 if closing else 1
+        elif tag == "tr" and depth == 1:
+            if not closing:
+                row_start = m.end()
+            elif row_start is not None:
+                rows.append((row_start, m.start()))
+                row_start = None
+
+    edits = []
+    for a, b in rows:
+        body = block[a:b]
+        cells = _cells_at_depth0(body)
+        if len(cells) < 2:
+            continue
+        open_m, cs, ce = cells[-1]
+        inner = body[open_m.end():ce]
+        inner = inner[:inner.rfind("</td>")] if "</td>" in inner else inner
+        text = re.sub(r"<[^>]+>", "", inner).strip()
+        vertical = _VERTICAL.search(inner)
+        # the header row's matching cell is empty - drop it too
+        if not vertical and text:
+            continue
+        # from the TEXT, not the markup - the raw html would also
+        # contribute the letters of its own tag names
+        word = "".join(re.findall(r"[A-Za-zА-Яа-яЁё]", text)) if vertical else ""
+        new_body = body[:cs] + body[ce:]
+        if word:
+            first_open, fs, fe = _cells_at_depth0(new_body)[0]
+            tag_end = first_open.end() - (0 if fs == 0 else 0)
+            label = ('<div style="color: gray; font-style: italic; '
+                     f'font-size: 90%">{word}</div>')
+            new_body = (new_body[:first_open.end()] + label +
+                        new_body[first_open.end():])
+        edits.append((a, b, new_body))
+    for a, b, new in reversed(edits):
+        block = block[:a] + new + block[b:]
+    return block
+
+
 def colorize(html, dark):
     """Paint the conjugation boxes the way lesson 1's are painted."""
     pal = PAL[dark]
@@ -165,7 +237,7 @@ def colorize(html, dark):
         end = _span_end(html, m.start())
         block = html[m.start():end]
         block = _highlight(_paint_text(block, pal["red"]), pal["hl"])
-        block = _shrink_labels(block)
+        block = _drop_label_column(block)
         out.append(html[pos:m.start()])
         out.append(block)
         pos = end
