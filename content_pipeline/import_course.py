@@ -45,6 +45,20 @@ def _color_mark(style):
 
 CARD_MARK = "~card~"   # header sentinel: render as a borderless card
 BLOCK_COLOR_TAGS = {"div", "p", "td", "th", "li", "blockquote"}
+
+# the course links its YouTube videos; the app is offline, so drop the whole
+# element that carries such a link
+_YT = re.compile(
+    r"<(h[1-6]|p|div|li)\b[^>]*>(?:(?!</\1>).)*?youtu(?:(?!</\1>).)*?</\1>",
+    re.I | re.S)
+
+
+def strip_youtube(html):
+    prev = None
+    while prev != html:
+        prev = html
+        html = _YT.sub("", html)
+    return html
 # markdown line prefixes that must stay outside the color marker
 _PREFIX = re.compile(r"^(\s*(?:[-*+]\s+|\d+\.\s+|#{1,6}\s+|>\s*)?)(.*)$")
 
@@ -375,8 +389,10 @@ def main():
         md = lesson_to_md(html)
         # \u0000 is the course's page separator: the pieces are stacked back
         # together on screen (its renderer blanks out past ~10 KB per document)
-        parts_light = [x for x in (html or "").split("\u0000") if x.strip()]
-        parts_dark = [x for x in (html_dark or "").split("\u0000") if x.strip()]
+        parts_light = [strip_youtube(x)
+                       for x in (html or "").split("\u0000") if x.strip()]
+        parts_dark = [strip_youtube(x)
+                      for x in (html_dark or "").split("\u0000") if x.strip()]
         items = drills.get(gid, [])
         if not md.strip() and not items:
             continue
