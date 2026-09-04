@@ -74,6 +74,17 @@ def main():
             parts = lesson.get(src) or []
             lesson[dst] = [fix_vertical(translate_html(p, table))
                            for p in parts]
+        # The title lives in its own field, not in the HTML. Keep the Russian
+        # in titleRu and put the English in title, so the app shows each in the
+        # matching UI language.
+        ru_title = lesson.get("titleRu") or lesson.get("title") or ""
+        if ru_title:
+            lesson["titleRu"] = ru_title
+            lesson["title"] = table.get(ru_title, ru_title)
+        ru_sub = lesson.get("subtitleRu") or lesson.get("subtitle") or ""
+        if ru_sub:
+            lesson["subtitleRu"] = ru_sub
+            lesson["subtitle"] = table.get(ru_sub, ru_sub)
     # report coverage over the extracted strings
     strings = json.loads((HERE / "strings.json").read_text())
     for s in strings:
