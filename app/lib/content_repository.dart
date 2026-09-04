@@ -39,14 +39,22 @@ class ContentRepository {
       lessons.where((l) => l.section == 'grammar').toList()
         ..sort((a, b) => a.ord.compareTo(b.ord));
 
+  /// The imported sentence course (Russian-taught lessons whose practice is
+  /// building the English sentence from tiles), in course order.
+  List<Lesson> get courseLessons =>
+      lessons.where((l) => l.section == 'course').toList()
+        ..sort((a, b) => a.ord.compareTo(b.ord));
+
   /// Read-only reference chapters (phonetics, morphology, skills, …) in book order.
   List<Lesson> get guideLessons =>
       lessons.where((l) => l.section == 'other').toList()
         ..sort((a, b) => a.id.compareTo(b.id));
 
-  /// EVERY chapter in original book order (chapter id; appendices last).
+  /// EVERY book chapter in original book order (chapter id; appendices last).
+  /// The imported course is a separate track, so it stays out of the book.
   List<Lesson> get bookOrder =>
-      lessons.toList()..sort((a, b) => a.id.compareTo(b.id));
+      lessons.where((l) => l.section != 'course').toList()
+        ..sort((a, b) => a.id.compareTo(b.id));
 
   /// The whole book grouped by Part, Parts and chapters in book order.
   Map<String, List<Lesson>> get bookByPart {

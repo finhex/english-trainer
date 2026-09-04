@@ -7,6 +7,9 @@ const Map<String, Map<String, String>> _s = {
   'nav_lessons': {'en': 'Lessons', 'ru': 'Уроки'},
   'nav_vocab': {'en': 'Vocabulary', 'ru': 'Слова'},
   'nav_guides': {'en': 'Guides', 'ru': 'Справочник'},
+  'nav_course': {'en': 'Course', 'ru': 'Курс'},
+  'course_lessons': {'en': 'lessons', 'ru': 'уроков'},
+  'course_exercises': {'en': 'exercises', 'ru': 'упражнений'},
   'nav_settings': {'en': 'Settings', 'ru': 'Настройки'},
 
   // lessons list
