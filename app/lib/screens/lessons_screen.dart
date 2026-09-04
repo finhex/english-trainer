@@ -6,7 +6,7 @@ import '../locale_store.dart';
 import '../models.dart';
 import '../progress_store.dart';
 import '../strings.dart';
-import 'lesson_detail_screen.dart';
+import '../widgets/lesson_menu.dart';
 
 /// The lesson list, ordered beginner → advanced and grouped by CEFR level,
 /// with lock badges (matches the reference app).
@@ -19,9 +19,25 @@ class LessonsScreen extends StatelessWidget {
     final progress = context.watch<ProgressStore>();
     final lang = context.watch<LocaleStore>().lang;
     final lessons = content.grammarLessons;
+    final course = content.courseLessons;
 
     // Flatten into a list of rows: a header precedes the first lesson of a level.
     final rows = <Widget>[];
+    // the imported 1st-English course sits at the top, in its own block —
+    // its lessons stand alone, so none of them are locked
+    if (course.isNotEmpty) {
+      rows.add(_LevelHeader(name: tr(lang, 'course_header')));
+      for (var i = 0; i < course.length; i++) {
+        rows.add(_LessonTile(
+          lesson: course[i],
+          unlocked: true,
+          done: progress.lessonHasAnyCompleted(course[i].id),
+          lang: lang,
+          number: i + 1,
+        ));
+      }
+      rows.add(_LevelHeader(name: tr(lang, 'grammar_header')));
+    }
     int? lastLevel;
     for (var i = 0; i < lessons.length; i++) {
       final lesson = lessons[i];
@@ -78,16 +94,18 @@ class _LessonTile extends StatelessWidget {
   final bool unlocked;
   final bool done;
   final String lang;
+  final int? number; // course lessons number 1..33, not their global ord
   const _LessonTile(
       {required this.lesson,
       required this.unlocked,
       required this.done,
-      required this.lang});
+      required this.lang,
+      this.number});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: _OrderBadge(order: lesson.ord, locked: !unlocked),
+      leading: _OrderBadge(order: number ?? lesson.ord, locked: !unlocked),
       title: Text(lesson.topicFor(lang),
           maxLines: 2, overflow: TextOverflow.ellipsis),
       subtitle: Text(done
@@ -98,12 +116,9 @@ class _LessonTile extends StatelessWidget {
       trailing: done
           ? const Icon(Icons.check_circle, color: Color(0xFF3CA84B))
           : const Icon(Icons.chevron_right),
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => LessonDetailScreen(
-              lessonId: lesson.id, practiceUnlocked: unlocked),
-        ),
-      ),
+      // ask read-or-practice first, with each practice's progress
+      onTap: () => showLessonMenu(context,
+          lesson: lesson, unlocked: unlocked, lang: lang),
     );
   }
 }

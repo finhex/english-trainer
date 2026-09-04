@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'widgets/page_width.dart';
 import 'package:markdown/markdown.dart' as md;
 
 /// Builders for `Markdown`/`MarkdownBody`. Fenced/indented CODE BLOCKS get our
@@ -197,25 +196,32 @@ class _MdTable extends StatelessWidget {
   // minimal inline markdown → styled spans (bold / italic / code)
   InlineSpan _inline(String text, TextStyle base) {
     final spans = <InlineSpan>[];
-    final re = RegExp(r'\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`|_(.+?)_');
+    final re =
+        RegExp(r'==(.+?)==|\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`|_(.+?)_');
     var last = 0;
     for (final m in re.allMatches(text)) {
       if (m.start > last) {
         spans.add(TextSpan(text: text.substring(last, m.start), style: base));
       }
       if (m.group(1) != null) {
+        // ==mark== — the course's colored glosses, in cells too
         spans.add(TextSpan(
-            text: m.group(1), style: base.copyWith(fontWeight: FontWeight.bold)));
+            text: m.group(1),
+            style: base.copyWith(
+                color: scheme.primary, fontWeight: FontWeight.w500)));
       } else if (m.group(2) != null) {
         spans.add(TextSpan(
-            text: m.group(2),
-            style: base.copyWith(fontStyle: FontStyle.italic)));
+            text: m.group(2), style: base.copyWith(fontWeight: FontWeight.bold)));
       } else if (m.group(3) != null) {
         spans.add(TextSpan(
-            text: m.group(3), style: base.copyWith(fontFamily: 'monospace')));
+            text: m.group(3),
+            style: base.copyWith(fontStyle: FontStyle.italic)));
       } else if (m.group(4) != null) {
         spans.add(TextSpan(
-            text: m.group(4),
+            text: m.group(4), style: base.copyWith(fontFamily: 'monospace')));
+      } else if (m.group(5) != null) {
+        spans.add(TextSpan(
+            text: m.group(5),
             style: base.copyWith(fontStyle: FontStyle.italic)));
       }
       last = m.end;
@@ -268,11 +274,22 @@ class _MdTable extends StatelessWidget {
             ? constraints.maxWidth
             : MediaQuery.of(context).size.width;
         if (cols * minCol <= avail) {
-          return Table(
+          // A table stretched across a 1900px desktop window gives absurdly
+          // wide cells, so cap the TABLE (the prose around it stays full width).
+          const maxTable = 900.0;
+          final table = Table(
             defaultColumnWidth: const FlexColumnWidth(),
             border: border,
             defaultVerticalAlignment: TableCellVerticalAlignment.top,
             children: children,
+          );
+          if (avail <= maxTable) return table;
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: maxTable),
+              child: table,
+            ),
           );
         }
         return _HScroll(
@@ -505,10 +522,7 @@ class ReadingView extends StatelessWidget {
       child: SingleChildScrollView(
         primary: true,
         padding: EdgeInsets.fromLTRB(16, 16, 16, 24 + bottomInset),
-        // cap the reading column on desktop: full-width text lines and tables
-        // are unreadable in a 1900px window
-        child: PageWidth(
-          child: Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(title,
@@ -550,7 +564,6 @@ class ReadingView extends StatelessWidget {
                 anchor: anchor, anchorKey: anchorKey),
             ...trailing,
           ],
-          ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import '../locale_store.dart';
 import '../progress_store.dart';
 import '../strings.dart';
 import '../text_scale_store.dart';
+import '../theme_store.dart';
 import '../words_store.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -15,6 +16,7 @@ class SettingsScreen extends StatelessWidget {
     final words = context.read<WordsStore>();
     final locale = context.watch<LocaleStore>();
     final textScale = context.watch<TextScaleStore>();
+    final themeStore = context.watch<ThemeStore>();
     final lang = locale.lang;
 
     return Scaffold(
@@ -38,6 +40,39 @@ class SettingsScreen extends StatelessWidget {
                   ],
                   selected: {lang},
                   onSelectionChanged: (s) => locale.setLang(s.first),
+                ),
+              ],
+            ),
+          ),
+          // Theme: follow the system, or force light / dark.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Row(
+              children: [
+                const Icon(Icons.brightness_6_outlined),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(tr(lang, 'theme'),
+                      style: Theme.of(context).textTheme.titleMedium),
+                ),
+                SegmentedButton<String>(
+                  showSelectedIcon: false,
+                  segments: [
+                    ButtonSegment(
+                        value: 'system',
+                        icon: const Icon(Icons.brightness_auto, size: 18),
+                        tooltip: tr(lang, 'theme_system')),
+                    ButtonSegment(
+                        value: 'light',
+                        icon: const Icon(Icons.light_mode_outlined, size: 18),
+                        tooltip: tr(lang, 'theme_light')),
+                    ButtonSegment(
+                        value: 'dark',
+                        icon: const Icon(Icons.dark_mode_outlined, size: 18),
+                        tooltip: tr(lang, 'theme_dark')),
+                  ],
+                  selected: {themeStore.name},
+                  onSelectionChanged: (s) => themeStore.setMode(s.first),
                 ),
               ],
             ),

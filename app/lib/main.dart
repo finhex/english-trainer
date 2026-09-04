@@ -6,6 +6,7 @@ import 'content_repository.dart';
 import 'locale_store.dart';
 import 'progress_store.dart';
 import 'text_scale_store.dart';
+import 'theme_store.dart';
 import 'vocab_repository.dart';
 import 'words_store.dart';
 import 'screens/home_screen.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
   final wordsStore = await WordsStore.load();
   final locale = await LocaleStore.load();
   final textScale = await TextScaleStore.load();
+  final theme = await ThemeStore.load();
   runApp(EnglishTrainerApp(
     content: content,
     progress: progress,
@@ -25,6 +27,7 @@ Future<void> main() async {
     wordsStore: wordsStore,
     locale: locale,
     textScale: textScale,
+    theme: theme,
   ));
 }
 
@@ -35,6 +38,7 @@ class EnglishTrainerApp extends StatelessWidget {
   final WordsStore wordsStore;
   final LocaleStore locale;
   final TextScaleStore textScale;
+  final ThemeStore theme;
   const EnglishTrainerApp({
     super.key,
     required this.content,
@@ -43,6 +47,7 @@ class EnglishTrainerApp extends StatelessWidget {
     required this.wordsStore,
     required this.locale,
     required this.textScale,
+    required this.theme,
   });
 
   @override
@@ -55,6 +60,7 @@ class EnglishTrainerApp extends StatelessWidget {
         ChangeNotifierProvider<WordsStore>.value(value: wordsStore),
         ChangeNotifierProvider<LocaleStore>.value(value: locale),
         ChangeNotifierProvider<TextScaleStore>.value(value: textScale),
+        ChangeNotifierProvider<ThemeStore>.value(value: theme),
       ],
       // Consumer so the whole app (incl. built-in Material tooltips like the
       // "Back" button) re-localizes when the language toggle changes.
@@ -81,6 +87,7 @@ class EnglishTrainerApp extends StatelessWidget {
             brightness: Brightness.dark,
             useMaterial3: true,
           ),
+          themeMode: context.watch<ThemeStore>().mode,
           // apply the chosen text-size mode to the whole app
           builder: (context, child) {
             final scale = context.watch<TextScaleStore>().scale;

@@ -4,16 +4,18 @@ library;
 
 const Map<String, Map<String, String>> _s = {
   // navigation
-  'nav_lessons': {'en': 'Grammar', 'ru': 'Грамматика'},
+  'nav_lessons': {'en': 'Lessons', 'ru': 'Уроки'},
   'nav_vocab': {'en': 'Vocabulary', 'ru': 'Слова'},
   'nav_guides': {'en': 'Guides', 'ru': 'Справочник'},
-  'nav_course': {'en': 'Lessons', 'ru': 'Уроки'},
+  'course_header': {'en': '1st English course', 'ru': 'Курс 1st English'},
+  'grammar_header': {'en': 'Grammar book', 'ru': 'Учебник грамматики'},
+  'read_lesson': {'en': 'Read the lesson', 'ru': 'Читать урок'},
   'course_lessons': {'en': 'lessons', 'ru': 'уроков'},
   'course_exercises': {'en': 'exercises', 'ru': 'упражнений'},
   'nav_settings': {'en': 'Settings', 'ru': 'Настройки'},
 
   // lessons list
-  'lessons': {'en': 'Grammar', 'ru': 'Грамматика'},
+  'lessons': {'en': 'Lessons', 'ru': 'Уроки'},
   'practice_completed': {'en': 'Practice completed', 'ru': 'Практика пройдена'},
   'practice_unlocked': {'en': 'Practice unlocked', 'ru': 'Практика открыта'},
   'grammar_readable_locked': {
@@ -87,6 +89,10 @@ const Map<String, Map<String, String>> _s = {
   'grammar_reset_done': {'en': 'Grammar progress reset.', 'ru': 'Прогресс сброшен.'},
   'words_reset_done': {'en': 'Learned words reset.', 'ru': 'Слова сброшены.'},
   'language': {'en': 'Language', 'ru': 'Язык'},
+  'theme': {'en': 'Theme', 'ru': 'Тема'},
+  'theme_system': {'en': 'System', 'ru': 'Системная'},
+  'theme_light': {'en': 'Light', 'ru': 'Светлая'},
+  'theme_dark': {'en': 'Dark', 'ru': 'Тёмная'},
 
   // vocabulary
   'search_words': {'en': 'Search words', 'ru': 'Поиск слов'},

@@ -152,7 +152,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
             Text(_lesson.topicFor(lang),
                 maxLines: 1, overflow: TextOverflow.ellipsis),
             Text(
-                '${tr(lang, 'lesson')} ${_lesson.ord} · $_label',
+                '${tr(lang, 'lesson')} ${_lesson.displayNo} · $_label',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context)

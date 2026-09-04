@@ -5,10 +5,9 @@ import '../strings.dart';
 import 'lessons_screen.dart';
 import 'words_screen.dart';
 import 'book_screen.dart';
-import 'course_screen.dart';
 import 'settings_screen.dart';
 
-/// Bottom navigation shell: Lessons / Vocabulary / Course / Book / Settings.
+/// Bottom navigation shell: Lessons / Vocabulary / Book / Settings.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override
@@ -21,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   static const _screens = [
     LessonsScreen(),
     WordsScreen(),
-    CourseScreen(),
     BookScreen(),
     SettingsScreen(),
   ];
@@ -43,10 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.style_outlined),
               selectedIcon: const Icon(Icons.style),
               label: tr(lang, 'nav_vocab')),
-          NavigationDestination(
-              icon: const Icon(Icons.school_outlined),
-              selectedIcon: const Icon(Icons.school),
-              label: tr(lang, 'nav_course')),
           NavigationDestination(
               icon: const Icon(Icons.auto_stories_outlined),
               selectedIcon: const Icon(Icons.auto_stories),

@@ -37,7 +37,7 @@ class LessonDetailScreen extends StatelessWidget {
           children: [
             Text(lesson.topicFor(lang),
                 maxLines: 1, overflow: TextOverflow.ellipsis),
-            Text('${tr(lang, 'lesson')} ${lesson.ord} · ${lesson.levelName}',
+            Text('${tr(lang, 'lesson')} ${lesson.displayNo}',
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
@@ -50,7 +50,7 @@ class LessonDetailScreen extends StatelessWidget {
         title: lesson.topicFor(lang),
         levelName: lesson.levelName,
         meta:
-            '${tr(lang, 'lesson')} ${lesson.ord}  ·  ${tr(lang, 'chapter')} ${lesson.id}',
+            lesson.courseNo != null ? '${tr(lang, 'lesson')} ${lesson.displayNo}' : '${tr(lang, 'lesson')} ${lesson.ord}  ·  ${tr(lang, 'chapter')} ${lesson.id}',
         markdown: lesson.grammarFor(lang),
         trailing: [
           if (practices.isNotEmpty) ...[

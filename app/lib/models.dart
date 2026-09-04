@@ -86,7 +86,8 @@ class Lesson {
   final int uniqueSentences;
   final int level; // 1..6 (A1..C2); 0 for guides
   final String levelName;
-  final String section; // 'grammar' | 'other'
+  final String section; // 'grammar' | 'other' | 'course'
+  final int? courseNo; // 1..33 for imported course lessons (not the global ord)
   final String titleRu; // Russian chapter title ('' if none)
   final String grammarMdRu; // Russian grammar explanation ('' if none)
   final Map<String, LessonPractice> practices; // per-practice goal/pos/items
@@ -101,6 +102,7 @@ class Lesson {
     required this.level,
     required this.levelName,
     required this.section,
+    this.courseNo,
     required this.titleRu,
     required this.grammarMdRu,
     required this.practices,
@@ -126,6 +128,9 @@ class Lesson {
   String grammarFor(String lang) =>
       lang == 'ru' && grammarMdRu.isNotEmpty ? grammarMdRu : grammarMd;
 
+  /// The number to show for this lesson (course lessons number 1..33).
+  int get displayNo => courseNo ?? ord;
+
   List<PracticeItem> itemsOfType(String type) =>
       practices[type]?.items ?? const [];
 
@@ -139,6 +144,7 @@ class Lesson {
         level: (j['level'] as int?) ?? 6,
         levelName: (j['levelName'] as String?) ?? '',
         section: (j['section'] as String?) ?? 'grammar',
+        courseNo: j['courseNo'] as int?,
         titleRu: (j['titleRu'] as String?) ?? '',
         grammarMdRu: (j['grammarMdRu'] as String?) ?? '',
         practices: ((j['practices'] as Map<String, dynamic>?) ?? const {}).map(
