@@ -305,7 +305,11 @@ class _MdTable extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       for (final part in c.split(' · '))
-                        Text.rich(_inline(part.trim(), base)),
+                        Text.rich(_inline(
+                            part.trim(),
+                            base.copyWith(
+                                fontSize: 12.5,
+                                fontStyle: FontStyle.italic))),
                     ],
                   )
                 : Text.rich(_inline(c, base),
@@ -344,7 +348,7 @@ class _MdTable extends StatelessWidget {
         ? Container(
             decoration: BoxDecoration(
               color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
-              border: Border.all(color: scheme.primary.withValues(alpha: 0.45)),
+              border: Border.all(color: const Color(0xFF87C9FF)),
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),

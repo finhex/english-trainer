@@ -261,9 +261,13 @@ class MdParser(HTMLParser):
         if not data:
             return
         text = re.sub(r"\s+", " ", data)
-        if text.strip() == "" and (not self.out or self.out[-1].endswith("\n")):
+        # the whitespace test must look at the buffer we are actually writing
+        # to — inside a table cell it is the cell, not `out`, and dropping the
+        # space there glued "didn't" onto the next word
+        tail = self.cell if self.cell is not None else (
+            self.a_text if self.in_a is not None else self.out)
+        if text.strip() == "" and (not tail or str(tail[-1]).endswith("\n")):
             return
-        tail = (self.cell or self.a_text or self.out)
         if tail and str(tail[-1]).endswith("\n"):
             text = text.lstrip()
         self._emit(text)

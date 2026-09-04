@@ -65,10 +65,23 @@ class SentenceExercise extends StatefulWidget {
 }
 
 class _SentenceExerciseState extends State<SentenceExercise> {
-  final List<String> _chosen = [];
+  // one pick per position (null = still to fill), so the answer keeps the
+  // sentence order however the rows were filled
+  late final List<String?> _picked =
+      List<String?>.filled(widget.item.rows.length, null);
 
-  int get _step => _chosen.length;
-  bool get _finished => _step >= widget.item.rows.length;
+  List<String> get _chosen => [
+        for (final p in _picked)
+          if (p != null && p.isNotEmpty) p
+      ];
+
+  /// The positions still to fill, earliest first — only the first two are shown.
+  List<int> get _openRows => [
+        for (var r = 0; r < _picked.length; r++)
+          if (_picked[r] == null) r
+      ];
+
+  bool get _finished => _openRows.isEmpty;
 
   static String _norm(String s) =>
       s.toLowerCase().replaceAll(RegExp(r"[^a-zа-яё0-9'\s]"), '').trim();
@@ -133,12 +146,12 @@ class _SentenceExerciseState extends State<SentenceExercise> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for (var i = 0; i < _chosen.length; i++)
-              _Tile(
-                label: _chosen[i],
-                onTap: () => setState(
-                    () => _chosen.removeRange(i, _chosen.length)),
-              ),
+            for (var r = 0; r < _picked.length; r++)
+              if (_picked[r] != null)
+                _Tile(
+                  label: _picked[r]!,
+                  onTap: () => setState(() => _picked[r] = null),
+                ),
           ],
         ),
         const Spacer(),
@@ -151,12 +164,9 @@ class _SentenceExerciseState extends State<SentenceExercise> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Divider(height: 1),
-                  // only two positions are on screen at a time: the one being
-                  // filled and a preview of the next. The window slides as
-                  // each is picked, so the sentence still builds in order.
-                  for (var r = _step;
-                      r < item.rows.length && r < _step + 2;
-                      r++) ...[
+                  // only two positions are on screen at a time, earliest
+                  // first; filling either one reveals the next
+                  for (final r in _openRows.take(2)) ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Wrap(
@@ -167,12 +177,7 @@ class _SentenceExerciseState extends State<SentenceExercise> {
                           for (final word in item.rows[r])
                             _Tile(
                               label: word,
-                              // only the next position can be filled, so the
-                              // sentence is built in order
-                              dimmed: r != _step,
-                              onTap: r == _step
-                                  ? () => setState(() => _chosen.add(word))
-                                  : null,
+                              onTap: () => setState(() => _picked[r] = word),
                             ),
                         ],
                       ),
@@ -196,18 +201,17 @@ class _SentenceExerciseState extends State<SentenceExercise> {
 class _Tile extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
-  final bool dimmed; // a later position — visible, but not yet selectable
-  const _Tile({required this.label, this.onTap, this.dimmed = false});
+  const _Tile({required this.label, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Opacity(
-      opacity: dimmed ? 0.45 : 1,
+      opacity: 1,
       child: Material(
         color: scheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(10),
-        elevation: dimmed ? 0 : 1,
+        elevation: 1,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: onTap,
