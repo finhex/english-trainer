@@ -481,8 +481,19 @@ def _cell_data(cell_html):
     """A cell is either stacked items (<div>s) or a single markdown string."""
     divs = re.findall(r"<div[^>]*>(.*?)</div>", cell_html, re.S | re.I)
     if len(divs) > 1:
-        return {"items": [html_to_md(d).strip() for d in divs]}
-    return {"text": html_to_md(cell_html).strip()}
+        items = [html_to_md(d).strip() for d in divs]
+        items = [i for i in items if i]
+        # a label the original sets vertically is one letter per div — read it
+        # back as the word rather than stacking single letters
+        if items and all(len(i) <= 2 for i in items):
+            return {"text": "".join(items)}
+        return {"items": items}
+    text = html_to_md(cell_html).strip()
+    parts = [p.strip() for p in text.split("\n") if p.strip()]
+    if len(parts) > 1:
+        text = ("".join(parts) if all(len(p) <= 2 for p in parts)
+                else " ".join(parts))
+    return {"text": text}
 
 
 def parse_conj_box(html):
@@ -519,7 +530,7 @@ def extract_conj_boxes(html):
         box = parse_conj_box(html[m.start():end])
         out.append(html[pos:m.start()])
         if box:
-            out.append(f"\n@@CONJ{len(boxes)}@@\n")
+            out.append(f"<p>@@CONJ{len(boxes)}@@</p>")
             boxes.append(box)
         pos = end
     out.append(html[pos:])
