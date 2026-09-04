@@ -53,6 +53,47 @@ _YT = re.compile(
     re.I | re.S)
 
 
+# One logical table is sometimes authored as SEVERAL adjacent
+# <table class="main"> blocks - the simple-tenses table is Future in one and
+# Present+Past in the next. Rendered as-is they are separate boxes whose
+# columns do not line up (the course's own app has the same seam). Where two
+# such tables sit next to each other with only layout tags between, drop the
+# close/reopen so their rows share one table and one set of columns.
+_ADJACENT = re.compile(
+    r'</table>\s*(?:</center>\s*)?(?:<p>\s*</p>\s*)?(?:<center>\s*)?'
+    r'<table\s+class="main"[^>]*>',
+    re.I)
+
+
+def merge_adjacent_tables(html):
+    prev = None
+    while prev != html:
+        prev = html
+        html = _ADJACENT.sub("", html, count=1)
+    return html
+
+
+# The halves of a split table usually land in DIFFERENT pieces: one ends with
+# </table></center> and the next opens <center><table class="main">. Joining
+# those two pieces lets the rows merge into a single table with one set of
+# columns. The pieces exist because the renderer blanks a document past about
+# 10 KB, so only join while the result stays comfortably under that.
+_ENDS = re.compile(r'</table>\s*(?:</center>\s*)?$', re.I)
+_OPENS = re.compile(r'^\s*(?:<center>\s*)?<table\s+class="main"', re.I)
+_JOIN_LIMIT = 9500
+
+
+def join_split_tables(parts):
+    out = []
+    for part in parts:
+        if (out and _ENDS.search(out[-1]) and _OPENS.match(part)
+                and len(out[-1]) + len(part) < _JOIN_LIMIT):
+            out[-1] = merge_adjacent_tables(out[-1] + part)
+        else:
+            out.append(part)
+    return out
+
+
 def strip_youtube(html):
     prev = None
     while prev != html:
@@ -389,10 +430,12 @@ def main():
         md = lesson_to_md(html)
         # \u0000 is the course's page separator: the pieces are stacked back
         # together on screen (its renderer blanks out past ~10 KB per document)
-        parts_light = [strip_youtube(x)
-                       for x in (html or "").split("\u0000") if x.strip()]
-        parts_dark = [strip_youtube(x)
-                      for x in (html_dark or "").split("\u0000") if x.strip()]
+        parts_light = join_split_tables(
+            [merge_adjacent_tables(strip_youtube(x))
+             for x in (html or "").split("\u0000") if x.strip()])
+        parts_dark = join_split_tables(
+            [merge_adjacent_tables(strip_youtube(x))
+             for x in (html_dark or "").split("\u0000") if x.strip()])
         items = drills.get(gid, [])
         if not md.strip() and not items:
             continue
