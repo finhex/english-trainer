@@ -185,7 +185,8 @@ class _WordListScreenState extends State<WordListScreen> {
                       final w = words[i];
                       final isKnown = store.isKnown(w.word);
                       final hint = Theme.of(context).hintColor;
-                      final showRu = lang == 'ru' && w.ru.isNotEmpty;
+                      final line = w.lineFor(lang);
+                      final showRu = line.isNotEmpty;
                       return InkWell(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -225,7 +226,7 @@ class _WordListScreenState extends State<WordListScreen> {
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 15.5)),
-                                    Text(showRu ? w.ruLine : w.pos.join(' · '),
+                                    Text(showRu ? line : w.pos.join(' · '),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

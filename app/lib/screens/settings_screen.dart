@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../locale_store.dart';
+import '../polish_pack.dart';
 import '../progress_store.dart';
 import '../strings.dart';
 import '../text_scale_store.dart';
@@ -34,9 +35,12 @@ class SettingsScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium),
                 const Spacer(),
                 SegmentedButton<String>(
-                  segments: const [
-                    ButtonSegment(value: 'en', label: Text('English')),
-                    ButtonSegment(value: 'ru', label: Text('Русский')),
+                  segments: [
+                    const ButtonSegment(value: 'en', label: Text('English')),
+                    const ButtonSegment(value: 'ru', label: Text('Русский')),
+                    // only offered while the assets/pl pack is installed
+                    if (PolishPack.available)
+                      const ButtonSegment(value: 'pl', label: Text('Polski')),
                   ],
                   selected: {lang},
                   onSelectionChanged: (s) => locale.setLang(s.first),

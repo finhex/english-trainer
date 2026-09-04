@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models.dart';
+import '../polish_pack.dart';
 import '../strings.dart';
 
 String _normTile(String s) =>
@@ -96,6 +97,16 @@ class _SentenceExerciseState extends State<SentenceExercise> {
   static String _norm(String s) =>
       s.toLowerCase().replaceAll(RegExp(r"[^a-zа-яё0-9'\s]"), '').trim();
 
+  /// The sentence to translate. Polish learners get it in Polish where the
+  /// pack has it; anything not translated yet stays as the course wrote it.
+  String get _prompt {
+    if (widget.lang == 'pl') {
+      final pl = PolishPack.prompt(widget.item.prompt);
+      if (pl != null && pl.isNotEmpty) return pl;
+    }
+    return widget.item.prompt;
+  }
+
   /// Walks the slots in order, consuming a chosen word when it matches one of
   /// the options and skipping a slot that may be left out.
   bool _matches() {
@@ -142,8 +153,8 @@ class _SentenceExerciseState extends State<SentenceExercise> {
                 .titleMedium
                 ?.copyWith(fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
-        // the Russian sentence to build
-        Text(item.prompt,
+        // the sentence to build, in the learner's own language
+        Text(_prompt,
             style: TextStyle(
                 fontSize: 17,
                 height: 1.3,

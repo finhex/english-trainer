@@ -3,6 +3,8 @@
 /// content pipeline and simply served.
 library;
 
+import 'polish_pack.dart';
+
 class PracticeItem {
   final String type; // 'word_order' | 'gap_fill' | 'word_type' | 'sentence'
   final String prompt;
@@ -132,8 +134,13 @@ class Lesson {
   String get topic => _strip(title);
 
   /// Topic in the given UI language (Russian when available).
-  String topicFor(String lang) =>
-      lang == 'ru' && titleRu.isNotEmpty ? _strip(titleRu) : topic;
+  String topicFor(String lang) {
+    if (lang == 'pl' && courseNo != null) {
+      final pl = PolishPack.lessonTitle(courseNo!);
+      if (pl != null && pl.isNotEmpty) return _strip(pl);
+    }
+    return lang == 'ru' && titleRu.isNotEmpty ? _strip(titleRu) : topic;
+  }
 
   /// Grammar explanation in the given UI language (Russian when available).
   String grammarFor(String lang) =>
@@ -142,7 +149,12 @@ class Lesson {
   /// The original HTML pieces for the current theme ([] when this lesson has
   /// none and should be rendered from markdown).
   List<String> htmlFor(bool dark, {String lang = 'ru'}) {
-    if (lang == 'en') {
+    if (lang == 'pl' && courseNo != null) {
+      // a lesson still awaiting translation falls through to English below
+      final pl = PolishPack.lessonHtml(courseNo!, dark);
+      if (pl != null) return pl;
+    }
+    if (lang == 'en' || lang == 'pl') {
       final en = dark
           ? (htmlEnDark.isNotEmpty ? htmlEnDark : htmlEnLight)
           : htmlEnLight;

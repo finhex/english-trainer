@@ -49,3 +49,6 @@ flutter:
     - assets/definitions_ru.json
     - assets/ipa.json
     - assets/irregular_verbs.json
+    # The Polish layer. Delete assets/pl/ together with this line to remove
+    # Polish entirely; nothing else in the app depends on it.
+    - assets/pl/

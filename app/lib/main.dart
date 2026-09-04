@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'app_theme.dart';
 import 'content_repository.dart';
 import 'locale_store.dart';
+import 'polish_pack.dart';
 import 'progress_store.dart';
 import 'text_scale_store.dart';
 import 'theme_store.dart';
@@ -14,6 +15,8 @@ import 'screens/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // the removable Polish layer; absent, the app is English/Russian as before
+  await PolishPack.load();
   final content = await ContentRepository.load();
   final progress = await ProgressStore.load();
   final vocab = await VocabRepository.load();
