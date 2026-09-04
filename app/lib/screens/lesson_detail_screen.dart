@@ -189,9 +189,9 @@ class _CourseHtmlState extends State<_CourseHtml> {
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1200),
+        constraints: const BoxConstraints(maxWidth: 940),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(14, 8, 14, 14 + bottomInset),
+          padding: EdgeInsets.fromLTRB(24, 8, 24, 24 + bottomInset),
           child: Card(
             margin: EdgeInsets.zero,
             child: Scrollbar(
@@ -199,18 +199,12 @@ class _CourseHtmlState extends State<_CourseHtml> {
               thumbVisibility: true,
               child: SingleChildScrollView(
                 controller: _scroll,
-                padding: EdgeInsets.fromLTRB(15, 18, 15, 28 + bottomInset),
+                padding: EdgeInsets.fromLTRB(22, 22, 22, 22 + bottomInset),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     for (final part in parts)
-                      for (final seg in _splitTables(part))
-                        seg.isTable
-                            ? _WideTable(
-                                html: seg.html,
-                                textStyle: theme.textTheme.bodyMedium)
-                            : HtmlWidget(seg.html,
-                                textStyle: theme.textTheme.bodyMedium),
+                      HtmlWidget(part, textStyle: theme.textTheme.bodyMedium),
                     if (practices.isNotEmpty) ...[
                       const SizedBox(height: 20),
                       const Divider(height: 1),
@@ -250,100 +244,6 @@ class _CourseHtmlState extends State<_CourseHtml> {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// One piece of a lesson: a table, or ordinary flowing content.
-class _Seg {
-  final String html;
-  final bool isTable;
-  const _Seg(this.html, this.isTable);
-}
-
-/// Splits lesson HTML into table and non-table pieces, matching each <table>
-/// to its own closing tag so a nested conjugation box stays whole.
-List<_Seg> _splitTables(String html) {
-  final segs = <_Seg>[];
-  final tag = RegExp(r'<(/?)table\b[^>]*>', caseSensitive: false);
-  var pos = 0;
-  while (true) {
-    final open = tag.firstMatch(html.substring(pos));
-    if (open == null || open.group(1) == '/') break;
-    final start = pos + open.start;
-    if (start > pos) segs.add(_Seg(html.substring(pos, start), false));
-    var depth = 0;
-    var end = html.length;
-    for (final m in tag.allMatches(html, start)) {
-      if (m.group(1) == '/') {
-        depth--;
-        if (depth == 0) {
-          end = m.end;
-          break;
-        }
-      } else {
-        depth++;
-      }
-    }
-    segs.add(_Seg(html.substring(start, end), true));
-    pos = end;
-  }
-  if (pos < html.length) segs.add(_Seg(html.substring(pos), false));
-  return segs.where((s) => s.html.trim().isNotEmpty).toList();
-}
-
-/// A table too wide for the view, scrolled sideways with the same bar the book
-/// uses: drawn UNDER the table as its own widget, not painted over the last
-/// row the way an overlay Scrollbar is.
-class _WideTable extends StatelessWidget {
-  final String html;
-  final TextStyle? textStyle;
-  const _WideTable({required this.html, this.textStyle});
-
-  /// Room this table wants: the renderer squeezes columns until words break,
-  /// and a conjugation box nests a table per panel, so those need more.
-  double _wanted(String html) {
-    var cols = 0;
-    for (final row
-        in RegExp(r'<tr\b[^>]*>(.*?)</tr>', caseSensitive: false, dotAll: true)
-            .allMatches(html)) {
-      final n = RegExp(r'<t[dh]\b', caseSensitive: false)
-          .allMatches(row.group(1) ?? '')
-          .length;
-      if (n > cols) cols = n;
-    }
-    if (cols == 0) return 0;
-    final nested =
-        RegExp(r'<table\b', caseSensitive: false).allMatches(html).length > 1;
-    return cols * (nested ? 265.0 : 190.0);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, c) {
-        final want = _wanted(html);
-        final avail = c.maxWidth;
-        // With room to lay out, the table simply fills the column - forcing a
-        // guessed width left empty gaps in the cells and put a bar under a
-        // table that did not need one.
-        // Enough room: the table just fills the column, as it did when it
-        // simply sat in the container - no forced width, no bar.
-        if (want <= 0 || !avail.isFinite || want <= avail) {
-          return HtmlWidget(html, textStyle: textStyle);
-        }
-        return Padding(
-          padding: const EdgeInsets.only(top: 2, bottom: 6),
-          child: HScroll(
-            forceVisible: true,
-            thumbColor: Theme.of(context).colorScheme.outline,
-            child: SizedBox(
-              width: want,
-              child: HtmlWidget(html, textStyle: textStyle),
-            ),
-          ),
-        );
-      },
     );
   }
 }
