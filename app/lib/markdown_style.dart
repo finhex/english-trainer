@@ -280,7 +280,8 @@ class _MdTable extends StatelessWidget {
     return TextSpan(children: spans);
   }
 
-  TableRow _row(List<String> cells, bool head, int cols) {
+  TableRow _row(List<String> cells, bool head, int cols,
+      {bool stackItems = false}) {
     final base = TextStyle(
         fontSize: 13,
         height: 1.3,
@@ -295,8 +296,20 @@ class _MdTable extends StatelessWidget {
         for (final c in padded)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-            child: Text.rich(_inline(c, base),
-                textAlign: head ? TextAlign.center : TextAlign.left),
+            // the course stacks interchangeable words (I / you / we / they)
+            // down a cell; markdown can't hold a newline in one, so the
+            // importer joins them with " · " and they are split back here
+            child: stackItems && c.contains(' · ')
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for (final part in c.split(' · '))
+                        Text.rich(_inline(part.trim(), base)),
+                    ],
+                  )
+                : Text.rich(_inline(c, base),
+                    textAlign: head ? TextAlign.center : TextAlign.left),
           ),
       ],
     );
@@ -311,10 +324,14 @@ class _MdTable extends StatelessWidget {
     final body = headless ? rows.sublist(1) : rows;
     if (body.isEmpty) return const SizedBox.shrink();
     final cols = body.fold<int>(0, (m, r) => r.length > m ? r.length : m);
-    final border = TableBorder.all(color: scheme.outlineVariant, width: 0.7);
+    // A headless table is a course conjugation box: the original draws it as
+    // ONE tinted, bordered card with no lines between the cells.
+    final border = headless
+        ? const TableBorder()
+        : TableBorder.all(color: scheme.outlineVariant, width: 0.7);
     final children = [
       for (var i = 0; i < body.length; i++)
-        _row(body[i], !headless && i == 0, cols)
+        _row(body[i], !headless && i == 0, cols, stackItems: headless)
     ];
 
     // Decide by AVAILABLE width, not column count: if every column can get at
@@ -322,6 +339,18 @@ class _MdTable extends StatelessWidget {
     // otherwise keep a comfortable fixed width and scroll sideways (better than
     // squishing a many-column table to one word per line).
     const minCol = 150.0;
+    // the course's conjugation box: one tinted, softly bordered card
+    Widget card(Widget child) => headless
+        ? Container(
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
+              border: Border.all(color: scheme.primary.withValues(alpha: 0.45)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            child: child,
+          )
+        : child;
     return LayoutBuilder(
       builder: (context, constraints) {
         final avail = constraints.maxWidth.isFinite
@@ -337,24 +366,24 @@ class _MdTable extends StatelessWidget {
             defaultVerticalAlignment: TableCellVerticalAlignment.top,
             children: children,
           );
-          if (avail <= maxTable) return table;
+          if (avail <= maxTable) return card(table);
           return Align(
             alignment: Alignment.centerLeft,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: maxTable),
-              child: table,
+              child: card(table),
             ),
           );
         }
         return _HScroll(
           forceVisible: true, // this branch is only used when it overflows
           padding: const EdgeInsets.only(bottom: 14),
-          child: Table(
+          child: card(Table(
             defaultColumnWidth: const FixedColumnWidth(150),
             border: border,
             defaultVerticalAlignment: TableCellVerticalAlignment.top,
             children: children,
-          ),
+          )),
         );
       },
     );
