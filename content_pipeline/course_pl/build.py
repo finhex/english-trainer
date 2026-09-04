@@ -83,6 +83,11 @@ def load(name):
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     lessons_tr = load("translations.json")
+    # Same Russian, different Polish depending on the lesson: "должны" is
+    # "musicie" in lesson 11 ("Вы должны мне помочь") but "musimy" in lesson 12
+    # ("то мы должны использовать"). The string table is shared, so the few
+    # cases that clash are settled per lesson here.
+    overrides = load("overrides.json")
     prompts_tr = load("prompts.json")
     words_tr = load("words.json")
 
@@ -96,11 +101,12 @@ def main():
             continue
         entry = {}
         singles = {**SINGLES, **SINGLES_BY_LESSON.get(no, {})}
+        table = {**lessons_tr, **overrides.get(str(no), {})}
         for src, dst in (("htmlLight", "light"), ("htmlDark", "dark")):
             parts = l.get(src) or []
             if not parts:
                 continue
-            entry[dst] = [translate_html(fix_vertical(p), lessons_tr, singles)
+            entry[dst] = [translate_html(fix_vertical(p), table, singles)
                           for p in parts]
         ru_title = l.get("titleRu") or ""
         if lessons_tr.get(ru_title):
