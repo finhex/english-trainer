@@ -18,9 +18,9 @@ A reference to read, not to drill:
 - Every chapter available in **English and Russian** (100% translated)
 
 ### 🎓 Course — 32 lessons
-A guided course with **11,504 practice sentences**, following Dmitry Petrov's
-«Полиглот 16» lessons (see [Content sources](#content-sources) — this part is
-not original to this project). Each lesson is
+A guided course with **11,504 practice sentences**, by the makers of the
+«1st English» app (see [Content sources](#content-sources) — this part is not
+original to this project). Each lesson is
 *build the sentence* — tap the words into the right order — and carries the
 original lesson pages, styled for light and dark themes.
 
@@ -89,23 +89,19 @@ dist/                   built APK / Windows zip
 
 > **Third-party content — the 32-lesson course.** The course lesson pages and
 > all 11,504 practice sentences are **not** original to this project. They were
-> taken from the database of the Android app **«1st English — учим
-> английский»** (v1.0.11, package `com.kirson.firstenglish`), which is no
-> longer published. That app describes its own material as exercises for the English
-> lessons of **Дмитрий Петров (Dmitry Petrov)**, the course widely known as
-> **«Полиглот 16»** — *Полиглот. Английский за 16 часов* — and points learners
-> at [his video lessons on
-> YouTube](https://www.youtube.com/playlist?list=PL66DIGaegedqtRaxfVsk6vH5dBDuL5w92).
+> written by the team behind the Android app **«1st English — учим
+> английский»** (v1.0.11, package `com.kirson.firstenglish`) — developers from
+> **Kyrgyzstan** — and taken from that app's own database. The app is no longer
+> published.
 >
-> So two people are owed credit here and neither has licensed this: **Dmitry
-> Petrov** for the course and its method, and the **1st English** developer for
-> the lesson pages and drill sentences as written. Reproduced here for personal
-> study only. If you hold rights to either and want this removed, open an issue
-> and it will be taken down.
+> Full credit for that course belongs to them, and none of it is licensed to
+> this project. It is reproduced here for personal study only. If you are one
+> of its authors and would like it removed, open an issue and it will be taken
+> down.
 
-- **Course (32 lessons, 11,504 drills):** «1st English — учим английский»
-  (`content.db`, tables `grammar` / `drills` / `lesson_dict`), based on Dmitry
-  Petrov's «Полиглот 16». See the note above.
+- **Course (32 lessons, 11,504 drills):** «1st English — учим английский», by
+  its Kyrgyz developers (`content.db`, tables `grammar` / `drills` /
+  `lesson_dict`). See the note above.
 - **Grammar:** a 310-chapter + 10-appendix English grammar/phonetics book and its
   full Russian edition (authored for this project).
 - **Vocabulary levels/list:** Maximax67 CEFR-J dataset, audited against
