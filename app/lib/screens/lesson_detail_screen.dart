@@ -17,8 +17,16 @@ import 'practice_screen.dart';
 class LessonDetailScreen extends StatelessWidget {
   final int lessonId;
   final bool practiceUnlocked;
+
+  /// Whether to list the lesson's practices at the end. Off when the lesson is
+  /// opened from inside a practice as a reference - the run to go back to is
+  /// the one already underway, not a new one started on top of it.
+  final bool showPractices;
   const LessonDetailScreen(
-      {super.key, required this.lessonId, required this.practiceUnlocked});
+      {super.key,
+      required this.lessonId,
+      this.practiceUnlocked = true,
+      this.showPractices = true});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +36,11 @@ class LessonDetailScreen extends StatelessWidget {
     final lang = context.watch<LocaleStore>().lang;
 
     // ordered practices (from config) that actually have items in this lesson
-    final practices = repo.config.orderedPractices
-        .where((p) => lesson.itemsOfType(p.type).isNotEmpty)
-        .toList();
+    final practices = showPractices
+        ? repo.config.orderedPractices
+            .where((p) => lesson.itemsOfType(p.type).isNotEmpty)
+            .toList()
+        : const <PracticeConfig>[];
 
     return Scaffold(
       appBar: AppBar(

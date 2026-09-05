@@ -37,55 +37,69 @@ class _GapFillExerciseState extends State<GapFillExercise> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (widget.item.type == 'word_type') ...[
-          Text('${tr(widget.lang, 'select_the')} ${widget.pos}',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall
-                  ?.copyWith(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          Text('${tr(widget.lang, 'which_is_a')} ${widget.pos}?',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Theme.of(context).hintColor)),
-          const SizedBox(height: 32),
-        ] else ...[
-          Text(tr(widget.lang, 'fill_in_gap'),
-              style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 24),
-          Text(widget.item.prompt,
-              style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 32),
-        ],
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: [
-            for (final o in _options)
-              ChoiceChip(
-                label: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 6),
-                  child: Text(o, style: const TextStyle(fontSize: 16)),
+        // The prompt is a different length in every item, so the question and
+        // its choices share the room left over and scroll inside it. That
+        // holds the check button at the same place on the screen from one
+        // question to the next.
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (widget.item.type == 'word_type') ...[
+                  Text('${tr(widget.lang, 'select_the')} ${widget.pos}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  Text('${tr(widget.lang, 'which_is_a')} ${widget.pos}?',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Theme.of(context).hintColor)),
+                  const SizedBox(height: 32),
+                ] else ...[
+                  Text(tr(widget.lang, 'fill_in_gap'),
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 24),
+                  Text(widget.item.prompt,
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(height: 32),
+                ],
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    for (final o in _options)
+                      ChoiceChip(
+                        label: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 6),
+                          child: Text(o, style: const TextStyle(fontSize: 16)),
+                        ),
+                        selected: _selected == o,
+                        showCheckmark: false,
+                        // constant border width so selection never changes
+                        // the size
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(
+                            color: _selected == o
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).dividerColor,
+                            width: 2,
+                          ),
+                        ),
+                        onSelected: (_) => setState(() => _selected = o),
+                      ),
+                  ],
                 ),
-                selected: _selected == o,
-                showCheckmark: false,
-                // constant border width so selection never changes the size
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(
-                    color: _selected == o
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).dividerColor,
-                    width: 2,
-                  ),
-                ),
-                onSelected: (_) => setState(() => _selected = o),
-              ),
-          ],
+              ],
+            ),
+          ),
         ),
-        const Spacer(),
+        const SizedBox(height: 12),
         FilledButton(
           onPressed: _selected == null
               ? null

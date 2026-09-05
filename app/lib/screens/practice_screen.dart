@@ -8,6 +8,7 @@ import '../models.dart';
 import '../progress_store.dart';
 import '../strings.dart';
 import '../widgets/page_width.dart';
+import 'lesson_detail_screen.dart';
 import '../tts_service.dart';
 import '../widgets/word_order_exercise.dart';
 import '../widgets/gap_fill_exercise.dart';
@@ -162,6 +163,19 @@ class _PracticeScreenState extends State<PracticeScreen> {
                     ?.copyWith(color: Theme.of(context).colorScheme.primary)),
           ],
         ),
+        actions: [
+          // Look the rule up without losing the run: the lesson opens over the
+          // practice and closing it comes straight back, score and position
+          // intact.
+          IconButton(
+            icon: const Icon(Icons.menu_book_outlined),
+            tooltip: tr(lang, 'read_lesson'),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => LessonDetailScreen(
+                  lessonId: _lesson.id, showPractices: false),
+            )),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(28),
           child: PageWidth(

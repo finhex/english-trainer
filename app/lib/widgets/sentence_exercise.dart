@@ -174,40 +174,43 @@ class _SentenceExerciseState extends State<SentenceExercise> {
               ),
           ],
         ),
-        const Spacer(),
-        // every position still to fill, in sentence order — one row each, the
-        // way the original stacks them (picking from a row removes it)
-        if (!_finished)
-          Flexible(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Divider(height: 1),
-                  // only two positions are on screen at a time, earliest
-                  // first; filling either one reveals the next
-                  for (final r in _openRows.take(2)) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 10,
-                        runSpacing: 10,
-                        children: [
-                          for (final word in item.rows[r])
-                            _Tile(
-                              label: word,
-                              onTap: () => _pick(r, word),
-                            ),
-                        ],
-                      ),
-                    ),
-                    const Divider(height: 1),
-                  ],
-                ],
-              ),
-            ),
-          ),
+        // Every position still to fill, in sentence order — one row each, the
+        // way the original stacks them (picking from a row removes it). It
+        // takes all the room left over, empty rows included, so the check
+        // button below keeps still instead of walking up the screen as the
+        // rows are used up.
+        Expanded(
+          child: !_finished
+              ? SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Divider(height: 1),
+                      // only two positions are on screen at a time, earliest
+                      // first; filling either one reveals the next
+                      for (final r in _openRows.take(2)) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: [
+                              for (final word in item.rows[r])
+                                _Tile(
+                                  label: word,
+                                  onTap: () => _pick(r, word),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const Divider(height: 1),
+                      ],
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ),
         const SizedBox(height: 12),
         FilledButton(
           onPressed: _chosen.isEmpty ? null : _check,

@@ -15,7 +15,7 @@ Two things are reproduced from the original app rather than simplified:
     the HTML -> markdown conversion as ==highlight== spans, which our markdown
     renderer paints in the accent color.
 """
-import json, random, re, sqlite3, sys
+import difflib, json, random, re, sqlite3, sys
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -405,6 +405,87 @@ def strip_app_note(html):
     return "\u0000".join(p for p in out.split("\u0000") if p.strip())
 
 
+CELL_TAG = re.compile(r"<(t[dh])\b([^>]*)>", re.I)
+PADDING = re.compile(r"\s*padding\s*:\s*[^;\"']*;?", re.I)
+
+
+def _cell_tags(parts):
+    """Every <td>/<th> open tag across a lesson's pages, in reading order."""
+    return [(i, m) for i, part in enumerate(parts)
+            for m in CELL_TAG.finditer(part)]
+
+
+def _cell_text(parts, tags):
+    """The text of each cell, used to line the two themes up when they differ."""
+    out = []
+    for n, (i, m) in enumerate(tags):
+        end = tags[n + 1][1].start() if n + 1 < len(tags) and \
+            tags[n + 1][0] == i else len(parts[i])
+        body = parts[i][m.end():end]
+        out.append(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", body)).strip())
+    return out
+
+
+def _padding_of(attrs):
+    m = re.search(r"padding\s*:\s*([^;\"']*)", attrs, re.I)
+    return m.group(1).strip() if m else None
+
+
+def match_cell_padding(parts_light, parts_dark):
+    """Gives the dark tables the light theme's cell padding.
+
+    The course ships two hand-styled copies of every lesson, and the dark one
+    was built with the padding squeezed out of it - a header cell that is
+    "padding: 8px 5px" in the light copy carries no padding at all in the dark
+    one. The text is the same in both, so the dark tables end up looking
+    cramped next to the light ones for no reason other than how they were
+    authored. Colours are left exactly as the dark copy has them; only the
+    spacing is taken across.
+
+    The two copies hold the same cells in the same order, so they are matched
+    by position; where a lesson's counts disagree they are aligned on the cell
+    text instead.
+    """
+    lt, dt = _cell_tags(parts_light), _cell_tags(parts_dark)
+    if not lt or not dt:
+        return parts_dark
+    if len(lt) == len(dt):
+        pairs = list(zip(range(len(lt)), range(len(dt))))
+    else:
+        sm = difflib.SequenceMatcher(
+            None, _cell_text(parts_light, lt), _cell_text(parts_dark, dt))
+        pairs = [(i + k, j + k)
+                 for i, j, n in sm.get_matching_blocks() for k in range(n)]
+
+    edits = {}
+    for li, di in pairs:
+        pad = _padding_of(lt[li][1].group(2))
+        i, m = dt[di]
+        attrs = m.group(2)
+        if _padding_of(attrs) == pad:
+            continue
+        stripped = PADDING.sub("", attrs)
+        if pad:
+            style = re.search(r'style\s*=\s*"([^"]*)"', stripped, re.I)
+            if style:
+                inner = style.group(1).strip().rstrip(";")
+                joined = f"{inner}; padding: {pad}" if inner else f"padding: {pad}"
+                stripped = (stripped[:style.start(1)] + joined
+                            + stripped[style.end(1):])
+            else:
+                stripped = f'{stripped} style="padding: {pad}"'
+        edits.setdefault(i, []).append(
+            (m.start(), m.end(), f"<{m.group(1)}{stripped}>"))
+
+    out = list(parts_dark)
+    for i, spans in edits.items():
+        s = out[i]
+        for start, end, repl in sorted(spans, reverse=True):
+            s = s[:start] + repl + s[end:]
+        out[i] = s
+    return out
+
+
 def main():
     html_fix = json.loads(HTML_FIX.read_text()) if HTML_FIX.exists() else {}
     db = sqlite3.connect(SRC_DB)
@@ -471,6 +552,9 @@ def main():
         parts_dark = [colorize(x, True) for x in join_split_tables(
             [merge_adjacent_tables(strip_youtube(x))
              for x in (html_dark or "").split("\u0000") if x.strip()])]
+        # the dark copy was authored with its cell padding squeezed out; take
+        # the light theme's spacing across so both themes read the same
+        parts_dark = match_cell_padding(parts_light, parts_dark)
         items = drills.get(gid, [])
         if not md.strip() and not items:
             continue

@@ -71,34 +71,47 @@ class _WordOrderExerciseState extends State<WordOrderExercise> {
         Text(tr(widget.lang, 'put_words_order'),
             style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 16),
-        // assembled answer area
-        Container(
-          constraints: const BoxConstraints(minHeight: 96),
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).dividerColor),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final t in _answer)
-                _TileChip(text: t.text, onTap: () => _unpick(t)),
-            ],
+        // The two tile areas trade words back and forth, so both of them
+        // change height as the sentence is built. They share the room left
+        // over and scroll inside it, which keeps the check button below at a
+        // fixed place on the screen instead of drifting with every tap.
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // assembled answer area
+                Container(
+                  constraints: const BoxConstraints(minHeight: 96),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).dividerColor),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      for (final t in _answer)
+                        _TileChip(text: t.text, onTap: () => _unpick(t)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                // available tiles
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final t in _tray)
+                      _TileChip(text: t.text, onTap: () => _pick(t)),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 24),
-        // available tiles
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final t in _tray)
-              _TileChip(text: t.text, onTap: () => _pick(t)),
-          ],
-        ),
-        const Spacer(),
+        const SizedBox(height: 12),
         FilledButton(
           onPressed: _answer.isEmpty ? null : _check,
           child: Padding(
