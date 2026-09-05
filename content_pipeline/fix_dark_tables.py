@@ -24,20 +24,27 @@ from colorize import to_dark  # noqa: E402
 
 CONTENT = Path(__file__).parent.parent / "app" / "assets" / "content.json"
 
+# Each language keeps its own pair of pages, and every one of them needs the
+# same treatment - the English lessons are a separate copy of the markup, not a
+# view onto the Russian one. Polish is not here: it is rebuilt from these by
+# course_pl/build.py.
+PAIRS = (("htmlLight", "htmlDark"), ("htmlEnLight", "htmlEnDark"))
+
 
 def main():
     data = json.loads(CONTENT.read_text())
-    changed = 0
-    for lesson in data["lessons"]:
-        light = lesson.get("htmlLight")
-        if not light:
-            continue
-        dark = [to_dark(part) for part in light]
-        if dark != lesson.get("htmlDark"):
-            lesson["htmlDark"] = dark
-            changed += 1
+    for light_key, dark_key in PAIRS:
+        changed = 0
+        for lesson in data["lessons"]:
+            light = lesson.get(light_key)
+            if not light:
+                continue
+            dark = [to_dark(part) for part in light]
+            if dark != lesson.get(dark_key):
+                lesson[dark_key] = dark
+                changed += 1
+        print(f"{dark_key:12} rebuilt from {light_key:12}: {changed} lessons")
     CONTENT.write_text(json.dumps(data, ensure_ascii=False))
-    print(f"lessons whose dark pages were rebuilt from light: {changed}")
 
 
 if __name__ == "__main__":
