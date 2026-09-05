@@ -10,17 +10,22 @@ possible but needs an Apple account — see below).
 
 ## What's inside
 
-### 📚 Grammar — 320 chapters
-The complete grammar/phonetics book, extracted into the app:
-- **263 lessons** with auto-generated practice, ordered A1 → C2
+### 📚 Grammar book — 320 chapters
+A reference to read, not to drill:
+- **263 lessons**, ordered A1 → C2
 - **57 reference guides** (phonetics, spelling, punctuation, study skills)
 - **10 appendices**
 - Every chapter available in **English and Russian** (100% translated)
 
-Three practice modes per lesson (reach the goal to unlock the next):
-- **Build the sentence** — tap the words into the right order
-- **Fill the gap** — pick the word that fits (only grammatically-determined answers)
-- **Word types** — "select the noun/verb/…" from mixed options
+### 🎓 Course — 32 lessons
+A guided course with **11,504 practice sentences**. Each lesson is
+*build the sentence* — tap the words into the right order — and carries the
+original lesson pages, styled for light and dark themes.
+
+### 🌍 Languages
+Interface, course lessons and practice prompts in **English, Русский and
+Polski**. The Polish layer is a separate, removable pack in
+`app/assets/pl/`; Polish learners read the grammar book in English.
 
 ### 🔤 Vocabulary — 14,283 words
 CEFR-leveled A1–C2, fully offline. Each word shows:
@@ -66,7 +71,8 @@ Apple Developer account for easy install (TestFlight). Not included in `dist/`.
 ```
 app/                    Flutter app (lib/, assets/, android/ linux/ windows/ runners)
   assets/
-    content.json        320 grammar chapters (EN + RU), with practice items
+    content.json        320 book chapters + the 32-lesson course (EN + RU)
+    pl/                 the removable Polish pack (UI, lessons, prompts)
     words.json          14,283 vocabulary words (senses, level, POS, Russian)
     ipa.json            IPA transcriptions (CMU dictionary)
     examples_ru.json    Russian for example sentences
@@ -79,6 +85,16 @@ dist/                   built APK / Windows zip
 
 ## Content sources
 
+> **Third-party content.** The 32-lesson course — its lesson pages and all
+> 11,504 practice sentences — was extracted from the **eng1stApp** Android
+> app's own database and is reproduced here as it was authored there. It is
+> **not** original to this project and carries no licence from its author. It
+> is included for personal study; if you are the rights holder and want it
+> taken down, open an issue.
+
+- **Course (32 lessons, 11,504 drills):** extracted from the eng1stApp Android
+  app (`content.db`, tables `grammar` / `drills` / `lesson_dict`). Rights
+  remain with its author — see the note above.
 - **Grammar:** a 310-chapter + 10-appendix English grammar/phonetics book and its
   full Russian edition (authored for this project).
 - **Vocabulary levels/list:** Maximax67 CEFR-J dataset, audited against
@@ -88,5 +104,9 @@ dist/                   built APK / Windows zip
 - **IPA:** CMU Pronouncing Dictionary (via NLTK), ARPAbet → IPA.
 - **Russian translations:** English/Russian Wiktionary + DeepL API.
 
+- **Polish:** translated for this project (interface, all 32 course lessons and
+  all 10,154 practice prompts).
+
 Definitions are offline dictionary data; translations were produced with the
-DeepL API. The DeepL API key is **not** in this repo (kept in a git-ignored file).
+DeepL API. No API key is in this repo — credential-shaped filenames are
+git-ignored.
