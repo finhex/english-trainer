@@ -90,8 +90,8 @@ dist/                   built APK / Windows zip
 > **Third-party content — the 32-lesson course.** The course lesson pages and
 > all 11,504 practice sentences are **not** original to this project. They were
 > taken from the database of the Android app **«1st English — учим
-> английский»** (v1.0.11, package `com.eng1st.…`), which is no longer
-> published. That app describes its own material as exercises for the English
+> английский»** (v1.0.11, package `com.kirson.firstenglish`), which is no
+> longer published. That app describes its own material as exercises for the English
 > lessons of **Дмитрий Петров (Dmitry Petrov)**, the course widely known as
 > **«Полиглот 16»** — *Полиглот. Английский за 16 часов* — and points learners
 > at [his video lessons on
