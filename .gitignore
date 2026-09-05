@@ -1,8 +1,17 @@
 # ---- SECRETS (never commit) ----
+# the repo is public, so this is a catch-all rather than a list of the keys we
+# happen to have used: anything named like a credential stays out.
+**/*_key.txt
+**/*_token.txt
+**/*_secret*
 vocab_pipeline/ru/deepl_key.txt
 **/deepl_key.txt
 *.key
+*.pem
+*.jks
+*.keystore
 .env
+.env.*
 
 # ---- Python ----
 **/.venv/
@@ -50,3 +59,6 @@ Thumbs.db
 
 # local backups (duplicate data)
 vocab_pipeline/backups/
+
+# local content backups (large duplicate data)
+backups/
