@@ -242,3 +242,42 @@ def colorize(html, dark):
         pos = end
     out.append(html[pos:])
     return "".join(out)
+
+
+# The course's own dark palette, read off its dark lesson copies. The light
+# markup is the one that was laid out properly - even column widths, padded
+# cells - so the dark pages are made from it by swapping colours only, which
+# keeps the two themes identical in everything but colour.
+DARK_COLOR = {
+    "#005bd8": "#D8B500",   # the blue the course accents with
+    "005bd8": "#D8B500",    # ... written without its # in a few places
+    "#f00000": "#CF2222",   # the red on auxiliaries and negatives
+    "red": "#CF2222",
+    "gray": "#A7A7A7",
+    "green": "darkseagreen",
+}
+DARK_BACKGROUND = {
+    "#bce1ff": "#003555",   # the tinted Statement panel
+    "#eeeeee": "#000000",   # header / label rows
+    "#eee": "#000000",
+    # the page itself: a white table becomes the card it sits on, the way the
+    # light one disappears into a white page
+    "white": "transparent",
+    "#ffffff": "transparent",
+}
+DARK_BORDER = {"1px solid #87c9ff": "1px solid #6E90AC"}
+
+_DECL = re.compile(r"\b(color|background|border)\s*:\s*([^;\"']+)", re.I)
+
+
+def to_dark(html):
+    """The same markup in the dark theme's colours - nothing else moves."""
+    table = {"color": DARK_COLOR, "background": DARK_BACKGROUND,
+             "border": DARK_BORDER}
+
+    def repl(m):
+        prop, value = m.group(1).lower(), m.group(2).strip()
+        swapped = table[prop].get(value.lower())
+        return f"{m.group(1)}: {swapped}" if swapped else m.group(0)
+
+    return _DECL.sub(repl, html)

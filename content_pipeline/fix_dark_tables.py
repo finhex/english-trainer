@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 """
-Give the dark lesson tables the light theme's cell padding, in place.
+Rebuild the dark lesson pages from the light ones, recoloured.
 
-import_course.py does this while importing, but re-importing needs the
-original eng1stApp database. This applies the same fix to the content.json we
-already have, so the two themes agree without a full reimport.
+The course ships two hand-styled copies of every lesson, and they were not
+styled to the same standard. The light copy splits a nested table evenly with
+"width: 50%" and pads its cells; the dark copy leaves both out, so the same
+table reads as ragged, cramped columns in dark mode - and it marks its
+translations with coloured spans where the light copy uses italics. The text is
+identical in the two, so the light markup is used for both themes and only its
+colours are swapped, out of the course's own dark palette.
 
     python3 content_pipeline/fix_dark_tables.py
 
-Only spacing moves across - every colour the dark copy chose is left alone.
+import_course.py does the same while importing; this applies it to the
+content.json we already have, without needing the original database.
 """
 import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from import_course import match_cell_padding  # noqa: E402
+from colorize import to_dark  # noqa: E402
 
 CONTENT = Path(__file__).parent.parent / "app" / "assets" / "content.json"
 
@@ -24,15 +29,15 @@ def main():
     data = json.loads(CONTENT.read_text())
     changed = 0
     for lesson in data["lessons"]:
-        light, dark = lesson.get("htmlLight"), lesson.get("htmlDark")
-        if not light or not dark:
+        light = lesson.get("htmlLight")
+        if not light:
             continue
-        fixed = match_cell_padding(light, dark)
-        if fixed != dark:
-            lesson["htmlDark"] = fixed
+        dark = [to_dark(part) for part in light]
+        if dark != lesson.get("htmlDark"):
+            lesson["htmlDark"] = dark
             changed += 1
     CONTENT.write_text(json.dumps(data, ensure_ascii=False))
-    print(f"lessons whose dark tables were re-spaced: {changed}")
+    print(f"lessons whose dark pages were rebuilt from light: {changed}")
 
 
 if __name__ == "__main__":
