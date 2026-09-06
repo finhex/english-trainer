@@ -66,6 +66,24 @@ IRREGULAR_PLURALS = {
 }
 
 
+# A handful the scrape simply got from the wrong entry, and which no rule
+# catches because the entry itself carries an obscure verb sense: "doe" is a
+# deer, "git" an insult, "sac" a pouch, yet each was given the past of the
+# verb it merely resembles. Checked by hand, dropped by name.
+# Every one of these was read individually. A heuristic cannot help here:
+# whatever rule separates "doe" -> "did" from "smite" -> "smote" would have to
+# know that a doe is a deer, so the wrong ones are simply named.
+WRONG_BY_HAND = {
+    ("belie", "past"): "belay",    # belie -> belied; belay is a different verb
+    ("sac", "past"): "sacked",     # the pouch, not "to sack"
+    ("born", "past"): "bornt",     # not a form of anything
+    ("ethos", "plural"): "ethe",   # ethoses or ethea, never "ethe"
+    ("doe", "past"): "did",        # a doe is a deer; "did" belongs to "do"
+    ("git", "past"): "got",        # an insult; "got" belongs to "get"
+    ("uptake", "past"): "uptook",  # a noun only
+}
+
+
 # Verbs that really do have both a regular and an irregular past, because two
 # different verbs share the spelling: you ringed a bird but rang a bell, and
 # you were winded running but wound a clock. Their "wrong" past is correct for
@@ -83,7 +101,17 @@ def wordnet_pos():
     tags = {"noun": wn.NOUN, "verb": wn.VERB, "adj": wn.ADJ, "adv": wn.ADV}
 
     def look(word):
-        return {name for name, tag in tags.items() if wn.synsets(word, pos=tag)}
+        # wn.synsets() lemmatises before it looks up, so "doe" finds the verb
+        # "do" and "git" finds "get" - which is how "doe" ended up with the
+        # past "did". Only count a part of speech when a synset actually
+        # carries this exact spelling as a lemma.
+        found = set()
+        for name, tag in tags.items():
+            for syn in wn.synsets(word, pos=tag):
+                if any(l.name().lower() == word.lower() for l in syn.lemmas()):
+                    found.add(name)
+                    break
+        return found
 
     def proper(word):
         """Is the Capitalised spelling a word in its own right (American)?"""
@@ -139,6 +167,11 @@ def main():
                 continue
             text = value.strip()
 
+            # an article dragged in from the entry: "the nineties"
+            if re.match(r"(?i)^(the|a|an)\s", text):
+                findings["malformed"].append([word, kind, text, None])
+                continue
+
             # editorial leftovers: a form is one word (or a "more x" phrase)
             if re.search(r"[,;()\[\]]", text) or text.count(" ") > 1:
                 cleaned = text.split()[-1]
@@ -183,6 +216,11 @@ def main():
                 findings["already_plural"].append([word, kind, text, None])
                 continue
 
+            # taken from the wrong entry, confirmed by hand
+            if WRONG_BY_HAND.get((word, kind)) == text.lower():
+                findings["wrong_entry"].append([word, kind, text, None])
+                continue
+
             # an irregular plural given the regular ending: "stimuluses"
             if kind == "plural" and word in IRREGULAR_PLURALS:
                 right = IRREGULAR_PLURALS[word]
@@ -206,7 +244,8 @@ def main():
     print(f"{'-' * 62}")
     total = 0
     for name in ("unattested", "capitalised", "already_plural", "irregular",
-                 "wrong_value", "malformed", "homograph", "proper"):
+                 "wrong_value", "wrong_entry", "malformed", "homograph",
+                 "proper"):
         rows = findings[name]
         total += len(rows)
         kinds = Counter(r[1] for r in rows)
@@ -227,7 +266,7 @@ def main():
 
     dropped = fixed = 0
     for name in ("unattested", "capitalised", "already_plural", "wrong_value",
-                 "malformed"):
+                 "wrong_entry", "malformed"):
         for word, kind, _old, fix in findings[name]:
             forms = full[word]["forms"]
             if fix:
