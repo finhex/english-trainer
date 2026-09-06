@@ -92,6 +92,15 @@ HOMOGRAPH_VERBS = {"ring", "wind", "bust", "relay", "spit", "refit", "bid",
                    "found", "grind", "hang", "lie", "wound"}
 
 
+def _third_person(word):
+    """The -s form of a verb, which is what a scraped "plural" often is."""
+    if re.search(r"(s|x|z|ch|sh|o)$", word):
+        return word + "es"
+    if re.search(r"[^aeiou]y$", word):
+        return word[:-1] + "ies"
+    return word + "s"
+
+
 def wordnet_pos():
     """WordNet's parts of speech per lemma, or None when NLTK is missing."""
     try:
@@ -113,11 +122,22 @@ def wordnet_pos():
                     break
         return found
 
+    def noun_used(word):
+        """How often the NOUN reading is actually attested in a corpus.
+
+        Mere presence in WordNet is not enough: "see" has a noun sense (a
+        bishop's see) that no learner will ever meet, and trusting it is what
+        let the verb "see" be given the plural "sees".
+        """
+        return sum(l.count() for syn in wn.synsets(word, pos=wn.NOUN)
+                   for l in syn.lemmas()
+                   if l.name().lower() == word.lower())
+
     def proper(word):
         """Is the Capitalised spelling a word in its own right (American)?"""
         cap = word[:1].upper() + word[1:]
         return any(l.name() == cap for s in wn.synsets(word) for l in s.lemmas())
-    return look, proper
+    return look, proper, noun_used
 
 
 def regular_plural(word):
@@ -150,7 +170,7 @@ def main():
     looked = wordnet_pos()
     if looked is None:
         sys.exit("needs NLTK + WordNet: run with vocab_pipeline/.venv/bin/python")
-    wn_look, wn_proper = looked
+    wn_look, wn_proper, wn_noun_used = looked
 
     findings = defaultdict(list)
 
@@ -181,6 +201,18 @@ def main():
             # a form for a part of speech this word does not have
             if kind in NEEDS and not (known & NEEDS[kind]):
                 findings["unattested"].append([word, kind, text, None])
+                continue
+
+            # A "plural" on a word the entry teaches only as a verb, whose
+            # noun reading is never actually used, is not a plural at all: it
+            # is the 3rd-person form. "see" -> "sees" was being shown to
+            # learners as a plural noun. The app already has a label for this,
+            # so the form is kept and renamed rather than thrown away.
+            if kind == "plural" and "verb" in senses \
+                    and not (senses & NOUNY) \
+                    and text.lower() == _third_person(word) \
+                    and wn_noun_used(word) == 0:
+                findings["mislabelled"].append([word, kind, text, "present_3s"])
                 continue
 
             # A capital where the headword has none. Two very different
@@ -243,9 +275,9 @@ def main():
           f"{sum(1 for e in full.values() if e.get('forms'))}")
     print(f"{'-' * 62}")
     total = 0
-    for name in ("unattested", "capitalised", "already_plural", "irregular",
-                 "wrong_value", "wrong_entry", "malformed", "homograph",
-                 "proper"):
+    for name in ("unattested", "mislabelled", "capitalised", "already_plural",
+                 "irregular", "wrong_value", "wrong_entry", "malformed",
+                 "homograph", "proper"):
         rows = findings[name]
         total += len(rows)
         kinds = Counter(r[1] for r in rows)
@@ -275,6 +307,11 @@ def main():
             else:
                 forms.pop(kind, None)
                 dropped += 1
+    for word, kind, text, newkey in findings["mislabelled"]:
+        forms = full[word]["forms"]
+        forms.pop(kind, None)
+        forms[newkey] = text
+        fixed += 1
     for word, kind, _old, right in findings["irregular"]:
         full[word]["forms"][kind] = right.split("/")[0].strip()
         fixed += 1
