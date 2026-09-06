@@ -43,6 +43,7 @@ FULL = ASSETS / "word_full.json"
 WORDS = ASSETS / "words.json"
 IRREGULAR = ASSETS / "irregular_verbs.json"
 REPORT = Path(__file__).parent / "forms_audit.json"
+REVIEW = Path(__file__).parent / "forms_review.json"
 
 # which parts of speech make each form meaningful
 NOUNY = {"noun", "name"}
@@ -84,6 +85,38 @@ WRONG_BY_HAND = {
 }
 
 
+# Nouns that simply do not pluralise in English. Pluralising them is one of
+# the commonest mistakes a learner makes ("many informations", "some advices"),
+# so an entry that offers the plural is teaching the error. Only words that are
+# uncountable in ordinary use are listed: "paper", "work", "time", "light" and
+# "experience" all have real plurals and are deliberately absent, and so are
+# "bread", "water" and "money", whose plurals are rare but genuine.
+UNCOUNTABLE = {
+    "information", "advice", "furniture", "luggage", "baggage", "equipment",
+    "knowledge", "homework", "housework", "progress", "traffic", "weather",
+    "software", "hardware", "electricity", "happiness", "sadness", "anger",
+    "courage", "honesty", "patience", "wisdom", "laughter", "machinery",
+    "jewellery", "jewelry", "clothing", "footwear", "cutlery", "stationery",
+    "accommodation", "pollution", "garbage", "rubbish", "litter", "flour",
+    "sugar", "salt", "pepper", "butter", "education", "permission",
+    "employment", "unemployment", "safety", "violence", "freedom", "justice",
+    "peace", "fun", "luck", "health", "wealth", "poverty", "hunger", "thirst",
+    "chaos", "applause", "advertising", "leisure", "nonsense", "childhood",
+}
+
+
+# Adjective and adverb endings that never take -er / -est. "wonderfuller" and
+# "comfortabler" are not English; they need "more". Short words are exempt,
+# because "abler" and "stabler" are perfectly ordinary - it is length that
+# stops "comfortable" from suffixing, not the ending alone.
+NEVER_SUFFIX = ("ful", "ous", "ant", "ent", "able", "ible", "ive", "ing",
+                "ic", "que", "some", "less")
+
+
+def _syllables(word):
+    return max(1, len(re.findall(r"[aeiouy]+", re.sub(r"e$", "", word.lower()))))
+
+
 # Verbs that really do have both a regular and an irregular past, because two
 # different verbs share the spelling: you ringed a bird but rang a bell, and
 # you were winded running but wound a clock. Their "wrong" past is correct for
@@ -122,6 +155,12 @@ def wordnet_pos():
                     break
         return found
 
+    def used(word, name):
+        """Is this part of speech actually attested in a corpus?"""
+        syns = wn.synsets(word, pos=tags[name]) if name in tags else []
+        return sum(l.count() for syn in syns for l in syn.lemmas()
+                   if l.name().lower() == word.lower()) > 0
+
     def noun_used(word):
         """How often the NOUN reading is actually attested in a corpus.
 
@@ -137,7 +176,7 @@ def wordnet_pos():
         """Is the Capitalised spelling a word in its own right (American)?"""
         cap = word[:1].upper() + word[1:]
         return any(l.name() == cap for s in wn.synsets(word) for l in s.lemmas())
-    return look, proper, noun_used
+    return look, proper, noun_used, used
 
 
 def regular_plural(word):
@@ -170,16 +209,41 @@ def main():
     looked = wordnet_pos()
     if looked is None:
         sys.exit("needs NLTK + WordNet: run with vocab_pipeline/.venv/bin/python")
-    wn_look, wn_proper, wn_noun_used = looked
+    wn_look, wn_proper, wn_noun_used, wn_used = looked
 
     findings = defaultdict(list)
+    review = []
 
     for word, entry in full.items():
         forms = entry.get("forms") or {}
         if not forms:
             continue
-        senses = {s.get("pos") for s in (entry.get("senses") or [])}
+        sense_list = [s.get("pos") for s in (entry.get("senses") or [])]
+        senses = set(sense_list)
+
         known = senses | words.get(word, set()) | wn_look(word)
+
+        def attested(pos_set):
+            """Does the word have one of these parts of speech at all?
+
+            Deliberately generous. A stricter test was tried - requiring the
+            part of speech to be attested in a corpus, or given more than one
+            sense - and it was wrong in both directions on inspection: it
+            wanted to drop "genitals" and to relabel the adjective plural
+            "empowereds" as a verb form. Corpus counts are too sparse to carry
+            that weight, so anything it flags goes to forms_review.json for a
+            person to read rather than being changed.
+            """
+            return bool(known & pos_set)
+
+        def doubtful(pos_set):
+            """The strict test, used only to fill the review file."""
+            for pos in pos_set:
+                if sense_list.count(pos) >= 2:
+                    return False
+                if pos in ("noun", "verb", "adj", "adv") and wn_used(word, pos):
+                    return False
+            return True
 
         for kind, value in list(forms.items()):
             if not isinstance(value, str) or not value.strip():
@@ -198,22 +262,25 @@ def main():
                 findings["malformed"].append([word, kind, text, cleaned])
                 continue
 
-            # a form for a part of speech this word does not have
-            if kind in NEEDS and not (known & NEEDS[kind]):
-                findings["unattested"].append([word, kind, text, None])
-                continue
-
             # A "plural" on a word the entry teaches only as a verb, whose
             # noun reading is never actually used, is not a plural at all: it
             # is the 3rd-person form. "see" -> "sees" was being shown to
             # learners as a plural noun. The app already has a label for this,
             # so the form is kept and renamed rather than thrown away.
             if kind == "plural" and "verb" in senses \
-                    and not (senses & NOUNY) \
-                    and text.lower() == _third_person(word) \
-                    and wn_noun_used(word) == 0:
+                    and not attested(NOUNY) \
+                    and text.lower() == _third_person(word):
                 findings["mislabelled"].append([word, kind, text, "present_3s"])
                 continue
+
+            # a form for a part of speech this word does not have
+            if kind in NEEDS and not attested(NEEDS[kind]):
+                findings["unattested"].append([word, kind, text, None])
+                continue
+
+            # supported, but only thinly - worth a human eye, never changed
+            if kind in NEEDS and doubtful(NEEDS[kind]):
+                review.append([word, kind, text, sorted(senses)])
 
             # A capital where the headword has none. Two very different
             # cases: "american" -> "Americans" is simply correct, because the
@@ -253,6 +320,25 @@ def main():
                 findings["wrong_entry"].append([word, kind, text, None])
                 continue
 
+            # a plural on a noun that has none
+            if kind == "plural" and word in UNCOUNTABLE:
+                findings["uncountable"].append([word, kind, text, None])
+                continue
+
+            # "-er" where English can only say "more": an adverb in -ly, or a
+            # long adjective whose ending never suffixes. The comparison is
+            # real, only its form is wrong, so it is rewritten rather than
+            # dropped.
+            if kind in ("comparative", "superlative") and "-" not in word \
+                    and not text.lower().startswith(("more ", "most ")):
+                adverb = "adv" in senses and not (senses & {"adj", "adjective"})
+                if (adverb and word.endswith("ly")) or (
+                        word.endswith(NEVER_SUFFIX) and _syllables(word) >= 3):
+                    prefix = "more" if kind == "comparative" else "most"
+                    findings["overgraded"].append(
+                        [word, kind, text, f"{prefix} {word}"])
+                    continue
+
             # an irregular plural given the regular ending: "stimuluses"
             if kind == "plural" and word in IRREGULAR_PLURALS:
                 right = IRREGULAR_PLURALS[word]
@@ -275,9 +361,9 @@ def main():
           f"{sum(1 for e in full.values() if e.get('forms'))}")
     print(f"{'-' * 62}")
     total = 0
-    for name in ("unattested", "mislabelled", "capitalised", "already_plural",
-                 "irregular", "wrong_value", "wrong_entry", "malformed",
-                 "homograph", "proper"):
+    for name in ("unattested", "mislabelled", "overgraded", "uncountable",
+                 "capitalised", "already_plural", "irregular", "wrong_value",
+                 "wrong_entry", "malformed", "homograph", "proper"):
         rows = findings[name]
         total += len(rows)
         kinds = Counter(r[1] for r in rows)
@@ -290,6 +376,9 @@ def main():
           f"words affected: {len({r[0] for v in findings.values() for r in v})}")
 
     REPORT.write_text(json.dumps(findings, ensure_ascii=False, indent=1))
+    REVIEW.write_text(json.dumps(review, ensure_ascii=False, indent=1))
+    print(f"thinly-supported forms for review (not changed): {len(review)}"
+          f" -> {REVIEW.relative_to(ROOT)}")
     print(f"\nfull list written to {REPORT.relative_to(ROOT)}")
 
     if not write:
@@ -297,8 +386,8 @@ def main():
         return
 
     dropped = fixed = 0
-    for name in ("unattested", "capitalised", "already_plural", "wrong_value",
-                 "wrong_entry", "malformed"):
+    for name in ("unattested", "overgraded", "uncountable", "capitalised",
+                 "already_plural", "wrong_value", "wrong_entry", "malformed"):
         for word, kind, _old, fix in findings[name]:
             forms = full[word]["forms"]
             if fix:
