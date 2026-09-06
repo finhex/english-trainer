@@ -622,47 +622,14 @@ class _RichEntry extends StatelessWidget {
         style: Theme.of(context).textTheme.labelMedium?.copyWith(color: hint));
 
     final targets = _targets();
-    // summary line: the first sense, shown as a highlighted callout at the top
-    final firstPos = byPos.keys.isNotEmpty ? byPos.keys.first : '';
-    final firstDef = byPos.isNotEmpty ? (byPos.values.first.first['def'] as String? ?? '') : '';
-    final firstEx = byPos.isNotEmpty
-        ? (((byPos.values.first.first['examples'] as List?) ?? const []).cast<String>())
-        : const <String>[];
+    // The first sense used to be repeated here as a highlighted callout. It
+    // said nothing new: "dictionary meanings" below lists every sense in
+    // byPos, starting with that same one and the same example, so the page
+    // opened by explaining the word twice.
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // 0) top callout — headword (pos) means <first sense>. Example: …
-        if (firstDef.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: scheme.primaryContainer.withValues(alpha: .5),
-              borderRadius: BorderRadius.circular(12),
-              border: Border(left: BorderSide(color: scheme.primary, width: 3)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: word,
-                      style: const TextStyle(fontWeight: FontWeight.w700)),
-                  if (firstPos.isNotEmpty)
-                    TextSpan(
-                        text: '  (${_posLabel(lang, firstPos)})',
-                        style: TextStyle(color: hint, fontStyle: FontStyle.italic)),
-                  TextSpan(text: ' — $firstDef'),
-                ]), style: const TextStyle(fontSize: 15, height: 1.4)),
-                if (firstEx.isNotEmpty) ...[
-                  const SizedBox(height: 6),
-                  _highlight('“${firstEx.first}”', targets, scheme),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(height: 18),
-        ],
         // 0.5) ALL FreeDict Russian meanings (complete set, as on freedict.com)
         Builder(builder: (context) {
           final all = context.read<VocabRepository>().freedictRuFor(word);
