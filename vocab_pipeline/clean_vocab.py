@@ -18,6 +18,7 @@ from pathlib import Path
 
 from nltk.corpus import wordnet as wn
 from nltk.stem import WordNetLemmatizer
+from example_match import pick_example
 
 HERE = Path(__file__).parent
 ASSETS = HERE.parent / "app" / "assets"
@@ -62,12 +63,12 @@ def wn_senses(word, cap=6):
         if not d or d in seen:
             continue
         seen.add(d)
-        ex = ss.examples()
+        ex = pick_example(word, ss.examples())
         by_pos.setdefault(pos, [])
         if pos not in order:
             order.append(pos)
         by_pos[pos].append({"pos": pos, "definition": d,
-                            "example": ex[0] if ex else "", "ru": []})
+                            "example": ex, "ru": []})
     out, i = [], 0
     while len(out) < cap and any(by_pos.values()):
         pos = order[i % len(order)]

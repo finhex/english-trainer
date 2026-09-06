@@ -2,7 +2,6 @@
 /// Each word carries its part(s) of speech and multiple meanings (senses).
 library;
 
-import 'polish_pack.dart';
 
 class Sense {
   final String pos;
@@ -55,14 +54,9 @@ class Word {
   /// e.g. "время · срок · раз" — a short line (primary translations) for lists.
   String get ruLine => ru.take(4).join(' · ');
 
-  /// Translations to show in the given UI language: Russian for 'ru', Polish
-  /// from the removable pack for 'pl', and nothing for English. A word the
-  /// Polish pack has not reached yet shows no translation rather than falling
-  /// back to Russian, which a Polish learner could not read.
-  List<String> translationsFor(String lang) {
-    if (lang == 'pl') return PolishPack.word(word);
-    return lang == 'ru' ? ru : const [];
-  }
+  /// Translations to show in the given UI language: Russian for 'ru' and
+  /// nothing for English, where the headword is already the answer.
+  List<String> translationsFor(String lang) => lang == 'ru' ? ru : const [];
 
   /// The same, as one short line for a list row.
   String lineFor(String lang) => translationsFor(lang).take(4).join(' · ');

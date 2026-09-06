@@ -26,8 +26,7 @@ CONTENT = Path(__file__).parent.parent / "app" / "assets" / "content.json"
 
 # Each language keeps its own pair of pages, and every one of them needs the
 # same treatment - the English lessons are a separate copy of the markup, not a
-# view onto the Russian one. Polish is not here: it is rebuilt from these by
-# course_pl/build.py.
+# view onto the Russian one.
 PAIRS = (("htmlLight", "htmlDark"), ("htmlEnLight", "htmlEnDark"))
 
 

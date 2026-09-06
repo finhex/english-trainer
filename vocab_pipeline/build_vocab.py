@@ -16,6 +16,8 @@ import json
 import urllib.request
 from pathlib import Path
 
+from example_match import pick_example
+
 HERE = Path(__file__).parent
 DATA = HERE / "data"
 DATASET = "https://raw.githubusercontent.com/Maximax67/Words-CEFR-Dataset/main/csv"
@@ -117,12 +119,16 @@ def wn_senses(wn, word, cap=6):
         if not d or d in seen:
             continue
         seen.add(d)
-        ex = ss.examples()
+        # A synset groups synonyms, so its first example often demonstrates a
+        # different lemma ("use your head!" under `utilize`). Take the first
+        # sentence that shows this word, and none if every sentence is about a
+        # synonym — a wrong example teaches worse than no example.
+        ex = pick_example(word, ss.examples())
         by_pos.setdefault(pos, [])
         if pos not in order:
             order.append(pos)
         by_pos[pos].append({"pos": pos, "definition": d,
-                             "example": ex[0] if ex else ""})
+                             "example": ex})
     # round-robin across POS buckets until we hit the cap
     out, i = [], 0
     while len(out) < cap and any(by_pos.values()):

@@ -175,12 +175,6 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
               child: Text.rich(TextSpan(children: [part('UK', uk), part('US', us)])),
             );
           }),
-          // Polish translations, when the pack has this word
-          if (lang == 'pl' && w.translationsFor(lang).isNotEmpty) ...[
-            const SizedBox(height: 6),
-            Text(w.translationsFor(lang).join(' · '),
-                style: Theme.of(context).textTheme.titleMedium),
-          ],
           // Russian translations grouped by part of speech (once, not repeated)
           if (lang == 'ru' && w.ruByPos.isNotEmpty) ...[
             const SizedBox(height: 6),

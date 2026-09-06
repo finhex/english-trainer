@@ -1,11 +1,7 @@
 /// Minimal offline UI localization (English / Russian). Look up a key with
 /// `tr(lang, 'key')`. Falls back to English, then the key itself.
-///
-/// Polish is not held here: it comes from the removable pack in `assets/pl/`,
-/// so the language disappears cleanly if that folder is deleted.
 library;
 
-import 'polish_pack.dart';
 
 const Map<String, Map<String, String>> _s = {
   // navigation
@@ -151,22 +147,11 @@ const Map<String, Map<String, String>> _pos = {
   'adverb': {'en': 'adverb', 'ru': 'наречие'},
 };
 
-String tr(String lang, String key) {
-  if (lang == 'pl') {
-    final pl = PolishPack.ui(key);
-    if (pl != null) return pl;
-  }
-  return _s[key]?[lang] ?? _s[key]?['en'] ?? key;
-}
+String tr(String lang, String key) =>
+    _s[key]?[lang] ?? _s[key]?['en'] ?? key;
 
 /// Localized part-of-speech name.
-String posName(String lang, String pos) {
-  if (lang == 'pl') {
-    final pl = PolishPack.ui('pos_$pos');
-    if (pl != null) return pl;
-  }
-  return _pos[pos]?[lang] ?? pos;
-}
+String posName(String lang, String pos) => _pos[pos]?[lang] ?? pos;
 
 /// Practice label/subtitle by type, localized.
 String practiceLabel(String lang, String type) =>

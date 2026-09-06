@@ -24,11 +24,6 @@ original to this project). Each lesson is
 *build the sentence* — tap the words into the right order — and carries the
 original lesson pages, styled for light and dark themes.
 
-### 🌍 Languages
-Interface, course lessons and practice prompts in **English, Русский and
-Polski**. The Polish layer is a separate, removable pack in
-`app/assets/pl/`; Polish learners read the grammar book in English.
-
 ### 🔤 Vocabulary — 14,283 words
 CEFR-leveled A1–C2, fully offline. Each word shows:
 - **Russian translation** (99% coverage)
@@ -74,7 +69,6 @@ Apple Developer account for easy install (TestFlight). Not included in `dist/`.
 app/                    Flutter app (lib/, assets/, android/ linux/ windows/ runners)
   assets/
     content.json        320 book chapters + the 32-lesson course (EN + RU)
-    pl/                 the removable Polish pack (UI, lessons, prompts)
     words.json          14,283 vocabulary words (senses, level, POS, Russian)
     ipa.json            IPA transcriptions (CMU dictionary)
     examples_ru.json    Russian for example sentences
@@ -110,9 +104,6 @@ dist/                   built APK / Windows zip
 - **Definitions & examples:** WordNet (NLTK).
 - **IPA:** CMU Pronouncing Dictionary (via NLTK), ARPAbet → IPA.
 - **Russian translations:** English/Russian Wiktionary + DeepL API.
-
-- **Polish:** translated for this project (interface, all 32 course lessons and
-  all 10,154 practice prompts).
 
 Definitions are offline dictionary data; translations were produced with the
 DeepL API. No API key is in this repo — credential-shaped filenames are

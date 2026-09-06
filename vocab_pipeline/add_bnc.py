@@ -15,6 +15,7 @@ import urllib.request
 from pathlib import Path
 
 from nltk.corpus import wordnet as wn
+from example_match import pick_example
 
 HERE = Path(__file__).parent
 A = HERE.parent / "app" / "assets"
@@ -37,7 +38,7 @@ def own_senses(word, cap=6):
             continue
         scored.append((sum(l.count() for l in lem),
                        {"pos": pos, "definition": d,
-                        "example": ss.examples()[0] if ss.examples() else "",
+                        "example": pick_example(word, ss.examples()),
                         "ru": []}))
     scored.sort(key=lambda t: -t[0])
     out, seen = [], set()
