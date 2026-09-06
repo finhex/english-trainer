@@ -175,13 +175,18 @@ class _SentenceExerciseState extends State<SentenceExercise> {
           ],
         ),
         // Every position still to fill, in sentence order — one row each, the
-        // way the original stacks them (picking from a row removes it). It
-        // takes all the room left over, empty rows included, so the check
-        // button below keeps still instead of walking up the screen as the
-        // rows are used up.
+        // way the original stacks them (picking from a row removes it).
+        //
+        // It takes all the room left over so the check button below keeps
+        // still instead of walking up the screen as the rows are used up, and
+        // `reverse` settles the rows at the BOTTOM of that room: they sit
+        // right above the button, where the thumb already is, rather than
+        // floating at the top with a gap under them. When the words do not fit
+        // it scrolls from the bottom, so the row being filled stays in view.
         Expanded(
           child: !_finished
               ? SingleChildScrollView(
+                  reverse: true,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
